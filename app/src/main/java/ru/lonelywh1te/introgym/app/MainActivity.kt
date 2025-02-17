@@ -1,12 +1,16 @@
-package ru.lonelywh1te.introgym
+package ru.lonelywh1te.introgym.app
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import ru.lonelywh1te.introgym.R
+
+private const val LOG_TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
