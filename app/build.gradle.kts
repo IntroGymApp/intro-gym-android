@@ -40,10 +40,18 @@ android {
     }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation(libs.room.runtime)
+    testImplementation(libs.junit.jupiter)
     ksp(libs.room.compiler)
     implementation(libs.gson)
+    implementation(libs.mockito)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.junit.jupiter)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

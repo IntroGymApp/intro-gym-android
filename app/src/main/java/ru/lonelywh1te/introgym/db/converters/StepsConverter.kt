@@ -20,7 +20,7 @@ class StepsConverter {
 
     @TypeConverter
     fun listToStringConverter(list: List<String>): String {
-        val result = gson.toJson(list)
+        val result = gson.toJson(StepsConverterResult(list))
         return result
     }
 }

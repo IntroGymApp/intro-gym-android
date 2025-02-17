@@ -12,6 +12,9 @@ constraintlayout = "2.2.0"
 ksp = "2.1.10-1.0.30"
 room = "2.6.1"
 gson = "2.12.1"
+junitJupiter = "5.8.1"
+mockito = "5.15.2"
+mockito-kotlin = "5.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,6 +29,9 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 gson = {group = "com.google.code.gson", name = "gson", version.ref = "gson"}
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito"}
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

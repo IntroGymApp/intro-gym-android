@@ -20,7 +20,7 @@ class TipsConverter {
 
     @TypeConverter
     fun listToStringConverter(list: List<String>): String {
-        val result = gson.toJson(list)
+        val result = gson.toJson(TipsConverterResult(list))
         return result
     }
 }
