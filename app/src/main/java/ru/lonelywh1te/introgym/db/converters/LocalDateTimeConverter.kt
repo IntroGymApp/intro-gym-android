@@ -10,7 +10,7 @@ class LocalDateTimeConverter {
     }
 
     @TypeConverter
-    fun toLocalDate(dateTime: String): LocalDateTime {
+    fun toLocalDateTime(dateTime: String): LocalDateTime {
         return LocalDateTime.parse(dateTime)
     }
 }
