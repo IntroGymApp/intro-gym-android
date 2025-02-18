@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.lonelywh1te.introgym.db.converters.LocalDateConverter
+import ru.lonelywh1te.introgym.db.converters.LocalDateTimeConverter
 import ru.lonelywh1te.introgym.db.converters.UploadStatusConverter
 import ru.lonelywh1te.introgym.db.dao.ExerciseDao
 import ru.lonelywh1te.introgym.db.dao.ExerciseSetDao
@@ -29,7 +30,7 @@ private const val DB_ASSET_PATH = "db/intro-gym-database"
     entities = [WorkoutEntity::class, WorkoutLogEntity::class, ExerciseEntity::class, WorkoutExerciseEntity::class, WorkoutExercisePlanEntity::class, ExerciseSetEntity::class, TagEntity::class, TagToExerciseEntity::class],
     version = 1
 )
-@TypeConverters(LocalDateConverter::class, UploadStatusConverter::class)
+@TypeConverters(LocalDateConverter::class, UploadStatusConverter::class, LocalDateTimeConverter::class)
 abstract class MainDatabase: RoomDatabase() {
 
     abstract fun workoutDao(): WorkoutDao

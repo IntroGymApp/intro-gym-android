@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.lonelywh1te.introgym.db.UploadStatus
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Entity("workout_log")
 data class WorkoutLogEntity(
@@ -13,8 +14,10 @@ data class WorkoutLogEntity(
     val id: Long,
     @ColumnInfo(name = "date")
     val date: LocalDate,
-    @ColumnInfo(name = "execution_time_in_sec")
-    val executionTimeInSec: Int?,
+    @ColumnInfo(name = "start_datetime")
+    val startDateTime: LocalDateTime? = null,
+    @ColumnInfo(name = "end_datetime")
+    val endDateTime: LocalDateTime? = null,
     @ColumnInfo(name = "upload_status")
     val uploadStatus: UploadStatus = UploadStatus.NONE,
 )
