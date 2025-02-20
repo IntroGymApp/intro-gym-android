@@ -15,6 +15,7 @@ gson = "2.12.1"
 junitJupiter = "5.8.1"
 mockito = "5.15.2"
 mockito-kotlin = "5.4.0"
+koin = "4.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +33,7 @@ gson = {group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito"}
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin"}
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

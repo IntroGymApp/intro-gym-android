@@ -50,6 +50,7 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.gson)
     implementation(libs.mockito)
+    implementation(libs.koin.android)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit.jupiter)
 
