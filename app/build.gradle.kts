@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.mockito)
     implementation(libs.koin.android)
+    implementation(libs.retrofit2)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit.jupiter)
 
