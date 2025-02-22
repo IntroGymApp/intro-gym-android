@@ -1,9 +1,8 @@
-package ru.lonelywh1te.introgym.db.converters
+package ru.lonelywh1te.introgym.core.db.converters
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import ru.lonelywh1te.introgym.core.db.converters.UploadStatusConverter
 import ru.lonelywh1te.introgym.core.db.UploadStatus
 
 class UploadStatusConverterTest {

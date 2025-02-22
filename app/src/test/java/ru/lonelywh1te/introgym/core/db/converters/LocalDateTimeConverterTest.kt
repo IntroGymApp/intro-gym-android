@@ -1,8 +1,7 @@
-package ru.lonelywh1te.introgym.db.converters
+package ru.lonelywh1te.introgym.core.db.converters
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import ru.lonelywh1te.introgym.core.db.converters.LocalDateTimeConverter
 import java.time.LocalDateTime
 
 class LocalDateTimeConverterTest {
