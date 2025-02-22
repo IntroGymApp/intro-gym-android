@@ -11,5 +11,5 @@ interface AuthRepository {
     suspend fun confirmOtp(otp: String): Flow<Result<ConfirmOtpResult>>
     suspend fun signUp(email: String, password: String): Flow<Result<Token>>
     suspend fun signIn(email: String, password: String): Flow<Result<Token>>
-    suspend fun refreshToken(refreshToken: String): Flow<Result<Token>>
+    suspend fun refreshToken(): Flow<Result<Token>>
 }
