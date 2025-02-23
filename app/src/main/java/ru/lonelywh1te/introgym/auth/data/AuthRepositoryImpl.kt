@@ -16,16 +16,19 @@ import ru.lonelywh1te.introgym.core.result.Result
 import java.io.IOException
 
 class AuthRepositoryImpl(private val authService: AuthService, private val authStorage: AuthStorage): AuthRepository {
-    override suspend fun sendOtp(email: String): Flow<Result<SendOtpResult>> = flow {
+    override suspend fun sendOtp(email: String, otpType: String): Flow<Result<Unit>> = flow {
         try {
             emit(Result.InProgress)
-            val request = authService.sendOtp(SendOtpRequestDto(email))
+            val request = authService.sendOtp(SendOtpRequestDto(email), otpType)
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(body.toSendOtpResult()))
+                request.isSuccessful && body != null -> emit(Result.Success(Unit))
                 request.code() == 409 -> emit(Result.Failure(AuthError.SESSION_STILL_EXIST))
-                else -> emit(Result.Failure(NetworkError.UNKNOWN))
+                else -> {
+                    emit(Result.Failure(NetworkError.UNKNOWN))
+                    Log.w(LOG_TAG, "FAIL: $request")
+                }
             }
 
         } catch (e: IOException) {
@@ -36,16 +39,16 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
         }
     }
 
-    override suspend fun confirmOtp(otp: String): Flow<Result<ConfirmOtpResult>> = flow {
+    override suspend fun confirmOtp(otp: String, otpType: String): Flow<Result<Unit>> = flow {
         val sessionId = authStorage.getSessionId() ?: ""
 
         try {
             emit(Result.InProgress)
-            val request = authService.confirmOtp(ConfirmOtpRequestDto(sessionId, otp))
+            val request = authService.confirmOtp(ConfirmOtpRequestDto(sessionId, otp), otpType)
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(body.toConfirmOtpResult()))
+                request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
                 request.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
@@ -61,7 +64,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
         }
     }
 
-    override suspend fun signUp(email: String, password: String): Flow<Result<Token>> = flow {
+    override suspend fun signUp(email: String, password: String): Flow<Result<Unit>> = flow {
         val sessionId = authStorage.getSessionId() ?: ""
 
         try {
@@ -70,7 +73,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(body.toToken()))
+                request.isSuccessful && body != null -> emit(Result.Success(Unit))
                 request.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
                 request.code() == 400 -> emit(Result.Failure(AuthError.SESSION_TIMEOUT))
                 else -> {
@@ -87,14 +90,14 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
         }
     }
 
-    override suspend fun signIn(email: String, password: String): Flow<Result<Token>> = flow {
+    override suspend fun signIn(email: String, password: String): Flow<Result<Unit>> = flow {
         try {
             emit(Result.InProgress)
             val request = authService.signIn(SignInRequestDto(email, password))
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(body.toToken()))
+                request.isSuccessful && body != null -> emit(Result.Success(Unit))
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
@@ -110,7 +113,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
         }
     }
 
-    override suspend fun refreshToken(): Flow<Result<Token>> = flow {
+    override suspend fun refreshToken(): Flow<Result<Unit>> = flow {
         val refreshToken = authStorage.getRefreshToken() ?: ""
 
         try {
@@ -118,7 +121,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(body.toToken()))
+                request.isSuccessful && body != null -> emit(Result.Success(Unit))
                 request.code() == 401 -> emit(Result.Failure(AuthError.UNAUTHORIZED))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))

@@ -5,8 +5,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitProvider {
-    private const val UNAUTHORIZED_BASE_URL = "https://introgym.ru/uaa/"
-    private const val AUTHORIZED_BASE_URL = "https://introgym.ru/aa/"
+    private const val UNAUTHORIZED_BASE_URL = "https://introgym.ru/uaa/api/v1/"
+    private const val AUTHORIZED_BASE_URL = "https://introgym.ru/aa/api/v1/"
 
     private val httpClient = OkHttpClient.Builder().build()
 

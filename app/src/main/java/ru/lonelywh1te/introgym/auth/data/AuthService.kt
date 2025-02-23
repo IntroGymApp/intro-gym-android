@@ -3,6 +3,7 @@ package ru.lonelywh1te.introgym.auth.data
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Path
 import ru.lonelywh1te.introgym.auth.data.dto.otp_confirm.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.otp_confirm.ConfirmOtpResponseDto
 import ru.lonelywh1te.introgym.auth.data.dto.otp_send.SendOtpRequestDto
@@ -16,11 +17,11 @@ import ru.lonelywh1te.introgym.auth.data.dto.sign_up.SignUpResponseDto
 
 interface AuthService {
 
-    @POST("auth/otp/send")
-    suspend fun sendOtp(@Body request: SendOtpRequestDto): Response<SendOtpResponseDto>
+    @POST("auth/otp/{otpType}/send")
+    suspend fun sendOtp(@Body request: SendOtpRequestDto, @Path("otpType") otpType: String): Response<SendOtpResponseDto>
 
-    @POST("auth/otp/confirm")
-    suspend fun confirmOtp(@Body request: ConfirmOtpRequestDto): Response<ConfirmOtpResponseDto>
+    @POST("auth/otp/{otpType}/confirm")
+    suspend fun confirmOtp(@Body request: ConfirmOtpRequestDto, @Path("otpType") otpType: String): Response<ConfirmOtpResponseDto>
 
     @POST("auth/sign-up")
     suspend fun signUp(@Body request: SignUpRequestDto): Response<SignUpResponseDto>
