@@ -38,6 +38,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 tasks.withType<Test> {
@@ -49,13 +52,14 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.gson)
     implementation(libs.gson.retrofit2.adapter)
-    implementation(libs.mockito)
     implementation(libs.koin.android)
     implementation(libs.retrofit2)
     implementation(libs.okhttp3)
-    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

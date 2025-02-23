@@ -1,13 +1,13 @@
 package ru.lonelywh1te.introgym.auth.domain.validator
 
-import ru.lonelywh1te.introgym.auth.domain.error.EmailPasswordError
+import ru.lonelywh1te.introgym.auth.domain.error.ValidationError
 import ru.lonelywh1te.introgym.core.result.Result
 
 object EmailPasswordValidator {
     fun validate(email: String, password: String): Result<Unit> {
         return when {
-            !isValidEmail(email) -> Result.Failure(EmailPasswordError.INVALID_EMAIL_FORMAT)
-            !isValidPassword(password) -> Result.Failure(EmailPasswordError.INVALID_PASSWORD_FORMAT)
+            !isValidEmail(email) -> Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
+            !isValidPassword(password) -> Result.Failure(ValidationError.INVALID_PASSWORD_FORMAT)
             else -> Result.Success(Unit)
         }
 
@@ -15,7 +15,7 @@ object EmailPasswordValidator {
 
     fun validate(email: String): Result<Unit> {
         return when {
-            !isValidEmail(email) -> Result.Failure(EmailPasswordError.INVALID_EMAIL_FORMAT)
+            !isValidEmail(email) -> Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
             else -> Result.Success(Unit)
         }
 

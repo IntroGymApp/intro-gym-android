@@ -1,5 +1,10 @@
 package ru.lonelywh1te.introgym.auth.data
 
+import android.util.Log
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
@@ -8,9 +13,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
-import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.mock
 import retrofit2.Response
 import ru.lonelywh1te.introgym.auth.data.dto.otp_confirm.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.otp_confirm.ConfirmOtpResponseDto
@@ -48,12 +50,16 @@ class AuthRepositoryImplTest {
 
     @BeforeEach
     fun setUp() {
-        authService = mock()
-        authStorage = mock()
+        authService = mockk()
+        authStorage = mockk()
         authRepository = AuthRepositoryImpl(authService, authStorage)
 
-        `when`(authStorage.getSessionId()).thenReturn(sessionId)
-        `when`(authStorage.getRefreshToken()).thenReturn(refreshToken)
+        mockkStatic(Log::class)
+        every { Log.e(any(), any()) } returns 0
+        every { Log.w(any(), any<String>()) } returns 0
+
+        every { authStorage.getSessionId() } returns sessionId
+        every { authStorage.getRefreshToken() } returns refreshToken
     }
 
     @Nested
@@ -63,7 +69,7 @@ class AuthRepositoryImplTest {
             val requestDto = SendOtpRequestDto(email)
             val responseDto = Response.success(SendOtpResponseDto(otp))
 
-            `when`(authService.sendOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Success(Unit))
             val actual = authRepository.sendOtp(email, otpType).toList()
@@ -76,7 +82,7 @@ class AuthRepositoryImplTest {
             val requestDto = SendOtpRequestDto(email)
             val responseDto = Response.success<SendOtpResponseDto>(200, null)
 
-            `when`(authService.sendOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.sendOtp(email, otpType).toList()
@@ -89,7 +95,7 @@ class AuthRepositoryImplTest {
             val requestDto = SendOtpRequestDto(email)
             val responseDto = Response.error<SendOtpResponseDto>(409, responseBody)
 
-            `when`(authService.sendOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.SESSION_STILL_EXIST))
             val actual = authRepository.sendOtp(email, otpType).toList()
@@ -102,7 +108,7 @@ class AuthRepositoryImplTest {
         fun `sendOtp emit InProgress and Failure with no internet`() = runTest {
             val requestDto = SendOtpRequestDto(email)
 
-            `when`(authService.sendOtp(requestDto, otpType)).doAnswer { throw IOException() }
+            coEvery { authService.sendOtp(requestDto, otpType) } throws IOException()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.NO_INTERNET))
             val actual = authRepository.sendOtp(email, otpType).toList()
@@ -115,7 +121,7 @@ class AuthRepositoryImplTest {
             val requestDto = SendOtpRequestDto(email)
             val responseDto = Response.error<SendOtpResponseDto>(999, responseBody)
 
-            `when`(authService.sendOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.sendOtp(email, otpType).toList()
@@ -127,7 +133,7 @@ class AuthRepositoryImplTest {
         fun `sendOtp emit InProgress and Failure with exception`() = runTest {
             val requestDto = SendOtpRequestDto(email)
 
-            `when`(authService.sendOtp(requestDto, otpType)).doAnswer { throw Exception() }
+            coEvery { authService.sendOtp(requestDto, otpType) } throws Exception()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.sendOtp(email, otpType).toList()
@@ -143,7 +149,7 @@ class AuthRepositoryImplTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
             val responseDto = Response.success<ConfirmOtpResponseDto>(200, ConfirmOtpResponseDto(isSuccess = true))
 
-            `when`(authService.confirmOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Success(Unit))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
@@ -156,7 +162,7 @@ class AuthRepositoryImplTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
             val responseDto = Response.success<ConfirmOtpResponseDto>(200, ConfirmOtpResponseDto(isSuccess = false))
 
-            `when`(authService.confirmOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.INVALID_OTP_CODE))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
@@ -168,7 +174,7 @@ class AuthRepositoryImplTest {
         fun `confirmOtp emit InProgress and Failure with no internet connection`() = runTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
 
-            `when`(authService.confirmOtp(requestDto, otpType)).doAnswer { throw IOException() }
+            coEvery { authService.confirmOtp(requestDto, otpType) } throws IOException()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.NO_INTERNET))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
@@ -181,7 +187,7 @@ class AuthRepositoryImplTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
             val responseDto = Response.success<ConfirmOtpResponseDto>(200, null)
 
-            `when`(authService.confirmOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
@@ -194,7 +200,7 @@ class AuthRepositoryImplTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
             val responseDto = Response.error<ConfirmOtpResponseDto>(999, responseBody)
 
-            `when`(authService.confirmOtp(requestDto, otpType)).thenReturn(responseDto)
+            coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
@@ -206,7 +212,7 @@ class AuthRepositoryImplTest {
         fun `confirmOtp emit InProgress and Failure with exception`() = runTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
 
-            `when`(authService.confirmOtp(requestDto, otpType)).doAnswer { throw Exception() }
+            coEvery { authService.confirmOtp(requestDto, otpType) } throws Exception()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
@@ -222,7 +228,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
             val responseDto = Response.success<SignUpResponseDto>(200, SignUpResponseDto(accessToken, refreshToken))
 
-            `when`(authService.signUp(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signUp(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Success(Unit))
             val actual = authRepository.signUp(email, password).toList()
@@ -235,7 +241,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
             val responseDto = Response.error<SignUpResponseDto>(400, responseBody)
 
-            `when`(authService.signUp(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signUp(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.SESSION_TIMEOUT))
             val actual = authRepository.signUp(email, password).toList()
@@ -248,7 +254,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
             val responseDto = Response.error<SignUpResponseDto>(409, responseBody)
 
-            `when`(authService.signUp(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signUp(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
             val actual = authRepository.signUp(email, password).toList()
@@ -261,7 +267,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
             val responseDto = Response.success<SignUpResponseDto>(200, null)
 
-            `when`(authService.signUp(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signUp(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.signUp(email, password).toList()
@@ -274,7 +280,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
             val responseDto = Response.error<SignUpResponseDto>(999, responseBody)
 
-            `when`(authService.signUp(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signUp(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.signUp(email, password).toList()
@@ -286,7 +292,7 @@ class AuthRepositoryImplTest {
         fun `signUp emit InProgress and Failure with no internet connection`() = runTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
 
-            `when`(authService.signUp(requestDto)).doAnswer { throw IOException() }
+            coEvery { authService.signUp(requestDto) } throws IOException()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.NO_INTERNET))
             val actual = authRepository.signUp(email, password).toList()
@@ -298,7 +304,7 @@ class AuthRepositoryImplTest {
         fun `signUp emit InProgress and Failure with exception`() = runTest {
             val requestDto = SignUpRequestDto(sessionId, email, password)
 
-            `when`(authService.signUp(requestDto)).doAnswer { throw Exception() }
+            coEvery { authService.signUp(requestDto) } throws Exception()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.signUp(email, password).toList()
@@ -314,7 +320,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignInRequestDto(email, password)
             val responseDto = Response.success<SignInResponseDto>(SignInResponseDto(accessToken, refreshToken))
 
-            `when`(authService.signIn(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signIn(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Success(Unit))
             val actual = authRepository.signIn(email, password).toList()
@@ -327,7 +333,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignInRequestDto(email, password)
             val responseDto = Response.error<SignInResponseDto>(400, responseBody)
 
-            `when`(authService.signIn(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signIn(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
             val actual = authRepository.signIn(email, password).toList()
@@ -340,7 +346,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignInRequestDto(email, password)
             val responseDto = Response.success<SignInResponseDto>(200, null)
 
-            `when`(authService.signIn(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signIn(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.signIn(email, password).toList()
@@ -352,7 +358,7 @@ class AuthRepositoryImplTest {
         fun `signIn emit InProgress and Failure with no internet connection`() = runTest {
             val requestDto = SignInRequestDto(email, password)
 
-            `when`(authService.signIn(requestDto)).doAnswer { throw IOException() }
+            coEvery { authService.signIn(requestDto) } throws IOException()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.NO_INTERNET))
             val actual = authRepository.signIn(email, password).toList()
@@ -365,7 +371,7 @@ class AuthRepositoryImplTest {
             val requestDto = SignInRequestDto(email, password)
             val responseDto = Response.error<SignInResponseDto>(999, responseBody)
 
-            `when`(authService.signIn(requestDto)).thenReturn(responseDto)
+            coEvery { authService.signIn(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.signIn(email, password).toList()
@@ -377,7 +383,7 @@ class AuthRepositoryImplTest {
         fun `signIn emit InProgress and Failure with exception`() = runTest {
             val requestDto = SignInRequestDto(email, password)
 
-            `when`(authService.signIn(requestDto)).doAnswer { throw Exception() }
+            coEvery { authService.signIn(requestDto) } throws Exception()
 
             val expected = listOf(Result.InProgress, Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.signIn(email, password).toList()
@@ -393,7 +399,7 @@ class AuthRepositoryImplTest {
             val requestDto = RefreshTokensRequestDto(refreshToken)
             val responseDto = Response.success<RefreshTokensResponseDto>(RefreshTokensResponseDto(accessToken, refreshToken))
 
-            `when`(authService.refreshTokens(requestDto)).thenReturn(responseDto)
+            coEvery { authService.refreshTokens(requestDto) } returns responseDto
 
             val expected = listOf(Result.Success(Unit))
             val actual = authRepository.refreshToken().toList()
@@ -406,7 +412,7 @@ class AuthRepositoryImplTest {
             val requestDto = RefreshTokensRequestDto(refreshToken)
             val responseDto = Response.error<RefreshTokensResponseDto>(401, responseBody)
 
-            `when`(authService.refreshTokens(requestDto)).thenReturn(responseDto)
+            coEvery { authService.refreshTokens(requestDto) } returns responseDto
 
             val expected = listOf(Result.Failure(AuthError.UNAUTHORIZED))
             val actual = authRepository.refreshToken().toList()
@@ -419,7 +425,7 @@ class AuthRepositoryImplTest {
             val requestDto = RefreshTokensRequestDto(refreshToken)
             val responseDto = Response.success<RefreshTokensResponseDto>(200, null)
 
-            `when`(authService.refreshTokens(requestDto)).thenReturn(responseDto)
+            coEvery { authService.refreshTokens(requestDto) } returns responseDto
 
             val expected = listOf(Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.refreshToken().toList()
@@ -431,7 +437,7 @@ class AuthRepositoryImplTest {
         fun `refreshTokens emit Failure with no internet connection`() = runTest {
             val requestDto = RefreshTokensRequestDto(refreshToken)
 
-            `when`(authService.refreshTokens(requestDto)).doAnswer { throw IOException() }
+            coEvery { authService.refreshTokens(requestDto) } throws IOException()
 
             val expected = listOf(Result.Failure(NetworkError.NO_INTERNET))
             val actual = authRepository.refreshToken().toList()
@@ -443,8 +449,8 @@ class AuthRepositoryImplTest {
         fun `refreshTokens emit Failure with unknown http code`() = runTest {
             val requestDto = RefreshTokensRequestDto(refreshToken)
             val responseDto = Response.error<RefreshTokensResponseDto>(888, responseBody)
-            
-            `when`(authService.refreshTokens(requestDto)).thenReturn(responseDto)
+
+            coEvery { authService.refreshTokens(requestDto) } returns responseDto
 
             val expected = listOf(Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.refreshToken().toList()
@@ -456,7 +462,7 @@ class AuthRepositoryImplTest {
         fun `refreshTokens emit Failure with exception`() = runTest {
             val requestDto = RefreshTokensRequestDto(refreshToken)
 
-            `when`(authService.refreshTokens(requestDto)).doAnswer { throw Exception() }
+            coEvery { authService.refreshTokens(requestDto) } throws Exception()
 
             val expected = listOf(Result.Failure(NetworkError.UNKNOWN))
             val actual = authRepository.refreshToken().toList()
