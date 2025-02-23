@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.auth.data
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.lonelywh1te.introgym.auth.data.dto.otp_confirm.ConfirmOtpRequestDto
@@ -7,15 +8,9 @@ import ru.lonelywh1te.introgym.auth.data.dto.otp_send.SendOtpRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.refresh_tokens.RefreshTokensRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_in.SignInRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_up.SignUpRequestDto
-import ru.lonelywh1te.introgym.auth.data.dto.toConfirmOtpResult
-import ru.lonelywh1te.introgym.auth.data.dto.toSendOtpResult
-import ru.lonelywh1te.introgym.auth.data.dto.toToken
 import ru.lonelywh1te.introgym.auth.data.prefs.AuthStorage
 import ru.lonelywh1te.introgym.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.auth.domain.error.AuthError
-import ru.lonelywh1te.introgym.auth.domain.model.ConfirmOtpResult
-import ru.lonelywh1te.introgym.auth.domain.model.SendOtpResult
-import ru.lonelywh1te.introgym.auth.domain.model.Token
 import ru.lonelywh1te.introgym.core.network.NetworkError
 import ru.lonelywh1te.introgym.core.result.Result
 import java.io.IOException
@@ -37,6 +32,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             emit(Result.Failure(NetworkError.NO_INTERNET))
         } catch (e: Exception) {
             emit(Result.Failure(NetworkError.UNKNOWN))
+            Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
         }
     }
 
@@ -51,13 +47,17 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             when {
                 request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(body.toConfirmOtpResult()))
                 request.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
-                else -> emit(Result.Failure(NetworkError.UNKNOWN))
+                else -> {
+                    emit(Result.Failure(NetworkError.UNKNOWN))
+                    Log.w(LOG_TAG, "FAIL: $request")
+                }
             }
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
         } catch (e: Exception) {
             emit(Result.Failure(NetworkError.UNKNOWN))
+            Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
         }
     }
 
@@ -73,13 +73,17 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 request.isSuccessful && body != null -> emit(Result.Success(body.toToken()))
                 request.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
                 request.code() == 400 -> emit(Result.Failure(AuthError.SESSION_TIMEOUT))
-                else -> emit(Result.Failure(NetworkError.UNKNOWN))
+                else -> {
+                    emit(Result.Failure(NetworkError.UNKNOWN))
+                    Log.w(LOG_TAG, "FAIL: $request")
+                }
             }
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
         } catch (e: Exception) {
             emit(Result.Failure(NetworkError.UNKNOWN))
+            Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
         }
     }
 
@@ -92,13 +96,17 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             when {
                 request.isSuccessful && body != null -> emit(Result.Success(body.toToken()))
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
-                else -> emit(Result.Failure(NetworkError.UNKNOWN))
+                else -> {
+                    emit(Result.Failure(NetworkError.UNKNOWN))
+                    Log.w(LOG_TAG, "FAIL: $request")
+                }
             }
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
         } catch (e: Exception) {
             emit(Result.Failure(NetworkError.UNKNOWN))
+            Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
         }
     }
 
@@ -112,13 +120,21 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             when {
                 request.isSuccessful && body != null -> emit(Result.Success(body.toToken()))
                 request.code() == 401 -> emit(Result.Failure(AuthError.UNAUTHORIZED))
-                else -> emit(Result.Failure(NetworkError.UNKNOWN))
+                else -> {
+                    emit(Result.Failure(NetworkError.UNKNOWN))
+                    Log.w(LOG_TAG, "FAIL: $request")
+                }
             }
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
         } catch (e: Exception) {
             emit(Result.Failure(NetworkError.UNKNOWN))
+            Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
         }
+    }
+
+    companion object {
+        private const val LOG_TAG = "AuthRepositoryImpl"
     }
 }
