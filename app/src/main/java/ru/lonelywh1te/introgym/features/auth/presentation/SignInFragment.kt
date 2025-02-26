@@ -21,8 +21,10 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewMo
 import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.databinding.FragmentSignInBinding
+import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 
 class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
@@ -76,7 +78,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        // TODO: Вход в приложение
+        TODO("Not yet implemented")
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
@@ -85,16 +87,6 @@ class SignInFragment : Fragment() {
     }
 
     private fun showFailureSnackbar(error: Error) {
-        val message = when (error) {
-            is AuthError -> getString(error.asStringRes())
-            is ValidationError -> getString(error.asStringRes())
-            is NetworkError -> getString(error.asStringRes())
-            else -> throw IllegalArgumentException("Unknown Error type: $this")
-        }
-
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.red))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .show()
+        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
     }
 }

@@ -15,6 +15,7 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.ConfirmOtpVi
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewModel
 import ru.lonelywh1te.introgym.data.network.RetrofitProvider
+import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.CreatePasswordViewModel
 
 val authDataModule = module {
     single<AuthRepository> {
@@ -59,6 +60,10 @@ val authPresentationModule = module {
 
     viewModel<ConfirmOtpViewModel> {
         ConfirmOtpViewModel(confirmOtpUseCase = get())
+    }
+
+    viewModel< CreatePasswordViewModel> {
+        CreatePasswordViewModel(signUpUseCase = get())
     }
 }
 

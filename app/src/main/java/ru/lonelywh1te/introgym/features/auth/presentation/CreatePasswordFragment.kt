@@ -21,8 +21,10 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.CreatePasswo
 import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.databinding.FragmentCreatePasswordBinding
+import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 
 class CreatePasswordFragment : Fragment() {
     private var _binding: FragmentCreatePasswordBinding? = null
@@ -79,7 +81,7 @@ class CreatePasswordFragment : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        // TODO: Вход в приложение
+        TODO("Not yet implemented")
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
@@ -88,17 +90,7 @@ class CreatePasswordFragment : Fragment() {
     }
 
     private fun showFailureSnackbar(error: Error) {
-        val message = when (error) {
-            is AuthError -> getString(error.asStringRes())
-            is ValidationError -> getString(error.asStringRes())
-            is NetworkError -> getString(error.asStringRes())
-            else -> throw IllegalArgumentException("Unknown Error type: $this")
-        }
-
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.red))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .show()
+        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
     }
 
 }

@@ -22,8 +22,10 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.ConfirmOtpVi
 import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.databinding.FragmentConfirmOtpBinding
+import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 
 class ConfirmOtpFragment : Fragment() {
     private var _binding: FragmentConfirmOtpBinding? = null
@@ -89,16 +91,6 @@ class ConfirmOtpFragment : Fragment() {
     }
 
     private fun showFailureSnackbar(error: Error) {
-        val message = when (error) {
-            is AuthError -> getString(error.asStringRes())
-            is ValidationError -> getString(error.asStringRes())
-            is NetworkError -> getString(error.asStringRes())
-            else -> throw IllegalArgumentException("Unknown Error type: $this")
-        }
-
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.red))
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            .show()
+        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
     }
 }
