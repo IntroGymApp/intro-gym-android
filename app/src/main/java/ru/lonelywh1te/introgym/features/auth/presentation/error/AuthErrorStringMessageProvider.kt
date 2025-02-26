@@ -1,8 +1,23 @@
 package ru.lonelywh1te.introgym.features.auth.presentation.error
 
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.ui.ErrorStringResProvider
+import ru.lonelywh1te.introgym.data.network.NetworkError
+import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+
+object AuthErrorStringResProvider: ErrorStringResProvider {
+    override fun get(error: Error): Int {
+        return when (error) {
+            is AuthError -> error.asStringRes()
+            is ValidationError -> error.asStringRes()
+            is NetworkError -> error.asStringRes()
+            else -> throw IllegalArgumentException("Unknown Error type: $this")
+        }
+    }
+}
 
 fun AuthError.asStringRes() = when (this) {
     AuthError.INVALID_EMAIL_OR_PASSWORD -> R.string.auth_error_invalid_email_or_password
