@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safeargs.kotlin)
 }
 
 android {
@@ -55,6 +56,8 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.retrofit2)
     implementation(libs.okhttp3)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)

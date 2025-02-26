@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">IntroGym</string>
+
+    <string name="auth_error_invalid_email_or_password">Неверный email или пароль. Попробуйте снова.</string>
+    <string name="auth_error_email_already_registered">Этот email уже зарегистрирован. Войдите в аккаунт.</string>
+    <string name="auth_error_session_timeout">Сессия истекла. Пожалуйста, войдите заново.</string>
+    <string name="auth_error_unauthorized">У вас нет доступа к этому действию.</string>
+    <string name="auth_error_session_still_exist">Активная сессия уже существует.</string>
+    <string name="auth_error_invalid_otp">Неверный код подтверждения. Проверьте и попробуйте снова.</string>
+
+    <string name="validation_error_invalid_email_format">Некорректный формат email. Введите правильный адрес.</string>
+    <string name="validation_error_invalid_password_format">Некорректный пароль. Убедитесь, что он соответствует требованиям.</string>
+
+    <string name="network_error_no_internet">Нет подключения к интернету. Проверьте сеть.</string>
+    <string name="network_error_unknown">Произошла неизвестная ошибка сети. Попробуйте снова.</string>
+    <string name="network_error_request_timeout">Превышено время ожидания. Проверьте соединение и попробуйте снова.</string>
+    <string name="network_error_server">Ошибка сервера. Попробуйте позже.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="validation_error_password_mismatch">Пароли не совпадают. Попробуйте снова.</string>
+
 </resources>

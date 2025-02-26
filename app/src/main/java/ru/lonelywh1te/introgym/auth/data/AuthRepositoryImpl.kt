@@ -8,7 +8,7 @@ import ru.lonelywh1te.introgym.auth.data.dto.otp_send.SendOtpRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.refresh_tokens.RefreshTokensRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_in.SignInRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_up.SignUpRequestDto
-import ru.lonelywh1te.introgym.auth.data.prefs.AuthStorage
+import ru.lonelywh1te.introgym.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.core.network.NetworkError
@@ -23,7 +23,10 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(Unit))
+                request.isSuccessful && body != null -> {
+                    emit(Result.Success(Unit))
+                    authStorage.saveSessionId(body.sessionId)
+                }
                 request.code() == 409 -> emit(Result.Failure(AuthError.SESSION_STILL_EXIST))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
@@ -50,6 +53,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             when {
                 request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
                 request.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
+                request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
@@ -73,9 +77,13 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(Unit))
+                request.isSuccessful && body != null -> {
+                    emit(Result.Success(Unit))
+                    authStorage.clearSessionId()
+                    authStorage.saveTokens(body.accessToken, body.refreshToken)
+                }
                 request.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
-                request.code() == 400 -> emit(Result.Failure(AuthError.SESSION_TIMEOUT))
+                request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
@@ -97,7 +105,10 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(Unit))
+                request.isSuccessful && body != null -> {
+                    emit(Result.Success(Unit))
+                    authStorage.saveTokens(body.accessToken, body.refreshToken)
+                }
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
@@ -121,7 +132,10 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             val body = request.body()
 
             when {
-                request.isSuccessful && body != null -> emit(Result.Success(Unit))
+                request.isSuccessful && body != null -> {
+                    emit(Result.Success(Unit))
+                    authStorage.saveTokens(body.accessToken, body.refreshToken)
+                }
                 request.code() == 401 -> emit(Result.Failure(AuthError.UNAUTHORIZED))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))

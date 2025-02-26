@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signInFragment">
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="ru.lonelywh1te.introgym.auth.presentation.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/to_confirmOtpFragment"
+            app:destination="@id/confirmOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPasswordFragment"
+        android:name="ru.lonelywh1te.introgym.auth.presentation.CreatePasswordFragment"
+        android:label="fragment_create_password"
+        tools:layout="@layout/fragment_create_password" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmOtpFragment"
+        android:name="ru.lonelywh1te.introgym.auth.presentation.ConfirmOtpFragment"
+        android:label="fragment_confirm_otp"
+        tools:layout="@layout/fragment_confirm_otp">
+        <action
+            android:id="@+id/to_createPasswordFragment"
+            app:destination="@id/createPasswordFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.lonelywh1te.introgym.auth.presentation.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+</navigation>

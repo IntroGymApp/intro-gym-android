@@ -4,13 +4,22 @@ import ru.lonelywh1te.introgym.auth.domain.error.ValidationError
 import ru.lonelywh1te.introgym.core.result.Result
 
 object EmailPasswordValidator {
+
+    fun validate(email: String, password: String, confirmPassword: String): Result<Unit> {
+        return when {
+            !isValidEmail(email) -> Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
+            !isValidPassword(password) -> Result.Failure(ValidationError.INVALID_PASSWORD_FORMAT)
+            !matchPassword(password, confirmPassword) -> Result.Failure(ValidationError.PASSWORD_MISMATCH)
+            else -> Result.Success(Unit)
+        }
+    }
+
     fun validate(email: String, password: String): Result<Unit> {
         return when {
             !isValidEmail(email) -> Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
             !isValidPassword(password) -> Result.Failure(ValidationError.INVALID_PASSWORD_FORMAT)
             else -> Result.Success(Unit)
         }
-
     }
 
     fun validate(email: String): Result<Unit> {
@@ -18,7 +27,10 @@ object EmailPasswordValidator {
             !isValidEmail(email) -> Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
             else -> Result.Success(Unit)
         }
+    }
 
+    private fun matchPassword(password: String, confirmPassword: String): Boolean {
+        return password == confirmPassword
     }
 
     private fun isValidEmail(email: String): Boolean {

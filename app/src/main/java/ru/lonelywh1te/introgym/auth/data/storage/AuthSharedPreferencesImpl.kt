@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.auth.data.prefs
+package ru.lonelywh1te.introgym.auth.data.storage
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,6 +12,10 @@ class AuthSharedPreferencesImpl(private val context: Context): AuthStorage {
 
     override fun getSessionId(): String? {
         return prefs.getString(SESSION_ID_KEY, "")
+    }
+
+    override fun clearSessionId() {
+        prefs.edit().putString(SESSION_ID_KEY, null).apply()
     }
 
     override fun getAccessToken(): String? {
@@ -29,7 +33,14 @@ class AuthSharedPreferencesImpl(private val context: Context): AuthStorage {
             .apply()
     }
 
-    override fun clear() {
+    override fun clearTokens() {
+        prefs.edit()
+            .putString(ACCESS_TOKEN_KEY, null)
+            .putString(REFRESH_TOKEN_KEY, null)
+            .apply()
+    }
+
+    override fun clearAll() {
         prefs.edit().clear().apply()
     }
 

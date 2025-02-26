@@ -24,7 +24,7 @@ import ru.lonelywh1te.introgym.auth.data.dto.sign_in.SignInRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_in.SignInResponseDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_up.SignUpRequestDto
 import ru.lonelywh1te.introgym.auth.data.dto.sign_up.SignUpResponseDto
-import ru.lonelywh1te.introgym.auth.data.prefs.AuthStorage
+import ru.lonelywh1te.introgym.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.core.network.NetworkError
@@ -243,7 +243,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.SESSION_TIMEOUT))
+            val expected = listOf(Result.InProgress, Result.Failure(AuthError.INVALID_SESSION))
             val actual = authRepository.signUp(email, password).toList()
 
             Assertions.assertEquals(expected, actual)
