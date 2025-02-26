@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.features.auth.data
 
 import android.util.Log
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -60,6 +61,10 @@ class AuthRepositoryImplTest {
 
         every { authStorage.getSessionId() } returns sessionId
         every { authStorage.getRefreshToken() } returns refreshToken
+        every { authStorage.clearSessionId() } returns Unit
+        every { authStorage.clearTokens() } returns Unit
+        every { authStorage.saveSessionId(any()) } returns Unit
+        every { authStorage.saveTokens(any(), any()) } returns Unit
     }
 
     @Nested
@@ -233,6 +238,8 @@ class AuthRepositoryImplTest {
             val expected = listOf(Result.InProgress, Result.Success(Unit))
             val actual = authRepository.signUp(email, password).toList()
 
+            coVerify(exactly = 1) { authStorage.clearSessionId() }
+            coVerify(exactly = 1) { authStorage.saveTokens(accessToken, refreshToken) }
             Assertions.assertEquals(expected, actual)
         }
 
@@ -325,6 +332,7 @@ class AuthRepositoryImplTest {
             val expected = listOf(Result.InProgress, Result.Success(Unit))
             val actual = authRepository.signIn(email, password).toList()
 
+            coVerify(exactly = 1) { authStorage.saveTokens(accessToken, refreshToken) }
             Assertions.assertEquals(expected, actual)
         }
 
@@ -404,6 +412,7 @@ class AuthRepositoryImplTest {
             val expected = listOf(Result.Success(Unit))
             val actual = authRepository.refreshToken().toList()
 
+            coVerify(exactly = 1) { authStorage.saveTokens(accessToken, refreshToken) }
             Assertions.assertEquals(expected, actual)
         }
 

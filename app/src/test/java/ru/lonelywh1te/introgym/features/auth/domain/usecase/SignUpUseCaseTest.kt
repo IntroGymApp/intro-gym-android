@@ -41,8 +41,7 @@ class SignUpUseCaseTest {
 
     @Test
     fun `signUp with validate failure`() = runTest {
-        every { EmailPasswordValidator.validate(email, password, password) } returns Result.Failure(
-            ValidationError.INVALID_EMAIL_FORMAT)
+        every { EmailPasswordValidator.validate(email, password, password) } returns Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
 
         val expected = listOf(Result.Failure(ValidationError.INVALID_EMAIL_FORMAT))
         val actual = useCase(email, password, password).toList()
@@ -53,7 +52,7 @@ class SignUpUseCaseTest {
 
     @Test
     fun `signUp with validate success`() = runTest {
-        every { EmailPasswordValidator.validate(email, password) } returns Result.Success(Unit)
+        every { EmailPasswordValidator.validate(email, password, password) } returns Result.Success(Unit)
         coEvery { authRepository.signUp(email, password) } returns flowOf(Result.InProgress, Result.Success(Unit))
 
         val expected = listOf(Result.InProgress, Result.Success(Unit))
