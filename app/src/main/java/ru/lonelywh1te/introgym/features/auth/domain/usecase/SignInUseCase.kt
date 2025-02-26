@@ -2,9 +2,9 @@ package ru.lonelywh1te.introgym.features.auth.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
-import ru.lonelywh1te.introgym.core.result.Result
 
 class SignInUseCase(private val repository: AuthRepository) {
     suspend operator fun invoke(email: String, password: String): Flow<Result<Unit>> {

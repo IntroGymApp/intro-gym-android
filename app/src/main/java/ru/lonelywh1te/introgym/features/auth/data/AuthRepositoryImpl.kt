@@ -3,16 +3,16 @@ package ru.lonelywh1te.introgym.features.auth.data
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
-import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensRequestDto
+import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignInRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
-import ru.lonelywh1te.introgym.data.network.NetworkError
-import ru.lonelywh1te.introgym.core.result.Result
 import java.io.IOException
 
 class AuthRepositoryImpl(private val authService: AuthService, private val authStorage: AuthStorage):

@@ -1,7 +1,7 @@
 package ru.lonelywh1te.introgym.features.auth.domain
 
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
 
 object EmailPasswordValidator {
 

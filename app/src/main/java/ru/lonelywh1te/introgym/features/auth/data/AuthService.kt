@@ -6,10 +6,10 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpResponseDto
-import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
-import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensResponseDto
+import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
+import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignInRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignInResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpRequestDto

@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.features.auth
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import ru.lonelywh1te.introgym.data.network.RetrofitProvider
 import ru.lonelywh1te.introgym.features.auth.data.AuthRepositoryImpl
 import ru.lonelywh1te.introgym.features.auth.data.AuthService
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthSharedPreferencesImpl
@@ -12,10 +13,9 @@ import ru.lonelywh1te.introgym.features.auth.domain.usecase.SendOtpUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignInUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignUpUseCase
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.ConfirmOtpViewModel
+import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.CreatePasswordViewModel
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewModel
-import ru.lonelywh1te.introgym.data.network.RetrofitProvider
-import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.CreatePasswordViewModel
 
 val authDataModule = module {
     single<AuthRepository> {

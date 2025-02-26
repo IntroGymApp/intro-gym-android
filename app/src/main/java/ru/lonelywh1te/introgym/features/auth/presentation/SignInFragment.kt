@@ -4,27 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
-import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
-import ru.lonelywh1te.introgym.features.auth.presentation.error.asStringRes
-import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
-import ru.lonelywh1te.introgym.data.network.NetworkError
-import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.databinding.FragmentSignInBinding
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
+import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
 
 class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
