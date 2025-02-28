@@ -32,7 +32,7 @@ import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.core.result.Result
 import java.io.IOException
 
-// TODO: timeout test, server errors
+// TODO: timeout tests
 
 class AuthRepositoryImplTest {
     private lateinit var authService: AuthService
@@ -105,6 +105,18 @@ class AuthRepositoryImplTest {
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.SESSION_STILL_EXIST))
             val actual = authRepository.sendOtp(email, otpType).toList()
 
+            Assertions.assertEquals(expected, actual)
+        }
+
+        @Test
+        fun `sendOtp emit InProgress and Failure with http 5xx`() = runTest {
+            val requestDto = SendOtpRequestDto(email)
+            val responseDto = Response.error<SendOtpResponseDto>(502, responseBody)
+
+            coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
+
+            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val actual = authRepository.sendOtp(email, otpType).toList()
 
             Assertions.assertEquals(expected, actual)
         }
@@ -201,6 +213,19 @@ class AuthRepositoryImplTest {
         }
 
         @Test
+        fun `confirmOtp emit InProgress and Failure with http code 5xx`() = runTest {
+            val requestDto = ConfirmOtpRequestDto(sessionId, otp)
+            val responseDto = Response.error<ConfirmOtpResponseDto>(502, responseBody)
+
+            coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
+
+            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val actual = authRepository.confirmOtp(otp, otpType).toList()
+
+            Assertions.assertEquals(expected, actual)
+        }
+
+        @Test
         fun `confirmOtp emit InProgress and Failure with unknown http code`() = runTest {
             val requestDto = ConfirmOtpRequestDto(sessionId, otp)
             val responseDto = Response.error<ConfirmOtpResponseDto>(999, responseBody)
@@ -264,6 +289,19 @@ class AuthRepositoryImplTest {
             coEvery { authService.signUp(requestDto) } returns responseDto
 
             val expected = listOf(Result.InProgress, Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
+            val actual = authRepository.signUp(email, password).toList()
+
+            Assertions.assertEquals(expected, actual)
+        }
+
+        @Test
+        fun `signUp emit InProgress and Failure with http code 5xx`() = runTest {
+            val requestDto = SignUpRequestDto(sessionId, email, password)
+            val responseDto = Response.error<SignUpResponseDto>(502, responseBody)
+
+            coEvery { authService.signUp(requestDto) } returns responseDto
+
+            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.signUp(email, password).toList()
 
             Assertions.assertEquals(expected, actual)
@@ -350,6 +388,19 @@ class AuthRepositoryImplTest {
         }
 
         @Test
+        fun `signIn emit InProgress and Failure with http code 5xx`() = runTest {
+            val requestDto = SignInRequestDto(email, password)
+            val responseDto = Response.error<SignInResponseDto>(502, responseBody)
+
+            coEvery { authService.signIn(requestDto) } returns responseDto
+
+            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val actual = authRepository.signIn(email, password).toList()
+
+            Assertions.assertEquals(expected, actual)
+        }
+
+        @Test
         fun `signIn emit InProgress and Failure with null body`() = runTest {
             val requestDto = SignInRequestDto(email, password)
             val responseDto = Response.success<SignInResponseDto>(200, null)
@@ -424,6 +475,19 @@ class AuthRepositoryImplTest {
             coEvery { authService.refreshTokens(requestDto) } returns responseDto
 
             val expected = listOf(Result.Failure(AuthError.UNAUTHORIZED))
+            val actual = authRepository.refreshToken().toList()
+
+            Assertions.assertEquals(expected, actual)
+        }
+
+        @Test
+        fun `refreshTokens emit Failure with http code 5xx`() = runTest {
+            val requestDto = RefreshTokensRequestDto(refreshToken)
+            val responseDto = Response.error<RefreshTokensResponseDto>(502, responseBody)
+
+            coEvery { authService.refreshTokens(requestDto) } returns responseDto
+
+            val expected = listOf(Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.refreshToken().toList()
 
             Assertions.assertEquals(expected, actual)
