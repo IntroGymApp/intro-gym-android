@@ -29,6 +29,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                     authStorage.saveSessionId(body.sessionId)
                 }
                 request.code() == 409 -> emit(Result.Failure(AuthError.SESSION_STILL_EXIST))
+                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
@@ -55,6 +56,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
                 request.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
+                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
@@ -85,6 +87,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 }
                 request.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
+                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
@@ -111,6 +114,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
+                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
@@ -138,6 +142,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
                 request.code() == 401 -> emit(Result.Failure(AuthError.UNAUTHORIZED))
+                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
                     Log.w(LOG_TAG, "FAIL: $request")
