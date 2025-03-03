@@ -32,6 +32,4 @@ data class TagToExerciseEntity (
     val tagId: Int,
     @ColumnInfo(name = "exercise_id")
     val exerciseId: Int,
-    @ColumnInfo(name = "is_main")
-    val isMain: Boolean,
 )

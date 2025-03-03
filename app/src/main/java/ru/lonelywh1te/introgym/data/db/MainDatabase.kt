@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import ru.lonelywh1te.introgym.data.db.converters.LocalDateConverter
 import ru.lonelywh1te.introgym.data.db.converters.LocalDateTimeConverter
 import ru.lonelywh1te.introgym.data.db.converters.UploadStatusConverter
+import ru.lonelywh1te.introgym.data.db.dao.ExerciseCategoryDao
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
 import ru.lonelywh1te.introgym.data.db.dao.TagDao
@@ -15,6 +16,7 @@ import ru.lonelywh1te.introgym.data.db.dao.WorkoutDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutLogDao
+import ru.lonelywh1te.introgym.data.db.entity.ExerciseCategoryEntity
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseSetEntity
 import ru.lonelywh1te.introgym.data.db.entity.TagEntity
@@ -26,7 +28,16 @@ import ru.lonelywh1te.introgym.data.db.entity.WorkoutLogEntity
 
 
 @Database(
-    entities = [WorkoutEntity::class, WorkoutLogEntity::class, ExerciseEntity::class, WorkoutExerciseEntity::class, WorkoutExercisePlanEntity::class, ExerciseSetEntity::class, TagEntity::class, TagToExerciseEntity::class],
+    entities = [
+        WorkoutEntity::class,
+        WorkoutLogEntity::class,
+        ExerciseEntity::class,
+        ExerciseCategoryEntity:: class,
+        WorkoutExerciseEntity::class,
+        WorkoutExercisePlanEntity::class,
+        ExerciseSetEntity::class,
+        TagEntity::class,
+        TagToExerciseEntity::class],
     version = 1
 )
 @TypeConverters(LocalDateConverter::class, UploadStatusConverter::class, LocalDateTimeConverter::class)
@@ -37,6 +48,7 @@ abstract class MainDatabase: RoomDatabase() {
     abstract fun workoutExerciseDao(): WorkoutExerciseDao
     abstract fun workoutExercisePlanDao(): WorkoutExercisePlanDao
     abstract fun exerciseDao(): ExerciseDao
+    abstract fun exerciseCategoryDao(): ExerciseCategoryDao
     abstract fun exerciseSetDao(): ExerciseSetDao
     abstract fun tagDao(): TagDao
 

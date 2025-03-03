@@ -26,7 +26,7 @@ data class WorkoutEntity(
     @ColumnInfo(name = "description")
     val description: String = "",
     @ColumnInfo(name = "log_id")
-    val logId: Long?,
+    val logId: Long? = null,
     @ColumnInfo(name = "upload_status")
     val uploadStatus: UploadStatus = UploadStatus.NONE
 )
