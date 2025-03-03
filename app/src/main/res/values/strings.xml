@@ -15,8 +15,8 @@
     <string name="network_error_unknown">Произошла неизвестная ошибка сети. Попробуйте снова.</string>
     <string name="network_error_request_timeout">Превышено время ожидания. Проверьте соединение и попробуйте снова.</string>
     <string name="network_error_server">Ошибка сервера. Попробуйте позже.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="validation_error_password_mismatch">Пароли не совпадают. Попробуйте снова.</string>
+    <string name="label_exercise_categories">Группы мышц</string>
+    <string name="label_exercise_count">Упражнения: %1$s</string>
 
 </resources>
