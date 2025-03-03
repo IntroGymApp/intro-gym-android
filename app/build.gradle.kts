@@ -50,6 +50,7 @@ tasks.withType<Test> {
 
 dependencies {
     implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.gson)
     implementation(libs.gson.retrofit2.adapter)
