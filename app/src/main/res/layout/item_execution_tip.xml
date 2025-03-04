@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_tip_description"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAlignment="center"
+    android:padding="20dp"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/shape_rounded_card_with_stroke"
+    tools:text="Чем шире хват, тем больше задействуются грудные мышцы, чем уже — тем больше работают трицепсы и передние дельты." />

@@ -1,5 +1,10 @@
 package ru.lonelywh1te.introgym.features.guide.domain.repository
 
-interface ExerciseRepository {
+import kotlinx.coroutines.flow.Flow
+import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
+import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 
+interface ExerciseRepository {
+    fun getExerciseById(exerciseId: Long): Flow<Exercise>
+    fun getExercisesByCategoryId(categoryId: Long): Flow<List<ExerciseItem>>
 }

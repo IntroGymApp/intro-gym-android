@@ -16,7 +16,12 @@
     <string name="network_error_request_timeout">Превышено время ожидания. Проверьте соединение и попробуйте снова.</string>
     <string name="network_error_server">Ошибка сервера. Попробуйте позже.</string>
     <string name="validation_error_password_mismatch">Пароли не совпадают. Попробуйте снова.</string>
+
     <string name="label_exercise_categories">Группы мышц</string>
     <string name="label_exercise_count">Упражнения: %1$s</string>
+    <string name="label_exercises">Упражнения</string>
+    <string name="label_execution">Выполнение</string>
+    <string name="label_tips">Советы</string>
+    <string name="step_number">№ %1$s</string>
 
 </resources>

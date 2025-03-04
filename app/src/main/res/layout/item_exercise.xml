@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:padding="20dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="horizontal"
+    android:background="@color/gray">
+
+    <ImageView
+        android:id="@+id/iv_exercise_preview"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="20dp"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/tv_category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Название упражнения" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|end"
+        android:src="@drawable/ic_right_arrow"
+        app:tint="@color/black" />
+
+</LinearLayout>

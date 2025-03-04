@@ -47,5 +47,30 @@
         android:id="@+id/exerciseCategoriesFragment"
         android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseCategoriesFragment"
         android:label="fragment_exercise_categories"
-        tools:layout="@layout/fragment_exercise_categories" />
+        tools:layout="@layout/fragment_exercise_categories" >
+        <action
+            android:id="@+id/to_exerciseListFragment"
+            app:destination="@id/exerciseListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseListFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseListFragment"
+        android:label="fragment_exercise_list"
+        tools:layout="@layout/fragment_exercise_list" >
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+        <action
+            android:id="@+id/to_exerciseFragment"
+            app:destination="@id/exerciseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFragment"
+        android:label="fragment_exercise"
+        tools:layout="@layout/fragment_exercise" >
+        <argument
+            android:name="exerciseId"
+            app:argType="long" />
+    </fragment>
 </navigation>
