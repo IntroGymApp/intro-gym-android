@@ -1,6 +1,8 @@
 package ru.lonelywh1te.introgym.features.guide.presentation
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseListBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.adapter.ExerciseListAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseListFragmentViewModel
@@ -52,6 +55,19 @@ class ExerciseListFragment : Fragment() {
         }
 
         startCollectFlows()
+        setOnChangeSearchTextListener()
+    }
+
+    private fun setOnChangeSearchTextListener() {
+        binding.etSearchExercise.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                binding.tvListLabel.text = getString(if (s.toString().isEmpty()) R.string.label_exercises else R.string.label_search_results)
+                viewModel.searchExercisesByName(s.toString())
+            }
+        })
     }
 
     private fun startCollectFlows() {

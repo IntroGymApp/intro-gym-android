@@ -7,7 +7,19 @@
     android:paddingHorizontal="20dp"
     tools:context=".features.guide.presentation.ExerciseListFragment">
 
+    <EditText
+        android:id="@+id/et_search_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="@string/label_name"
+        android:imeOptions="actionSearch"
+        android:inputType="textFilter"
+        android:maxLines="1"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/shape_rounded_card_with_stroke"/>
+
     <TextView
+        android:id="@+id/tv_list_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="20dp"
@@ -17,6 +29,7 @@
         android:id="@+id/rv_exercise_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         tools:listitem="@layout/item_exercise"/>
 
 </LinearLayout>

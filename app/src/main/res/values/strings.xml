@@ -23,5 +23,7 @@
     <string name="label_execution">Выполнение</string>
     <string name="label_tips">Советы</string>
     <string name="step_number">№ %1$s</string>
+    <string name="label_search_results">Результаты поиска</string>
+    <string name="label_name">Название</string>
 
 </resources>

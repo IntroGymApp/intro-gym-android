@@ -44,6 +44,7 @@
             android:id="@+id/rv_execution_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             tools:listitem="@layout/item_execution_step"
             tools:itemCount="5"/>
 
@@ -57,6 +58,7 @@
             android:id="@+id/rv_execution_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             tools:listitem="@layout/item_execution_tip"
             tools:itemCount="3"/>
 

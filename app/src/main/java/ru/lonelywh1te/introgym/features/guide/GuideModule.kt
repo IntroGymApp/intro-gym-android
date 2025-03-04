@@ -9,6 +9,7 @@ import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseReposito
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseCategoriesUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseListUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
+import ru.lonelywh1te.introgym.features.guide.domain.usecase.SearchExercisesByNameUseCase
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseCategoriesFragmentViewModel
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFragmentViewModel
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseListFragmentViewModel
@@ -35,11 +36,18 @@ val guideDomainModule = module {
     factory<GetExerciseUseCase> {
         GetExerciseUseCase(repository = get())
     }
+
+    factory<SearchExercisesByNameUseCase> {
+        SearchExercisesByNameUseCase(repository = get())
+    }
 }
 
 val guidePresentationModule = module {
     viewModel<ExerciseCategoriesFragmentViewModel> {
-        ExerciseCategoriesFragmentViewModel(getExerciseCategoriesUseCase = get())
+        ExerciseCategoriesFragmentViewModel(
+            getExerciseCategoriesUseCase = get(),
+            searchExercisesByNameUseCase = get(),
+        )
     }
 
     viewModel<ExerciseListFragmentViewModel> {

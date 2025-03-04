@@ -14,4 +14,6 @@ interface ExerciseDao {
     @Query("select * from exercise where category_id = :categoryId")
     fun getExerciseEntitiesByCategoryId(categoryId: Long): Flow<List<ExerciseEntity>>
 
+    @Query("select * from exercise where name like '%' || :query || '%' collate nocase")
+    fun searchExercicisesByName(query: String): Flow<List<ExerciseEntity>>
 }

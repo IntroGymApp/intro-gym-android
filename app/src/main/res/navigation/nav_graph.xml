@@ -51,6 +51,9 @@
         <action
             android:id="@+id/to_exerciseListFragment"
             app:destination="@id/exerciseListFragment" />
+        <action
+            android:id="@+id/to_exerciseFragment"
+            app:destination="@id/exerciseFragment" />
     </fragment>
     <fragment
         android:id="@+id/exerciseListFragment"

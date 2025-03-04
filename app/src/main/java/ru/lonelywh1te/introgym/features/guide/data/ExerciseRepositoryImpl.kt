@@ -35,4 +35,16 @@ class ExerciseRepositoryImpl(
             }
         }
     }
+
+    override fun searchExercisesByName(query: String): Flow<List<ExerciseItem>> {
+        return exerciseDao.searchExercicisesByName(query).map { exerciseEntities ->
+            exerciseEntities.map {
+                ExerciseItem(
+                    id = it.id,
+                    name = it.name,
+                    imgFilename = it.imgFilename,
+                )
+            }
+        }
+    }
 }

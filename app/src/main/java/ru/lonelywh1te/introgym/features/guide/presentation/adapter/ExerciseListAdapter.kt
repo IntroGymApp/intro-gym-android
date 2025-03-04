@@ -35,7 +35,7 @@ class ExerciseListAdapter: RecyclerView.Adapter<ExerciseItemViewHolder>() {
         holder.bind(item)
     }
 
-    fun setOnItemClickListener(listener: ((categoryId: Long) -> Unit)?) {
+    fun setOnItemClickListener(listener: ((exerciseId: Long) -> Unit)?) {
         onItemClickListener = listener
     }
 }

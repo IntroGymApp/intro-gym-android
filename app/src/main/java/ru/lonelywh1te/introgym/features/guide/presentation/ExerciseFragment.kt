@@ -58,11 +58,13 @@ class ExerciseFragment : Fragment() {
         stepsRecycler = binding.rvExecutionSteps.apply {
             adapter = executionStepsAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            isNestedScrollingEnabled = false
         }
 
         tipsRecycler = binding.rvExecutionTips.apply {
             adapter = executionTipsAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            isNestedScrollingEnabled = false
         }
 
         startCollectFlows()

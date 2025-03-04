@@ -12,6 +12,8 @@ import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseListUseC
 class ExerciseListFragmentViewModel(
     private val getExerciseListUseCase: GetExerciseListUseCase,
 ): ViewModel() {
+    private var savedExerciseItems: List<ExerciseItem> = emptyList()
+
     private val _exerciseItems: MutableStateFlow<List<ExerciseItem>> = MutableStateFlow(emptyList())
     val exerciseItems: StateFlow<List<ExerciseItem>> = _exerciseItems
 
@@ -20,8 +22,19 @@ class ExerciseListFragmentViewModel(
     fun getExerciseItems(categoryId: Long) {
         viewModelScope.launch (dispatcher) {
             getExerciseListUseCase(categoryId).collect { list ->
+                savedExerciseItems = list
                 _exerciseItems.emit(list)
             }
         }
+    }
+
+    fun searchExercisesByName(searchQuery: String) {
+        val searchResult = if (searchQuery.isNotBlank()) {
+            savedExerciseItems.filter { it.name.contains(searchQuery, ignoreCase = true) }
+        } else {
+            savedExerciseItems
+        }
+
+        _exerciseItems.value = searchResult
     }
 }
