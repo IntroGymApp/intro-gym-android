@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
@@ -48,26 +48,24 @@ class SignInFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.signInResult.collect { state ->
-                    when (state) {
-                        is UIState.Success -> {
-                            navigateToHomeFragment()
-                            showLoadingIndicator(false)
-                        }
-                        is UIState.isLoading -> {
-                            showLoadingIndicator(true)
-                        }
-                        is UIState.Failure -> {
-                            showFailureSnackbar(state.error)
-                            showLoadingIndicator(false)
-                        }
-                        else -> {}
+        viewModel.signInResult.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UIState.Success -> {
+                        navigateToHomeFragment()
+                        showLoadingIndicator(false)
                     }
+                    is UIState.isLoading -> {
+                        showLoadingIndicator(true)
+                    }
+                    is UIState.Failure -> {
+                        showFailureSnackbar(state.error)
+                        showLoadingIndicator(false)
+                    }
+                    else -> {}
                 }
             }
-        }
+            .launchIn(lifecycleScope)
     }
 
     private fun navigateToHomeFragment() {

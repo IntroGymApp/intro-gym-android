@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
@@ -68,13 +68,11 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.exercise.collect { exercise ->
-                    exercise?.let { setExerciseData(it) }
-                }
+        viewModel.exercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { exercise ->
+                exercise?.let { setExerciseData(it) }
             }
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun setExerciseData(exercise: Exercise) {

@@ -7,13 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseCategoriesBinding
@@ -82,21 +82,17 @@ class ExerciseCategoriesFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categories.collect { list ->
-                    exerciseCategoryAdapter.categoriesList = list
-                }
+        viewModel.categories.flowWithLifecycle(lifecycle)
+            .onEach { list ->
+                exerciseCategoryAdapter.categoriesList = list
             }
-        }
+            .launchIn(lifecycleScope)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchExercisesResult.collect { result ->
-                    exerciseListAdapter.exerciseList = result
-                }
+        viewModel.searchExercisesResult.flowWithLifecycle(lifecycle)
+            .onEach { result ->
+                exerciseListAdapter.exerciseList = result
             }
-        }
+            .launchIn(lifecycleScope)
     }
 
     private fun navigateToExerciseListFragment(categoryId: Long) {
