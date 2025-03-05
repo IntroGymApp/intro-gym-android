@@ -11,14 +11,7 @@ class ExerciseCategoryRepositoryImpl(
 ): ExerciseCategoryRepository {
     override fun getCategories(): Flow<List<ExerciseCategoryItem>> {
         return exerciseCategoryDao.getCategoriesWithExerciseCount().map { categories ->
-            categories.map {
-                ExerciseCategoryItem(
-                    id = it.id,
-                    name = it.name,
-                    countOfExercises = it.countOfExercises,
-                    imgFilename = it.imgFilename
-                )
-            }
+            categories.map { it.toExerciseCategoryItem() }
         }
     }
 }

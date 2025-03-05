@@ -1,22 +1,19 @@
 package ru.lonelywh1te.introgym.features.guide.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseBinding
@@ -89,5 +86,9 @@ class ExerciseFragment : Fragment() {
         binding.tvExerciseDescription.text = exercise.description
         executionStepsAdapter.steps = exercise.steps
         executionTipsAdapter.tips = exercise.tips
+
+        if (exercise.steps.isEmpty()) {
+            binding.tvExecutionLabel.visibility = View.GONE
+        }
     }
 }

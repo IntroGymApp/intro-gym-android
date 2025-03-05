@@ -12,39 +12,19 @@ class ExerciseRepositoryImpl(
 ): ExerciseRepository {
     override fun getExerciseById(exerciseId: Long): Flow<Exercise> {
         return exerciseDao.getExerciseById(exerciseId).map { exerciseEntity ->
-            Exercise(
-                id = exerciseEntity.id,
-                categoryId = exerciseEntity.categoryId,
-                name = exerciseEntity.name,
-                description = exerciseEntity.description,
-                steps = exerciseEntity.steps,
-                tips = exerciseEntity.tips,
-                animFilename = exerciseEntity.animFilename,
-            )
+            exerciseEntity.toExercise()
         }
     }
 
     override fun getExercisesByCategoryId(categoryId: Long): Flow<List<ExerciseItem>> {
         return exerciseDao.getExerciseEntitiesByCategoryId(categoryId).map { exerciseEntities ->
-            exerciseEntities.map {
-                ExerciseItem(
-                    id = it.id,
-                    name = it.name,
-                    imgFilename = it.imgFilename,
-                )
-            }
+            exerciseEntities.map { it.toExerciseItem() }
         }
     }
 
     override fun searchExercisesByName(query: String): Flow<List<ExerciseItem>> {
         return exerciseDao.searchExercicisesByName(query).map { exerciseEntities ->
-            exerciseEntities.map {
-                ExerciseItem(
-                    id = it.id,
-                    name = it.name,
-                    imgFilename = it.imgFilename,
-                )
-            }
+            exerciseEntities.map { it.toExerciseItem() }
         }
     }
 }
