@@ -4,13 +4,17 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.guide.data.ExerciseCategoryRepositoryImpl
 import ru.lonelywh1te.introgym.features.guide.data.ExerciseRepositoryImpl
+import ru.lonelywh1te.introgym.features.guide.data.TagRepositoryImpl
 import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseCategoryRepository
 import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseRepository
+import ru.lonelywh1te.introgym.features.guide.domain.repository.TagRepository
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseCategoriesUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseListUseCase
+import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseTagsUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.SearchExercisesByNameUseCase
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseCategoriesFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFilterFragmentViewModel
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFragmentViewModel
 import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseListFragmentViewModel
 
@@ -21,6 +25,10 @@ val guideDataModule = module {
 
     single<ExerciseRepository> {
         ExerciseRepositoryImpl(exerciseDao = get())
+    }
+
+    single<TagRepository> {
+        TagRepositoryImpl(tagDao = get())
     }
 }
 
@@ -40,6 +48,10 @@ val guideDomainModule = module {
     factory<SearchExercisesByNameUseCase> {
         SearchExercisesByNameUseCase(repository = get())
     }
+
+    factory<GetExerciseTagsUseCase> {
+        GetExerciseTagsUseCase(repository = get())
+    }
 }
 
 val guidePresentationModule = module {
@@ -56,6 +68,10 @@ val guidePresentationModule = module {
 
     viewModel<ExerciseFragmentViewModel> {
         ExerciseFragmentViewModel(getExerciseUseCase = get())
+    }
+
+    viewModel<ExerciseFilterFragmentViewModel> {
+        ExerciseFilterFragmentViewModel(getExerciseTagsUseCase = get())
     }
 }
 

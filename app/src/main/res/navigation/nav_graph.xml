@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/exerciseCategoriesFragment">
+    app:startDestination="@id/exerciseFilterFragment">
     <fragment
         android:id="@+id/signUpFragment"
         android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignUpFragment"
@@ -54,6 +54,9 @@
         <action
             android:id="@+id/to_exerciseFragment"
             app:destination="@id/exerciseFragment" />
+        <action
+            android:id="@+id/action_exerciseCategoriesFragment_to_exerciseFilterFragment"
+            app:destination="@id/exerciseFilterFragment" />
     </fragment>
     <fragment
         android:id="@+id/exerciseListFragment"
@@ -76,4 +79,9 @@
             android:name="exerciseId"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/exerciseFilterFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFilterFragment"
+        android:label="fragment_exercise_filter"
+        tools:layout="@layout/fragment_exercise_filter" />
 </navigation>

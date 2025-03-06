@@ -26,4 +26,8 @@
     <string name="label_search_results">Результаты поиска</string>
     <string name="label_name">Название</string>
 
+    <string name="label_difficulty">Сложность</string>
+    <string name="label_equipment">Оборудование</string>
+    <string name="label_muscles">Мышцы</string>
+
 </resources>
