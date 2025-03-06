@@ -1,7 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Introgym" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.IntroGym" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">?attr/igPrimaryColor</item>
+        <item name="android:windowBackground">?attr/igBackgroundColor</item>
     </style>
 
-    <style name="Theme.Introgym" parent="Base.Theme.Introgym" />
+    <style name="Theme.IntroGym.Light" parent="Base.Theme.IntroGym" >
+        <item name="igPrimaryColor">@color/accent_color</item>
+        <item name="igBackgroundColor">@color/background_color</item>
+
+        <item name="igTextPrimaryColor">@color/foreground_color</item>
+        <item name="igTextSecondaryColor">@color/indicator_color</item>
+
+        <item name="igCardBackgroundColor">@color/plate_color</item>
+        <item name="igCardForegroundColor">@color/indicator_color</item>
+
+        <item name="igActiveStateBackgroundColor">?attr/igPrimaryColor</item>
+        <item name="igActiveStateForegroundColor">?attr/igBackgroundColor</item>
+        <item name="igInactiveStateBackgroundColor">?attr/igCardBackgroundColor</item>
+        <item name="igInactiveStateForegroundColor">?attr/igCardForegroundColor</item>
+
+        <item name="igIconStaticColor">?attr/igTextPrimaryColor</item>
+    </style>
 </resources>

@@ -9,20 +9,15 @@
 
     <EditText
         android:id="@+id/et_search_exercise"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
+        style="@style/Widget.IntroGym.TextInput"
         android:hint="@string/label_name"
         android:imeOptions="actionSearch"
-        android:inputType="textFilter"
-        android:maxLines="1"
-        android:paddingHorizontal="20dp"
-        android:background="@drawable/shape_rounded_card_with_stroke"/>
+        android:inputType="textFilter"/>
 
     <TextView
         android:id="@+id/tv_list_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="20dp"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
         android:text="@string/label_exercises" />
 
     <androidx.recyclerview.widget.RecyclerView

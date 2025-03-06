@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="TextAppearance.IntroGym.Large" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Large.Semibold">
+        <item name="fontFamily">@font/geist_semibold</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Large.Thin">
+        <item name="fontFamily">@font/geist_thin</item>
+    </style>
+
+
+
+    <style name="TextAppearance.IntroGym.Title1" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Title1.Semibold" parent="TextAppearance.IntroGym.Title1">
+        <item name="fontFamily">@font/geist_semibold</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Title1.Thin" parent="TextAppearance.IntroGym.Title1">
+        <item name="fontFamily">@font/geist_thin</item>
+    </style>
+
+
+
+    <style name="TextAppearance.IntroGym.Title2" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Title2.Bold" parent="TextAppearance.IntroGym.Title2">
+        <item name="fontFamily">@font/geist_bold</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Title2.Thin" parent="TextAppearance.IntroGym.Title2">
+        <item name="fontFamily">@font/geist_thin</item>
+    </style>
+
+
+
+    <style name="TextAppearance.IntroGym.Title3" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Title3.Bold">
+        <item name="fontFamily">@font/geist_bold</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Title3.Regular">
+        <item name="fontFamily">@font/geist_thin</item>
+    </style>
+
+
+
+    <style name="TextAppearance.IntroGym.Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Body.Regular">
+        <item name="fontFamily">@font/geist_regular</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Body.Bold">
+        <item name="fontFamily">@font/geist_bold</item>
+    </style>
+
+
+
+    <style name="TextAppearance.IntroGym.Footnote" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">?attr/igTextSecondaryColor</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Footnote.Regular">
+        <item name="fontFamily">@font/geist_regular</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Footnote.Semibold">
+        <item name="fontFamily">@font/geist_semibold</item>
+    </style>
+
+
+</resources>

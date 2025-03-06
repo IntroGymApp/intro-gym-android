@@ -10,8 +10,8 @@ class ErrorSnackbar (
 ){
     fun show(message: String) {
         Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(view.context, R.color.red))
-            .setTextColor(ContextCompat.getColor(view.context, R.color.white))
+            .setBackgroundTint(ContextCompat.getColor(view.context, R.color.red_color))
+            .setTextColor(ContextCompat.getColor(view.context, R.color.background_color))
             .show()
     }
 }

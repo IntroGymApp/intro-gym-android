@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- APP COMPONENTS -->
+
+    <style name="Widget.IntroGym.TagItem" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:paddingVertical">10dp</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_background_tag_item</item>
+        <item name="android:textColor">@drawable/selector_text_tag_item</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+    </style>
+
+    <style name="Widget.IntroGym.ListCard" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">90dp</item>
+        <item name="android:padding">20dp</item>
+        <item name="cardCornerRadius">10dp</item>
+        <item name="android:backgroundTint">?attr/igCardBackgroundColor</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Widget.IntroGym.ListCard.Selectable">
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Widget.IntroGym.TipItem" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@drawable/shape_rounded_plate</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+    </style>
+
+    <style name="Widget.IntroGym.TextInput" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:background">@drawable/shape_rounded_plate_filled</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+    </style>
+
+
+    <!-- CONTAINERS -->
+
+    <style name="Container.IntroGym.ScrollView" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <!-- TEXT STYLES -->
+
+    <style name="Widget.IntroGym.TextView.Title" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">20dp</item>
+    </style>
+
+</resources>

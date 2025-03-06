@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- prefix ig means IntroGym -->
+
+<resources>
+    <attr name="igPrimaryColor" format="color"/>
+    <attr name="igBackgroundColor" format="color"/>
+
+    <attr name="igTextPrimaryColor" format="color"/>
+    <attr name="igTextSecondaryColor" format="color"/>
+
+    <attr name="igCardBackgroundColor" format="color"/>
+    <attr name="igCardForegroundColor" format="color"/>
+
+    <attr name="igActiveStateBackgroundColor" format="color"/>
+    <attr name="igActiveStateForegroundColor" format="color"/>
+    <attr name="igInactiveStateBackgroundColor" format="color"/>
+    <attr name="igInactiveStateForegroundColor" format="color"/>
+
+    <attr name="igIconActionColor" format="color"/>
+    <attr name="igIconStaticColor" format="color"/>
+
+</resources>

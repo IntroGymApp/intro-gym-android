@@ -8,6 +8,8 @@
 
     <TextView
         android:id="@+id/tv_step_number"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        android:textColor="?attr/igPrimaryColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
@@ -15,6 +17,7 @@
 
     <TextView
         android:id="@+id/tv_step_description"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Лягте на скамью, сведите лопатки, немного прогнитесь в пояснице, при этом ягодицы, верхняя часть спины и голова должны быть плотно прижаты к скамье." />

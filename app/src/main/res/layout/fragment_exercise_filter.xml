@@ -16,9 +16,8 @@
 
         <TextView
             android:id="@+id/tv_muscle_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             android:text="@string/label_muscles" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -32,9 +31,8 @@
 
         <TextView
             android:id="@+id/tv_equipment_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             android:text="@string/label_equipment" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -48,9 +46,8 @@
 
         <TextView
             android:id="@+id/tv_difficulty_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             android:text="@string/label_difficulty" />
 
         <androidx.recyclerview.widget.RecyclerView

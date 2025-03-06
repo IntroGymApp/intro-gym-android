@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="none"
+    style="@style/Container.IntroGym.ScrollView"
     tools:context=".features.guide.presentation.ExerciseFragment">
 
     <LinearLayout
@@ -23,22 +20,21 @@
 
         <TextView
             android:id="@+id/tv_exercise_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             tools:text="Название упражнения" />
 
         <TextView
             android:id="@+id/tv_exercise_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
             tools:text="Название — это базовое упражнение, описание описание описание описание описание описание описание"  />
 
         <TextView
             android:id="@+id/tv_execution_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title3.Bold"
             android:text="@string/label_execution"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,9 +46,8 @@
             tools:itemCount="5"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title3.Bold"
             android:text="@string/label_tips"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -64,7 +59,5 @@
             tools:itemCount="3"/>
 
     </LinearLayout>
-
-
 
 </ScrollView>
