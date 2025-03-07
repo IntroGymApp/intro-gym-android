@@ -17,7 +17,16 @@
     <attr name="igInactiveStateBackgroundColor" format="color"/>
     <attr name="igInactiveStateForegroundColor" format="color"/>
 
+    <attr name="igTextButtonColor" format="color"/>
+
     <attr name="igIconActionColor" format="color"/>
     <attr name="igIconStaticColor" format="color"/>
 
+    <attr name="igSuccessColor" format="color"/>
+    <attr name="igWarningColor" format="color"/>
+    <attr name="igErrorColor" format="color"/>
+
+    <declare-styleable name="PasswordValidationView">
+        <attr name="errorCount" format="integer"/>
+    </declare-styleable>
 </resources>
