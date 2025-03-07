@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,14 +25,17 @@ class ConfirmOtpFragment : Fragment() {
     private var _binding: FragmentConfirmOtpBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var email: String
+    private lateinit var confirmOtpRequestKey: String
+    private lateinit var confirmOtpResultBundleKey: String
 
     private val viewModel by viewModel<ConfirmOtpViewModel>()
     private val args by navArgs<ConfirmOtpFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        email = args.email
+
+        confirmOtpRequestKey = args.requestKey
+        confirmOtpResultBundleKey = args.requestResultBundleKey
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -50,11 +55,12 @@ class ConfirmOtpFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
-        viewModel.confirmOtpResult.flowWithLifecycle(lifecycle)
+        viewModel.confirmOtpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        navigateToCreatePasswordFragment()
+                        setFragmentResult(confirmOtpRequestKey, bundleOf(confirmOtpResultBundleKey to true))
+                        findNavController().navigateUp()
                         showLoadingIndicator(false)
                     }
                     is UIState.isLoading -> {
@@ -68,11 +74,6 @@ class ConfirmOtpFragment : Fragment() {
                 }
             }
             .launchIn(lifecycleScope)
-    }
-
-    private fun navigateToCreatePasswordFragment() {
-        val action = ConfirmOtpFragmentDirections.toCreatePasswordFragment(email)
-        findNavController().navigate(action)
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {

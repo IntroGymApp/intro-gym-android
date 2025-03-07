@@ -32,4 +32,5 @@ fun ValidationError.asStringRes() = when (this) {
     ValidationError.INVALID_EMAIL_FORMAT -> R.string.validation_error_invalid_email_format
     ValidationError.INVALID_PASSWORD_FORMAT -> R.string.validation_error_invalid_password_format
     ValidationError.PASSWORD_MISMATCH -> R.string.validation_error_password_mismatch
+    else ->  R.string.validation_error_invalid_password_format
 }

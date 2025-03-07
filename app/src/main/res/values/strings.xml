@@ -29,5 +29,25 @@
     <string name="label_difficulty">Сложность</string>
     <string name="label_equipment">Оборудование</string>
     <string name="label_muscles">Мышцы</string>
+    <string name="label_first_step">Ты уже сделал первый шаг</string>
+    <string name="label_create_account_text">Создай аккаунт, чтобы сохранять свой прогресс, открывать достижения и тренироваться без ограничений</string>
+    <string name="label_your_name">Ваше имя</string>
+    <string name="email_example_com">email@example.com</string>
+    <string name="label_password">Пароль</string>
+    <string name="label_confirm_password">Подтвердите пароль</string>
+    <string name="label_min_8_symbols">Минимум 8 символов</string>
+    <string name="label_has_upper_letter">Есть заглавная буква</string>
+    <string name="label_has_special_symbol">Есть специальный символ</string>
+    <string name="label_has_account">Уже есть аккаунт? Войти</string>
+    <string name="label_agree_terms">Продолжая, вы соглашаетесь с условиями Политики конфиденциальности</string>
+    <string name="label_sign_up">Зарегистрироваться</string>
+    <string name="label_sign_in">Войти</string>
+    <string name="label_almost_there">Осталось чуть-чуть</string>
+    <string name="label_send_otp_description">Мы отправили код проверки на указанную почту. Введите код в поле ниже</string>
+    <string name="label_code">Код</string>
+    <string name="label_send_code_again">Отправить код повторно</string>
+    <string name="label_glad_to_see_again">Рады видеть вас снова!</string>
+    <string name="label_sign_in_description">Введите данные, чтобы продолжить тренировки и следить за прогрессом</string>
+    <string name="label_has_not_account">Еще нет аккаунта? Зарегистрироваться</string>
 
 </resources>

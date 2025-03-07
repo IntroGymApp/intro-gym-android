@@ -8,12 +8,12 @@ import ru.lonelywh1te.introgym.features.auth.data.AuthService
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthSharedPreferencesImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
+import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ConfirmOtpUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SendOtpUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignInUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignUpUseCase
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.ConfirmOtpViewModel
-import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.CreatePasswordViewModel
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewModel
 
@@ -47,6 +47,10 @@ val authDomainModule = module {
     factory<ConfirmOtpUseCase> {
         ConfirmOtpUseCase(repository = get())
     }
+
+    single<EmailPasswordValidator> {
+        EmailPasswordValidator
+    }
 }
 
 val authPresentationModule = module {
@@ -55,16 +59,17 @@ val authPresentationModule = module {
     }
 
     viewModel<SignUpViewModel> {
-        SignUpViewModel(sendOtpUseCase = get())
+        SignUpViewModel(
+            sendOtpUseCase = get(),
+            signUpUseCase = get(),
+            validator = get(),
+        )
     }
 
     viewModel<ConfirmOtpViewModel> {
         ConfirmOtpViewModel(confirmOtpUseCase = get())
     }
 
-    viewModel< CreatePasswordViewModel> {
-        CreatePasswordViewModel(signUpUseCase = get())
-    }
 }
 
 val authModule = module {

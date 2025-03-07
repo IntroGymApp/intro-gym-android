@@ -40,15 +40,11 @@ class SignInFragment : Fragment() {
             viewModel.signIn(email, password)
         }
 
-        binding.btnSignUp.setOnClickListener {
-            findNavController().navigate(R.id.to_signUpFragment)
-        }
-
         startCollectFlows()
     }
 
     private fun startCollectFlows() {
-        viewModel.signInResult.flowWithLifecycle(lifecycle)
+        viewModel.signInResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
@@ -69,7 +65,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        TODO("Not yet implemented")
+        // TODO: Not yet implemented
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {

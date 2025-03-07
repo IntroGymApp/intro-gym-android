@@ -84,6 +84,7 @@
 
     <style name="TextAppearance.IntroGym.Footnote.Regular">
         <item name="fontFamily">@font/geist_regular</item>
+        <item name="android:fontFamily">@font/geist_regular</item>
     </style>
 
     <style name="TextAppearance.IntroGym.Footnote.Semibold">

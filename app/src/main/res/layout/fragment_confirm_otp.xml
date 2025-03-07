@@ -1,38 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
     tools:context=".features.auth.presentation.ConfirmOtpFragment">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
+    <TextView
+        android:id="@+id/tv_sign_in_title"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:text="@string/label_almost_there"
+        android:textAlignment="center"
+        android:layout_marginTop="50dp"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title3.Bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/et_otp"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:maxLength="5"
-            android:hint="XXXXX"/>
+    <TextView
+        android:id="@+id/tv_sign_in_description"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:text="@string/label_send_otp_description"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sign_in_title" />
+
+    <EditText
+        android:id="@+id/et_otp"
+        style="@style/Widget.IntroGym.TextInput"
+        android:layout_marginTop="30dp"
+        android:hint="@string/label_code"
+        android:inputType="number"
+        android:maxLength="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sign_in_description" />
+
+    <Button
+        android:id="@+id/btn_send_otp"
+        style="@style/Widget.IntroGym.TextButton"
+        android:text="@string/label_send_code_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_otp" />
+
+    <FrameLayout
+        android:id="@+id/fl_sign_up_button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ProgressBar
             android:id="@+id/pb_loading_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
             android:padding="15dp"
+            android:layout_gravity="center"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/btn_confirm_otp"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="Подтвердить"/>
+            style="@style/Widget.IntroGym.Button"
+            android:layout_gravity="center"
+            android:text="@string/label_sign_up" />
 
-    </LinearLayout>
+    </FrameLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

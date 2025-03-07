@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/exerciseCategoriesFragment">
+    app:startDestination="@id/signUpFragment">
     <fragment
         android:id="@+id/signUpFragment"
         android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignUpFragment"
@@ -11,27 +11,20 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/to_confirmOtpFragment"
-            app:destination="@id/confirmOtpFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/createPasswordFragment"
-        android:name="ru.lonelywh1te.introgym.features.auth.presentation.CreatePasswordFragment"
-        android:label="fragment_create_password"
-        tools:layout="@layout/fragment_create_password" >
-        <argument
-            android:name="email"
-            app:argType="string" />
+            app:destination="@id/confirmOtpFragment"/>
+        <action
+            android:id="@+id/to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmOtpFragment"
         android:name="ru.lonelywh1te.introgym.features.auth.presentation.ConfirmOtpFragment"
         android:label="fragment_confirm_otp"
         tools:layout="@layout/fragment_confirm_otp">
-        <action
-            android:id="@+id/to_createPasswordFragment"
-            app:destination="@id/createPasswordFragment" />
         <argument
-            android:name="email"
+            android:name="requestKey"
+            app:argType="string" />
+        <argument android:name="requestResultBundleKey"
             app:argType="string" />
     </fragment>
     <fragment

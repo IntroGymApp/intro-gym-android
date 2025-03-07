@@ -45,6 +45,19 @@
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
     </style>
 
+    <style name="Widget.IntroGym.Button" parent="Widget.Material3.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+    </style>
+
+    <style name="Widget.IntroGym.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+        <item name="android:textColor">?attr/igTextButtonColor</item>
+    </style>
 
     <!-- CONTAINERS -->
 
@@ -62,5 +75,20 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingVertical">20dp</item>
     </style>
+
+    <style name="Widget.IntroGym.TextView.Body" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Widget.IntroGym.TextView.Marker" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="drawableStartCompat">@drawable/ic_point</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="drawableTint">?attr/igTextSecondaryColor</item>
+    </style>
+
+
 
 </resources>

@@ -20,6 +20,12 @@
         <item name="igInactiveStateBackgroundColor">?attr/igCardBackgroundColor</item>
         <item name="igInactiveStateForegroundColor">?attr/igCardForegroundColor</item>
 
+        <item name="igTextButtonColor">@color/orange_color</item>
+
         <item name="igIconStaticColor">?attr/igTextPrimaryColor</item>
+
+        <item name="igSuccessColor">?attr/igPrimaryColor</item>
+        <item name="igWarningColor">@color/orange_color</item>
+        <item name="igErrorColor">@color/red_color</item>
     </style>
 </resources>

@@ -29,6 +29,17 @@ object EmailPasswordValidator {
         }
     }
 
+    fun validatePassword(password: String): List<ValidationError> {
+        val errors = mutableListOf<ValidationError>()
+
+        if (password.length <= 8) errors.add(ValidationError.PASSWORD_TOO_SHORT)
+        if (!password.any { it.isUpperCase() }) errors.add(ValidationError.PASSWORD_MISSING_UPPERCASE)
+        if (!password.any { !it.isLetterOrDigit() }) errors.add(ValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL)
+
+        return errors
+    }
+
+
     private fun matchPassword(password: String, confirmPassword: String): Boolean {
         return password == confirmPassword
     }
@@ -38,9 +49,6 @@ object EmailPasswordValidator {
     }
 
     private fun isValidPassword(password: String): Boolean {
-        return password.length >= 8 &&
-                password.any { it.isDigit() } &&
-                password.any { it.isLetter() } &&
-                password.any { !it.isLetterOrDigit() }
+        return validatePassword(password).isEmpty()
     }
 }
