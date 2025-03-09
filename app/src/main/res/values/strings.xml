@@ -49,5 +49,11 @@
     <string name="label_glad_to_see_again">Рады видеть вас снова!</string>
     <string name="label_sign_in_description">Введите данные, чтобы продолжить тренировки и следить за прогрессом</string>
     <string name="label_has_not_account">Еще нет аккаунта? Зарегистрироваться</string>
+    <string name="label_restore_password">Восстановление пароля</string>
+    <string name="label_restore_password_description">Введите адрес электронной почты, и мы отправим вам код для восстановления пароля.</string>
+    <string name="label_send_otp">Отправить код</string>
+    <string name="label_forgot_password_question">Забыли пароль?</string>
+    <string name="label_new_password">Новый пароль</string>
+    <string name="label_create_new_password_description">Введите новый пароль для вашей учетной записи. Убедитесь, что пароль надежный и соответствует всем требованиям.</string>
 
 </resources>

@@ -22,10 +22,11 @@
         android:label="fragment_confirm_otp"
         tools:layout="@layout/fragment_confirm_otp">
         <argument
-            android:name="requestKey"
+            android:name="email"
             app:argType="string" />
-        <argument android:name="requestResultBundleKey"
-            app:argType="string" />
+        <argument
+            android:name="otpType"
+            app:argType="ru.lonelywh1te.introgym.features.auth.domain.model.OtpType" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -33,8 +34,8 @@
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
-            android:id="@+id/to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            android:id="@+id/to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/exerciseCategoriesFragment"
@@ -77,4 +78,13 @@
         android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFilterFragment"
         android:label="fragment_exercise_filter"
         tools:layout="@layout/fragment_exercise_filter" />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="ru.lonelywh1te.introgym.features.auth.presentation.RestorePasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" >
+        <action
+            android:id="@+id/to_confirmOtpFragment"
+            app:destination="@id/confirmOtpFragment" />
+    </fragment>
 </navigation>

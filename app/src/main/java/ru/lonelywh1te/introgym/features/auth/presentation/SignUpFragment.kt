@@ -1,8 +1,13 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
@@ -21,19 +27,18 @@ import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewModel
 
 class SignUpFragment : Fragment() {
-    private val confirmOtpRequestKey = "CONFIRM_OTP_REQUEST"
-    private val confirmOtpResultBundleKey = "CONFIRM_OTP_RESULT"
-
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: SignUpViewModel by viewModel<SignUpViewModel>()
-
     private val navController by lazy { findNavController() }
+
+    private val otpType = OtpType.CONFIRM_SIGNUP
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
@@ -45,52 +50,26 @@ class SignUpFragment : Fragment() {
 
         binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
-            val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            viewModel.sendOtp(email, password, confirmPassword)
+            navigateToConfirmOtpFragment(email)
         }
 
         binding.passwordValidationView.apply {
             errorRequirements = mapOf(
-                ValidationError.PASSWORD_TOO_SHORT to "Минимум 8 символов",
-                ValidationError.PASSWORD_MISSING_UPPERCASE to "Есть заглавная буква",
-                ValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL to "Есть специальный символ"
+                ValidationError.PASSWORD_TOO_SHORT to getString(R.string.label_min_8_symbols),
+                ValidationError.PASSWORD_MISSING_UPPERCASE to getString(R.string.label_has_upper_letter),
+                ValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL to getString(R.string.label_has_special_symbol),
             )
         }
+
 
         startCollectFlows()
         setOnChangePasswordListener()
         setConfirmOtpFragmentResultListener()
+        setSpannableStrings()
     }
 
     private fun startCollectFlows() {
-        viewModel.sendOtpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { state ->
-                when (state) {
-                    is UIState.Success -> {
-                        navigateToConfirmOtpFragment()
-                        showLoadingIndicator(false)
-                    }
-
-                    is UIState.isLoading -> {
-                        showLoadingIndicator(true)
-                    }
-
-                    is UIState.Failure -> {
-                        if (state.error == AuthError.SESSION_STILL_EXIST) {
-                            navigateToConfirmOtpFragment()
-                        }
-                        showFailureSnackbar(state.error)
-                        showLoadingIndicator(false)
-                    }
-
-                    else -> {}
-                }
-            }
-            .launchIn(lifecycleScope)
-
-
         viewModel.signUpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { state ->
                 when (state) {
@@ -117,6 +96,21 @@ class SignUpFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
+    private fun setSpannableStrings() {
+        val signInSpannable = SpannableString(binding.tvUserHasAccount.text)
+        val spanStartIndex = binding.tvUserHasAccount.text.indexOf("Войти")
+
+        signInSpannable.setSpan(object: ClickableSpan(){
+            override fun onClick(view: View) {
+                navigateToSignInFragment()
+            }
+        }, spanStartIndex, spanStartIndex + 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.tvUserHasAccount.text = signInSpannable
+        binding.tvUserHasAccount.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvUserHasAccount.highlightColor = Color.TRANSPARENT
+    }
+
     private fun setOnChangePasswordListener() {
         binding.etPassword.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
@@ -130,8 +124,8 @@ class SignUpFragment : Fragment() {
     }
 
     private fun setConfirmOtpFragmentResultListener() {
-        setFragmentResultListener(confirmOtpRequestKey) { _, bundle ->
-            val isConfirmed = bundle.getBoolean(confirmOtpResultBundleKey)
+        setFragmentResultListener(ConfirmOtpFragment.REQUEST_KEY) { _, bundle ->
+            val isConfirmed = bundle.getBoolean(ConfirmOtpFragment.RESULT_BUNDLE_KEY)
 
             if (isConfirmed) {
                 val email = binding.etEmail.text.toString()
@@ -154,8 +148,8 @@ class SignUpFragment : Fragment() {
         navController.navigate(action)
     }
 
-    private fun navigateToConfirmOtpFragment() {
-        val action = SignUpFragmentDirections.toConfirmOtpFragment(confirmOtpRequestKey, confirmOtpResultBundleKey)
+    private fun navigateToConfirmOtpFragment(email: String) {
+        val action = SignUpFragmentDirections.toConfirmOtpFragment(email, otpType)
         navController.navigate(action)
     }
 
@@ -164,6 +158,7 @@ class SignUpFragment : Fragment() {
         binding.etEmail.isEnabled = !isLoading
         binding.etPassword.isEnabled = !isLoading
         binding.etConfirmPassword.isEnabled = !isLoading
+        binding.tvUserHasAccount.movementMethod = if (isLoading) null else LinkMovementMethod.getInstance()
         binding.llTextInputContainer.alpha = if (isLoading) 0.5f else 1f
 
         binding.pbLoadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE

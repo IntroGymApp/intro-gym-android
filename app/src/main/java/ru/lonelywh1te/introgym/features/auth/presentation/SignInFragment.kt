@@ -1,6 +1,11 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
@@ -41,6 +45,7 @@ class SignInFragment : Fragment() {
         }
 
         startCollectFlows()
+        setSpannableStrings()
     }
 
     private fun startCollectFlows() {
@@ -64,8 +69,27 @@ class SignInFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
+    private fun setSpannableStrings() {
+        val forgotPasswordSpannable = SpannableString(binding.tvUserForgotPassword.text)
+
+        forgotPasswordSpannable.setSpan(object: ClickableSpan(){
+            override fun onClick(view: View) {
+                navigateToForgotPasswordFragment()
+            }
+        }, 0, forgotPasswordSpannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.tvUserForgotPassword.text = forgotPasswordSpannable
+        binding.tvUserForgotPassword.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvUserForgotPassword.highlightColor = Color.TRANSPARENT
+    }
+
     private fun navigateToHomeFragment() {
         // TODO: Not yet implemented
+    }
+
+    private fun navigateToForgotPasswordFragment() {
+        val action = SignInFragmentDirections.toForgotPasswordFragment()
+        findNavController().navigate(action)
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {

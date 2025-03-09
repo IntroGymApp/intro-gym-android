@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.ErrorSnackbar
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.databinding.FragmentConfirmOtpBinding
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.ConfirmOtpViewModel
 
@@ -25,17 +27,16 @@ class ConfirmOtpFragment : Fragment() {
     private var _binding: FragmentConfirmOtpBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var confirmOtpRequestKey: String
-    private lateinit var confirmOtpResultBundleKey: String
-
     private val viewModel by viewModel<ConfirmOtpViewModel>()
     private val args by navArgs<ConfirmOtpFragmentArgs>()
+
+    private val email by lazy { args.email }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        confirmOtpRequestKey = args.requestKey
-        confirmOtpResultBundleKey = args.requestResultBundleKey
+        viewModel.setOtpType(args.otpType)
+        viewModel.sendOtp(email)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -55,11 +56,25 @@ class ConfirmOtpFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
+        viewModel.sendOtpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { state ->
+                Log.d("ConfirmOtpFragment", "$state")
+                when (state) {
+                    is UIState.Failure -> {
+                        showFailureSnackbar(state.error)
+                        findNavController().navigateUp()
+                    }
+
+                    else -> {}
+                }
+            }
+            .launchIn(lifecycleScope)
+
         viewModel.confirmOtpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        setFragmentResult(confirmOtpRequestKey, bundleOf(confirmOtpResultBundleKey to true))
+                        setFragmentResult(REQUEST_KEY, bundleOf(RESULT_BUNDLE_KEY to true))
                         findNavController().navigateUp()
                         showLoadingIndicator(false)
                     }
@@ -83,5 +98,10 @@ class ConfirmOtpFragment : Fragment() {
 
     private fun showFailureSnackbar(error: Error) {
         ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
+    }
+
+    companion object {
+        const val REQUEST_KEY = "CONFIRM_OTP_REQUEST"
+        const val RESULT_BUNDLE_KEY = "CONFIRM_OTP_RESULT"
     }
 }

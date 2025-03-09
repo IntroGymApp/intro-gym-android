@@ -3,7 +3,10 @@ package ru.lonelywh1te.introgym.features.auth.data
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
+import ru.lonelywh1te.introgym.features.auth.data.dto.ChangePasswordRequestDto
+import ru.lonelywh1te.introgym.features.auth.data.dto.ChangePasswordResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensRequestDto
@@ -32,4 +35,6 @@ interface AuthService {
     @POST("auth/refresh")
     suspend fun refreshTokens(@Body request: RefreshTokensRequestDto): Response<RefreshTokensResponseDto>
 
+    @PUT("auth/password/{sessionId}")
+    suspend fun changePassword(@Path("sessionId") sessionId: String, @Body request: ChangePasswordRequestDto): Response<ChangePasswordResponseDto>
 }

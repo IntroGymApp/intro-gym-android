@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.network.NetworkError
+import ru.lonelywh1te.introgym.features.auth.data.dto.ChangePasswordRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
@@ -30,14 +31,14 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 }
                 request.code() == 409 -> emit(Result.Failure(AuthError.SESSION_STILL_EXIST))
                 request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
-                else -> {
-                    emit(Result.Failure(NetworkError.UNKNOWN))
-                    Log.w(LOG_TAG, "FAIL: $request")
-                }
+                else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
+
+            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
+            Log.e(LOG_TAG, "FAIL: $e")
         } catch (e: Exception) {
             emit(Result.Failure(NetworkError.UNKNOWN))
             Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
@@ -57,10 +58,7 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 request.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
                 request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
-                else -> {
-                    emit(Result.Failure(NetworkError.UNKNOWN))
-                    Log.w(LOG_TAG, "FAIL: $request")
-                }
+                else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
 
         } catch (e: IOException) {
@@ -114,6 +112,31 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
+                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                else -> {
+                    emit(Result.Failure(NetworkError.UNKNOWN))
+                    Log.w(LOG_TAG, "FAIL: $request")
+                }
+            }
+
+        } catch (e: IOException) {
+            emit(Result.Failure(NetworkError.NO_INTERNET))
+        } catch (e: Exception) {
+            emit(Result.Failure(NetworkError.UNKNOWN))
+            Log.e(LOG_TAG, "UNKNOWN EXCEPTION: $e")
+        }
+    }
+
+    override suspend fun changePassword(email: String, password: String): Flow<Result<Unit>> = flow {
+        val sessionId = authStorage.getSessionId() ?: ""
+
+        try {
+            emit(Result.InProgress)
+            val request = authService.changePassword(sessionId, ChangePasswordRequestDto(email, password))
+            val body = request.body()
+
+            when {
+                request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
                 request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))

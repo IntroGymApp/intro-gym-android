@@ -8,5 +8,6 @@ interface AuthRepository {
     suspend fun confirmOtp(otp: String, otpType: String): Flow<Result<Unit>>
     suspend fun signUp(email: String, password: String): Flow<Result<Unit>>
     suspend fun signIn(email: String, password: String): Flow<Result<Unit>>
+    suspend fun changePassword(email: String, password: String): Flow<Result<Unit>>
     suspend fun refreshToken(): Flow<Result<Unit>>
 }

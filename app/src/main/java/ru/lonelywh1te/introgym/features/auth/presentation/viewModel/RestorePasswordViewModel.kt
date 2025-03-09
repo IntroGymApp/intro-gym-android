@@ -4,27 +4,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
 import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
-import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignUpUseCase
+import ru.lonelywh1te.introgym.features.auth.domain.usecase.ChangePasswordUseCase
 
-class SignUpViewModel(
-    private val signUpUseCase: SignUpUseCase,
+class RestorePasswordViewModel(
+    private val changePasswordUseCase: ChangePasswordUseCase,
     private val validator: EmailPasswordValidator,
 ): ViewModel() {
-    private val _signUpResult = MutableSharedFlow<UIState<*>>()
-    val signUpResult get() = _signUpResult.asSharedFlow()
+    private val _changePasswordResult: MutableSharedFlow<UIState<*>> = MutableSharedFlow(replay = 1)
+    val changePasswordResult get() = _changePasswordResult
 
     private val dispatcher = Dispatchers.IO
 
-    fun signUp(email: String, password: String, confirmPassword: String) {
+    fun changePassword(email: String, password: String, confirmPassword: String) {
         viewModelScope.launch(dispatcher) {
-            signUpUseCase(email, password, confirmPassword).collect { result ->
-                _signUpResult.emit(result.toUIState())
+            changePasswordUseCase(email, password, confirmPassword).collect { result ->
+                _changePasswordResult.emit(result.toUIState())
             }
         }
     }
