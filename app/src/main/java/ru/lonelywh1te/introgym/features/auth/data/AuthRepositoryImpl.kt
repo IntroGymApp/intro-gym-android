@@ -61,6 +61,8 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
 
+            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
         } catch (e: Exception) {
@@ -80,17 +82,16 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
             when {
                 request.isSuccessful && body != null -> {
                     emit(Result.Success(Unit))
-                    authStorage.clearSessionId()
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
                 request.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
                 request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
-                else -> {
-                    emit(Result.Failure(NetworkError.UNKNOWN))
-                    Log.w(LOG_TAG, "FAIL: $request")
-                }
+                else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
+
+            authStorage.clearSessionId()
+            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -113,11 +114,10 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                 }
                 request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
                 request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
-                else -> {
-                    emit(Result.Failure(NetworkError.UNKNOWN))
-                    Log.w(LOG_TAG, "FAIL: $request")
-                }
+                else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
+
+            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -143,6 +143,8 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                     Log.w(LOG_TAG, "FAIL: $request")
                 }
             }
+
+            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -171,6 +173,8 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
                     Log.w(LOG_TAG, "FAIL: $request")
                 }
             }
+
+            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))

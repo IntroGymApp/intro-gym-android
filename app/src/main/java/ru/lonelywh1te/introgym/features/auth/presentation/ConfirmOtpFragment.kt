@@ -60,10 +60,14 @@ class ConfirmOtpFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Failure -> {
-                        val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, state.error) }
+                        if (state.error == AuthError.SESSION_STILL_EXIST) {
+                            showFailureMessage(state.error)
+                        } else {
+                            val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, state.error) }
 
-                        setFragmentResult(REQUEST_KEY, bundle)
-                        findNavController().navigateUp()
+                            setFragmentResult(REQUEST_KEY, bundle)
+                            findNavController().navigateUp()
+                        }
                     }
 
                     else -> {}

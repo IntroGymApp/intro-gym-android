@@ -6,9 +6,12 @@ import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
 
-class SignInUseCase(private val repository: AuthRepository) {
+class SignInUseCase(
+    private val repository: AuthRepository,
+    private val validator: EmailPasswordValidator,
+) {
     suspend operator fun invoke(email: String, password: String): Flow<Result<Unit>> {
-        val validateResult = EmailPasswordValidator.validate(email, password)
+        val validateResult = validator.validate(email, password)
         if (validateResult !is Result.Success) return flowOf(validateResult)
 
         return repository.signIn(email, password)
