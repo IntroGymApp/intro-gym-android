@@ -81,14 +81,19 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Widget.IntroGym.TextView.Marker" parent="Widget.AppCompat.TextView">
+<!--    <style name="Widget.IntroGym.TextView.Marker" parent="Widget.AppCompat.TextView">-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="drawableStartCompat">@drawable/ic_point</item>-->
+<!--        <item name="android:drawablePadding">15dp</item>-->
+<!--        <item name="drawableTint">?attr/igTextSecondaryColor</item>-->
+<!--    </style>-->
+
+    <style name="Widget.IntroGym.TextView.Error" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="drawableStartCompat">@drawable/ic_point</item>
-        <item name="android:drawablePadding">15dp</item>
-        <item name="drawableTint">?attr/igTextSecondaryColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Footnote.Regular</item>
+        <item name="android:textColor">?attr/igErrorColor</item>
     </style>
-
-
 
 </resources>

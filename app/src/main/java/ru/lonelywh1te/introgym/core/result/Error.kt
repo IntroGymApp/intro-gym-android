@@ -1,3 +1,5 @@
 package ru.lonelywh1te.introgym.core.result
 
-interface Error
+import java.io.Serializable
+
+interface Error: Serializable

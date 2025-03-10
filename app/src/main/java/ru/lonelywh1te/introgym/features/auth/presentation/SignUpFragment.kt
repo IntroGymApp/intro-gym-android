@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableString
@@ -8,6 +9,7 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
@@ -86,7 +89,8 @@ class SignUpFragment : Fragment() {
                         if (state.error == AuthError.EMAIL_ALREADY_REGISTERED) {
                             navigateToSignInFragment()
                         }
-                        showFailureSnackbar(state.error)
+
+                        showFailureMessage(state.error)
                         showLoadingIndicator(false)
                     }
 
@@ -134,7 +138,13 @@ class SignUpFragment : Fragment() {
 
                 viewModel.signUp(email, password, confirmPassword)
             } else {
-                showFailureSnackbar(NetworkError.UNKNOWN)
+                val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, Error::class.java)
+                } else {
+                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as Error
+                }
+
+                error?.let { showFailureMessage(it) }
             }
         }
     }
@@ -154,7 +164,6 @@ class SignUpFragment : Fragment() {
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
-        binding.etUserName.isEnabled = !isLoading
         binding.etEmail.isEnabled = !isLoading
         binding.etPassword.isEnabled = !isLoading
         binding.etConfirmPassword.isEnabled = !isLoading
@@ -165,8 +174,9 @@ class SignUpFragment : Fragment() {
         binding.btnSignUp.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureSnackbar(error: Error) {
-        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
+    private fun showFailureMessage(error: Error) {
+        binding.tvErrorMessage.visibility = View.VISIBLE
+        binding.tvErrorMessage.text = getString(AuthErrorStringResProvider.get(error))
     }
 
     companion object {

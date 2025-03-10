@@ -60,7 +60,7 @@ class SignInFragment : Fragment() {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
-                        showFailureSnackbar(state.error)
+                        showFailureMessage(state.error)
                         showLoadingIndicator(false)
                     }
                     else -> {}
@@ -97,7 +97,10 @@ class SignInFragment : Fragment() {
         binding.btnSignIn.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureSnackbar(error: Error) {
-        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
+    private fun showFailureMessage(error: Error) {
+        binding.tvErrorMessage.apply {
+            text = getString(AuthErrorStringResProvider.get(error))
+            visibility = View.VISIBLE
+        }
     }
 }

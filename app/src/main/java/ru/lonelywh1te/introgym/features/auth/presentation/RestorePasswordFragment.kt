@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -82,7 +83,7 @@ class RestorePasswordFragment : Fragment() {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
-                        showFailureSnackbar(state.error)
+                        showFailureMessage(state.error)
                         showLoadingIndicator(false)
                     }
                     else -> {}
@@ -116,7 +117,13 @@ class RestorePasswordFragment : Fragment() {
                 otpConfirmed = true
                 setChangePasswordForm(otpConfirmed = true)
             } else {
-                showFailureSnackbar(NetworkError.UNKNOWN)
+                val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, Error::class.java)
+                } else {
+                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as Error
+                }
+
+                error?.let { showFailureMessage(it) }
             }
         }
     }
@@ -156,8 +163,11 @@ class RestorePasswordFragment : Fragment() {
         binding.btnSubmit.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureSnackbar(error: Error) {
-        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
+    private fun showFailureMessage(error: Error) {
+        binding.tvErrorMessage.apply {
+            text = getString(AuthErrorStringResProvider.get(error))
+            visibility = View.VISIBLE
+        }
     }
 
 }

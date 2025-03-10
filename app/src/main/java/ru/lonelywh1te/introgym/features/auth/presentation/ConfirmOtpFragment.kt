@@ -58,10 +58,11 @@ class ConfirmOtpFragment : Fragment() {
     private fun startCollectFlows() {
         viewModel.sendOtpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { state ->
-                Log.d("ConfirmOtpFragment", "$state")
                 when (state) {
                     is UIState.Failure -> {
-                        showFailureSnackbar(state.error)
+                        val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, state.error) }
+
+                        setFragmentResult(REQUEST_KEY, bundle)
                         findNavController().navigateUp()
                     }
 
@@ -74,7 +75,9 @@ class ConfirmOtpFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        setFragmentResult(REQUEST_KEY, bundleOf(RESULT_BUNDLE_KEY to true))
+                        val bundle = Bundle().apply { putBoolean(ERROR_BUNDLE_KEY, true) }
+
+                        setFragmentResult(REQUEST_KEY, bundle)
                         findNavController().navigateUp()
                         showLoadingIndicator(false)
                     }
@@ -82,7 +85,7 @@ class ConfirmOtpFragment : Fragment() {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
-                        showFailureSnackbar(state.error)
+                        showFailureMessage(state.error)
                         showLoadingIndicator(false)
                     }
                     else -> {}
@@ -96,12 +99,16 @@ class ConfirmOtpFragment : Fragment() {
         binding.btnConfirmOtp.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureSnackbar(error: Error) {
-        ErrorSnackbar(binding.root).show(getString(AuthErrorStringResProvider.get(error)))
+    private fun showFailureMessage(error: Error) {
+        binding.tvErrorMessage.apply {
+            text = getString(AuthErrorStringResProvider.get(error))
+            visibility = View.VISIBLE
+        }
     }
 
     companion object {
         const val REQUEST_KEY = "CONFIRM_OTP_REQUEST"
         const val RESULT_BUNDLE_KEY = "CONFIRM_OTP_RESULT"
+        const val ERROR_BUNDLE_KEY = "CONFIRM_OTP_RESULT"
     }
 }
