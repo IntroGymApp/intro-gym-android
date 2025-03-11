@@ -52,12 +52,59 @@
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
     </style>
 
+    <style name="Widget.IntroGym.Button.Black">
+        <item name="backgroundTint">?attr/igTextPrimaryColor</item>
+    </style>
+
     <style name="Widget.IntroGym.TextButton" parent="Widget.Material3.Button.TextButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">60dp</item>
+        <item name="cornerRadius">10dp</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
         <item name="android:textColor">?attr/igTextButtonColor</item>
     </style>
+
+    <style name="Widget.IntroGym.TextButton.Orange">
+        <item name="android:textColor">?attr/igWarningColor</item>
+    </style>
+
+
+    <style name="Widget.IntroGym.TextButton.Black">
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
+    </style>
+
+    <style name="Widget.IntroGym.IconButton" parent="Widget.Material3.Button.IconButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="iconTint">?attr/igIconStaticColor</item>
+        <item name="rippleColor">?attr/igIconStaticColor</item>
+    </style>
+
+    <style name="Widget.IntroGym.SegmentedButton" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="rippleColor">?attr/igPrimaryColor</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.IntroGym.SegmentButton</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="Widget.IntroGym.IconButton.Primary">
+        <item name="iconTint">?attr/igIconActionColor</item>
+        <item name="rippleColor">?attr/igIconActionColor</item>
+    </style>
+
+    <style name="Widget.IntroGym.DatePickerSpinner" parent="@android:style/Widget.DatePicker">
+        <item name="android:headerDayOfMonthTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+        <item name="android:headerMonthTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+        <item name="android:headerYearTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+    </style>
+
+<!--    <style name="Widget.IntroGym.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">-->
+<!--        <item name="trackTint">?attr/igCardBackgroundColor</item>-->
+<!--        <item name="trackDecorationTint">?attr/igCardForegroundColor</item>-->
+<!--        <item name="thumbIconTint">?attr/igCardForegroundColor</item>-->
+<!--    </style>-->
 
     <!-- CONTAINERS -->
 
@@ -81,19 +128,21 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-<!--    <style name="Widget.IntroGym.TextView.Marker" parent="Widget.AppCompat.TextView">-->
-<!--        <item name="android:layout_width">wrap_content</item>-->
-<!--        <item name="android:layout_height">wrap_content</item>-->
-<!--        <item name="drawableStartCompat">@drawable/ic_point</item>-->
-<!--        <item name="android:drawablePadding">15dp</item>-->
-<!--        <item name="drawableTint">?attr/igTextSecondaryColor</item>-->
-<!--    </style>-->
-
     <style name="Widget.IntroGym.TextView.Error" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Footnote.Regular</item>
         <item name="android:textColor">?attr/igErrorColor</item>
+    </style>
+
+
+    <!-- Theme Overlays -->
+
+    <style name="ThemeOverlay.IntroGym.SegmentButton" parent="ThemeOverlay.Material3.Button.IconButton.Filled">
+        <item name="colorOnContainerUnchecked">?attr/igHintColor</item>
+        <item name="colorOnContainer">?attr/igOnPrimaryColor</item>
+        <item name="colorContainer">?attr/igPrimaryColor</item>
+        <item name="colorSurfaceContainerHighest">?attr/igCardBackgroundColor</item>
     </style>
 
 </resources>

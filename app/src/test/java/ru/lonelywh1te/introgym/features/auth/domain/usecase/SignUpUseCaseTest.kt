@@ -23,15 +23,16 @@ import ru.lonelywh1te.introgym.core.result.Result
 
 class SignUpUseCaseTest {
     private lateinit var authRepository: AuthRepository
+    private lateinit var validator: EmailPasswordValidator
     private lateinit var useCase: SignUpUseCase
     private val email = "invalid_email"
     private val password = "invalid_password"
 
     @BeforeEach
     fun setUp() {
-        mockkObject(EmailPasswordValidator)
         authRepository = mockk()
-        useCase = SignUpUseCase(authRepository)
+        validator = mockk()
+        useCase = SignUpUseCase(authRepository, validator)
     }
 
     @AfterEach

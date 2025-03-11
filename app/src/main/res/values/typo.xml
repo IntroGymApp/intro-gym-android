@@ -71,6 +71,14 @@
         <item name="fontFamily">@font/geist_regular</item>
     </style>
 
+    <style name="TextAppearance.IntroGym.Body.Regular.Large">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="TextAppearance.IntroGym.Body.Regular.Medium">
+        <item name="android:textSize">22sp</item>
+    </style>
+
     <style name="TextAppearance.IntroGym.Body.Bold">
         <item name="fontFamily">@font/geist_bold</item>
     </style>

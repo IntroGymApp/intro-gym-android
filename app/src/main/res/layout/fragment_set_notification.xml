@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/igOnboardingBackgroundDrawable"
+    android:paddingHorizontal="20dp"
+    tools:context=".features.onboarding.presentation.SetNotificationFragment">
+
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Настоящие чемпионы не пропускают тренировки!"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular.Large"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="Мы напомним о тренировках и подкинем мотивацию, когда это нужно."
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Включить уведомления"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:layout_constraintBottom_toBottomOf="@+id/materialSwitch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/materialSwitch" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/materialSwitch"
+        android:layout_width="wrap_content"
+        android:checked="true"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btn_back"
+        style="@style/Widget.IntroGym.IconButton"
+        android:layout_marginBottom="20dp"
+        app:icon="@drawable/ic_left_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_next" />
+
+    <Button
+        android:id="@+id/btn_next"
+        style="@style/Widget.IntroGym.Button.Black"
+        android:layout_width="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/label_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_back" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

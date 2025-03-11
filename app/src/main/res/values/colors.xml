@@ -4,8 +4,8 @@
     <color name="foreground_color">#1F1F1F</color>
     <color name="background_color">#F1F1F1</color>
     <color name="plate_color">#FFFFFF</color>
-    <color name="light_indicator_color">#F6F4F4</color>
-    <color name="indicator_color">#989898</color>
+    <color name="hint_color">#F6F4F4</color>
+    <color name="dark_hint_color">#989898</color>
     <color name="red_color">#EE534A</color>
     <color name="orange_color">#FBAF44</color>
 </resources>

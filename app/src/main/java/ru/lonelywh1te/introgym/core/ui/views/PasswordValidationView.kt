@@ -3,7 +3,6 @@ package ru.lonelywh1te.introgym.core.ui.views
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -30,7 +29,7 @@ class PasswordValidationView<T>(
     private val textViewRequirements: MutableMap<T, TextView> = mutableMapOf()
 
     @ColorRes var defaultIndicatorColor: Int = R.color.plate_color
-    @ColorRes var textRequirementsIncompleteColor: Int = R.color.indicator_color
+    @ColorRes var textRequirementsIncompleteColor: Int = R.color.dark_hint_color
     @ColorRes var requirementCompleteColor: Int = R.color.accent_color
 
     var textRequirementsAppearance: Int = R.style.TextAppearance_IntroGym_Footnote_Regular

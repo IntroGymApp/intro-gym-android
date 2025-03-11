@@ -7,25 +7,31 @@
 
     <style name="Theme.IntroGym.Light" parent="Base.Theme.IntroGym" >
         <item name="igPrimaryColor">@color/accent_color</item>
+        <item name="igOnPrimaryColor">@color/background_color</item>
         <item name="igBackgroundColor">@color/background_color</item>
 
         <item name="igTextPrimaryColor">@color/foreground_color</item>
-        <item name="igTextSecondaryColor">@color/indicator_color</item>
+        <item name="igTextSecondaryColor">@color/dark_hint_color</item>
 
         <item name="igCardBackgroundColor">@color/plate_color</item>
-        <item name="igCardForegroundColor">@color/indicator_color</item>
+        <item name="igCardForegroundColor">@color/dark_hint_color</item>
 
         <item name="igActiveStateBackgroundColor">?attr/igPrimaryColor</item>
         <item name="igActiveStateForegroundColor">?attr/igBackgroundColor</item>
         <item name="igInactiveStateBackgroundColor">?attr/igCardBackgroundColor</item>
         <item name="igInactiveStateForegroundColor">?attr/igCardForegroundColor</item>
 
-        <item name="igTextButtonColor">@color/orange_color</item>
+        <item name="igTextButtonColor">?attr/igPrimaryColor</item>
 
         <item name="igIconStaticColor">?attr/igTextPrimaryColor</item>
+        <item name="igIconActionColor">?attr/igPrimaryColor</item>
+        <item name="igHintColor">@color/hint_color</item>
 
         <item name="igSuccessColor">?attr/igPrimaryColor</item>
         <item name="igWarningColor">@color/orange_color</item>
         <item name="igErrorColor">@color/red_color</item>
+
+        <item name="igOnboardingBackgroundDrawable">@drawable/onboarding_background_light</item>
+        <item name="igOnboardingFeaturesCardsDrawable">@drawable/onboarding_features_cards_light</item>
     </style>
 </resources>

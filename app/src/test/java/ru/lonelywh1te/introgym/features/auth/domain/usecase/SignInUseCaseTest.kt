@@ -21,6 +21,7 @@ import ru.lonelywh1te.introgym.core.result.Result
 
 class SignInUseCaseTest {
     private lateinit var authRepository: AuthRepository
+    private lateinit var validator: EmailPasswordValidator
     private lateinit var useCase: SignInUseCase
     private val email = "invalid_email"
     private val password = "invalid_password"
@@ -29,7 +30,8 @@ class SignInUseCaseTest {
     fun setUp() {
         mockkObject(EmailPasswordValidator)
         authRepository = mockk()
-        useCase = SignInUseCase(authRepository)
+        validator = mockk()
+        useCase = SignInUseCase(authRepository, validator)
     }
 
     @AfterEach

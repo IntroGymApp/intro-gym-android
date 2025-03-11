@@ -4,6 +4,7 @@
 
 <resources>
     <attr name="igPrimaryColor" format="color"/>
+    <attr name="igOnPrimaryColor" format="color"/>
     <attr name="igBackgroundColor" format="color"/>
 
     <attr name="igTextPrimaryColor" format="color"/>
@@ -22,9 +23,14 @@
     <attr name="igIconActionColor" format="color"/>
     <attr name="igIconStaticColor" format="color"/>
 
+    <attr name="igHintColor" type="color"/>
+
     <attr name="igSuccessColor" format="color"/>
     <attr name="igWarningColor" format="color"/>
     <attr name="igErrorColor" format="color"/>
+
+    <attr name="igOnboardingBackgroundDrawable" format="reference"/>
+    <attr name="igOnboardingFeaturesCardsDrawable" format="reference"/>
 
     <declare-styleable name="PasswordValidationView">
         <attr name="errorCount" format="integer"/>

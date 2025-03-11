@@ -55,5 +55,13 @@
     <string name="label_forgot_password_question">Забыли пароль?</string>
     <string name="label_new_password">Новый пароль</string>
     <string name="label_create_new_password_description">Введите новый пароль для вашей учетной записи. Убедитесь, что пароль надежный и соответствует всем требованиям.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_skip">Пропустить</string>
+    <string name="label_welcome_to_app">Приветствуем в IntroGym!</string>
+    <string name="label_welcome_fragment_description">Мы поможем тебе достичь лучших результатов в тренировках</string>
+    <string name="label_next">Далее</string>
+    <string name="label_features_fragment_title">Создавай тренировки, планируй их в календаре и выполняй</string>
+    <string name="label_features_fragment_description">Достигай. Делись. Вдохновляй</string>
 
 </resources>

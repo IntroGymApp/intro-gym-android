@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/igOnboardingBackgroundDrawable"
+    android:paddingHorizontal="20dp"
+    tools:context=".features.onboarding.presentation.HelloFragment">
+
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        style="@style/Widget.IntroGym.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/label_skip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_hello_introgym"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_welcome_to_app"
+        android:layout_marginBottom="20dp"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="@string/label_welcome_fragment_description"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular.Large"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next"
+        app:layout_constraintStart_toStartOf="@+id/btn_next" />
+
+    <Button
+        android:id="@+id/btn_next"
+        style="@style/Widget.IntroGym.Button.Black"
+        android:layout_marginBottom="20dp"
+        android:text="@string/label_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
