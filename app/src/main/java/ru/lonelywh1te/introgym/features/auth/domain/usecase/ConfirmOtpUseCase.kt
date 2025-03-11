@@ -6,7 +6,6 @@ import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.OtpValidator
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
-import javax.xml.validation.Validator
 
 class ConfirmOtpUseCase(
     private val repository: AuthRepository,

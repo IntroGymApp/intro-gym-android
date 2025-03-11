@@ -5,19 +5,18 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
+import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
 
 // TODO: исправить тесты и дописать другие
 
@@ -42,7 +41,7 @@ class SignUpUseCaseTest {
 
     @Test
     fun `signUp with validate failure`() = runTest {
-        every { EmailPasswordValidator.validate(email, password, password) } returns Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
+        every { validator.validate(email, password, password) } returns Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
 
         val expected = listOf(Result.Failure(ValidationError.INVALID_EMAIL_FORMAT))
         val actual = useCase(email, password, password).toList()
@@ -53,7 +52,7 @@ class SignUpUseCaseTest {
 
     @Test
     fun `signUp with validate success`() = runTest {
-        every { EmailPasswordValidator.validate(email, password, password) } returns Result.Success(Unit)
+        every { validator.validate(email, password, password) } returns Result.Success(Unit)
         coEvery { authRepository.signUp(email, password) } returns flowOf(Result.InProgress, Result.Success(Unit))
 
         val expected = listOf(Result.InProgress, Result.Success(Unit))

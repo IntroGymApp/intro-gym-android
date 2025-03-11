@@ -5,7 +5,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -14,10 +13,10 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
+import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
 
 class SignInUseCaseTest {
     private lateinit var authRepository: AuthRepository
@@ -28,7 +27,6 @@ class SignInUseCaseTest {
 
     @BeforeEach
     fun setUp() {
-        mockkObject(EmailPasswordValidator)
         authRepository = mockk()
         validator = mockk()
         useCase = SignInUseCase(authRepository, validator)
@@ -41,7 +39,7 @@ class SignInUseCaseTest {
 
     @Test
     fun `signIn with validate failure`() = runTest {
-        every { EmailPasswordValidator.validate(email, password) } returns Result.Failure(
+        every { validator.validate(email, password) } returns Result.Failure(
             ValidationError.INVALID_EMAIL_FORMAT)
 
         val expected = listOf(Result.Failure(ValidationError.INVALID_EMAIL_FORMAT))
@@ -53,7 +51,7 @@ class SignInUseCaseTest {
 
     @Test
     fun `signIn with validate success`() = runTest {
-        every { EmailPasswordValidator.validate(email, password) } returns Result.Success(Unit)
+        every { validator.validate(email, password) } returns Result.Success(Unit)
         coEvery { authRepository.signIn(email, password) } returns flowOf(Result.InProgress, Result.Success(Unit))
 
         val expected = listOf(Result.InProgress, Result.Success(Unit))

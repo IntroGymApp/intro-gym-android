@@ -15,12 +15,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import retrofit2.Response
+import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpResponseDto
-import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
-import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensResponseDto
+import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpRequestDto
+import ru.lonelywh1te.introgym.features.auth.data.dto.SendOtpResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignInRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignInResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpRequestDto
@@ -28,8 +30,6 @@ import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
-import ru.lonelywh1te.introgym.data.network.NetworkError
-import ru.lonelywh1te.introgym.core.result.Result
 import java.io.IOException
 
 // TODO: timeout tests

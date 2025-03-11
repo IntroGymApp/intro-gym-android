@@ -3,8 +3,8 @@ package ru.lonelywh1te.introgym.features.auth.domain
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
 
 class EmailPasswordValidatorTest {
     private val validator = EmailPasswordValidator

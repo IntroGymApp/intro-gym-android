@@ -21,20 +21,20 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
     override suspend fun sendOtp(email: String, otpType: String): Flow<Result<Unit>> = flow {
         try {
             emit(Result.InProgress)
-            val request = authService.sendOtp(SendOtpRequestDto(email), otpType)
-            val body = request.body()
+            val response = authService.sendOtp(SendOtpRequestDto(email), otpType)
+            val body = response.body()
 
             when {
-                request.isSuccessful && body != null -> {
+                response.isSuccessful && body != null -> {
                     emit(Result.Success(Unit))
                     authStorage.saveSessionId(body.sessionId)
                 }
-                request.code() == 409 -> emit(Result.Failure(AuthError.SESSION_STILL_EXIST))
-                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                response.code() == 409 -> emit(Result.Failure(AuthError.SESSION_STILL_EXIST))
+                response.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
 
-            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+            if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -50,18 +50,18 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
 
         try {
             emit(Result.InProgress)
-            val request = authService.confirmOtp(ConfirmOtpRequestDto(sessionId, otp), otpType)
-            val body = request.body()
+            val response = authService.confirmOtp(ConfirmOtpRequestDto(sessionId, otp), otpType)
+            val body = response.body()
 
             when {
-                request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
-                request.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
-                request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
-                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                response.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
+                response.isSuccessful && body != null && !body.isSuccess -> emit(Result.Failure(AuthError.INVALID_OTP_CODE))
+                response.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
+                response.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
 
-            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+            if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -76,22 +76,22 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
 
         try {
             emit(Result.InProgress)
-            val request = authService.signUp(SignUpRequestDto(sessionId, email, password))
-            val body = request.body()
+            val response = authService.signUp(SignUpRequestDto(sessionId, email, password))
+            val body = response.body()
 
             when {
-                request.isSuccessful && body != null -> {
+                response.isSuccessful && body != null -> {
                     emit(Result.Success(Unit))
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
-                request.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
-                request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
-                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                response.code() == 409 -> emit(Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
+                response.code() == 400 -> emit(Result.Failure(AuthError.INVALID_SESSION))
+                response.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
 
             authStorage.clearSessionId()
-            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+            if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -104,20 +104,20 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
     override suspend fun signIn(email: String, password: String): Flow<Result<Unit>> = flow {
         try {
             emit(Result.InProgress)
-            val request = authService.signIn(SignInRequestDto(email, password))
-            val body = request.body()
+            val response = authService.signIn(SignInRequestDto(email, password))
+            val body = response.body()
 
             when {
-                request.isSuccessful && body != null -> {
+                response.isSuccessful && body != null -> {
                     emit(Result.Success(Unit))
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
-                request.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
-                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                response.code() == 400 -> emit(Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
+                response.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> emit(Result.Failure(NetworkError.UNKNOWN))
             }
 
-            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+            if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -132,19 +132,19 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
 
         try {
             emit(Result.InProgress)
-            val request = authService.changePassword(sessionId, ChangePasswordRequestDto(email, password))
-            val body = request.body()
+            val response = authService.changePassword(sessionId, ChangePasswordRequestDto(email, password))
+            val body = response.body()
 
             when {
-                request.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
-                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                response.isSuccessful && body != null && body.isSuccess -> emit(Result.Success(Unit))
+                response.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
-                    Log.w(LOG_TAG, "FAIL: $request")
+                    Log.w(LOG_TAG, "FAIL: $response")
                 }
             }
 
-            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+            if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
@@ -158,23 +158,23 @@ class AuthRepositoryImpl(private val authService: AuthService, private val authS
         val refreshToken = authStorage.getRefreshToken() ?: ""
 
         try {
-            val request = authService.refreshTokens(RefreshTokensRequestDto(refreshToken))
-            val body = request.body()
+            val response = authService.refreshTokens(RefreshTokensRequestDto(refreshToken))
+            val body = response.body()
 
             when {
-                request.isSuccessful && body != null -> {
+                response.isSuccessful && body != null -> {
                     emit(Result.Success(Unit))
                     authStorage.saveTokens(body.accessToken, body.refreshToken)
                 }
-                request.code() == 401 -> emit(Result.Failure(AuthError.UNAUTHORIZED))
-                request.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
+                response.code() == 401 -> emit(Result.Failure(AuthError.UNAUTHORIZED))
+                response.code() in 500..599 -> emit(Result.Failure(NetworkError.SERVER_ERROR))
                 else -> {
                     emit(Result.Failure(NetworkError.UNKNOWN))
-                    Log.w(LOG_TAG, "FAIL: $request")
+                    Log.w(LOG_TAG, "FAIL: $response")
                 }
             }
 
-            if (!request.isSuccessful) Log.w(LOG_TAG, "FAIL: $request")
+            if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
 
         } catch (e: IOException) {
             emit(Result.Failure(NetworkError.NO_INTERNET))
