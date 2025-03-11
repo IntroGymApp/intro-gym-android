@@ -17,9 +17,9 @@
         </fragment>
         <fragment
             android:id="@+id/startFragment"
-            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.StartFragment"
+            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.FinishFragment"
             android:label="fragment_start"
-            tools:layout="@layout/fragment_start">
+            tools:layout="@layout/fragment_finish">
             <action
                 android:id="@+id/to_signUpFragment"
                 app:destination="@id/auth" />

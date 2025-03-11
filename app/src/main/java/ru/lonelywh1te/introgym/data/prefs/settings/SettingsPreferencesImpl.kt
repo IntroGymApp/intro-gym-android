@@ -18,6 +18,10 @@ class SettingsPreferencesImpl(context: Context): SettingsPreferences {
         get() = prefs.getBoolean(NOTIFICATION_ENABLED_KEY, false)
         set(value) = putBoolean(NOTIFICATION_ENABLED_KEY, value)
 
+    override var onboardingCompleted: Boolean
+        get() = prefs.getBoolean(ONBOARDING_COMPLETED_KEY, false)
+        set(value) = putBoolean(ONBOARDING_COMPLETED_KEY, value)
+
     private fun putBoolean(key: String, value: Boolean) {
         prefs.edit().putBoolean(key, value).apply()
     }
@@ -29,6 +33,7 @@ class SettingsPreferencesImpl(context: Context): SettingsPreferences {
     companion object {
         private const val SETTINGS_PREFS_KEY = "settings_preferences"
         private const val FIRST_LAUNCH_KEY = "first_launch"
+        private const val ONBOARDING_COMPLETED_KEY = "onboarding_completed"
         private const val DARK_THEME_KEY = "dark_theme"
         private const val NOTIFICATION_ENABLED_KEY = "notification_enabled"
     }

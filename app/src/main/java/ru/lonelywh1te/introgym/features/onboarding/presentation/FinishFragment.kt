@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import ru.lonelywh1te.introgym.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
-import ru.lonelywh1te.introgym.databinding.FragmentStartBinding
+import ru.lonelywh1te.introgym.databinding.FragmentFinishBinding
+import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.FinishViewModel
 
-class StartFragment : Fragment() {
-    private var _binding: FragmentStartBinding? = null
+class FinishFragment : Fragment() {
+    private var _binding: FragmentFinishBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel by viewModel<FinishViewModel>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        _binding = FragmentFinishBinding.inflate(inflater, container, false)
 
         WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
@@ -26,6 +29,7 @@ class StartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnNext.setOnClickListener {
+            viewModel.completeOnboarding()
             navigateToSignUpFragment()
         }
 
@@ -35,7 +39,7 @@ class StartFragment : Fragment() {
     }
 
     private fun navigateToSignUpFragment() {
-        val action = StartFragmentDirections.toSignUpFragment()
+        val action = FinishFragmentDirections.toSignUpFragment()
         findNavController().navigate(action)
     }
 }

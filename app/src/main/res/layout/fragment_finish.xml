@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/igOnboardingBackgroundDrawable"
     android:paddingHorizontal="20dp"
-    tools:context=".features.onboarding.presentation.StartFragment">
+    tools:context=".features.onboarding.presentation.FinishFragment">
 
     <TextView
         android:id="@+id/tv_hello_introgym"

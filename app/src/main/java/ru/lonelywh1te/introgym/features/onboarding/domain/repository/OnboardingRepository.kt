@@ -5,5 +5,6 @@ import java.time.LocalDate
 
 interface OnboardingRepository {
     fun setUserPreferences(name: String?, gender: Gender?, birthday: LocalDate?)
-    fun setNotificationEnabled(enabled: Boolean)
+    fun setNotificationEnabled(isEnabled: Boolean)
+    fun setOnboardingCompleted(isCompleted: Boolean)
 }

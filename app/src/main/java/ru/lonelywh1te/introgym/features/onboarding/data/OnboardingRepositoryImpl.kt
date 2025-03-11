@@ -19,4 +19,10 @@ class OnboardingRepositoryImpl(
     override fun setNotificationEnabled(isEnabled: Boolean) {
         settingsPreferences.isNotificationEnabled = isEnabled
     }
+
+    override fun setOnboardingCompleted(isCompleted: Boolean) {
+        settingsPreferences.onboardingCompleted = isCompleted
+    }
+
+
 }
