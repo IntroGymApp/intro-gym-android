@@ -8,6 +8,7 @@ import org.koin.core.logger.Level
 import ru.lonelywh1te.introgym.data.dataModule
 import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
+import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
 
 class App: Application() {
     override fun onCreate() {
@@ -16,7 +17,12 @@ class App: Application() {
         startKoin {
             androidContext(applicationContext)
             androidLogger(level = Level.DEBUG)
-            modules(dataModule, authModule, guideModule)
+            modules(
+                dataModule,
+                authModule,
+                guideModule,
+                onboardingModule
+            )
         }
     }
 }

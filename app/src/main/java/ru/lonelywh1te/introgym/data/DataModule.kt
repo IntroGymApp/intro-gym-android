@@ -5,8 +5,10 @@ import ru.lonelywh1te.introgym.data.db.MainDatabase
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseCategoryDao
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.TagDao
-
-private const val SHARED_PREFERENCES_NAME = "intro_gym_shared_prefs"
+import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
+import ru.lonelywh1te.introgym.data.prefs.UserPreferences
+import ru.lonelywh1te.introgym.data.prefs.settings.SettingsPreferencesImpl
+import ru.lonelywh1te.introgym.data.prefs.user.UserPreferencesImpl
 
 val dataModule = module {
     single<MainDatabase> {
@@ -23,5 +25,13 @@ val dataModule = module {
 
     factory<TagDao> {
         get<MainDatabase>().tagDao()
+    }
+
+    single<UserPreferences> {
+        UserPreferencesImpl(context = get())
+    }
+
+    single<SettingsPreferences> {
+        SettingsPreferencesImpl(context = get())
     }
 }

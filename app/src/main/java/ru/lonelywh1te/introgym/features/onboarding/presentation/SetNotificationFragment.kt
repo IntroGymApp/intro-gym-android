@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentSetNotificationBinding
+import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.SetNotificationViewModel
 
 class SetNotificationFragment : Fragment() {
     private var _binding: FragmentSetNotificationBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModel<SetNotificationViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSetNotificationBinding.inflate(inflater, container, false)
@@ -26,6 +30,8 @@ class SetNotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnNext.setOnClickListener {
+            viewModel.setNotification(binding.materialSwitch.isEnabled)
+
             findNavController().navigate(R.id.startFragment)
         }
 
