@@ -26,7 +26,7 @@ class StartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.signUpFragment)
+            navigateToSignUpFragment()
         }
 
         binding.btnBack.setOnClickListener {
@@ -34,4 +34,8 @@ class StartFragment : Fragment() {
         }
     }
 
+    private fun navigateToSignUpFragment() {
+        val action = StartFragmentDirections.toSignUpFragment()
+        findNavController().navigate(action)
+    }
 }

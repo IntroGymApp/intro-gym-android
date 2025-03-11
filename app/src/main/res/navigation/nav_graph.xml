@@ -21,7 +21,7 @@
             android:label="fragment_start"
             tools:layout="@layout/fragment_start">
             <action
-                android:id="@+id/action_startFragment_to_signUpFragment"
+                android:id="@+id/to_signUpFragment"
                 app:destination="@id/auth" />
         </fragment>
         <fragment
@@ -30,7 +30,7 @@
             android:label="fragment_about_user"
             tools:layout="@layout/fragment_about_user">
             <action
-                android:id="@+id/action_aboutUserFragment_to_setNotificationFragment"
+                android:id="@+id/to_setNotificationFragment"
                 app:destination="@id/setNotificationFragment" />
         </fragment>
         <fragment
@@ -39,10 +39,10 @@
             android:label="fragment_hello"
             tools:layout="@layout/fragment_hello">
             <action
-                android:id="@+id/action_helloFragment_to_featuresFragment"
+                android:id="@+id/to_featuresFragment"
                 app:destination="@id/featuresFragment" />
             <action
-                android:id="@+id/action_helloFragment_to_signInFragment"
+                android:id="@+id/to_signInFragment"
                 app:destination="@id/auth" />
         </fragment>
         <fragment
@@ -51,7 +51,7 @@
             android:label="fragment_set_notification"
             tools:layout="@layout/fragment_set_notification">
             <action
-                android:id="@+id/action_setNotificationFragment_to_startFragment"
+                android:id="@+id/to_startFragment"
                 app:destination="@id/startFragment" />
         </fragment>
     </navigation>

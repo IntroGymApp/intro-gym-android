@@ -29,11 +29,21 @@ class HelloFragment : Fragment() {
         binding.tvHelloIntrogym.setColorSpan(getString(R.string.app_name), R.attr.igPrimaryColor)
 
         binding.btnSkip.setOnClickListener {
-            findNavController().navigate(R.id.signInFragment)
+            navigateToSignInFragment()
         }
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.featuresFragment)
+            navigateToFeaturesFragment()
         }
+    }
+
+    private fun navigateToSignInFragment() {
+        val action = HelloFragmentDirections.toSignInFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToFeaturesFragment() {
+        val action = HelloFragmentDirections.toFeaturesFragment()
+        findNavController().navigate(action)
     }
 }

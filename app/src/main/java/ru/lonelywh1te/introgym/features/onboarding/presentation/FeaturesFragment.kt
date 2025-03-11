@@ -30,7 +30,12 @@ class FeaturesFragment: Fragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.aboutUserFragment)
+            navigateToAboutUserFragment()
         }
+    }
+
+    private fun navigateToAboutUserFragment() {
+        val action = FeaturesFragmentDirections.toAboutUserFragment()
+        findNavController().navigate(action)
     }
 }

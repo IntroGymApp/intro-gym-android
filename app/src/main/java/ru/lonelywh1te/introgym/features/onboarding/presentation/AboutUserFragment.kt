@@ -43,7 +43,7 @@ class AboutUserFragment : Fragment() {
 
             viewModel.saveUserPreferences(name, gender, birthday)
 
-            findNavController().navigate(R.id.setNotificationFragment)
+            navigateToSetNotificationFragment()
         }
 
         binding.btnBack.setOnClickListener {
@@ -54,6 +54,11 @@ class AboutUserFragment : Fragment() {
         binding.dpBirthday.apply {
             maxDate = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
         }
+    }
+
+    private fun navigateToSetNotificationFragment() {
+        val action = AboutUserFragmentDirections.toSetNotificationFragment()
+        findNavController().navigate(action)
     }
 
     private fun getSelectedGender(): Gender? {

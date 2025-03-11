@@ -31,12 +31,16 @@ class SetNotificationFragment : Fragment() {
 
         binding.btnNext.setOnClickListener {
             viewModel.setNotification(binding.materialSwitch.isEnabled)
-
-            findNavController().navigate(R.id.startFragment)
+            navigateToStartFragment()
         }
 
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun navigateToStartFragment() {
+        val action = SetNotificationFragmentDirections.toStartFragment()
+        findNavController().navigate(action)
     }
 }
