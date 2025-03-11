@@ -3,136 +3,147 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/helloFragment">
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up">
-        <action
-            android:id="@+id/to_confirmOtpFragment"
-            app:destination="@id/confirmOtpFragment"/>
-        <action
-            android:id="@+id/to_signInFragment"
-            app:destination="@id/signInFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/confirmOtpFragment"
-        android:name="ru.lonelywh1te.introgym.features.auth.presentation.ConfirmOtpFragment"
-        android:label="fragment_confirm_otp"
-        tools:layout="@layout/fragment_confirm_otp">
-        <argument
-            android:name="email"
-            app:argType="string" />
-        <argument
-            android:name="otpType"
-            app:argType="ru.lonelywh1te.introgym.features.auth.domain.model.OtpType" />
-    </fragment>
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in">
-        <action
-            android:id="@+id/to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/exerciseCategoriesFragment"
-        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseCategoriesFragment"
-        android:label="fragment_exercise_categories"
-        tools:layout="@layout/fragment_exercise_categories" >
-        <action
-            android:id="@+id/to_exerciseListFragment"
-            app:destination="@id/exerciseListFragment" />
-        <action
-            android:id="@+id/to_exerciseFragment"
-            app:destination="@id/exerciseFragment" />
-        <action
-            android:id="@+id/action_exerciseCategoriesFragment_to_exerciseFilterFragment"
-            app:destination="@id/exerciseFilterFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/exerciseListFragment"
-        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseListFragment"
-        android:label="fragment_exercise_list"
-        tools:layout="@layout/fragment_exercise_list" >
-        <argument
-            android:name="categoryId"
-            app:argType="long" />
-        <action
-            android:id="@+id/to_exerciseFragment"
-            app:destination="@id/exerciseFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/exerciseFragment"
-        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFragment"
-        android:label="fragment_exercise"
-        tools:layout="@layout/fragment_exercise" >
-        <argument
-            android:name="exerciseId"
-            app:argType="long" />
-    </fragment>
-    <fragment
-        android:id="@+id/exerciseFilterFragment"
-        android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFilterFragment"
-        android:label="fragment_exercise_filter"
-        tools:layout="@layout/fragment_exercise_filter" />
-    <fragment
-        android:id="@+id/forgotPasswordFragment"
-        android:name="ru.lonelywh1te.introgym.features.auth.presentation.RestorePasswordFragment"
-        android:label="fragment_forgot_password"
-        tools:layout="@layout/fragment_forgot_password" >
-        <action
-            android:id="@+id/to_confirmOtpFragment"
-            app:destination="@id/confirmOtpFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/helloFragment"
-        android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.HelloFragment"
-        android:label="fragment_hello"
-        tools:layout="@layout/fragment_hello" >
-        <action
-            android:id="@+id/action_helloFragment_to_featuresFragment"
-            app:destination="@id/featuresFragment" />
-        <action
-            android:id="@+id/action_helloFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/featuresFragment"
-        android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.FeaturesFragment"
-        android:label="fragment_features"
-        tools:layout="@layout/fragment_features" >
-        <action
-            android:id="@+id/to_aboutUserFragment"
-            app:destination="@id/aboutUserFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/aboutUserFragment"
-        android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.AboutUserFragment"
-        android:label="fragment_about_user"
-        tools:layout="@layout/fragment_about_user" >
-        <action
-            android:id="@+id/action_aboutUserFragment_to_setNotificationFragment"
-            app:destination="@id/setNotificationFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/setNotificationFragment"
-        android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.SetNotificationFragment"
-        android:label="fragment_set_notification"
-        tools:layout="@layout/fragment_set_notification" >
-        <action
-            android:id="@+id/action_setNotificationFragment_to_startFragment"
-            app:destination="@id/startFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/startFragment"
-        android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.StartFragment"
-        android:label="fragment_start"
-        tools:layout="@layout/fragment_start" >
-        <action
-            android:id="@+id/action_startFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-    </fragment>
+    app:startDestination="@id/onboarding">
+    <navigation android:id="@+id/onboarding"
+        app:startDestination="@id/helloFragment">
+        <fragment
+            android:id="@+id/featuresFragment"
+            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.FeaturesFragment"
+            android:label="fragment_features"
+            tools:layout="@layout/fragment_features">
+            <action
+                android:id="@+id/to_aboutUserFragment"
+                app:destination="@id/aboutUserFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/startFragment"
+            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.StartFragment"
+            android:label="fragment_start"
+            tools:layout="@layout/fragment_start">
+            <action
+                android:id="@+id/action_startFragment_to_signUpFragment"
+                app:destination="@id/auth" />
+        </fragment>
+        <fragment
+            android:id="@+id/aboutUserFragment"
+            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.AboutUserFragment"
+            android:label="fragment_about_user"
+            tools:layout="@layout/fragment_about_user">
+            <action
+                android:id="@+id/action_aboutUserFragment_to_setNotificationFragment"
+                app:destination="@id/setNotificationFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/helloFragment"
+            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.HelloFragment"
+            android:label="fragment_hello"
+            tools:layout="@layout/fragment_hello">
+            <action
+                android:id="@+id/action_helloFragment_to_featuresFragment"
+                app:destination="@id/featuresFragment" />
+            <action
+                android:id="@+id/action_helloFragment_to_signInFragment"
+                app:destination="@id/auth" />
+        </fragment>
+        <fragment
+            android:id="@+id/setNotificationFragment"
+            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.SetNotificationFragment"
+            android:label="fragment_set_notification"
+            tools:layout="@layout/fragment_set_notification">
+            <action
+                android:id="@+id/action_setNotificationFragment_to_startFragment"
+                app:destination="@id/startFragment" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/auth"
+        app:startDestination="@id/signUpFragment">
+        <fragment
+            android:id="@+id/signUpFragment"
+            android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignUpFragment"
+            android:label="fragment_sign_up"
+            tools:layout="@layout/fragment_sign_up">
+            <action
+                android:id="@+id/to_confirmOtpFragment"
+                app:destination="@id/confirmOtpFragment" />
+            <action
+                android:id="@+id/to_signInFragment"
+                app:destination="@id/signInFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/forgotPasswordFragment"
+            android:name="ru.lonelywh1te.introgym.features.auth.presentation.RestorePasswordFragment"
+            android:label="fragment_forgot_password"
+            tools:layout="@layout/fragment_forgot_password">
+            <action
+                android:id="@+id/to_confirmOtpFragment"
+                app:destination="@id/confirmOtpFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/signInFragment"
+            android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignInFragment"
+            android:label="fragment_sign_in"
+            tools:layout="@layout/fragment_sign_in">
+            <action
+                android:id="@+id/to_forgotPasswordFragment"
+                app:destination="@id/forgotPasswordFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/confirmOtpFragment"
+            android:name="ru.lonelywh1te.introgym.features.auth.presentation.ConfirmOtpFragment"
+            android:label="fragment_confirm_otp"
+            tools:layout="@layout/fragment_confirm_otp">
+            <argument
+                android:name="email"
+                app:argType="string" />
+            <argument
+                android:name="otpType"
+                app:argType="ru.lonelywh1te.introgym.features.auth.domain.model.OtpType" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/guide"
+        app:startDestination="@id/exerciseCategoriesFragment">
+        <fragment
+            android:id="@+id/exerciseFragment"
+            android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFragment"
+            android:label="fragment_exercise"
+            tools:layout="@layout/fragment_exercise">
+            <argument
+                android:name="exerciseId"
+                app:argType="long" />
+        </fragment>
+        <fragment
+            android:id="@+id/exerciseListFragment"
+            android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseListFragment"
+            android:label="fragment_exercise_list"
+            tools:layout="@layout/fragment_exercise_list">
+            <argument
+                android:name="categoryId"
+                app:argType="long" />
+            <action
+                android:id="@+id/to_exerciseFragment"
+                app:destination="@id/exerciseFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/exerciseFilterFragment"
+            android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseFilterFragment"
+            android:label="fragment_exercise_filter"
+            tools:layout="@layout/fragment_exercise_filter" />
+        <fragment
+            android:id="@+id/exerciseCategoriesFragment"
+            android:name="ru.lonelywh1te.introgym.features.guide.presentation.ExerciseCategoriesFragment"
+            android:label="fragment_exercise_categories"
+            tools:layout="@layout/fragment_exercise_categories">
+            <action
+                android:id="@+id/to_exerciseListFragment"
+                app:destination="@id/exerciseListFragment" />
+            <action
+                android:id="@+id/to_exerciseFragment"
+                app:destination="@id/exerciseFragment" />
+            <action
+                android:id="@+id/action_exerciseCategoriesFragment_to_exerciseFilterFragment"
+                app:destination="@id/exerciseFilterFragment" />
+        </fragment>
+    </navigation>
 </navigation>

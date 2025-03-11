@@ -9,11 +9,11 @@
     tools:context=".features.onboarding.presentation.AboutUserFragment">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="Осталось ввести всего пару деталей – и IntroGym готов к старту!"
+        android:text="@string/label_about_user_fragment_title"
         android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,17 +24,17 @@
         style="@style/Widget.IntroGym.TextView.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ваше имя"
+        android:text="@string/label_your_name"
         android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <EditText
         android:id="@+id/editText"
         style="@style/Widget.IntroGym.TextInput"
         android:layout_width="match_parent"
-        android:hint="Имя"
+        android:hint="@string/label_your_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -78,7 +78,7 @@
         style="@style/Widget.IntroGym.TextView.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Дата рождения"
+        android:text="@string/label_birthday"
         android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

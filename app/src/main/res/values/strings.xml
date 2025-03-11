@@ -63,5 +63,10 @@
     <string name="label_next">Далее</string>
     <string name="label_features_fragment_title">Создавай тренировки, планируй их в календаре и выполняй</string>
     <string name="label_features_fragment_description">Достигай. Делись. Вдохновляй</string>
+    <string name="label_birthday">Дата рождения</string>
+    <string name="label_about_user_fragment_title">Осталось ввести всего пару деталей – и IntroGym готов к старту!</string>
+    <string name="label_start">Начать</string>
+    <string name="label_here">ЗДЕСЬ</string>
+    <string name="label_start_fragment_description">Твой путь к лучшей версии себя начинается</string>
 
 </resources>

@@ -13,7 +13,7 @@
         style="@style/Widget.IntroGym.TextView.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Твой путь к лучшей версии себя начинается"
+        android:text="@string/label_start_fragment_description"
 
         android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular.Medium"
         app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -24,9 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:text="ЗДЕСЬ"
+        android:text="@string/label_here"
         android:textAppearance="@style/TextAppearance.IntroGym.Body.Bold"
-        android:textSize="64dp"
+        android:textSize="64sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_next"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -46,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="20dp"
-        android:text="Начать"
+        android:text="@string/label_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_back" />

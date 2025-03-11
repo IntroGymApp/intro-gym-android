@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentSetNotificationBinding
 
 class SetNotificationFragment : Fragment() {
@@ -19,8 +20,7 @@ class SetNotificationFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSetNotificationBinding.inflate(inflater, container, false)
 
-        hideToolbar()
-        setWindowInsets()
+        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
         return binding.root
     }
@@ -35,23 +35,5 @@ class SetNotificationFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-    }
-
-    private fun setWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.setPadding(
-                binding.root.paddingStart,
-                systemBars.top,
-                binding.root.paddingEnd,
-                systemBars.bottom
-            )
-            insets
-        }
-    }
-
-    private fun hideToolbar() {
-        (activity as? AppCompatActivity)?.supportActionBar?.hide()
     }
 }

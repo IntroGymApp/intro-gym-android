@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
 import ru.lonelywh1te.introgym.databinding.FragmentAboutUserBinding
 
 
@@ -20,15 +22,14 @@ class AboutUserFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentAboutUserBinding.inflate(inflater, container, false)
 
-        hideToolbar()
-        setWindowInsets()
+        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.tvTitle.setColorSpan(getString(R.string.app_name), R.attr.igPrimaryColor)
         binding.btnNext.setOnClickListener {
             findNavController().navigate(R.id.setNotificationFragment)
         }
@@ -36,23 +37,5 @@ class AboutUserFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-    }
-
-    private fun setWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.setPadding(
-                binding.root.paddingStart,
-                systemBars.top,
-                binding.root.paddingEnd,
-                systemBars.bottom
-            )
-            insets
-        }
-    }
-
-    private fun hideToolbar() {
-        (activity as? AppCompatActivity)?.supportActionBar?.hide()
     }
 }

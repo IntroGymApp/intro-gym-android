@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.forEach
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
 
 private const val LOG_TAG = "MainActivity"
@@ -29,18 +32,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
-        //setWindowInsets()
-    }
 
-    private fun setWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            updateToolbarVisibilityAndInsets(destination)
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun updateToolbarVisibilityAndInsets(destination: NavDestination) {
+        val shouldShowToolbar = destination.parent?.id !in listOf(
+            R.id.onboarding,
+            R.id.auth,
+        )
+
+        binding.toolbar.isVisible = shouldShowToolbar
+        if (shouldShowToolbar) WindowInsets.setInsets(binding.root)
     }
 }

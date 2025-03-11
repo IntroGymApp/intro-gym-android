@@ -1,17 +1,14 @@
 package ru.lonelywh1te.introgym.features.onboarding.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentFeaturesBinding
-import ru.lonelywh1te.introgym.databinding.FragmentHelloBinding
 
 class FeaturesFragment: Fragment() {
     private var _binding: FragmentFeaturesBinding? = null
@@ -20,8 +17,7 @@ class FeaturesFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFeaturesBinding.inflate(inflater, container, false)
 
-        hideToolbar()
-        setWindowInsets()
+        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
         return binding.root
     }
@@ -37,23 +33,4 @@ class FeaturesFragment: Fragment() {
             findNavController().navigate(R.id.aboutUserFragment)
         }
     }
-
-    private fun setWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.setPadding(
-                binding.root.paddingStart,
-                binding.root.paddingTop + systemBars.top,
-                binding.root.paddingEnd,
-                binding.root.paddingBottom + systemBars.bottom
-            )
-            insets
-        }
-    }
-
-    private fun hideToolbar() {
-        (activity as? AppCompatActivity)?.supportActionBar?.hide()
-    }
-
 }
