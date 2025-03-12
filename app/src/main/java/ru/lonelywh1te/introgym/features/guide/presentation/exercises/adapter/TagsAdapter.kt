@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.guide.presentation.adapter
+package ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

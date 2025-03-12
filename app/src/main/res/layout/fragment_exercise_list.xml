@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
-    tools:context=".features.guide.presentation.ExerciseListFragment">
+    tools:context=".features.guide.presentation.exercises.ExerciseListFragment">
 
     <EditText
         android:id="@+id/et_search_exercise"

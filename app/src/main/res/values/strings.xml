@@ -72,5 +72,10 @@
     <string name="label_set_notification_fragment_description">Мы напомним о тренировках и подкинем мотивацию, когда это нужно.</string>
     <string name="label_enable_notifications">Включить уведомления</string>
     <string name="auth_error_failed_to_change_password">Не удалось сменить пароль. Попробуйте позже.</string>
+    <string name="label_home">Главная</string>
+    <string name="label_workouts">Тренировки</string>
+    <string name="label_guide">Справочник</string>
+    <string name="label_stats">Статистика</string>
+    <string name="label_profile">Профиль</string>
 
 </resources>

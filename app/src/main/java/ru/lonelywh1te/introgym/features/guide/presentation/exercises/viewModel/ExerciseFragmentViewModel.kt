@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.guide.presentation.viewModel
+package ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

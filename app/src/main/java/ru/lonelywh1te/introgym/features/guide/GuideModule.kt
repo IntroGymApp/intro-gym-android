@@ -13,10 +13,10 @@ import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseListUseC
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseTagsUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.SearchExercisesByNameUseCase
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseCategoriesFragmentViewModel
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFilterFragmentViewModel
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFragmentViewModel
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseListFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseCategoriesFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseFilterFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseListFragmentViewModel
 
 val guideDataModule = module {
     single<ExerciseCategoryRepository> {

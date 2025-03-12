@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.guide.presentation
+package ru.lonelywh1te.introgym.features.guide.presentation.exercises
 
 import android.os.Bundle
 import android.text.Editable
@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseCategoriesBinding
-import ru.lonelywh1te.introgym.features.guide.presentation.adapter.ExerciseCategoryAdapter
-import ru.lonelywh1te.introgym.features.guide.presentation.adapter.ExerciseListAdapter
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseCategoriesFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseCategoryAdapter
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseListAdapter
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseCategoriesFragmentViewModel
 
 class ExerciseCategoriesFragment : Fragment() {
     private var _binding: FragmentExerciseCategoriesBinding? = null

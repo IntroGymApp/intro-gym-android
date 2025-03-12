@@ -71,6 +71,10 @@
         <item name="fontFamily">@font/geist_regular</item>
     </style>
 
+    <style name="TextAppearance.IntroGym.Body.BottomBarLabel">
+        <item name="android:textSize">11sp</item>
+    </style>
+
     <style name="TextAppearance.IntroGym.Body.Regular.Large">
         <item name="android:textSize">28sp</item>
     </style>

@@ -101,6 +101,17 @@
         <item name="android:headerYearTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
     </style>
 
+    <style name="Widget.IntroGym.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/igBackgroundColor</item>
+        <item name="itemIconTint">@color/selector_bottom_navigation_item_color</item>
+        <item name="itemTextColor">@color/selector_bottom_navigation_item_color</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.IntroGym.Body.BottomBarLabel</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.IntroGym.Body.BottomBarLabel</item>
+    </style>
+
 <!--    <style name="Widget.IntroGym.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">-->
 <!--        <item name="trackTint">?attr/igCardBackgroundColor</item>-->
 <!--        <item name="trackDecorationTint">?attr/igCardForegroundColor</item>-->

@@ -7,6 +7,9 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import org.koin.android.ext.android.inject
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
@@ -29,13 +32,14 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         setStartDestination()
-        setSupportActionBar(binding.toolbar)
+        setupBottomNavigationView()
+        setupToolbar()
         setContentView(binding.root)
 
         enableEdgeToEdge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            updateToolbarVisibilityAndInsets(destination)
+            updateToolbarBottomBarVisibilityAndInsets(destination)
         }
     }
 
@@ -43,14 +47,32 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    private fun updateToolbarVisibilityAndInsets(destination: NavDestination) {
-        val shouldShowToolbar = destination.parent?.id !in listOf(
+    private fun setupToolbar() {
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.homeFragment,
+            R.id.workoutsFragment,
+            R.id.guideFragment,
+            R.id.statsFragment,
+            R.id.profileFragment)
+        )
+
+        setSupportActionBar(binding.toolbar)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    private fun setupBottomNavigationView() {
+        binding.bottomNavigation.setupWithNavController(navController)
+    }
+
+    private fun updateToolbarBottomBarVisibilityAndInsets(destination: NavDestination) {
+        val shouldShow = destination.parent?.id !in listOf(
             R.id.onboarding,
             R.id.auth,
         )
 
-        binding.toolbar.isVisible = shouldShowToolbar
-        if (shouldShowToolbar) WindowInsets.setInsets(binding.root)
+        binding.toolbar.isVisible = shouldShow
+        binding.bottomNavigation.isVisible = shouldShow
+        if (shouldShow) WindowInsets.setInsets(binding.root)
     }
 
     private fun setStartDestination() {
@@ -60,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         val startDestination = when {
             !onboardingCompleted && isFirstLaunch -> R.id.onboarding
             onboardingCompleted && isFirstLaunch -> R.id.auth
-            else -> TODO("Not yet implemented")
+            else -> R.id.homeFragment
         }
 
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)

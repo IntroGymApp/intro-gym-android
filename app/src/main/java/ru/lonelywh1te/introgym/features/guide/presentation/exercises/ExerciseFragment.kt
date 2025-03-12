@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.guide.presentation
+package ru.lonelywh1te.introgym.features.guide.presentation.exercises
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,9 +18,9 @@ import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
-import ru.lonelywh1te.introgym.features.guide.presentation.adapter.ExecutionStepsAdapter
-import ru.lonelywh1te.introgym.features.guide.presentation.adapter.ExecutionTipsAdapter
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExecutionStepsAdapter
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExecutionTipsAdapter
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseFragmentViewModel
 
 
 class ExerciseFragment : Fragment() {

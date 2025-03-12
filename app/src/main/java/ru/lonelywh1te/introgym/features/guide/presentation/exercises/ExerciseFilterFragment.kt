@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.guide.presentation
+package ru.lonelywh1te.introgym.features.guide.presentation.exercises
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseFilterBinding
-import ru.lonelywh1te.introgym.features.guide.presentation.adapter.TagsAdapter
-import ru.lonelywh1te.introgym.features.guide.presentation.viewModel.ExerciseFilterFragmentViewModel
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.TagsAdapter
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseFilterFragmentViewModel
 
 class ExerciseFilterFragment : Fragment() {
     private var _binding: FragmentExerciseFilterBinding? = null

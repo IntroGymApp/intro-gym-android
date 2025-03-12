@@ -19,11 +19,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
@@ -36,6 +38,8 @@ class SignUpFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SignUpViewModel by viewModel<SignUpViewModel>()
+    private val settingsPreferences: SettingsPreferences by inject()
+
     private val navController by lazy { findNavController() }
 
     private val otpType = OtpType.CONFIRM_SIGNUP
@@ -150,7 +154,10 @@ class SignUpFragment : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        TODO("Not yet implemented")
+        val action = SignInFragmentDirections.toHomeFragment()
+        findNavController().navigate(action)
+
+        settingsPreferences.isFirstLaunch = false
     }
 
     private fun navigateToSignInFragment() {
