@@ -29,9 +29,6 @@
     <attr name="igWarningColor" format="color"/>
     <attr name="igErrorColor" format="color"/>
 
-    <attr name="igOnboardingBackgroundDrawable" format="reference"/>
-    <attr name="igOnboardingFeaturesCardsDrawable" format="reference"/>
-
     <declare-styleable name="PasswordValidationView">
         <attr name="errorCount" format="integer"/>
     </declare-styleable>

@@ -26,6 +26,7 @@ fun AuthError.asStringRes() = when (this) {
     AuthError.UNAUTHORIZED -> R.string.auth_error_unauthorized
     AuthError.SESSION_STILL_EXIST -> R.string.auth_error_session_still_exist
     AuthError.INVALID_OTP_CODE -> R.string.auth_error_invalid_otp
+    AuthError.FAILED_TO_CHANGE_PASSWORD -> R.string.auth_error_failed_to_change_password
 }
 
 fun ValidationError.asStringRes() = when (this) {

@@ -80,7 +80,7 @@ class ConfirmOtpFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        val bundle = Bundle().apply { putBoolean(ERROR_BUNDLE_KEY, true) }
+                        val bundle = Bundle().apply { putBoolean(RESULT_BUNDLE_KEY, true) }
 
                         setFragmentResult(REQUEST_KEY, bundle)
                         findNavController().navigateUp()

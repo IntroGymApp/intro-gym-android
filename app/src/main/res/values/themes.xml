@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.IntroGym" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">?attr/igPrimaryColor</item>
+        <item name="colorOnPrimary">?attr/igOnPrimaryColor</item>
         <item name="android:windowBackground">?attr/igBackgroundColor</item>
     </style>
 
@@ -31,7 +32,5 @@
         <item name="igWarningColor">@color/orange_color</item>
         <item name="igErrorColor">@color/red_color</item>
 
-        <item name="igOnboardingBackgroundDrawable">@drawable/onboarding_background_light</item>
-        <item name="igOnboardingFeaturesCardsDrawable">@drawable/onboarding_features_cards_light</item>
     </style>
 </resources>

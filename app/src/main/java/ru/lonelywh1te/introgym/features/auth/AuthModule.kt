@@ -22,7 +22,11 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewMo
 
 val authDataModule = module {
     single<AuthRepository> {
-        AuthRepositoryImpl(authService = get(), authStorage = get())
+        AuthRepositoryImpl(
+            authService = get(),
+            authStorage = get(),
+            userPreferences = get(),
+        )
     }
 
     single<AuthService> {
