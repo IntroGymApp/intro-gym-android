@@ -138,12 +138,17 @@ class RestorePasswordFragment : Fragment() {
 
         binding.etPassword.apply {
             isEnabled = otpConfirmed
-            visibility = View.VISIBLE
+            visibility = if (otpConfirmed) View.VISIBLE else View.GONE
         }
         binding.etConfirmPassword.apply {
             isEnabled = otpConfirmed
-            visibility = View.VISIBLE
+            visibility = if (otpConfirmed) View.VISIBLE else View.GONE
         }
+
+        binding.dividerPassword.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
+        binding.dividerConfirmPassword.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
+
+        binding.passwordValidationView.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
 
         binding.btnSubmit.text = getString(
             if (!otpConfirmed) R.string.label_send_otp else R.string.label_sign_in

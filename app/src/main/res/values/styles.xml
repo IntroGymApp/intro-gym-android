@@ -40,6 +40,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textColorHint">?attr/igHintColor</item>
         <item name="android:paddingHorizontal">20dp</item>
         <item name="android:background">@drawable/shape_rounded_plate_filled</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>

@@ -26,7 +26,7 @@
 
         <item name="igIconStaticColor">?attr/igTextPrimaryColor</item>
         <item name="igIconActionColor">?attr/igPrimaryColor</item>
-        <item name="igHintColor">@color/hint_color</item>
+        <item name="igHintColor">@color/dark_hint_color</item>
 
         <item name="igSuccessColor">?attr/igPrimaryColor</item>
         <item name="igWarningColor">@color/orange_color</item>

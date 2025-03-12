@@ -48,7 +48,8 @@
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:dividerColor="?attr/igHintColor"/>
 
         <EditText
             android:id="@+id/et_password"
@@ -58,7 +59,8 @@
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:dividerColor="?attr/igHintColor"/>
 
         <EditText
             android:id="@+id/et_confirm_password"
