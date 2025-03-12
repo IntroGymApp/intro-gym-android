@@ -4,10 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/igOnboardingBackgroundDrawable"
+    android:background="@drawable/onboarding_background"
     android:paddingHorizontal="20dp"
     tools:context=".features.onboarding.presentation.SetNotificationFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:src="@drawable/illustration_notify"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/igTextPrimaryColor" />
 
     <TextView
         android:id="@+id/textView2"

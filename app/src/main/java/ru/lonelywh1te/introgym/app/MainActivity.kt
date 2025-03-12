@@ -7,8 +7,10 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import org.koin.android.ext.android.inject
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
 
 private const val LOG_TAG = "MainActivity"
@@ -17,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
+    private val settingsPreferences: SettingsPreferences by inject<SettingsPreferences>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -24,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(binding.navHostFragment.id) as NavHostFragment
         navController = navHostFragment.navController
 
+        setStartDestination()
         setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
 
@@ -46,5 +51,20 @@ class MainActivity : AppCompatActivity() {
 
         binding.toolbar.isVisible = shouldShowToolbar
         if (shouldShowToolbar) WindowInsets.setInsets(binding.root)
+    }
+
+    private fun setStartDestination() {
+        val isFirstLaunch = settingsPreferences.isFirstLaunch
+        val onboardingCompleted = settingsPreferences.onboardingCompleted
+
+        val startDestination = when {
+            !onboardingCompleted && isFirstLaunch -> R.id.onboarding
+            onboardingCompleted && isFirstLaunch -> R.id.auth
+            else -> TODO("Not yet implemented")
+        }
+
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        navGraph.setStartDestination(startDestination)
+        navController.setGraph(navGraph, null)
     }
 }
