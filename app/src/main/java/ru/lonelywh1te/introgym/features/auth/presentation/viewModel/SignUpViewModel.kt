@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
@@ -29,7 +30,11 @@ class SignUpViewModel(
         }
     }
 
-    fun validatePassword(password: String): List<ValidationError> {
-        return validator.validatePassword(password)
+    fun validate(email: String, password: String, confirmPassword: String): Result<Unit> {
+        return validator.validate(email, password, confirmPassword)
+    }
+
+    fun getPasswordState(password: String): List<ValidationError> {
+        return validator.getPasswordStates(password)
     }
 }

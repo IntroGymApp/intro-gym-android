@@ -23,6 +23,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
@@ -57,8 +58,16 @@ class SignUpFragment : Fragment() {
 
         binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            navigateToConfirmOtpFragment(email)
+            val validateResult = viewModel.validate(email, password, confirmPassword)
+
+            when (validateResult) {
+                is Result.Success -> navigateToConfirmOtpFragment(email)
+                is Result.Failure -> showFailureMessage(validateResult.error)
+                else -> return@setOnClickListener
+            }
         }
 
         binding.passwordValidationView.apply {
@@ -68,7 +77,6 @@ class SignUpFragment : Fragment() {
                 ValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL to getString(R.string.label_has_special_symbol),
             )
         }
-
 
         startCollectFlows()
         setOnChangePasswordListener()
@@ -97,8 +105,6 @@ class SignUpFragment : Fragment() {
                         showFailureMessage(state.error)
                         showLoadingIndicator(false)
                     }
-
-                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)
@@ -125,7 +131,7 @@ class SignUpFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
             override fun afterTextChanged(password: Editable?) {
-                val validationResult = viewModel.validatePassword(password.toString())
+                val validationResult = viewModel.getPasswordState(password.toString())
                 binding.passwordValidationView.setCurrentErrors(validationResult)
             }
         })

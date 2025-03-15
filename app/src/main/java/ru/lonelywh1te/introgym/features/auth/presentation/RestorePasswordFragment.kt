@@ -105,7 +105,7 @@ class RestorePasswordFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
             override fun afterTextChanged(password: Editable?) {
-                val validationResult = viewModel.validatePassword(password.toString())
+                val validationResult = viewModel.getPasswordState(password.toString())
                 binding.passwordValidationView.setCurrentErrors(validationResult)
             }
         })
