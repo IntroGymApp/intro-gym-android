@@ -60,6 +60,12 @@ class ConfirmOtpFragment : Fragment() {
         viewModel.sendOtpResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { state ->
                 when (state) {
+                    is UIState.Success -> {
+                        isLoadingFragment(false)
+                    }
+                    is UIState.Loading -> {
+                        isLoadingFragment(true)
+                    }
                     is UIState.Failure -> {
                         if (state.error == AuthError.SESSION_STILL_EXIST) {
                             showFailureMessage(state.error)
@@ -69,9 +75,8 @@ class ConfirmOtpFragment : Fragment() {
                             setFragmentResult(REQUEST_KEY, bundle)
                             findNavController().navigateUp()
                         }
+                        isLoadingFragment(false)
                     }
-
-                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)
@@ -86,7 +91,7 @@ class ConfirmOtpFragment : Fragment() {
                         findNavController().navigateUp()
                         showLoadingIndicator(false)
                     }
-                    is UIState.isLoading -> {
+                    is UIState.Loading -> {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
@@ -99,8 +104,20 @@ class ConfirmOtpFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun showLoadingIndicator(isLoading: Boolean) {
+    private fun isLoadingFragment(isLoading: Boolean) {
         binding.pbLoadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+
+        binding.tvConfirmOtpTitle.visibility = if (!isLoading) View.VISIBLE else View.GONE
+        binding.tvConfirmOtpDescription.visibility = if (!isLoading) View.VISIBLE else View.GONE
+        binding.tvErrorMessage.visibility = if (!isLoading) View.GONE else View.VISIBLE
+        binding.etOtp.visibility = if (!isLoading) View.VISIBLE else View.GONE
+        binding.flSignUpButtonContainer.visibility = if (!isLoading) View.VISIBLE else View.GONE
+        binding.btnSendOtp.visibility = if (!isLoading) View.VISIBLE else View.GONE
+
+    }
+
+    private fun showLoadingIndicator(isLoading: Boolean) {
+        binding.pbBtnLoadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.btnConfirmOtp.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 

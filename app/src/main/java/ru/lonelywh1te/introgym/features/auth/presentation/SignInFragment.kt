@@ -17,12 +17,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
-import ru.lonelywh1te.introgym.data.prefs.UserPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignInBinding
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
@@ -64,7 +62,7 @@ class SignInFragment : Fragment() {
                         navigateToHomeFragment()
                         showLoadingIndicator(false)
                     }
-                    is UIState.isLoading -> {
+                    is UIState.Loading -> {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {

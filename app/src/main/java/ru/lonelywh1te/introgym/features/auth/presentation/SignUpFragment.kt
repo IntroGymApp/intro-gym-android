@@ -85,7 +85,7 @@ class SignUpFragment : Fragment() {
                         showLoadingIndicator(false)
                     }
 
-                    is UIState.isLoading -> {
+                    is UIState.Loading -> {
                         showLoadingIndicator(true)
                     }
 

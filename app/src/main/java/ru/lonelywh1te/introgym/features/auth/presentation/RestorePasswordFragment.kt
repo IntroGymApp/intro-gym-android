@@ -81,7 +81,7 @@ class RestorePasswordFragment : Fragment() {
                         findNavController().navigateUp()
                         showLoadingIndicator(false)
                     }
-                    is UIState.isLoading -> {
+                    is UIState.Loading -> {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {

@@ -10,7 +10,7 @@ sealed interface Result<out T> {
 
 fun Result<*>.toUIState(): UIState<*>  {
     return when (this) {
-        is Result.InProgress -> UIState.isLoading
+        is Result.InProgress -> UIState.Loading
         is Result.Failure -> UIState.Failure(this.error)
         is Result.Success -> UIState.Success(this.data)
     }
