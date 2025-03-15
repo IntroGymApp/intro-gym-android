@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.IntroGym.ListCard.Selectable"
     android:layout_marginBottom="10dp">
@@ -31,10 +32,12 @@
             tools:text="Название упражнения" />
 
         <ImageView
+            android:id="@+id/iv_action_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
-            android:src="@drawable/ic_right_arrow" />
+            android:src="@drawable/ic_right_arrow"
+            app:tint="?attr/igTextPrimaryColor" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

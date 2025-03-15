@@ -140,6 +140,12 @@
             <argument
                 android:name="label"
                 app:argType="string" />
+            <argument
+                android:name="isPickMode"
+                app:argType="boolean" />
+            <argument
+                android:name="callerFragmentId"
+                app:argType="integer" />
         </fragment>
         <fragment
             android:id="@+id/exerciseFilterFragment"
@@ -160,6 +166,12 @@
             <action
                 android:id="@+id/action_exerciseCategoriesFragment_to_exerciseFilterFragment"
                 app:destination="@id/exerciseFilterFragment" />
+            <argument
+                android:name="isPickMode"
+                app:argType="boolean" />
+            <argument
+                android:name="callerFragmentId"
+                app:argType="integer" />
         </fragment>
         <fragment
             android:id="@+id/guideFragment"

@@ -6,10 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
@@ -17,6 +20,8 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseCategoriesBinding
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_REQUEST_KEY
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_RESULT_BUNDLE_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseCategoryAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseListAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseCategoriesFragmentViewModel
@@ -26,11 +31,15 @@ class ExerciseCategoriesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<ExerciseCategoriesFragmentViewModel>()
+    private val args by navArgs<ExerciseCategoriesFragmentArgs>()
 
     private lateinit var recycler: RecyclerView
 
     private lateinit var exerciseListAdapter: ExerciseListAdapter
     private lateinit var exerciseCategoryAdapter: ExerciseCategoryAdapter
+
+    private val isPickMode get() = args.isPickMode
+    private val callerFragmentId get() = args.callerFragmentId
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentExerciseCategoriesBinding.inflate(inflater, container, false)
@@ -40,9 +49,18 @@ class ExerciseCategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        exerciseListAdapter = ExerciseListAdapter().apply {
+        exerciseListAdapter = ExerciseListAdapter(isPickMode).apply {
             setOnItemClickListener { exercise ->
-                navigateToExerciseFragment(exercise.id, exercise.name)
+                if (isPickMode) {
+                    setFragmentResult(
+                        PICK_REQUEST_KEY,
+                        bundleOf(PICK_RESULT_BUNDLE_KEY to exercise.id)
+                    )
+
+                    findNavController().popBackStack(callerFragmentId, false)
+                } else {
+                    navigateToExerciseFragment(exercise.id, exercise.name)
+                }
             }
         }
 
@@ -96,16 +114,12 @@ class ExerciseCategoriesFragment : Fragment() {
     }
 
     private fun navigateToExerciseListFragment(categoryId: Long, label: String) {
-        val action = ExerciseCategoriesFragmentDirections.toExerciseListFragment(categoryId, label)
+        val action = ExerciseCategoriesFragmentDirections.toExerciseListFragment(categoryId, label, isPickMode, callerFragmentId)
         findNavController().navigate(action)
     }
 
     private fun navigateToExerciseFragment(categoryId: Long, label: String) {
         val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId, label)
         findNavController().navigate(action)
-    }
-
-    companion object {
-        private const val LOG_TAG = "ExerciseCategoriesFragment"
     }
 }

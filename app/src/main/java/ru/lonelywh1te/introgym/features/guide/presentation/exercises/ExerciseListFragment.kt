@@ -6,7 +6,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -28,6 +30,9 @@ class ExerciseListFragment : Fragment() {
     private val viewModel by viewModel<ExerciseListFragmentViewModel>()
     private val args by navArgs<ExerciseListFragmentArgs>()
 
+    private val isPickMode get() = args.isPickMode
+    private val callerFragmentId get() = args.callerFragmentId
+
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: ExerciseListAdapter
 
@@ -44,9 +49,14 @@ class ExerciseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ExerciseListAdapter().apply {
+        adapter = ExerciseListAdapter(isPickMode).apply {
             setOnItemClickListener { exercise ->
-                navigateToExerciseFragment(exercise.id, exercise.name)
+                if (isPickMode) {
+                    setFragmentResult(PICK_REQUEST_KEY, bundleOf(PICK_RESULT_BUNDLE_KEY to exercise.id))
+                    findNavController().popBackStack(callerFragmentId, false)
+                } else {
+                    navigateToExerciseFragment(exercise.id, exercise.name)
+                }
             }
         }
         recycler = binding.rvExerciseList.apply {
@@ -81,5 +91,10 @@ class ExerciseListFragment : Fragment() {
     private fun navigateToExerciseFragment(exerciseId: Long, label: String){
         val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId, label)
         findNavController().navigate(action)
+    }
+
+    companion object {
+        const val PICK_REQUEST_KEY = "EXERCISE_PICK_REQUEST"
+        const val PICK_RESULT_BUNDLE_KEY = "EXERCISE_PICK_RESULT"
     }
 }

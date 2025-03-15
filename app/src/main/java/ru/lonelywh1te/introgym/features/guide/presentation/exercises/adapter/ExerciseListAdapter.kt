@@ -2,14 +2,16 @@ package ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.databinding.ItemExerciseBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 
-class ExerciseListAdapter: RecyclerView.Adapter<ExerciseItemViewHolder>() {
+class ExerciseListAdapter(private val isPickMode: Boolean): RecyclerView.Adapter<ExerciseItemViewHolder>() {
     private var onItemClickListener: ((exercise: ExerciseItem) -> Unit)? = null
 
     var exerciseList = listOf<ExerciseItem>()
@@ -20,7 +22,7 @@ class ExerciseListAdapter: RecyclerView.Adapter<ExerciseItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseItemViewHolder {
         val binding = ItemExerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ExerciseItemViewHolder(binding)
+        return ExerciseItemViewHolder(binding, isPickMode)
     }
 
     override fun getItemCount(): Int = exerciseList.size
@@ -40,12 +42,21 @@ class ExerciseListAdapter: RecyclerView.Adapter<ExerciseItemViewHolder>() {
     }
 }
 
-class ExerciseItemViewHolder(private val binding: ItemExerciseBinding): RecyclerView.ViewHolder(binding.root) {
+class ExerciseItemViewHolder(
+    private val binding: ItemExerciseBinding,
+    private val isPickMode: Boolean
+): RecyclerView.ViewHolder(binding.root) {
     fun bind(item: ExerciseItem) {
         binding.tvCategoryName.text = item.name
 
         Glide.with(binding.root)
             .load(AssetPath.get(AssetType.EXERCISE_PREVIEW_IMAGE, item.imgFilename))
             .into(binding.ivExercisePreview)
+
+        binding.ivActionIcon.setImageDrawable(
+            ContextCompat.getDrawable(binding.root.context,
+                if (isPickMode) R.drawable.ic_plus else R.drawable.ic_right_arrow
+            )
+        )
     }
 }
