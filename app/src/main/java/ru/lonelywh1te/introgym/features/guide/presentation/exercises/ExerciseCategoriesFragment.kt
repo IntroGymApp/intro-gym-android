@@ -41,14 +41,14 @@ class ExerciseCategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         exerciseListAdapter = ExerciseListAdapter().apply {
-            setOnItemClickListener { exerciseId ->
-                navigateToExerciseFragment(exerciseId)
+            setOnItemClickListener { exercise ->
+                navigateToExerciseFragment(exercise.id, exercise.name)
             }
         }
 
         exerciseCategoryAdapter = ExerciseCategoryAdapter().apply {
-            setOnItemClickListener { categoryId ->
-                navigateToExerciseListFragment(categoryId)
+            setOnItemClickListener { category ->
+                navigateToExerciseListFragment(category.id, category.name)
             }
         }
 
@@ -95,13 +95,13 @@ class ExerciseCategoriesFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun navigateToExerciseListFragment(categoryId: Long) {
-        val action = ExerciseCategoriesFragmentDirections.toExerciseListFragment(categoryId)
+    private fun navigateToExerciseListFragment(categoryId: Long, label: String) {
+        val action = ExerciseCategoriesFragmentDirections.toExerciseListFragment(categoryId, label)
         findNavController().navigate(action)
     }
 
-    private fun navigateToExerciseFragment(categoryId: Long) {
-        val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId)
+    private fun navigateToExerciseFragment(categoryId: Long, label: String) {
+        val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId, label)
         findNavController().navigate(action)
     }
 

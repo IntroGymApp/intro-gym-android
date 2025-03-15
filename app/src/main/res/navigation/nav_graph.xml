@@ -117,16 +117,19 @@
         <fragment
             android:id="@+id/exerciseFragment"
             android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFragment"
-            android:label="fragment_exercise"
+            android:label="{label}"
             tools:layout="@layout/fragment_exercise">
             <argument
                 android:name="exerciseId"
                 app:argType="long" />
+            <argument
+                android:name="label"
+                app:argType="string" />
         </fragment>
         <fragment
             android:id="@+id/exerciseListFragment"
             android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment"
-            android:label="fragment_exercise_list"
+            android:label="{label}"
             tools:layout="@layout/fragment_exercise_list">
             <argument
                 android:name="categoryId"
@@ -134,6 +137,9 @@
             <action
                 android:id="@+id/to_exerciseFragment"
                 app:destination="@id/exerciseFragment" />
+            <argument
+                android:name="label"
+                app:argType="string" />
         </fragment>
         <fragment
             android:id="@+id/exerciseFilterFragment"
@@ -143,7 +149,7 @@
         <fragment
             android:id="@+id/exerciseCategoriesFragment"
             android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseCategoriesFragment"
-            android:label="fragment_exercise_categories"
+            android:label="@string/label_exercises"
             tools:layout="@layout/fragment_exercise_categories">
             <action
                 android:id="@+id/to_exerciseListFragment"

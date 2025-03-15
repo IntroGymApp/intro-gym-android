@@ -13,7 +13,7 @@ import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseCategoryItem
 // TODO: diffutils
 
 class ExerciseCategoryAdapter: RecyclerView.Adapter<ExerciseCategoryViewHolder>() {
-    private var onItemClickListener: ((categoryId: Long) -> Unit)? = null
+    private var onItemClickListener: ((categoryItem: ExerciseCategoryItem) -> Unit)? = null
 
     var categoriesList = listOf<ExerciseCategoryItem>()
         set(value) {
@@ -32,13 +32,13 @@ class ExerciseCategoryAdapter: RecyclerView.Adapter<ExerciseCategoryViewHolder>(
         val item = categoriesList[position]
 
         holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(item.id)
+            onItemClickListener?.invoke(item)
         }
 
         holder.bind(item)
     }
 
-    fun setOnItemClickListener(listener: ((categoryId: Long) -> Unit)?) {
+    fun setOnItemClickListener(listener: ((categoryItem: ExerciseCategoryItem) -> Unit)?) {
         onItemClickListener = listener
     }
 }

@@ -12,7 +12,14 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.IntroGym.Toolbar"
         tools:title="Заголовок"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="?attr/igTextPrimaryColor"
+        android:alpha="0.1"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

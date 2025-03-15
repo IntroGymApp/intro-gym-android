@@ -1,19 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
     tools:context=".features.guide.presentation.GuideFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GUIDE FRAGMENT"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        android:text="@string/label_sections"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_exercise_section"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                style="@style/Widget.IntroGym.ListCard.Selectable">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_exercises"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:layout_gravity="bottom|start"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_look"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="bottom|start"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="150dp"
+                style="@style/Widget.IntroGym.ListCard.Selectable">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_equipment"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:layout_gravity="bottom|start"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_look"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="bottom|start"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="150dp"
+                style="@style/Widget.IntroGym.ListCard.Selectable">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_articles"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:layout_gravity="bottom|start"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_look"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="bottom|start"/>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

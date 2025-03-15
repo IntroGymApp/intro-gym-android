@@ -10,7 +10,7 @@ import ru.lonelywh1te.introgym.databinding.ItemExerciseBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 
 class ExerciseListAdapter: RecyclerView.Adapter<ExerciseItemViewHolder>() {
-    private var onItemClickListener: ((exerciseId: Long) -> Unit)? = null
+    private var onItemClickListener: ((exercise: ExerciseItem) -> Unit)? = null
 
     var exerciseList = listOf<ExerciseItem>()
         set(value) {
@@ -29,13 +29,13 @@ class ExerciseListAdapter: RecyclerView.Adapter<ExerciseItemViewHolder>() {
         val item = exerciseList[position]
 
         holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(item.id)
+            onItemClickListener?.invoke(item)
         }
 
         holder.bind(item)
     }
 
-    fun setOnItemClickListener(listener: ((exerciseId: Long) -> Unit)?) {
+    fun setOnItemClickListener(listener: ((exercise: ExerciseItem) -> Unit)?) {
         onItemClickListener = listener
     }
 }

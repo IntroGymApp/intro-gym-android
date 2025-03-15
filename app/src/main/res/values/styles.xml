@@ -112,6 +112,11 @@
         <item name="itemTextAppearanceActive">@style/TextAppearance.IntroGym.Body.BottomBarLabel</item>
     </style>
 
+    <style name="Widget.IntroGym.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.IntroGym.Body.Semibold</item>
+        <item name="collapseIcon">@drawable/ic_left_arrow</item>
+    </style>
+
 <!--    <style name="Widget.IntroGym.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">-->
 <!--        <item name="trackTint">?attr/igCardBackgroundColor</item>-->
 <!--        <item name="trackDecorationTint">?attr/igCardForegroundColor</item>-->

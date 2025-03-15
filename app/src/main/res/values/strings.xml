@@ -77,5 +77,8 @@
     <string name="label_guide">Справочник</string>
     <string name="label_stats">Статистика</string>
     <string name="label_profile">Профиль</string>
+    <string name="label_look">Смотреть</string>
+    <string name="label_articles">Статьи</string>
+    <string name="label_sections">Разделы</string>
 
 </resources>

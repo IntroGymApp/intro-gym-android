@@ -45,8 +45,8 @@ class ExerciseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ExerciseListAdapter().apply {
-            setOnItemClickListener { exerciseId ->
-                navigateToExerciseFragment(exerciseId)
+            setOnItemClickListener { exercise ->
+                navigateToExerciseFragment(exercise.id, exercise.name)
             }
         }
         recycler = binding.rvExerciseList.apply {
@@ -78,8 +78,8 @@ class ExerciseListFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun navigateToExerciseFragment(exerciseId: Long){
-        val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId)
+    private fun navigateToExerciseFragment(exerciseId: Long, label: String){
+        val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId, label)
         findNavController().navigate(action)
     }
 }
