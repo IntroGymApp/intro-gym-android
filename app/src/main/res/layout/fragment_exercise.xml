@@ -37,26 +37,23 @@
             android:textAppearance="@style/TextAppearance.IntroGym.Title3.Bold"
             android:text="@string/label_execution"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_execution_steps"
+        <LinearLayout
+            android:id="@+id/ll_execution_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            tools:listitem="@layout/item_execution_step"
-            tools:itemCount="5"/>
+            android:orientation="vertical"
+            tools:listitem="@layout/item_execution_step"/>
 
         <TextView
             style="@style/Widget.IntroGym.TextView.Title"
             android:textAppearance="@style/TextAppearance.IntroGym.Title3.Bold"
             android:text="@string/label_tips"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_execution_tips"
+        <LinearLayout
+            android:id="@+id/ll_execution_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            tools:listitem="@layout/item_execution_tip"
-            tools:itemCount="3"/>
+            android:orientation="vertical"/>
 
     </LinearLayout>
 
