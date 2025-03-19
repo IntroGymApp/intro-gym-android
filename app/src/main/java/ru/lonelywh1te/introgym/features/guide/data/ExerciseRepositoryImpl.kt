@@ -23,7 +23,13 @@ class ExerciseRepositoryImpl(
     }
 
     override fun searchExercisesByName(query: String): Flow<List<ExerciseItem>> {
-        return exerciseDao.searchExercicisesByName(query).map { exerciseEntities ->
+        return exerciseDao.searchExercisesByName(query).map { exerciseEntities ->
+            exerciseEntities.map { it.toExerciseItem() }
+        }
+    }
+
+    override fun filterExerciseByTags(tagsIds: List<Int>): Flow<List<ExerciseItem>> {
+        return exerciseDao.getExerciseWithSelectedTagsIds(tagsIds).map { exerciseEntities ->
             exerciseEntities.map { it.toExerciseItem() }
         }
     }

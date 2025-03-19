@@ -1,14 +1,19 @@
 package ru.lonelywh1te.introgym.features.guide.presentation.exercises
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,13 +26,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseCategoriesBinding
+import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
+import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFilterFragment.Companion.FILTER_RESULT_BUNDLE_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_REQUEST_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_RESULT_BUNDLE_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseCategoryAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseListAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseCategoriesFragmentViewModel
 
-class ExerciseCategoriesFragment : Fragment() {
+class ExerciseCategoriesFragment : Fragment(), MenuProvider {
     private var _binding: FragmentExerciseCategoriesBinding? = null
     private val binding get() = _binding!!
 
@@ -44,6 +52,7 @@ class ExerciseCategoriesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentExerciseCategoriesBinding.inflate(inflater, container, false)
+        requireActivity().addMenuProvider(this, viewLifecycleOwner)
         return binding.root
     }
 
@@ -76,28 +85,16 @@ class ExerciseCategoriesFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        setOnChangeSearchTextListener()
+        binding.etSearchExercise.addTextChangedListener { query ->
+            viewModel.updateSearchQuery(query.toString())
+        }
+
+        setFragmentResultListener(ExerciseFilterFragment.FILTER_REQUEST_KEY) { _, bundle ->
+            val selectedTagsIds = bundle.getIntArray(FILTER_RESULT_BUNDLE_KEY)?.toList() ?: emptyList()
+            viewModel.updateSelectedTags(selectedTagsIds)
+        }
+
         startCollectFlows()
-    }
-
-    private fun setOnChangeSearchTextListener() {
-        binding.etSearchExercise.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.toString().isEmpty()) {
-                    binding.tvListLabel.text = getString(R.string.label_exercise_categories)
-
-                    recycler.adapter = exerciseCategoryAdapter
-                } else {
-                    binding.tvListLabel.text = getString(R.string.label_search_results)
-
-                    recycler.adapter = exerciseListAdapter
-                    viewModel.searchExercisesByName(s.toString())
-                }
-            }
-        })
     }
 
     private fun startCollectFlows() {
@@ -107,11 +104,41 @@ class ExerciseCategoriesFragment : Fragment() {
             }
             .launchIn(lifecycleScope)
 
-        viewModel.searchExercisesResult.flowWithLifecycle(lifecycle)
+        viewModel.exerciseList.flowWithLifecycle(lifecycle)
             .onEach { result ->
+                Log.d("ExerciseCategoriesFragment", "$result")
+
                 exerciseListAdapter.exerciseList = result
+
+                when {
+                    viewModel.searchQuery.value.isEmpty() && viewModel.selectedTagsIds.value.isEmpty() -> {
+                        setExerciseCategoryState()
+                    }
+                    else -> {
+                        setExerciseFilterState(result)
+                    }
+                }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun setExerciseFilterState(exerciseList: List<ExerciseItem>) {
+        binding.tvListLabel.text = getString(R.string.label_search_results)
+        recycler.adapter = exerciseListAdapter
+
+        binding.groupNoResult.visibility = if (exerciseList.isEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun setExerciseCategoryState() {
+        binding.tvListLabel.text = getString(R.string.label_exercise_categories)
+        recycler.adapter = exerciseCategoryAdapter
+    }
+
+    private fun navigateToFilterFragment() {
+        val selectedTagsIds = viewModel.selectedTagsIds.value.toIntArray()
+
+        val action = ExerciseCategoriesFragmentDirections.toExerciseFilterFragment(selectedTagsIds)
+        findNavController().safeNavigate(action)
     }
 
     private fun navigateToExerciseListFragment(categoryId: Long, label: String) {
@@ -122,5 +149,17 @@ class ExerciseCategoriesFragment : Fragment() {
     private fun navigateToExerciseFragment(categoryId: Long, label: String) {
         val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId, label)
         findNavController().safeNavigate(action)
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.filter_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.filter -> navigateToFilterFragment()
+        }
+
+        return true
     }
 }

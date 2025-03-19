@@ -150,8 +150,12 @@
         <fragment
             android:id="@+id/exerciseFilterFragment"
             android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFilterFragment"
-            android:label="fragment_exercise_filter"
-            tools:layout="@layout/fragment_exercise_filter" />
+            android:label="@string/label_filter"
+            tools:layout="@layout/fragment_exercise_filter" >
+            <argument
+                android:name="selectedTagsIds"
+                app:argType="integer[]" />
+        </fragment>
         <fragment
             android:id="@+id/exerciseCategoriesFragment"
             android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseCategoriesFragment"
@@ -164,7 +168,7 @@
                 android:id="@+id/to_exerciseFragment"
                 app:destination="@id/exerciseFragment" />
             <action
-                android:id="@+id/action_exerciseCategoriesFragment_to_exerciseFilterFragment"
+                android:id="@+id/to_exerciseFilterFragment"
                 app:destination="@id/exerciseFilterFragment" />
             <argument
                 android:name="isPickMode"

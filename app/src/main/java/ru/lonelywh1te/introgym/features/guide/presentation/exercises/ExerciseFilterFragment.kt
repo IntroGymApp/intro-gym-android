@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -22,6 +25,9 @@ class ExerciseFilterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<ExerciseFilterFragmentViewModel>()
+    private val args by navArgs<ExerciseFilterFragmentArgs>()
+
+    private val selectedTagsIds by lazy { args.selectedTagsIds.toMutableList() }
 
     private lateinit var muscleTagsRecycler: RecyclerView
     private lateinit var equipmentTagsRecycler: RecyclerView
@@ -38,26 +44,16 @@ class ExerciseFilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        muscleTagsAdapter = TagsAdapter()
-        equipmentTagsAdapter = TagsAdapter()
-        difficultyTagsAdapter = TagsAdapter()
+        muscleTagsAdapter = setupTagAdapter()
+        equipmentTagsAdapter = setupTagAdapter()
+        difficultyTagsAdapter = setupTagAdapter()
 
-        muscleTagsRecycler = binding.rvMuscleTags.apply {
-            adapter = muscleTagsAdapter
-            layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
-            isNestedScrollingEnabled = false
-        }
+        muscleTagsRecycler = setupRecycler(binding.rvMuscleTags, muscleTagsAdapter)
+        equipmentTagsRecycler = setupRecycler(binding.rvEquipmentTags, equipmentTagsAdapter)
+        difficultyTagsRecycler = setupRecycler(binding.rvDifficultyTags, difficultyTagsAdapter)
 
-        equipmentTagsRecycler = binding.rvEquipmentTags.apply {
-            adapter = equipmentTagsAdapter
-            layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
-            isNestedScrollingEnabled = false
-        }
-
-        difficultyTagsRecycler = binding.rvDifficultyTags.apply {
-            adapter = difficultyTagsAdapter
-            layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
-            isNestedScrollingEnabled = false
+        binding.btnSubmit.setOnClickListener {
+            navigateUpWithResult()
         }
 
         startCollectFlows()
@@ -81,5 +77,35 @@ class ExerciseFilterFragment : Fragment() {
                 difficultyTagsAdapter.tags = tags
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun navigateUpWithResult() {
+        val bundle = Bundle().apply {
+            putIntArray(FILTER_RESULT_BUNDLE_KEY, selectedTagsIds.toIntArray())
+        }
+
+        setFragmentResult(FILTER_REQUEST_KEY, bundle)
+        findNavController().navigateUp()
+    }
+
+    private fun setupRecycler(recycler: RecyclerView, adapter: RecyclerView.Adapter<*>): RecyclerView {
+        return recycler.apply {
+            this.adapter = adapter
+            layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
+            isNestedScrollingEnabled = false
+        }
+    }
+
+    private fun setupTagAdapter(): TagsAdapter {
+        return TagsAdapter(selectedTagsIds).apply {
+            setOnSelectedItemListener { tag ->
+                if (selectedTagsIds.contains(tag.id)) selectedTagsIds.remove(tag.id) else selectedTagsIds.add(tag.id)
+            }
+        }
+    }
+
+    companion object {
+        const val FILTER_REQUEST_KEY = "filter_exercise"
+        const val FILTER_RESULT_BUNDLE_KEY = "selected_tags_ids"
     }
 }

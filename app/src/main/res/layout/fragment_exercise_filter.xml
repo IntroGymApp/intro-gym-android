@@ -1,65 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:scrollbars="none"
+    android:paddingHorizontal="20dp"
     tools:context=".features.guide.presentation.exercises.ExerciseFilterFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        android:orientation="vertical">
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
-        <TextView
-            android:id="@+id/tv_muscle_label"
-            style="@style/Widget.IntroGym.TextView.Title"
-            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
-            android:text="@string/label_muscles" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_muscle_tags"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:listitem="@layout/item_tag"
-            tools:itemCount="5"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
+            android:paddingBottom="80dp">
 
-        <TextView
-            android:id="@+id/tv_equipment_label"
-            style="@style/Widget.IntroGym.TextView.Title"
-            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
-            android:text="@string/label_equipment" />
+            <TextView
+                android:id="@+id/tv_muscle_label"
+                style="@style/Widget.IntroGym.TextView.Title"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+                android:text="@string/label_muscles" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_equipment_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:listitem="@layout/item_tag"
-            tools:itemCount="5"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_muscle_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:listitem="@layout/item_tag"
+                tools:itemCount="5"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
 
-        <TextView
-            android:id="@+id/tv_difficulty_label"
-            style="@style/Widget.IntroGym.TextView.Title"
-            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
-            android:text="@string/label_difficulty" />
+            <TextView
+                android:id="@+id/tv_equipment_label"
+                style="@style/Widget.IntroGym.TextView.Title"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+                android:text="@string/label_equipment" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_difficulty_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:listitem="@layout/item_tag"
-            tools:itemCount="3"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_equipment_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:listitem="@layout/item_tag"
+                tools:itemCount="5"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_difficulty_label"
+                style="@style/Widget.IntroGym.TextView.Title"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+                android:text="@string/label_difficulty" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_difficulty_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:listitem="@layout/item_tag"
+                tools:itemCount="3"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
 
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        style="@style/Widget.IntroGym.Button"
+        android:text="@string/label_submit"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"/>
+
+</FrameLayout>

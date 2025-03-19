@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.lonelywh1te.introgym.databinding.ItemTagBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.Tag
 
-class TagsAdapter: RecyclerView.Adapter<TagViewHolder>() {
+class TagsAdapter(private val selectedTagIds: MutableList<Int>): RecyclerView.Adapter<TagViewHolder>() {
+    private var setOnSelectedItemListener: ((Tag) -> Unit)? = null
+
     var tags = listOf<Tag>()
         set(value) {
             field = value
@@ -22,6 +24,17 @@ class TagsAdapter: RecyclerView.Adapter<TagViewHolder>() {
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         holder.bind(tags[position])
+
+        holder.itemView.setOnClickListener {
+            it.isSelected = !it.isSelected
+            setOnSelectedItemListener?.invoke(tags[position])
+        }
+
+        holder.itemView.isSelected = selectedTagIds.contains(tags[position].id)
+    }
+
+    fun setOnSelectedItemListener(listener: ((Tag) -> Unit)?) {
+        setOnSelectedItemListener = listener
     }
 }
 

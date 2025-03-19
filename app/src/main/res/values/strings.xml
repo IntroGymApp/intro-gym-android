@@ -80,5 +80,9 @@
     <string name="label_look">Смотреть</string>
     <string name="label_articles">Статьи</string>
     <string name="label_sections">Разделы</string>
+    <string name="label_filter">Фильтр</string>
+    <string name="label_submit">Применить</string>
+    <string name="label_no_result_title">Ничего не найдено</string>
+    <string name="label_no_result_description">По вашему запросу ничего не найдено</string>
 
 </resources>
