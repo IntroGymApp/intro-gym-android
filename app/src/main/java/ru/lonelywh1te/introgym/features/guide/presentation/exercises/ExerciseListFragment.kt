@@ -88,13 +88,13 @@ class ExerciseListFragment : Fragment(), MenuProvider {
 
     private fun setExerciseListState(exerciseList: List<ExerciseItem>, isFilter: Boolean) {
         binding.tvListLabel.text = if (isFilter) getString(R.string.label_search_results) else getString(R.string.label_exercises)
-        binding.groupNoResult.visibility = if (exerciseList.isEmpty()) View.VISIBLE else View.GONE
+        binding.groupNoResult.visibility = if (exerciseList.isEmpty() && isFilter) View.VISIBLE else View.GONE
     }
 
     private fun startCollectFlows() {
-        viewModel.exerciseItems.flowWithLifecycle(lifecycle)
+        viewModel.exerciseItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { list ->
-                adapter.exerciseList = list
+                adapter.update(list)
 
                 val isFilter = !(viewModel.searchQuery.value.isEmpty() && viewModel.selectedTagsIds.value.isEmpty())
                 setExerciseListState(list, isFilter)

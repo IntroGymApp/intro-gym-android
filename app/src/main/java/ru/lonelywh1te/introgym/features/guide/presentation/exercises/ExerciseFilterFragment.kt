@@ -60,21 +60,21 @@ class ExerciseFilterFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
-        viewModel.muscleTags.flowWithLifecycle(lifecycle)
+        viewModel.muscleTags.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { tags ->
-                muscleTagsAdapter.tags = tags
+                muscleTagsAdapter.update(tags)
             }
             .launchIn(lifecycleScope)
 
-        viewModel.equipmentTags.flowWithLifecycle(lifecycle)
+        viewModel.equipmentTags.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { tags ->
-                equipmentTagsAdapter.tags = tags
+                equipmentTagsAdapter.update(tags)
             }
             .launchIn(lifecycleScope)
 
-        viewModel.difficultyTags.flowWithLifecycle(lifecycle)
+        viewModel.difficultyTags.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { tags ->
-                difficultyTagsAdapter.tags = tags
+                difficultyTagsAdapter.update(tags)
             }
             .launchIn(lifecycleScope)
     }

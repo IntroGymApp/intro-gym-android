@@ -3,22 +3,20 @@ package ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
+import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
 import ru.lonelywh1te.introgym.databinding.ItemExerciseBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 
 class ExerciseListAdapter(private val isPickMode: Boolean): RecyclerView.Adapter<ExerciseItemViewHolder>() {
     private var onItemClickListener: ((exercise: ExerciseItem) -> Unit)? = null
 
-    var exerciseList = listOf<ExerciseItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    private var exerciseList = listOf<ExerciseItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseItemViewHolder {
         val binding = ItemExerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,6 +33,18 @@ class ExerciseListAdapter(private val isPickMode: Boolean): RecyclerView.Adapter
         }
 
         holder.bind(item)
+    }
+
+    fun update(list: List<ExerciseItem>) {
+        val diffUtilCallback = DiffUtilCallback(exerciseList, list,
+            areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id },
+            areContentsTheSame = { oldItem, newItem -> oldItem == newItem }
+        )
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
+
+        exerciseList = list
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun setOnItemClickListener(listener: ((exercise: ExerciseItem) -> Unit)?) {

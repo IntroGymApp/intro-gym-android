@@ -98,17 +98,17 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
     }
 
     private fun startCollectFlows() {
-        viewModel.categories.flowWithLifecycle(lifecycle)
+        viewModel.categories.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { list ->
-                exerciseCategoryAdapter.categoriesList = list
+                exerciseCategoryAdapter.update(list)
             }
             .launchIn(lifecycleScope)
 
-        viewModel.exerciseList.flowWithLifecycle(lifecycle)
+        viewModel.exerciseList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { result ->
                 Log.d("ExerciseCategoriesFragment", "$result")
 
-                exerciseListAdapter.exerciseList = result
+                exerciseListAdapter.update(result)
 
                 when {
                     viewModel.searchQuery.value.isEmpty() && viewModel.selectedTagsIds.value.isEmpty() -> {
@@ -125,7 +125,6 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
     private fun setExerciseFilterState(exerciseList: List<ExerciseItem>) {
         binding.tvListLabel.text = getString(R.string.label_search_results)
         recycler.adapter = exerciseListAdapter
-
         binding.groupNoResult.visibility = if (exerciseList.isEmpty()) View.VISIBLE else View.GONE
     }
 
