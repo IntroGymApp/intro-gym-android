@@ -9,9 +9,11 @@ import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseCategory
 class ExerciseCategoryRepositoryImpl(
     private val exerciseCategoryDao: ExerciseCategoryDao,
 ): ExerciseCategoryRepository {
+
     override fun getCategories(): Flow<List<ExerciseCategoryItem>> {
         return exerciseCategoryDao.getCategoriesWithExerciseCount().map { categories ->
             categories.map { it.toExerciseCategoryItem() }
         }
     }
+
 }

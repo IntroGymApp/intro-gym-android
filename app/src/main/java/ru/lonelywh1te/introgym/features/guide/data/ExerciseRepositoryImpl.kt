@@ -10,27 +10,17 @@ import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseReposito
 class ExerciseRepositoryImpl(
     private val exerciseDao: ExerciseDao
 ): ExerciseRepository {
+
     override fun getExerciseById(exerciseId: Long): Flow<Exercise> {
         return exerciseDao.getExerciseById(exerciseId).map { exerciseEntity ->
             exerciseEntity.toExercise()
         }
     }
 
-    override fun getExercisesByCategoryId(categoryId: Long): Flow<List<ExerciseItem>> {
-        return exerciseDao.getExerciseEntitiesByCategoryId(categoryId).map { exerciseEntities ->
-            exerciseEntities.map { it.toExerciseItem() }
+    override fun getExercisesWithTags(): Flow<List<ExerciseItem>> {
+        return exerciseDao.getExercisesWithTags().map { exerciseEntitiesWithTags ->
+            exerciseEntitiesWithTags.map { it.toExerciseItem() }
         }
     }
 
-    override fun searchExercisesByName(query: String): Flow<List<ExerciseItem>> {
-        return exerciseDao.searchExercisesByName(query).map { exerciseEntities ->
-            exerciseEntities.map { it.toExerciseItem() }
-        }
-    }
-
-    override fun filterExerciseByTags(tagsIds: List<Int>): Flow<List<ExerciseItem>> {
-        return exerciseDao.getExerciseWithSelectedTagsIds(tagsIds).map { exerciseEntities ->
-            exerciseEntities.map { it.toExerciseItem() }
-        }
-    }
 }

@@ -9,9 +9,11 @@ import ru.lonelywh1te.introgym.features.guide.domain.repository.TagRepository
 class TagRepositoryImpl(
     private val tagDao: TagDao,
 ): TagRepository {
+
     override fun getTags(): Flow<List<Tag>> {
         return tagDao.getTags().map { tagEntities ->
             tagEntities.map { it.toTag() }
         }
     }
+
 }

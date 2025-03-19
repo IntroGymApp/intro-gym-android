@@ -3,6 +3,7 @@ package ru.lonelywh1te.introgym.features.guide.data
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.TagEntity
 import ru.lonelywh1te.introgym.data.db.model.ExerciseCategoryWithCount
+import ru.lonelywh1te.introgym.data.db.model.ExerciseEntityWithTags
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseCategoryItem
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
@@ -17,11 +18,13 @@ fun ExerciseCategoryWithCount.toExerciseCategoryItem(): ExerciseCategoryItem {
     )
 }
 
-fun ExerciseEntity.toExerciseItem(): ExerciseItem {
+fun ExerciseEntityWithTags.toExerciseItem(): ExerciseItem {
     return ExerciseItem(
-        id = this.id,
-        name = this.name,
-        imgFilename = this.imgFilename,
+        id = this.exercise.id,
+        name = this.exercise.name,
+        imgFilename = this.exercise.imgFilename,
+        categoryId = this.exercise.categoryId,
+        tagsIds = this.tags.map { it.toTag().id }.toList(),
     )
 }
 
