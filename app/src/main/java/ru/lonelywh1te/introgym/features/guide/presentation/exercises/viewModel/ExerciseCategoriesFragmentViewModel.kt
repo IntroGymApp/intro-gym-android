@@ -34,12 +34,11 @@ class ExerciseCategoriesFragmentViewModel(
 
     private val _exerciseList: Flow<List<ExerciseItem>> = combine(searchResults, filterResults) { searchResults, filterResults ->
         when {
-            searchResults.isNotEmpty() && filterResults.isNotEmpty() -> {
-                searchResults.filter { searchItem ->
-                    filterResults.any { it.id == searchItem.id } }
+            _searchQuery.value.isNotEmpty() && _selectedTagsIds.value.isNotEmpty() -> {
+                searchResults.filter { searchItem -> filterResults.any { it == searchItem } }
             }
-            searchResults.isNotEmpty() -> searchResults
-            filterResults.isNotEmpty() -> filterResults
+            _searchQuery.value.isNotEmpty() -> searchResults
+            _selectedTagsIds.value.isNotEmpty() -> filterResults
             else -> emptyList()
         }
     }
@@ -94,20 +93,6 @@ class ExerciseCategoriesFragmentViewModel(
                     filterExercises(tagsIds)
                 } else {
                     filterResults.emit(emptyList())
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            _exerciseList.collect {
-                searchResults.value.forEach {
-                    Log.d("ExerciseCategoriesFragmentViewModel", "$it")
-                }
-
-                Log.d("ExerciseCategoriesFragmentViewModel", "________________________________________")
-
-                filterResults.value.forEach {
-                    Log.d("ExerciseCategoriesFragmentViewModel", "$it")
                 }
             }
         }

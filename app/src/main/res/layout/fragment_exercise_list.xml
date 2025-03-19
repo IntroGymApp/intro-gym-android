@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,19 +14,69 @@
         style="@style/Widget.IntroGym.TextInput"
         android:hint="@string/label_name"
         android:imeOptions="actionSearch"
-        android:inputType="textFilter"/>
+        android:inputType="textFilter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_list_label"
         style="@style/Widget.IntroGym.TextView.Title"
+        android:text="@string/label_exercises"
         android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
-        android:text="@string/label_exercises" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_search_exercise" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_exercise_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:overScrollMode="never"
-        tools:listitem="@layout/item_exercise"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_list_label"
+        tools:listitem="@layout/item_exercise" />
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_no_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iv_no_result_icon, tv_no_result_title, tv_no_result_description"/>
+
+    <ImageView
+        android:id="@+id/iv_no_result_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_no_eye"
+        app:layout_constraintBottom_toTopOf="@+id/tv_no_result_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="?attr/igHintColor" />
+
+    <TextView
+        android:id="@+id/tv_no_result_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_no_result_title"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        android:textColor="?attr/igHintColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rv_exercise_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_list_label" />
+
+    <TextView
+        android:id="@+id/tv_no_result_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_no_result_description"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        android:textColor="?attr/igHintColor"
+        app:layout_constraintEnd_toEndOf="@+id/rv_exercise_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_no_result_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

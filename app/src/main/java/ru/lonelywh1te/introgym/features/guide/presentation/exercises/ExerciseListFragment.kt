@@ -4,11 +4,17 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,10 +27,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseListBinding
+import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
+import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFilterFragment.Companion.FILTER_RESULT_BUNDLE_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseListAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseListFragmentViewModel
 
-class ExerciseListFragment : Fragment() {
+class ExerciseListFragment : Fragment(), MenuProvider {
     private var _binding: FragmentExerciseListBinding? = null
     private val binding get() = _binding!!
 
@@ -44,6 +52,7 @@ class ExerciseListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentExerciseListBinding.inflate(inflater, container, false)
+        requireActivity().addMenuProvider(this, viewLifecycleOwner)
         return binding.root
     }
 
@@ -65,33 +74,57 @@ class ExerciseListFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+        binding.etSearchExercise.addTextChangedListener { query ->
+            viewModel.updateSearchQuery(query.toString())
+        }
+
+        setFragmentResultListener(ExerciseFilterFragment.FILTER_REQUEST_KEY) { _, bundle ->
+            val selectedTagsIds = bundle.getIntArray(FILTER_RESULT_BUNDLE_KEY)?.toList() ?: emptyList()
+            viewModel.updateSelectedTags(selectedTagsIds)
+        }
+
         startCollectFlows()
-        setOnChangeSearchTextListener()
     }
 
-    private fun setOnChangeSearchTextListener() {
-        binding.etSearchExercise.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-
-            override fun afterTextChanged(s: Editable?) {
-                binding.tvListLabel.text = getString(if (s.toString().isEmpty()) R.string.label_exercises else R.string.label_search_results)
-                viewModel.searchExercisesByName(s.toString())
-            }
-        })
+    private fun setExerciseListState(exerciseList: List<ExerciseItem>, isFilter: Boolean) {
+        binding.tvListLabel.text = if (isFilter) getString(R.string.label_search_results) else getString(R.string.label_exercises)
+        binding.groupNoResult.visibility = if (exerciseList.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun startCollectFlows() {
         viewModel.exerciseItems.flowWithLifecycle(lifecycle)
             .onEach { list ->
                 adapter.exerciseList = list
+
+                val isFilter = !(viewModel.searchQuery.value.isEmpty() && viewModel.selectedTagsIds.value.isEmpty())
+                setExerciseListState(list, isFilter)
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun navigateToFilterFragment() {
+        val selectedTagsIds = viewModel.selectedTagsIds.value.toIntArray()
+
+        val action = ExerciseListFragmentDirections.toExerciseFilterFragment(selectedTagsIds)
+        findNavController().safeNavigate(action)
     }
 
     private fun navigateToExerciseFragment(exerciseId: Long, label: String){
         val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId, label)
         findNavController().safeNavigate(action)
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.filter_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
+            R.id.filter -> navigateToFilterFragment()
+        }
+
+        return true
     }
 
     companion object {

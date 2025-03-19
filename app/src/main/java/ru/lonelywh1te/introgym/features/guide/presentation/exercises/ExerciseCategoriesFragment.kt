@@ -157,6 +157,7 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
             R.id.filter -> navigateToFilterFragment()
         }
 

@@ -146,6 +146,9 @@
             <argument
                 android:name="callerFragmentId"
                 app:argType="integer" />
+            <action
+                android:id="@+id/to_exerciseFilterFragment"
+                app:destination="@id/exerciseFilterFragment" />
         </fragment>
         <fragment
             android:id="@+id/exerciseFilterFragment"
