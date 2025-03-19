@@ -10,6 +10,7 @@ import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
+import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.ItemExerciseBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 
@@ -59,9 +60,8 @@ class ExerciseItemViewHolder(
     fun bind(item: ExerciseItem) {
         binding.tvCategoryName.text = item.name
 
-        Glide.with(binding.root)
-            .load(AssetPath.get(AssetType.EXERCISE_PREVIEW_IMAGE, item.imgFilename))
-            .into(binding.ivExercisePreview)
+        ImageLoader(binding.root.context)
+            .load(AssetPath.get(AssetType.EXERCISE_PREVIEW_IMAGE, item.imgFilename), binding.ivExercisePreview)
 
         binding.ivActionIcon.setImageDrawable(
             ContextCompat.getDrawable(binding.root.context,

@@ -15,6 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
+import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseBinding
 import ru.lonelywh1te.introgym.databinding.ItemExecutionStepBinding
 import ru.lonelywh1te.introgym.databinding.ItemExecutionTipBinding
@@ -52,9 +53,12 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun setExerciseData(exercise: Exercise) {
-        Glide.with(requireContext())
-            .load(AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename))
-            .into(binding.ivExerciseAnimation)
+//        Glide.with(requireContext())
+//            .load(AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename))
+//            .into(binding.ivExerciseAnimation)
+
+        ImageLoader(binding.root.context)
+            .load(AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename), binding.ivExerciseAnimation)
 
         binding.tvExerciseName.text = exercise.name
         binding.tvExerciseDescription.text = exercise.description

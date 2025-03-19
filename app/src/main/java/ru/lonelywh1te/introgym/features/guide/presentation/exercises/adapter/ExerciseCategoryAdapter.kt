@@ -9,6 +9,7 @@ import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
+import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.ItemExerciseCategoryBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseCategoryItem
 
@@ -56,8 +57,7 @@ class ExerciseCategoryViewHolder(private val binding: ItemExerciseCategoryBindin
         binding.tvCategoryName.text = item.name
         binding.tvExerciseCount.text = binding.root.context.getString(R.string.label_exercise_count, item.countOfExercises.toString())
 
-        Glide.with(binding.root)
-            .load(AssetPath.get(AssetType.CATEGORY_IMAGE, item.imgFilename))
-            .into(binding.ivCategoryImage)
+        ImageLoader(binding.root.context)
+            .load(AssetPath.get(AssetType.CATEGORY_IMAGE, item.imgFilename), binding.ivCategoryImage)
     }
 }
