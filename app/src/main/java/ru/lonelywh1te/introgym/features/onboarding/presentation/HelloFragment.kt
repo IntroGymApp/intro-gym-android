@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
 import ru.lonelywh1te.introgym.databinding.FragmentHelloBinding
@@ -44,6 +45,6 @@ class HelloFragment : Fragment() {
 
     private fun navigateToFeaturesFragment() {
         val action = HelloFragmentDirections.toFeaturesFragment()
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 }

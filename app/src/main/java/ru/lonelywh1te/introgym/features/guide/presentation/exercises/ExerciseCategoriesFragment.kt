@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseCategoriesBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_REQUEST_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_RESULT_BUNDLE_KEY
@@ -115,11 +116,11 @@ class ExerciseCategoriesFragment : Fragment() {
 
     private fun navigateToExerciseListFragment(categoryId: Long, label: String) {
         val action = ExerciseCategoriesFragmentDirections.toExerciseListFragment(categoryId, label, isPickMode, callerFragmentId)
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 
     private fun navigateToExerciseFragment(categoryId: Long, label: String) {
         val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId, label)
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
 import ru.lonelywh1te.introgym.data.prefs.user.Gender
@@ -58,7 +59,7 @@ class AboutUserFragment : Fragment() {
 
     private fun navigateToSetNotificationFragment() {
         val action = AboutUserFragmentDirections.toSetNotificationFragment()
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 
     private fun getSelectedGender(): Gender? {

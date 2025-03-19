@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseListBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.adapter.ExerciseListAdapter
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel.ExerciseListFragmentViewModel
@@ -90,7 +91,7 @@ class ExerciseListFragment : Fragment() {
 
     private fun navigateToExerciseFragment(exerciseId: Long, label: String){
         val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId, label)
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 
     companion object {

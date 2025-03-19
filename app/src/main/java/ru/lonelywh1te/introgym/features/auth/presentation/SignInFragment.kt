@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
@@ -91,14 +92,14 @@ class SignInFragment : Fragment() {
 
     private fun navigateToHomeFragment() {
         val action = SignInFragmentDirections.toHomeFragment()
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
 
         settingsPreferences.isFirstLaunch = false
     }
 
     private fun navigateToForgotPasswordFragment() {
         val action = SignInFragmentDirections.toForgotPasswordFragment()
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
