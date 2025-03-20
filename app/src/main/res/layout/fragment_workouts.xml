@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".features.workout.WorkoutsFragment">
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    tools:context=".features.workout.presentation.WorkoutsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="WORKOUTS FRAGMENT"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/rv_workouts_title"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:text="@string/label_your_workouts"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_workouts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_workouts_title" />
+
+    <Button
+        android:id="@+id/btn_add_workout"
+        style="@style/Widget.IntroGym.Button"
+        android:text="@string/label_create_workout"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

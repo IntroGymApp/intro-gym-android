@@ -9,6 +9,7 @@ import ru.lonelywh1te.introgym.data.dataModule
 import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
 import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
+import ru.lonelywh1te.introgym.features.workout.workoutModule
 
 class App: Application() {
     override fun onCreate() {
@@ -21,7 +22,8 @@ class App: Application() {
                 dataModule,
                 authModule,
                 guideModule,
-                onboardingModule
+                onboardingModule,
+                workoutModule,
             )
         }
     }

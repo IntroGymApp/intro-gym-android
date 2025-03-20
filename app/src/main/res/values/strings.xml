@@ -84,5 +84,7 @@
     <string name="label_submit">Применить</string>
     <string name="label_no_result_title">Ничего не найдено</string>
     <string name="label_no_result_description">По вашему запросу ничего не найдено</string>
+    <string name="label_create_workout">Создать тренировку</string>
+    <string name="label_your_workouts">Ваши тренировки</string>
 
 </resources>

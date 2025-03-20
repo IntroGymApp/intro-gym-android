@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.workout
+package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -212,7 +212,7 @@
         tools:layout="@layout/fragment_stats" />
     <fragment
         android:id="@+id/workoutsFragment"
-        android:name="ru.lonelywh1te.introgym.features.workout.WorkoutsFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutsFragment"
         android:label="@string/label_workouts"
         tools:layout="@layout/fragment_workouts" />
 </navigation>
