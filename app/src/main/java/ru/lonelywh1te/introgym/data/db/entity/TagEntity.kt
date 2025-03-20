@@ -9,10 +9,14 @@ import ru.lonelywh1te.introgym.data.db.converters.TagTypeConverter
 
 @Entity("tag")
 data class TagEntity(
-    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true)
+
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
+
     @ColumnInfo(name = "name")
     val name: String,
+
     @ColumnInfo(name = "type")
     @field:TypeConverters(TagTypeConverter::class)
     val type: TagType,

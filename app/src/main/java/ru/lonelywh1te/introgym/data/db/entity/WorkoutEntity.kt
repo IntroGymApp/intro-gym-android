@@ -2,31 +2,36 @@ package ru.lonelywh1te.introgym.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import ru.lonelywh1te.introgym.data.db.UploadStatus
+import java.time.LocalDateTime
 
 @Entity(
-    tableName = "workout",
-    foreignKeys = [
-        ForeignKey(
-            entity = WorkoutLogEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["log_id"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
-        )
-    ]
+    tableName = "workout"
 )
 data class WorkoutEntity(
-    @ColumnInfo(name = "id") @PrimaryKey
+
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
+
     @ColumnInfo(name = "name")
     val name: String,
+
     @ColumnInfo(name = "description")
     val description: String = "",
-    @ColumnInfo(name = "log_id")
-    val logId: Long? = null,
-    @ColumnInfo(name = "upload_status")
-    val uploadStatus: UploadStatus = UploadStatus.NONE
+
+    @ColumnInfo("is_template")
+    val isTemplate: Boolean = false,
+
+    @ColumnInfo(name = "order")
+    val order: Int,
+
+    @ColumnInfo(name = "created_at")
+    val createdAt: LocalDateTime,
+
+    @ColumnInfo(name = "last_updated")
+    val lastUpdated: LocalDateTime,
+
+    @ColumnInfo(name = "is_synchronized")
+    val isSynchronized: Boolean = false,
 )

@@ -4,24 +4,17 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import ru.lonelywh1te.introgym.data.db.UploadStatus
+import java.time.LocalDateTime
 
 @Entity(
     "exercise_set",
     foreignKeys = [
         ForeignKey(
-            entity = WorkoutEntity::class,
+            entity = WorkoutExerciseEntity::class,
             parentColumns = ["id"],
-            childColumns = ["workout_id"],
+            childColumns = ["workout_exercise_id"],
             onUpdate = ForeignKey.CASCADE,
             onDelete = ForeignKey.CASCADE,
-        ),
-        ForeignKey(
-            entity = ExerciseEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["exercise_id"],
-            onUpdate = ForeignKey.NO_ACTION,
-            onDelete = ForeignKey.NO_ACTION,
         ),
     ]
 )
@@ -29,20 +22,31 @@ import ru.lonelywh1te.introgym.data.db.UploadStatus
 data class ExerciseSetEntity(
     @ColumnInfo(name = "id") @PrimaryKey
     val id: Long,
-    @ColumnInfo(name = "workout_id")
-    val workoutId: Long,
-    @ColumnInfo(name = "exercise_id")
-    val exerciseId: Long,
+
+    @ColumnInfo(name = "workout_exercise_id")
+    val workoutExerciseId: Long,
+
     @ColumnInfo(name = "reps")
     val reps: Int?,
-    @ColumnInfo(name = "weight")
-    val weight: Int?,
+
+    @ColumnInfo(name = "weight_kg")
+    val weightKg: Float?,
+
     @ColumnInfo(name = "time_in_sec")
     val timeInSec: Int?,
+
     @ColumnInfo(name = "distance_in_meters")
     val distanceInMeters: Int?,
+
     @ColumnInfo(name = "effort")
     val effort: Int?,
-    @ColumnInfo(name = "upload_status")
-    val uploadStatus: UploadStatus = UploadStatus.NONE,
+
+    @ColumnInfo(name = "created_at")
+    val createdAt: LocalDateTime,
+
+    @ColumnInfo(name = "last_updated")
+    val lastUpdated: LocalDateTime,
+
+    @ColumnInfo(name = "is_synchronized")
+    val isSynchronized: Boolean = false,
 )

@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.lonelywh1te.introgym.data.db.converters.LocalDateConverter
 import ru.lonelywh1te.introgym.data.db.converters.LocalDateTimeConverter
-import ru.lonelywh1te.introgym.data.db.converters.UploadStatusConverter
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseCategoryDao
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
@@ -40,7 +39,7 @@ import ru.lonelywh1te.introgym.data.db.entity.WorkoutLogEntity
         TagToExerciseEntity::class],
     version = 1
 )
-@TypeConverters(LocalDateConverter::class, UploadStatusConverter::class, LocalDateTimeConverter::class)
+@TypeConverters(LocalDateConverter::class, LocalDateTimeConverter::class)
 abstract class MainDatabase: RoomDatabase() {
 
     abstract fun workoutDao(): WorkoutDao

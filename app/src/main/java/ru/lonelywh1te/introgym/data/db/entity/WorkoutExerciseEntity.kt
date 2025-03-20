@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import ru.lonelywh1te.introgym.data.db.UploadStatus
+import java.time.LocalDateTime
 
 @Entity(
     "workout_exercise",
@@ -26,14 +26,26 @@ import ru.lonelywh1te.introgym.data.db.UploadStatus
     ]
 )
 data class WorkoutExerciseEntity(
-    @ColumnInfo(name = "id") @PrimaryKey
+
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
+
     @ColumnInfo(name = "workout_id")
     val workoutId: Long,
+
     @ColumnInfo(name = "exercise_id")
     val exerciseId: Int,
-    @ColumnInfo(name = "execution_order")
-    val executionOrder: Int,
-    @ColumnInfo(name = "upload_status")
-    val uploadStatus: UploadStatus = UploadStatus.NONE,
+
+    @ColumnInfo(name = "order")
+    val order: Int,
+
+    @ColumnInfo(name = "created_at")
+    val createdAt: LocalDateTime,
+
+    @ColumnInfo(name = "last_updated")
+    val lastUpdated: LocalDateTime,
+
+    @ColumnInfo(name = "is_synchronized")
+    val isSynchronized: Boolean = false,
 )

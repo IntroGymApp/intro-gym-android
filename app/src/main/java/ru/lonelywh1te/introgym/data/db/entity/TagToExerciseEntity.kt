@@ -25,11 +25,14 @@ import androidx.room.PrimaryKey
     ]
 )
 data class TagToExerciseEntity (
+
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     val id: Int,
+
     @ColumnInfo(name = "tag_id")
     val tagId: Int,
+
     @ColumnInfo(name = "exercise_id")
     val exerciseId: Int,
 )
