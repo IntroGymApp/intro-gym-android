@@ -1,13 +1,16 @@
 package ru.lonelywh1te.introgym.features.workout.domain.model.workout
 
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class Workout (
-    val id: Long,
+    val id: Long = 0,
     val name: String,
     val description: String,
-    val date: LocalDate? = null,
-    val exercises: List<WorkoutExercise>,
+    val isTemplate: Boolean,
+    val order: Int,
+    val workoutExercises: List<WorkoutExercise>,
+
+    val createdAt: LocalDateTime,
+    val lastUpdated: LocalDateTime,
 )

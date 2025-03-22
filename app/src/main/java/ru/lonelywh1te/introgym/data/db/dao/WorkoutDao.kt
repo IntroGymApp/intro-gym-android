@@ -12,6 +12,28 @@ import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithExercises
 @Dao
 interface WorkoutDao {
 
+    @Query("select * from workout where id = :id")
+    fun getWorkoutEntityById(id: Long): Flow<WorkoutEntity>
+
+    @Query("""
+        select *
+        from workout
+        where is_template = 1
+        order by `order` asc
+    """)
+    fun getWorkoutEntities(): Flow<List<WorkoutEntity>>
+
+    @Insert
+    suspend fun createWorkout(workout: WorkoutEntity)
+
+    @Query("delete from workout where id = :id")
+    suspend fun deleteWorkout(id: Long)
+
+    @Update
+    suspend fun updateWorkout(workout: WorkoutEntity)
+
+
+
     @Transaction
     @Query("""
         select *
@@ -25,12 +47,4 @@ interface WorkoutDao {
     @Query("select * from workout where id = :id")
     fun getWorkoutWithExercisesById(id: Long): Flow<WorkoutEntityWithExercises>
 
-    @Insert
-    fun createWorkout(workout: WorkoutEntity)
-
-    @Query("delete from workout where id = :id")
-    fun deleteWorkout(id: Long)
-
-    @Update
-    fun updateWorkout(workout: WorkoutEntity)
 }

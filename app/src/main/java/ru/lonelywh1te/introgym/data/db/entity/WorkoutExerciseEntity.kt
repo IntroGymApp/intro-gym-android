@@ -35,7 +35,10 @@ data class WorkoutExerciseEntity(
     val workoutId: Long,
 
     @ColumnInfo(name = "exercise_id")
-    val exerciseId: Int,
+    val exerciseId: Long,
+
+    @ColumnInfo(name = "comment")
+    val comment: String?,
 
     @ColumnInfo(name = "order")
     val order: Int,

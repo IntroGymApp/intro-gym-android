@@ -15,14 +15,14 @@ interface WorkoutExerciseDao {
         where workout_id = :workoutId
         order by `order` asc
     """)
-    fun getWorkoutExercises(workoutId: Long)
+    suspend fun getWorkoutExercises(workoutId: Long): List<WorkoutExerciseEntity>
 
     @Insert
-    fun addWorkoutExercise(workoutExercise: WorkoutExerciseEntity)
+    suspend fun addWorkoutExercise(workoutExercise: WorkoutExerciseEntity)
 
     @Update
-    fun updateWorkoutExercise(workoutExercise: WorkoutExerciseEntity)
+    suspend fun updateWorkoutExercise(workoutExercise: WorkoutExerciseEntity)
 
     @Query("delete from workout_exercise where id = :id")
-    fun deleteWorkoutExercise(id: Int)
+    suspend fun deleteWorkoutExercise(id: Int)
 }

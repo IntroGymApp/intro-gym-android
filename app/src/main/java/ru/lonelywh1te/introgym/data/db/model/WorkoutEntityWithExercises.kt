@@ -2,17 +2,18 @@ package ru.lonelywh1te.introgym.data.db.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 
 data class WorkoutEntityWithExercises (
 
     @Embedded
-    val workout: Workout,
+    val workoutEntity: WorkoutEntity,
 
     @Relation(
         parentColumn = "id",
-        entityColumn = "workout_id"
+        entityColumn = "workout_id",
+        entity = WorkoutExerciseEntity::class
     )
-    val exercises: List<WorkoutExerciseEntity>
+    val workoutExercises: List<WorkoutExerciseEntity>,
 )

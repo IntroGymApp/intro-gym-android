@@ -13,19 +13,19 @@ class WorkoutExerciseRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getWorkoutExerciseById(id: Int): Flow<WorkoutExercise> {
+    override fun getWorkoutExerciseById(workoutId: Long): Flow<WorkoutExercise> {
         TODO("Not yet implemented")
     }
 
-    override fun addWorkoutExercise(workoutExercise: WorkoutExercise) {
+    override suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise) {
         TODO("Not yet implemented")
     }
 
-    override fun updateWorkoutExercise(workoutExercise: WorkoutExercise) {
+    override suspend fun updateWorkoutExercise(workoutExercise: WorkoutExercise) {
         TODO("Not yet implemented")
     }
 
-    override fun deleteWorkoutExercise(id: Int) {
+    override suspend fun deleteWorkoutExercise(id: Long) {
         TODO("Not yet implemented")
     }
 }
