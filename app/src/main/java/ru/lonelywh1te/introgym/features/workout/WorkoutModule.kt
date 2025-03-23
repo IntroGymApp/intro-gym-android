@@ -16,11 +16,17 @@ val workoutDataModule = module {
 }
 
 val workoutDomainModule = module {
-
+    factory<GetWorkoutListUseCase> {
+        GetWorkoutListUseCase(repository = get())
+    }
 }
 
 val workoutPresentationModule = module {
-
+    viewModel<WorkoutsFragmentViewModel> {
+        WorkoutsFragmentViewModel(
+            getWorkoutListUseCase = get(),
+        )
+    }
 }
 
 val workoutModule = module {
