@@ -1,31 +1,46 @@
 package ru.lonelywh1te.introgym.features.workout.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import ru.lonelywh1te.introgym.data.db.dao.ExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
+import java.time.LocalDateTime
 
 class WorkoutExerciseRepositoryImpl(
     private val workoutExerciseDao: WorkoutExerciseDao,
 ): WorkoutExerciseRepository {
-    override fun getWorkoutExerciseItems(): Flow<List<WorkoutExerciseItem>> {
-        TODO("Not yet implemented")
+
+    override fun getWorkoutExerciseItems(workoutId: Long): Flow<List<WorkoutExerciseItem>> {
+        return workoutExerciseDao.getWorkoutExercisesWithExerciseInfo(workoutId).map { list ->
+            list.map { it.toWorkoutExerciseItem() }
+        }
     }
 
     override fun getWorkoutExerciseById(workoutId: Long): Flow<WorkoutExercise> {
-        TODO("Not yet implemented")
+        return workoutExerciseDao.getWorkoutExerciseById(workoutId).map { it.toWorkoutExercise() }
     }
 
-    override suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise) {
-        TODO("Not yet implemented")
+    override suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise): Long {
+        val workoutExerciseEntity = workoutExercise.copy(
+            createdAt = LocalDateTime.now(),
+            lastUpdated = LocalDateTime.now(),
+        ).toWorkoutExerciseEntity()
+
+        return workoutExerciseDao.addWorkoutExercise(workoutExerciseEntity)
     }
 
-    override suspend fun updateWorkoutExercise(workoutExercise: WorkoutExercise) {
-        TODO("Not yet implemented")
+    override suspend fun updateWorkoutExercise(workoutExercise: WorkoutExercise): Long {
+        val workoutExerciseEntity = workoutExercise.copy(
+            lastUpdated = LocalDateTime.now(),
+        ).toWorkoutExerciseEntity()
+
+        return workoutExerciseDao.updateWorkoutExercise(workoutExerciseEntity)
     }
 
     override suspend fun deleteWorkoutExercise(id: Long) {
-        TODO("Not yet implemented")
+        return workoutExerciseDao.deleteWorkoutExercise(id)
     }
 }

@@ -86,5 +86,9 @@
     <string name="label_no_result_description">По вашему запросу ничего не найдено</string>
     <string name="label_create_workout">Создать тренировку</string>
     <string name="label_your_workouts">Ваши тренировки</string>
+    <string name="label_comment">Комментарий</string>
+    <string name="label_workout_info_description">Укажите название и, если хотите, комментарий для Вашей тренировки.</string>
+    <string name="label_info">Информация</string>
+    <string name="label_workout">Тренировка</string>
 
 </resources>

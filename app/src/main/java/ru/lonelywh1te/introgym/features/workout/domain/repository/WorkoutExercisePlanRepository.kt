@@ -5,12 +5,12 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 
 interface WorkoutExercisePlanRepository {
 
-    fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<List<WorkoutExercisePlan>>
+    fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<WorkoutExercisePlan>
 
-    fun addWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan)
+    suspend fun addWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan): Long
 
-    fun updateWorkoutExercise(workoutExercisePlan: WorkoutExercisePlan)
+    suspend fun updateWorkoutExercise(workoutExercisePlan: WorkoutExercisePlan): Long
 
-    fun deleteWorkoutExercise(id: Int)
+    suspend fun deleteWorkoutExercise(id: Long)
 
 }

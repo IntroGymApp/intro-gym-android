@@ -214,5 +214,19 @@
         android:id="@+id/workoutsFragment"
         android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutsFragment"
         android:label="@string/label_workouts"
-        tools:layout="@layout/fragment_workouts" />
+        tools:layout="@layout/fragment_workouts" >
+        <action
+            android:id="@+id/to_workoutEditorFragment"
+            app:destination="@id/workoutEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutEditorFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutEditorFragment"
+        android:label="@string/label_workout"
+        tools:layout="@layout/fragment_workout_editor" >
+        <argument
+            android:name="workoutId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
 </navigation>
