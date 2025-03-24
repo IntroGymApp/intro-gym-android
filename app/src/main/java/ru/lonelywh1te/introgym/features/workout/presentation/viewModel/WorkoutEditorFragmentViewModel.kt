@@ -31,10 +31,13 @@ class WorkoutEditorFragmentViewModel(
 
     private val dispatcher = Dispatchers.IO
 
+    private val _workoutSaved: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val workoutSaved: StateFlow<Boolean> get() = _workoutSaved
 
     fun saveWorkout() {
         viewModelScope.launch(dispatcher) {
             createWorkoutUseCase(_workout.value, _workoutExercisesWithPlans.value)
+            _workoutSaved.value = true
         }
     }
 

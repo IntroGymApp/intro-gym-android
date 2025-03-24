@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase
 
+import android.util.Log
 import kotlinx.coroutines.flow.first
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise

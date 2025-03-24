@@ -98,13 +98,12 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
                 workoutExerciseItemAdapter.update(it)
             }
             .launchIn(lifecycleScope)
-    }
 
-    private fun saveWorkout() {
-        lifecycleScope.launch {
-            viewModel.saveWorkout()
-            findNavController().navigateUp()
-        }
+        viewModel.workoutSaved.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { workoutSaved ->
+                if (workoutSaved) findNavController().navigateUp()
+            }
+            .launchIn(lifecycleScope)
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -114,7 +113,7 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             android.R.id.home -> findNavController().navigateUp()
-            R.id.saveWorkout -> saveWorkout()
+            R.id.saveWorkout -> viewModel.saveWorkout()
         }
 
         return true

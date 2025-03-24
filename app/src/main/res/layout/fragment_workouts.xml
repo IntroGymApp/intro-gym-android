@@ -21,6 +21,8 @@
         android:id="@+id/rv_workouts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false"
         tools:listitem="@layout/item_workout"
         tools:itemCount="5"
         app:layout_constraintBottom_toBottomOf="parent"

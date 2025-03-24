@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,6 @@ class WorkoutsFragmentViewModel(
     init {
         viewModelScope.launch (dispatcher){
             getWorkoutListUseCase().collect { list ->
-                Log.d("WorkoutsFragmentViewModel", "$list")
                 _workoutsList.value = list
             }
         }
