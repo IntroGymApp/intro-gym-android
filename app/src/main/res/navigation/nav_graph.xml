@@ -4,6 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/guideFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.GuideFragment"
+        android:label="@string/label_guide"
+        tools:layout="@layout/fragment_guide">
+        <argument
+            android:name="isExercisePickMode"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="callerFragmentId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/to_guide_exercises"
+            app:destination="@id/guide_exercises" />
+    </fragment>
     <navigation android:id="@+id/onboarding"
         app:startDestination="@id/helloFragment">
         <fragment
@@ -112,8 +129,8 @@
         </fragment>
     </navigation>
     <navigation
-        android:id="@+id/guide"
-        app:startDestination="@id/guideFragment">
+        android:id="@+id/guide_exercises"
+        app:startDestination="@id/exerciseCategoriesFragment">
         <fragment
             android:id="@+id/exerciseFragment"
             android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFragment"
@@ -180,15 +197,14 @@
                 android:name="callerFragmentId"
                 app:argType="integer" />
         </fragment>
-        <fragment
-            android:id="@+id/guideFragment"
-            android:name="ru.lonelywh1te.introgym.features.guide.presentation.GuideFragment"
-            android:label="@string/label_guide"
-            tools:layout="@layout/fragment_guide" >
-            <action
-                android:id="@+id/to_exerciseCategoriesFragment"
-                app:destination="@id/exerciseCategoriesFragment" />
-        </fragment>
+        <argument
+            android:name="isPickMode"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="callerFragmentId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </navigation>
     <fragment
         android:id="@+id/homeFragment"
@@ -223,10 +239,14 @@
         android:id="@+id/workoutEditorFragment"
         android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutEditorFragment"
         android:label="@string/label_workout"
-        tools:layout="@layout/fragment_workout_editor" >
+        tools:layout="@layout/fragment_workout_editor">
+        <action
+            android:id="@+id/to_guide_exersices"
+            app:destination="@id/guide_exercises" />
         <argument
             android:name="workoutId"
             app:argType="long"
             android:defaultValue="-1L" />
     </fragment>
+
 </navigation>

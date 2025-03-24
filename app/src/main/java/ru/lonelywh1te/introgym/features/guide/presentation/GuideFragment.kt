@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentGuideBinding
@@ -28,7 +29,7 @@ class GuideFragment : Fragment() {
     }
 
     private fun navigateToExerciseSection() {
-        val action = GuideFragmentDirections.toExerciseCategoriesFragment(false, R.id.guideFragment)
+        val action = GuideFragmentDirections.toGuideExercises(false, R.id.guideFragment)
         findNavController().safeNavigate(action)
     }
 }
