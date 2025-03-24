@@ -9,8 +9,8 @@ data class WorkoutExerciseWithExerciseInfo (
     @Embedded val workoutExercise: WorkoutExerciseEntity,
 
     @Relation(
-        parentColumn = "id",
-        entityColumn = "workout_exercise_id",
+        parentColumn = "exercise_id",
+        entityColumn = "id",
         entity = ExerciseEntity::class,
     )
     val exerciseInfo: ExerciseInfo

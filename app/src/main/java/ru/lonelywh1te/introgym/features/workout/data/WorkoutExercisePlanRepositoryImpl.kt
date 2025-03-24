@@ -23,12 +23,12 @@ class WorkoutExercisePlanRepositoryImpl(
         return workoutExercisePlanDao.createWorkoutExercisePlan(workoutExercisePlanEntity)
     }
 
-    override suspend fun updateWorkoutExercise(workoutExercisePlan: WorkoutExercisePlan): Long {
+    override suspend fun updateWorkoutExercise(workoutExercisePlan: WorkoutExercisePlan) {
         val workoutExercisePlanEntity = workoutExercisePlan.copy(
             lastUpdated = LocalDateTime.now(),
         ).toWorkoutExercisePlanEntity()
 
-        return workoutExercisePlanDao.updateWorkoutExercisePlan(workoutExercisePlanEntity)
+        workoutExercisePlanDao.updateWorkoutExercisePlan(workoutExercisePlanEntity)
     }
 
     override suspend fun deleteWorkoutExercise(id: Long) {

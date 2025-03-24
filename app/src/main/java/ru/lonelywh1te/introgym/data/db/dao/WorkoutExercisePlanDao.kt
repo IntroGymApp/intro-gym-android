@@ -18,7 +18,7 @@ interface WorkoutExercisePlanDao {
     fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<WorkoutExercisePlanEntity>
 
     @Update
-    suspend fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlanEntity): Long
+    suspend fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlanEntity)
 
     @Query("delete from workout_exercise_plan where id = :id")
     suspend fun deleteWorkoutExercisePlan(id: Long)
