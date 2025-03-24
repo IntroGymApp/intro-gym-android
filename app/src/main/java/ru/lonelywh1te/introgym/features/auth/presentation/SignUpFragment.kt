@@ -79,6 +79,10 @@ class SignUpFragment : Fragment() {
             )
         }
 
+        binding.btnSkipSignUp.setOnClickListener {
+            navigateToHomeFragment()
+        }
+
         startCollectFlows()
         setOnChangePasswordListener()
         setConfirmOtpFragmentResultListener()
