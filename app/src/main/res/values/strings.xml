@@ -90,5 +90,7 @@
     <string name="label_workout_info_description">Укажите название и, если хотите, комментарий для Вашей тренировки.</string>
     <string name="label_info">Информация</string>
     <string name="label_workout">Тренировка</string>
+    <string name="label_skip_sign_up">Пропусить регистрацию</string>
+    <string name="label_continue_without_account">Продолжить без аккаунта</string>
 
 </resources>

@@ -3,6 +3,7 @@ package ru.lonelywh1te.introgym.features.workout.data
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
+import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
 import ru.lonelywh1te.introgym.data.db.model.WorkoutExerciseWithExerciseInfo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
@@ -10,11 +11,11 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 
-fun WorkoutEntity.toWorkoutItem(countOfExercises: Int): WorkoutItem {
+fun WorkoutEntityWithCountOfExercises.toWorkoutItem(): WorkoutItem {
     return WorkoutItem(
         workoutId = this.id,
         name = this.name,
-        countOfExercises = countOfExercises,
+        countOfExercises = this.countOfExercises,
         order = this.order,
     )
 }

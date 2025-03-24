@@ -23,8 +23,8 @@ interface WorkoutDao {
     fun getWorkouts(): Flow<List<WorkoutEntity>>
 
     @Query("""
-        select *,
-               count(we.workout_id) as countOfExercises
+        select w.*,
+               count(we.workout_id) as count_of_exercises
         from workout w
         left join workout_exercise we on w.id = we.workout_id
         where is_template = 1

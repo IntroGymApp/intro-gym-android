@@ -36,6 +36,7 @@ fun ExerciseEntity.toExercise(): Exercise {
         description = this.description,
         steps = this.steps,
         tips = this.tips,
+        imgFilename = this.imgFilename,
         animFilename = this.animFilename,
     )
 }

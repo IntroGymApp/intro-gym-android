@@ -7,5 +7,6 @@ data class Exercise(
     val description: String,
     val steps: List<String>,
     val tips: List<String>,
+    val imgFilename: String,
     val animFilename: String,
 )

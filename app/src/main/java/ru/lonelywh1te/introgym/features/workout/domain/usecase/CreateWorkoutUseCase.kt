@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase
 
+import kotlinx.coroutines.flow.first
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -12,19 +13,27 @@ class CreateWorkoutUseCase(
     private val workoutExerciseRepository: WorkoutExerciseRepository,
     private val workoutExercisePlanRepository: WorkoutExercisePlanRepository,
 ) {
+    private val resetId = 0L
+
     suspend operator fun invoke(
         workout: Workout,
         exercisesWithPlans: Map<WorkoutExercise, WorkoutExercisePlan>
     ) {
-        val workoutId = workoutRepository.createWorkout(workout)
+        val workoutId = workoutRepository.createWorkout(workout.copy(id = resetId))
 
         exercisesWithPlans.forEach { (workoutExercise, workoutExercisePlan) ->
             val workoutExerciseId = workoutExerciseRepository.addWorkoutExercise(
-                workoutExercise.copy(workoutId = workoutId)
+                workoutExercise.copy(
+                    id = resetId,
+                    workoutId = workoutId
+                )
             )
 
             workoutExercisePlanRepository.addWorkoutExercisePlan(
-                workoutExercisePlan.copy(workoutExerciseId = workoutExerciseId)
+                workoutExercisePlan.copy(
+                    id = resetId,
+                    workoutExerciseId = workoutExerciseId
+                )
             )
         }
     }
