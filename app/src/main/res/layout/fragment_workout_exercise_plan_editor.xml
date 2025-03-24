@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.workout.presentation.WorkoutExercisePlanEditorFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_exercise_animation"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="20dp"
+            tools:src="@drawable/ic_launcher_background"/>
+
+        <TextView
+            android:id="@+id/tv_exercise_name"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+            tools:text="Название упражнения" />
+
+        <EditText
+            style="@style/Widget.IntroGym.TextInput"
+            android:hint="@string/label_comment"/>
+
+        <TextView
+            android:id="@+id/tv_workout_exercise_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/label_exercise_comment_description"
+            android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/materialButtonToggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btn_select_weight"
+                style="@style/Widget.IntroGym.SegmentedButton"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_weight"
+                app:iconSize="30dp" />
+
+            <Button
+                android:id="@+id/btn_select_reps"
+                style="@style/Widget.IntroGym.SegmentedButton"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_repeat"
+                app:iconSize="30dp"/>
+
+            <Button
+                android:id="@+id/btn_select_time"
+                style="@style/Widget.IntroGym.SegmentedButton"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_time"
+                app:iconSize="30dp" />
+
+            <Button
+                android:id="@+id/btn_select_distance"
+                style="@style/Widget.IntroGym.SegmentedButton"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_distance"
+                app:iconSize="30dp"/>
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <LinearLayout
+            android:id="@+id/ll_text_input_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_rounded_plate_filled"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_workout_info">
+
+            <EditText
+                android:id="@+id/et_plan_sets"
+                style="@style/Widget.IntroGym.TextInput"
+                android:inputType="textEmailAddress"
+                android:hint="@string/label_sets"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/igHintColor"/>
+
+            <EditText
+                android:id="@+id/et_plan_weight"
+                style="@style/Widget.IntroGym.TextInput"
+                android:hint="@string/label_weight"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/igHintColor"/>
+
+            <EditText
+                android:id="@+id/et_plan_reps"
+                style="@style/Widget.IntroGym.TextInput"
+                android:hint="@string/label_reps"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/igHintColor"/>
+
+            <EditText
+                android:id="@+id/et_plan_time"
+                style="@style/Widget.IntroGym.TextInput"
+                android:hint="@string/label_time"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/igHintColor"/>
+
+            <EditText
+                android:id="@+id/et_plan_distance"
+                style="@style/Widget.IntroGym.TextInput"
+                android:hint="@string/label_distance"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_plan_fields_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/label_exercise_plan_fields_description"
+            android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+    </LinearLayout>
+
+</ScrollView>

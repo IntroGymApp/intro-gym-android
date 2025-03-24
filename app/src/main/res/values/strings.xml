@@ -92,5 +92,13 @@
     <string name="label_workout">Тренировка</string>
     <string name="label_skip_sign_up">Пропусить регистрацию</string>
     <string name="label_continue_without_account">Продолжить без аккаунта</string>
+    <string name="label_sets">Подходы</string>
+    <string name="label_exercise_comment_description">Комментарий для упражнения (необязательно)</string>
+    <string name="label_weight">Вес</string>
+    <string name="label_reps">Повторения</string>
+    <string name="label_time">Время</string>
+    <string name="label_distance">Расстояние</string>
+    <string name="label_exercise_plan_fields_description">Выберите типы полей для ввода показателей и заполните их желаемыми значениями</string>
+    <string name="label_plan">Планирование</string>
 
 </resources>

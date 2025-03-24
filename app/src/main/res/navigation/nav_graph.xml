@@ -247,6 +247,23 @@
             android:name="workoutId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/to_workoutExercisePlanEditorFragment"
+            app:destination="@id/workoutExercisePlanEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutExercisePlanEditorFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutExercisePlanEditorFragment"
+        android:label="@string/label_plan"
+        tools:layout="@layout/fragment_workout_exercise_plan_editor" >
+        <argument
+            android:name="workoutExerciseId"
+            app:argType="long" />
+        <argument android:name="exerciseId"
+            app:argType="long" />
+        <argument
+            android:name="isCreateMode"
+            app:argType="boolean" />
     </fragment>
 
 </navigation>

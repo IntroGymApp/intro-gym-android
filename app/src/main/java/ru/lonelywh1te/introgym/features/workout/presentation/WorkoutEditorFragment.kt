@@ -56,7 +56,8 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
 
         workoutExerciseItemAdapter = WorkoutExerciseItemAdapter().apply {
             setOnItemClickListener { item ->
-                // TODO: Not yet implemented
+                val exerciseId = viewModel.workoutExercisesWithPlans.value.keys.find { it.id == item.workoutExerciseId }!!.exerciseId
+                navigateToEditWorkoutExercisePlan(exerciseId)
             }
         }
 
@@ -79,6 +80,11 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
         }
 
         startCollectFlows()
+    }
+
+    private fun navigateToEditWorkoutExercisePlan(exerciseId: Long) {
+        val action = WorkoutEditorFragmentDirections.toWorkoutExercisePlanEditorFragment(exerciseId = exerciseId, workoutExerciseId = -1L, isCreateMode = true)
+        findNavController().safeNavigate(action)
     }
 
     private fun navigateToExercisePickFragment() {

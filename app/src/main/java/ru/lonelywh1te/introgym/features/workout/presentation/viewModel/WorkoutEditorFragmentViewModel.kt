@@ -24,6 +24,7 @@ class WorkoutEditorFragmentViewModel(
     val workout: StateFlow<Workout> get() = _workout
 
     private val _workoutExercisesWithPlans: MutableStateFlow<Map<WorkoutExercise, WorkoutExercisePlan>> = MutableStateFlow(emptyMap())
+    val workoutExercisesWithPlans: StateFlow<Map<WorkoutExercise, WorkoutExercisePlan>> get() = _workoutExercisesWithPlans
 
     private val _workoutExerciseItems: MutableStateFlow<List<WorkoutExerciseItem>> = MutableStateFlow(emptyList())
     val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> get() = _workoutExerciseItems

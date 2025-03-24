@@ -11,6 +11,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutReposit
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.CreateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutListUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
 import kotlin.math.sin
 
@@ -58,6 +59,12 @@ val workoutPresentationModule = module {
         WorkoutEditorFragmentViewModel(
             createWorkoutUseCase = get(),
             getExerciseUseCase = get(),
+        )
+    }
+
+    viewModel<WorkoutExercisePlanEditorFragmentViewModel> {
+        WorkoutExercisePlanEditorFragmentViewModel(
+            getExerciseUseCase = get()
         )
     }
 }
