@@ -100,5 +100,6 @@
     <string name="label_distance">Расстояние</string>
     <string name="label_exercise_plan_fields_description">Выберите типы полей для ввода показателей и заполните их желаемыми значениями</string>
     <string name="label_plan">Планирование</string>
+    <string name="label_save">Сохранить</string>
 
 </resources>

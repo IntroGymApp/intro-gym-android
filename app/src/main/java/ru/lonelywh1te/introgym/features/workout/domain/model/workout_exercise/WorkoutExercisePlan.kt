@@ -1,7 +1,10 @@
 package ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
+@Parcelize
 data class WorkoutExercisePlan (
     val id: Long,
     val workoutExerciseId: Long,
@@ -13,7 +16,7 @@ data class WorkoutExercisePlan (
 
     val createdAt: LocalDateTime,
     val lastUpdated: LocalDateTime,
-) {
+): Parcelable {
     companion object {
         fun empty() = WorkoutExercisePlan(
             id = -1L,

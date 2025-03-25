@@ -3,8 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/saveWorkout"
+        android:id="@+id/exerciseInfo"
+        android:icon="@drawable/ic_info"
+        android:title="@string/label_save"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/saveWorkoutExercisePlan"
         android:icon="@drawable/ic_ok"
         android:title="@string/label_save"
         app:showAsAction="ifRoom"/>
+
 </menu>

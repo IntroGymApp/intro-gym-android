@@ -23,7 +23,9 @@ class WorkoutEditorFragmentViewModel(
     private val _workout: MutableStateFlow<Workout> = MutableStateFlow(Workout.empty(isTemplate = true))
     val workout: StateFlow<Workout> get() = _workout
 
-    private val _workoutExercisesWithPlans: MutableStateFlow<Map<WorkoutExercise, WorkoutExercisePlan>> = MutableStateFlow(emptyMap())
+    private val _workoutExercisesWithPlans: MutableStateFlow<MutableMap<WorkoutExercise, WorkoutExercisePlan>> = MutableStateFlow(
+        mutableMapOf()
+    )
     val workoutExercisesWithPlans: StateFlow<Map<WorkoutExercise, WorkoutExercisePlan>> get() = _workoutExercisesWithPlans
 
     private val _workoutExerciseItems: MutableStateFlow<List<WorkoutExerciseItem>> = MutableStateFlow(emptyList())
@@ -52,7 +54,7 @@ class WorkoutEditorFragmentViewModel(
             )
             val newWorkoutExercisePlan = WorkoutExercisePlan.empty()
 
-            _workoutExercisesWithPlans.update { it + (newWorkoutExercise to newWorkoutExercisePlan) }
+            _workoutExercisesWithPlans.value[newWorkoutExercise] = newWorkoutExercisePlan
 
             addWorkoutExerciseItem(exercise)
         }
@@ -65,6 +67,14 @@ class WorkoutEditorFragmentViewModel(
             imgFilename = exercise.imgFilename,
             order = _workoutExerciseItems.value.size,
         )
+    }
+
+    fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
+        _workoutExercisesWithPlans.value.forEach {
+            if (it.key.id == workoutExercisePlan.workoutExerciseId) {
+                _workoutExercisesWithPlans.value[it.key] = workoutExercisePlan
+            }
+        }
     }
 
     fun updateWorkoutName(name: String) {
