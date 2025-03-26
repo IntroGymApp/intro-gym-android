@@ -65,7 +65,7 @@ class ExerciseListFragment : Fragment(), MenuProvider {
                     setFragmentResult(PICK_REQUEST_KEY, bundleOf(PICK_RESULT_BUNDLE_KEY to exercise.id))
                     findNavController().popBackStack(callerFragmentId, false)
                 } else {
-                    navigateToExerciseFragment(exercise.id, exercise.name)
+                    navigateToExerciseFragment(exercise.id)
                 }
             }
         }
@@ -109,8 +109,8 @@ class ExerciseListFragment : Fragment(), MenuProvider {
         findNavController().safeNavigate(action)
     }
 
-    private fun navigateToExerciseFragment(exerciseId: Long, label: String){
-        val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId, label)
+    private fun navigateToExerciseFragment(exerciseId: Long){
+        val action = ExerciseListFragmentDirections.toExerciseFragment(exerciseId)
         findNavController().safeNavigate(action)
     }
 

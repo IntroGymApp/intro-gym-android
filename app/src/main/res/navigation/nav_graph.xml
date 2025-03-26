@@ -5,6 +5,69 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
     <fragment
+        android:id="@+id/exerciseFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFragment"
+        android:label=""
+        tools:layout="@layout/fragment_exercise">
+        <argument
+            android:name="exerciseId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseListFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment"
+        android:label="{label}"
+        tools:layout="@layout/fragment_exercise_list">
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+        <action
+            android:id="@+id/to_exerciseFragment"
+            app:destination="@id/exerciseFragment" />
+        <argument
+            android:name="label"
+            app:argType="string" />
+        <argument
+            android:name="isPickMode"
+            app:argType="boolean" />
+        <argument
+            android:name="callerFragmentId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/to_exerciseFilterFragment"
+            app:destination="@id/exerciseFilterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseFilterFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFilterFragment"
+        android:label="@string/label_filter"
+        tools:layout="@layout/fragment_exercise_filter">
+        <argument
+            android:name="selectedTagsIds"
+            app:argType="integer[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseCategoriesFragment"
+        android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseCategoriesFragment"
+        android:label="@string/label_exercises"
+        tools:layout="@layout/fragment_exercise_categories">
+        <action
+            android:id="@+id/to_exerciseListFragment"
+            app:destination="@id/exerciseListFragment" />
+        <action
+            android:id="@+id/to_exerciseFragment"
+            app:destination="@id/exerciseFragment" />
+        <action
+            android:id="@+id/to_exerciseFilterFragment"
+            app:destination="@id/exerciseFilterFragment" />
+        <argument
+            android:name="isPickMode"
+            app:argType="boolean" />
+        <argument
+            android:name="callerFragmentId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
         android:id="@+id/guideFragment"
         android:name="ru.lonelywh1te.introgym.features.guide.presentation.GuideFragment"
         android:label="@string/label_guide"
@@ -18,8 +81,8 @@
             android:defaultValue="-1"
             app:argType="integer" />
         <action
-            android:id="@+id/to_guide_exercises"
-            app:destination="@id/guide_exercises" />
+            android:id="@+id/to_exerciseCategoriesFragment"
+            app:destination="@id/exerciseCategoriesFragment" />
     </fragment>
     <navigation android:id="@+id/onboarding"
         app:startDestination="@id/helloFragment">
@@ -128,84 +191,6 @@
                 app:argType="ru.lonelywh1te.introgym.features.auth.domain.model.OtpType" />
         </fragment>
     </navigation>
-    <navigation
-        android:id="@+id/guide_exercises"
-        app:startDestination="@id/exerciseCategoriesFragment">
-        <fragment
-            android:id="@+id/exerciseFragment"
-            android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFragment"
-            android:label="{label}"
-            tools:layout="@layout/fragment_exercise">
-            <argument
-                android:name="exerciseId"
-                app:argType="long" />
-            <argument
-                android:name="label"
-                app:argType="string" />
-        </fragment>
-        <fragment
-            android:id="@+id/exerciseListFragment"
-            android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment"
-            android:label="{label}"
-            tools:layout="@layout/fragment_exercise_list">
-            <argument
-                android:name="categoryId"
-                app:argType="long" />
-            <action
-                android:id="@+id/to_exerciseFragment"
-                app:destination="@id/exerciseFragment" />
-            <argument
-                android:name="label"
-                app:argType="string" />
-            <argument
-                android:name="isPickMode"
-                app:argType="boolean" />
-            <argument
-                android:name="callerFragmentId"
-                app:argType="integer" />
-            <action
-                android:id="@+id/to_exerciseFilterFragment"
-                app:destination="@id/exerciseFilterFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/exerciseFilterFragment"
-            android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFilterFragment"
-            android:label="@string/label_filter"
-            tools:layout="@layout/fragment_exercise_filter" >
-            <argument
-                android:name="selectedTagsIds"
-                app:argType="integer[]" />
-        </fragment>
-        <fragment
-            android:id="@+id/exerciseCategoriesFragment"
-            android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseCategoriesFragment"
-            android:label="@string/label_exercises"
-            tools:layout="@layout/fragment_exercise_categories">
-            <action
-                android:id="@+id/to_exerciseListFragment"
-                app:destination="@id/exerciseListFragment" />
-            <action
-                android:id="@+id/to_exerciseFragment"
-                app:destination="@id/exerciseFragment" />
-            <action
-                android:id="@+id/to_exerciseFilterFragment"
-                app:destination="@id/exerciseFilterFragment" />
-            <argument
-                android:name="isPickMode"
-                app:argType="boolean" />
-            <argument
-                android:name="callerFragmentId"
-                app:argType="integer" />
-        </fragment>
-        <argument
-            android:name="isPickMode"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <argument
-            android:name="callerFragmentId"
-            app:argType="integer"
-            android:defaultValue="-1" />
-    </navigation>
     <fragment
         android:id="@+id/homeFragment"
         android:name="ru.lonelywh1te.introgym.features.home.HomeFragment"
@@ -243,8 +228,8 @@
             android:label="@string/label_workout"
             tools:layout="@layout/fragment_workout_editor">
             <action
-                android:id="@+id/to_guide_exersices"
-                app:destination="@id/guide_exercises" />
+                android:id="@+id/to_ExerciseCategoriesFragment"
+                app:destination="@id/exerciseCategoriesFragment" />
             <argument
                 android:name="workoutId"
                 android:defaultValue="-1L"
@@ -261,6 +246,9 @@
             <argument
                 android:name="workoutExerciseId"
                 app:argType="long" />
+            <action
+                android:id="@+id/to_exerciseInfoFragment"
+                app:destination="@id/exerciseFragment" />
         </fragment>
     </navigation>
 

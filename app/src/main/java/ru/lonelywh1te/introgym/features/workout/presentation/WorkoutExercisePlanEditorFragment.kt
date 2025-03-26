@@ -32,6 +32,8 @@ import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEd
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExercisePlanEditorBinding? = null
@@ -42,21 +44,18 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
 
     private val args by navArgs<WorkoutExercisePlanEditorFragmentArgs>()
 
+    private lateinit var workoutExercise: WorkoutExercise
     private lateinit var mapOfButtonAndInputs: Map<Button, EditText>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val workoutExerciseWithPlan = workoutEditorViewModel.getWorkoutExerciseWithPlan(args.workoutExerciseId)
+        val workoutExerciseWithPlan = workoutEditorViewModel.getWorkoutExerciseWithPlan(args.workoutExerciseId)!!
 
-        val workoutExercise = workoutExerciseWithPlan?.first
-        val plan = workoutExerciseWithPlan?.second
+        workoutExercise = workoutExerciseWithPlan.first
+        viewModel.setWorkoutExercisePlan(workoutExerciseWithPlan.second)
 
-        viewModel.setWorkoutExercisePlan(plan)
-
-        workoutExercise?.let {
-            viewModel.getExerciseData(workoutExercise.exerciseId)
-        }
+        viewModel.getExerciseData(workoutExercise.exerciseId)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -125,7 +124,8 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     }
 
     private fun navigateToExerciseInfoFragment() {
-
+        val action = WorkoutExercisePlanEditorFragmentDirections.toExerciseInfoFragment(workoutExercise.exerciseId)
+        findNavController().safeNavigate(action)
     }
 
     private fun saveWorkoutExercisePlan() {

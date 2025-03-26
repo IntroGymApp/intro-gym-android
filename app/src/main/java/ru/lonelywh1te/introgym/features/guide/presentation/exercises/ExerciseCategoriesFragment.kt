@@ -69,7 +69,7 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
 
                     findNavController().popBackStack(callerFragmentId, false)
                 } else {
-                    navigateToExerciseFragment(exercise.id, exercise.name)
+                    navigateToExerciseFragment(exercise.id)
                 }
             }
         }
@@ -145,8 +145,8 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
         findNavController().safeNavigate(action)
     }
 
-    private fun navigateToExerciseFragment(categoryId: Long, label: String) {
-        val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId, label)
+    private fun navigateToExerciseFragment(categoryId: Long) {
+        val action = ExerciseCategoriesFragmentDirections.toExerciseFragment(categoryId)
         findNavController().safeNavigate(action)
     }
 

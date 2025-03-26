@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.app.MainActivity
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
@@ -53,9 +55,7 @@ class ExerciseFragment : Fragment() {
     }
 
     private fun setExerciseData(exercise: Exercise) {
-//        Glide.with(requireContext())
-//            .load(AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename))
-//            .into(binding.ivExerciseAnimation)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = exercise.name
 
         ImageLoader(binding.root.context)
             .load(AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename), binding.ivExerciseAnimation)
