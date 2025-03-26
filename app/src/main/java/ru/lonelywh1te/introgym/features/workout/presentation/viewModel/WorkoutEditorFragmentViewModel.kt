@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
@@ -15,6 +14,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.CreateWorkoutUseCase
+import java.util.Map.entry
 
 class WorkoutEditorFragmentViewModel(
     private val createWorkoutUseCase: CreateWorkoutUseCase,
@@ -48,25 +48,30 @@ class WorkoutEditorFragmentViewModel(
             val exercise = getExerciseUseCase(exerciseId).first()
 
             val newWorkoutExercise = WorkoutExercise.empty(
-                id = _workoutExerciseItems.value.size.toLong(),
+                id = _workoutExercisesWithPlans.value.size.toLong(),
                 exerciseId = exerciseId,
-                order = _workoutExerciseItems.value.size
+                order = _workoutExercisesWithPlans.value.size
             )
-            val newWorkoutExercisePlan = WorkoutExercisePlan.empty()
+            val newWorkoutExercisePlan = WorkoutExercisePlan.empty(workoutExerciseId = newWorkoutExercise.id)
 
             _workoutExercisesWithPlans.value[newWorkoutExercise] = newWorkoutExercisePlan
 
-            addWorkoutExerciseItem(exercise)
+            addWorkoutExerciseItem(exercise, newWorkoutExercise)
         }
     }
 
-    private fun addWorkoutExerciseItem(exercise: Exercise) {
+    private fun addWorkoutExerciseItem(exercise: Exercise, workoutExercise: WorkoutExercise) {
         _workoutExerciseItems.value += WorkoutExerciseItem(
-            workoutExerciseId = _workoutExerciseItems.value.size.toLong(),
+            workoutExerciseId = workoutExercise.id,
             name = exercise.name,
             imgFilename = exercise.imgFilename,
-            order = _workoutExerciseItems.value.size,
+            order = workoutExercise.order,
         )
+    }
+
+    fun getWorkoutExerciseWithPlan(workoutExerciseId: Long): Pair<WorkoutExercise, WorkoutExercisePlan>? {
+        val entry = _workoutExercisesWithPlans.value.entries.firstOrNull { it.key.id == workoutExerciseId }
+        return entry?.let { entry.key to entry.value }
     }
 
     fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
@@ -75,6 +80,26 @@ class WorkoutEditorFragmentViewModel(
                 _workoutExercisesWithPlans.value[it.key] = workoutExercisePlan
             }
         }
+    }
+
+    fun getWorkoutExerciseComment(workoutExerciseId: Long): String? {
+        var comment = ""
+
+        _workoutExercisesWithPlans.value.forEach {
+            if (it.key.id == workoutExerciseId) comment = it.key.comment
+        }
+
+        return comment
+    }
+
+    fun updateWorkoutExerciseComment(workoutExerciseId: Long, comment: String) {
+        _workoutExercisesWithPlans.value = _workoutExercisesWithPlans.value.map { (key, value) ->
+            if (key.id == workoutExerciseId) {
+                key.copy(comment = comment) to value
+            } else {
+                key to value
+            }
+        }.toMap().toMutableMap()
     }
 
     fun updateWorkoutName(name: String) {

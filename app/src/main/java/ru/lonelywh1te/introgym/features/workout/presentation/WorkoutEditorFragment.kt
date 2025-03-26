@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,11 +17,13 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
@@ -35,7 +38,7 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutEditorBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModel<WorkoutEditorFragmentViewModel>()
+    private val viewModel by koinNavGraphViewModel<WorkoutEditorFragmentViewModel>(R.id.workoutEditorGraph)
     private val args by navArgs<WorkoutEditorFragmentArgs>()
 
     private lateinit var recycler: RecyclerView
@@ -58,8 +61,7 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
 
         workoutExerciseItemAdapter = WorkoutExerciseItemAdapter().apply {
             setOnItemClickListener { item ->
-                val exerciseId = viewModel.workoutExercisesWithPlans.value.keys.find { it.id == item.workoutExerciseId }!!.exerciseId
-                navigateToEditWorkoutExercisePlan(item.workoutExerciseId, exerciseId)
+                navigateToEditWorkoutExercisePlan(item.workoutExerciseId)
             }
         }
 
@@ -80,11 +82,9 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
         startCollectFlows()
     }
 
-    private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: Long, exerciseId: Long) {
+    private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: Long) {
         val action = WorkoutEditorFragmentDirections.toWorkoutExercisePlanEditorFragment(
-            exerciseId = exerciseId,
             workoutExerciseId = workoutExerciseId,
-            isCreateMode = isCreateMode,
         )
         findNavController().navigate(action)
     }
@@ -99,18 +99,6 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
             val pickedExerciseId = bundle.getLong(ExerciseListFragment.PICK_RESULT_BUNDLE_KEY)
             viewModel.addWorkoutExercise(pickedExerciseId)
         }
-
-        setFragmentResultListener(WorkoutExercisePlanEditorFragment.REQUEST_KEY) { _, bundle ->
-            val workoutExercisePlan = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getParcelable(WorkoutExercisePlanEditorFragment.WORKOUT_EXERCISE_PLAN_BUNDLE, WorkoutExercisePlan::class.java)
-            } else {
-                bundle.getParcelable(WorkoutExercisePlanEditorFragment.WORKOUT_EXERCISE_PLAN_BUNDLE)
-            }
-
-            workoutExercisePlan?.let {
-                viewModel.updateWorkoutExercisePlan(it)
-            }
-        }
     }
 
     private fun startCollectFlows() {
@@ -123,6 +111,14 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
         viewModel.workoutSaved.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { workoutSaved ->
                 if (workoutSaved) findNavController().navigateUp()
+            }
+            .launchIn(lifecycleScope)
+
+        viewModel.workoutExercisesWithPlans.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                it.forEach {
+                    Log.d("WorkoutEditor", it.toString())
+                }
             }
             .launchIn(lifecycleScope)
     }

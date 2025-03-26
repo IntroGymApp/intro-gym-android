@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,33 +17,53 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBinding
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExercisePlanEditorBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<WorkoutExercisePlanEditorFragmentViewModel>()
+    private val workoutEditorViewModel by koinNavGraphViewModel<WorkoutEditorFragmentViewModel>(R.id.workoutEditorGraph)
+
     private val args by navArgs<WorkoutExercisePlanEditorFragmentArgs>()
 
-    private val isCreateMode: Boolean get() =  args.isCreateMode
+    private lateinit var mapOfButtonAndInputs: Map<Button, EditText>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getExerciseData(args.exerciseId)
 
-        if (!isCreateMode) {
-            viewModel.getWorkoutExercisePlan(args.workoutExerciseId)
-        } else {
-            viewModel.setWorkoutExerciseId(args.workoutExerciseId)
+        val workoutExerciseWithPlan = workoutEditorViewModel.getWorkoutExerciseWithPlan(args.workoutExerciseId)
+
+        val workoutExercise = workoutExerciseWithPlan?.first
+        val plan = workoutExerciseWithPlan?.second
+
+        viewModel.setWorkoutExercisePlan(plan)
+
+        workoutExercise?.let {
+            viewModel.getExerciseData(workoutExercise.exerciseId)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        mapOfButtonAndInputs.forEach { (button, _) ->
+            outState.putBoolean(button.id.toString(), button.isSelected)
         }
     }
 
@@ -55,7 +76,25 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupInputs()
+        mapOfButtonAndInputs = mapOf(
+            (binding.btnSelectWeight to binding.etPlanWeight),
+            (binding.btnSelectReps to binding.etPlanReps),
+            (binding.btnSelectTime to binding.etPlanTime),
+            (binding.btnSelectDistance to binding.etPlanDistance),
+        )
+
+        savedInstanceState?.let { bundle ->
+            mapOfButtonAndInputs.forEach { (button, editText) ->
+                val isSelected = bundle.getBoolean(button.id.toString(), false)
+                button.isSelected = isSelected
+                binding.etLayout.setEditTextVisibility(editText, isSelected)
+            }
+        }
+
+        binding.etExerciseComment.setText(
+            workoutEditorViewModel.getWorkoutExerciseComment(args.workoutExerciseId) ?: ""
+        )
+
         startCollectFlows()
     }
 
@@ -74,6 +113,15 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
                 )
             }
             .launchIn(lifecycleScope)
+
+        viewModel.workoutPlanExercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                Log.d("WorkoutExercisePlanEditorFragment", "$it")
+                setWorkoutExercisePlanData(it)
+            }
+            .launchIn(lifecycleScope)
+
+
     }
 
     private fun navigateToExerciseInfoFragment() {
@@ -81,39 +129,42 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     }
 
     private fun saveWorkoutExercisePlan() {
-        viewModel.updateSets(binding.etPlanSets.text.toString())
-        viewModel.updateReps(binding.etPlanReps.text.toString())
-        viewModel.updateWeight(binding.etPlanWeight.text.toString())
-        viewModel.updateTimeInSec(binding.etPlanTime.text.toString())
-        viewModel.updateDistanceInMeters(binding.etPlanDistance.text.toString())
+        val sets = if (binding.etPlanSets.isVisible) binding.etPlanSets.text.toString() else ""
+        val reps = if (binding.etPlanReps.isVisible) binding.etPlanReps.text.toString() else ""
+        val weight = if (binding.etPlanWeight.isVisible) binding.etPlanWeight.text.toString() else ""
+        val time = if (binding.etPlanTime.isVisible) binding.etPlanTime.text.toString() else ""
+        val distance = if (binding.etPlanDistance.isVisible) binding.etPlanDistance.text.toString() else ""
+
+        viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance)
 
         val workoutExercisePlan = viewModel.workoutPlanExercise.value
 
-        val bundle = Bundle().apply {
-            putParcelable(WORKOUT_EXERCISE_PLAN_BUNDLE, workoutExercisePlan)
-        }
+        workoutEditorViewModel.updateWorkoutExercisePlan(workoutExercisePlan)
+        workoutEditorViewModel.updateWorkoutExerciseComment(workoutExercisePlan.workoutExerciseId, binding.etExerciseComment.text.toString())
 
-        setFragmentResult(REQUEST_KEY, bundle)
         findNavController().navigateUp()
     }
 
-    // TODO: заменить на custom input layout
-
-    private fun setupInputs() {
-        val inputsMap: Map<Button, EditText> = mapOf(
-            (binding.btnSelectWeight to binding.etPlanWeight),
-            (binding.btnSelectReps to binding.etPlanReps),
-            (binding.btnSelectTime to binding.etPlanTime),
-            (binding.btnSelectDistance to binding.etPlanDistance),
+    private fun setWorkoutExercisePlanData(workoutExercisePlan: WorkoutExercisePlan) {
+        val dataMap = mapOf(
+            binding.etPlanSets to workoutExercisePlan.sets,
+            binding.etPlanReps to workoutExercisePlan.reps,
+            binding.etPlanWeight to workoutExercisePlan.weightKg,
+            binding.etPlanTime to workoutExercisePlan.timeInSec,
+            binding.etPlanDistance to workoutExercisePlan.distanceInMeters
         )
 
-        inputsMap.forEach { (button, editText) ->
-            button.isSelected = false
-            editText.visibility = View.GONE
+        dataMap.forEach { (editText, value) ->
+            if (editText.text.isBlank()) editText.setText(value?.toString() ?: "")
+        }
+
+        mapOfButtonAndInputs.forEach { (button, editText) ->
+            if (editText.text.isNotBlank()) button.isSelected = true
+            binding.etLayout.setEditTextVisibility(editText, button.isSelected)
 
             button.setOnClickListener {
                 it.isSelected = !it.isSelected
-                editText.visibility = if (button.isSelected) View.VISIBLE else View.GONE
+                binding.etLayout.setEditTextVisibility(editText, it.isSelected)
             }
         }
     }
@@ -130,10 +181,5 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         }
 
         return true
-    }
-
-    companion object {
-        const val REQUEST_KEY = "workout_exercise_plan_editor_request"
-        const val WORKOUT_EXERCISE_PLAN_BUNDLE = "workout_exercise_plan"
     }
 }

@@ -13,9 +13,9 @@ data class WorkoutExercise (
     val lastUpdated: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
-        fun empty(id: Long = -1L, exerciseId: Long = -1L, order: Int = -1) = WorkoutExercise(
+        fun empty(id: Long = 0L, exerciseId: Long = 0L, order: Int = 0) = WorkoutExercise(
             id = id,
-            workoutId = 1L,
+            workoutId = 0L,
             exerciseId = exerciseId,
             order = order,
             comment = "",

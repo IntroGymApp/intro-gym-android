@@ -18,10 +18,10 @@ data class WorkoutExercisePlan (
     val lastUpdated: LocalDateTime,
 ): Parcelable {
     companion object {
-        fun empty() = WorkoutExercisePlan(
-            id = -1L,
-            workoutExerciseId = -1L,
-            sets = 0,
+        fun empty(workoutExerciseId: Long = 0L) = WorkoutExercisePlan(
+            id = 0L,
+            workoutExerciseId = workoutExerciseId,
+            sets = null,
             reps = null,
             weightKg = null,
             timeInSec = null,

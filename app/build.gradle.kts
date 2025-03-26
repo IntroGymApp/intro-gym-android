@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.gson.retrofit2.adapter)
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.navigation)
     implementation(libs.retrofit2)
     implementation(libs.okhttp3)
     implementation(libs.navigation.fragment)

@@ -41,9 +41,11 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
         <item name="android:maxLines">1</item>
+        <item name="android:maxLength">256</item>
+        <item name="android:inputType">textShortMessage</item>
         <item name="android:textColorHint">?attr/igHintColor</item>
         <item name="android:paddingHorizontal">20dp</item>
-        <item name="android:background">@drawable/shape_rounded_plate_filled</item>
+        <item name="android:background">@null</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
     </style>
 
@@ -88,6 +90,20 @@
         <item name="rippleColor">?attr/igPrimaryColor</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.IntroGym.SegmentButton</item>
         <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="Widget.IntroGym.CheckedButton" parent="Widget.Material3.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="iconGravity">textTop</item>
+        <item name="backgroundTint">@color/selector_selectable_button_background</item>
+        <item name="iconTint">@color/selector_selectable_button_foreground</item>
+    </style>
+
+    <style name="ThemeOverlay.IntroGym.CheckedButton" parent="ThemeOverlay.Material3.Button">
+        <item name="colorOnContainer">@color/selector_selectable_button_foreground</item>
+        <item name="colorContainer">@color/selector_selectable_button_background</item>
     </style>
 
     <style name="Widget.IntroGym.IconButton.Primary">

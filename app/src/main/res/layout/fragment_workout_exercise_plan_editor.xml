@@ -27,19 +27,19 @@
             android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             tools:text="Название упражнения" />
 
-        <EditText
-            style="@style/Widget.IntroGym.TextInput"
-            android:hint="@string/label_comment"/>
-
-        <TextView
-            android:id="@+id/tv_workout_exercise_description"
-            android:layout_width="wrap_content"
+        <ru.lonelywh1te.introgym.core.ui.views.EditTextLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/label_exercise_comment_description"
-            android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+            app:helperMessage="@string/label_exercise_comment_description">
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
+            <EditText
+                android:id="@+id/et_exercise_comment"
+                style="@style/Widget.IntroGym.TextInput"
+                android:hint="@string/label_comment"/>
+
+        </ru.lonelywh1te.introgym.core.ui.views.EditTextLayout>
+
+        <LinearLayout
             android:id="@+id/materialButtonToggleGroup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -47,41 +47,52 @@
 
             <Button
                 android:id="@+id/btn_select_weight"
-                style="@style/Widget.IntroGym.SegmentedButton"
+                style="@style/Widget.IntroGym.CheckedButton"
                 android:layout_weight="1"
                 app:icon="@drawable/ic_weight"
                 app:iconSize="30dp" />
 
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
             <Button
                 android:id="@+id/btn_select_reps"
-                style="@style/Widget.IntroGym.SegmentedButton"
+                style="@style/Widget.IntroGym.CheckedButton"
                 android:layout_weight="1"
                 app:icon="@drawable/ic_repeat"
                 app:iconSize="30dp"/>
 
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
             <Button
                 android:id="@+id/btn_select_time"
-                style="@style/Widget.IntroGym.SegmentedButton"
+                style="@style/Widget.IntroGym.CheckedButton"
                 android:layout_weight="1"
                 app:icon="@drawable/ic_time"
                 app:iconSize="30dp" />
 
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
             <Button
                 android:id="@+id/btn_select_distance"
-                style="@style/Widget.IntroGym.SegmentedButton"
+                style="@style/Widget.IntroGym.CheckedButton"
                 android:layout_weight="1"
                 app:icon="@drawable/ic_distance"
                 app:iconSize="30dp"/>
 
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_text_input_container"
+        <ru.lonelywh1te.introgym.core.ui.views.EditTextLayout
+            android:id="@+id/et_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/shape_rounded_plate_filled"
-            android:orientation="vertical"
+            app:helperMessage="@string/label_exercise_plan_fields_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_workout_info">
@@ -89,59 +100,38 @@
             <EditText
                 android:id="@+id/et_plan_sets"
                 style="@style/Widget.IntroGym.TextInput"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
+                android:maxLength="2"
                 android:hint="@string/label_sets"/>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="?attr/igHintColor"/>
 
             <EditText
                 android:id="@+id/et_plan_weight"
                 style="@style/Widget.IntroGym.TextInput"
+                android:inputType="number"
+                android:maxLength="3"
                 android:hint="@string/label_weight"/>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="?attr/igHintColor"/>
 
             <EditText
                 android:id="@+id/et_plan_reps"
                 style="@style/Widget.IntroGym.TextInput"
+                android:inputType="number"
+                android:maxLength="3"
                 android:hint="@string/label_reps"/>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="?attr/igHintColor"/>
 
             <EditText
                 android:id="@+id/et_plan_time"
                 style="@style/Widget.IntroGym.TextInput"
+                android:inputType="number"
                 android:hint="@string/label_time"/>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="?attr/igHintColor"/>
 
             <EditText
                 android:id="@+id/et_plan_distance"
                 style="@style/Widget.IntroGym.TextInput"
+                android:inputType="number"
+                android:maxLength="5"
                 android:hint="@string/label_distance"/>
 
-        </LinearLayout>
-        
-        <TextView
-            android:id="@+id/tv_plan_fields_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/label_exercise_plan_fields_description"
-            android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
-
+        </ru.lonelywh1te.introgym.core.ui.views.EditTextLayout>
     </LinearLayout>
 
 </ScrollView>

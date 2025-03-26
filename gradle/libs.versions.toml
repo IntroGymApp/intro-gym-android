@@ -38,6 +38,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 gson = {group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin"}
+koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2"}
 gson-retrofit2-adapter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2"}
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }

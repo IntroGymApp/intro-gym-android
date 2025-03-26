@@ -32,36 +32,24 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         }
     }
 
-    fun updateSets(setsString: String) {
-        val sets = if (setsString.isBlank()) null else setsString.toInt()
-        _workoutPlanExercise.value = _workoutPlanExercise.value.copy(sets = sets)
+    fun updateWorkoutPlanExercise(
+        sets: String,
+        reps: String,
+        weight: String,
+        timeInSec: String,
+        distanceInMeters: String
+    ) {
+        _workoutPlanExercise.value = workoutPlanExercise.value.copy(
+            sets = if (sets.isBlank()) null else sets.toInt(),
+            reps = if (reps.isBlank()) null else reps.toInt(),
+            weightKg = if (weight.isBlank()) null else weight.toFloat(),
+            timeInSec = if (timeInSec.isBlank()) null else timeInSec.toInt(),
+            distanceInMeters = if (distanceInMeters.isBlank()) null else distanceInMeters.toInt()
+        )
     }
 
-    fun updateReps(repsString: String) {
-        val reps = if (repsString.isBlank()) null else repsString.toInt()
-        _workoutPlanExercise.value = _workoutPlanExercise.value.copy(reps = reps)
-    }
-
-    fun updateWeight(weightString: String) {
-        val weight = if (weightString.isBlank()) null else weightString.toFloat()
-        _workoutPlanExercise.value = _workoutPlanExercise.value.copy(weightKg = weight)
-    }
-
-    fun updateTimeInSec(timeInSecString: String) {
-        val timeInSec = if (timeInSecString.isBlank()) null else timeInSecString.toInt()
-        _workoutPlanExercise.value = _workoutPlanExercise.value.copy(timeInSec = timeInSec)
-    }
-
-    fun updateDistanceInMeters(distanceInMetersString: String) {
-        val distanceInMeters = if (distanceInMetersString.isBlank()) null else distanceInMetersString.toInt()
-        _workoutPlanExercise.value = _workoutPlanExercise.value.copy(distanceInMeters = distanceInMeters)
-    }
-
-    fun setWorkoutExerciseId(workoutExerciseId: Long) {
-        _workoutPlanExercise.value = _workoutPlanExercise.value.copy(workoutExerciseId = workoutExerciseId)
-    }
-
-    fun getWorkoutExercisePlan(workoutExerciseId: Long) {
-        TODO("Not yet implemented")
+    fun setWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan?) {
+        if (workoutExercisePlan == null) return
+        _workoutPlanExercise.value = workoutExercisePlan
     }
 }
