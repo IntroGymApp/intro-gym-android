@@ -32,4 +32,9 @@
     <declare-styleable name="PasswordValidationView">
         <attr name="errorCount" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="EditTextLayout">
+        <attr name="helperMessage" format="string"/>
+        <attr name="isErrorMessage" format="boolean"/>
+    </declare-styleable>
 </resources>
