@@ -45,6 +45,8 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSignIn.setOnClickListener {
+            binding.llTextInputContainer.setErrorMessage(null)
+
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
@@ -108,9 +110,6 @@ class SignInFragment : Fragment() {
     }
 
     private fun showFailureMessage(error: Error) {
-        binding.tvErrorMessage.apply {
-            text = getString(AuthErrorStringResProvider.get(error))
-            visibility = View.VISIBLE
-        }
+        binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 }

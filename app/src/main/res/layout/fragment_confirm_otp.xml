@@ -28,37 +28,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm_otp_title" />
 
-    <EditText
-        android:id="@+id/et_otp"
-        style="@style/Widget.IntroGym.TextInput"
-        android:layout_marginTop="30dp"
-        android:hint="@string/label_code"
-        android:inputType="number"
-        android:maxLength="5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_otp_description" />
 
-    <TextView
-        android:id="@+id/tv_error_message"
-        style="@style/Widget.IntroGym.TextView.Error"
-        android:layout_width="wrap_content"
+    <ru.lonelywh1te.introgym.core.ui.views.EditTextLayout
+        android:id="@+id/ll_text_input_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_otp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="Текст ошибки" />
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_otp_description">
+
+        <EditText
+            android:id="@+id/et_otp"
+            style="@style/Widget.IntroGym.TextInput"
+            android:hint="@string/label_code"
+            android:inputType="number"
+            android:maxLength="5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_confirm_otp_description" />
+
+    </ru.lonelywh1te.introgym.core.ui.views.EditTextLayout>
 
     <Button
         android:id="@+id/btn_send_otp"
-        style="@style/Widget.IntroGym.TextButton"
+        style="@style/Widget.IntroGym.TextButton.Orange"
         android:text="@string/label_send_code_again"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_text_input_container" />
 
     <FrameLayout
         android:id="@+id/fl_sign_up_button_container"

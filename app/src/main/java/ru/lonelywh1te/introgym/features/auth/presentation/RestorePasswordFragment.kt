@@ -56,6 +56,8 @@ class RestorePasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSubmit.setOnClickListener {
+            binding.llTextInputContainer.setErrorMessage(null)
+
             if (otpConfirmed) {
 
                 val email = binding.etEmail.text.toString()
@@ -137,17 +139,13 @@ class RestorePasswordFragment : Fragment() {
             alpha = if (otpConfirmed) 0.5f else 1f
         }
 
-        binding.etPassword.apply {
-            isEnabled = otpConfirmed
-            visibility = if (otpConfirmed) View.VISIBLE else View.GONE
-        }
-        binding.etConfirmPassword.apply {
-            isEnabled = otpConfirmed
-            visibility = if (otpConfirmed) View.VISIBLE else View.GONE
-        }
+        binding.etPassword.isEnabled = otpConfirmed
+        binding.etConfirmPassword.isEnabled = otpConfirmed
 
-        binding.dividerPassword.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
-        binding.dividerConfirmPassword.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
+        binding.llTextInputContainer.apply {
+            setEditTextVisibility(binding.etConfirmPassword, otpConfirmed)
+            setEditTextVisibility(binding.etPassword, otpConfirmed)
+        }
 
         binding.passwordValidationView.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
 
@@ -172,10 +170,7 @@ class RestorePasswordFragment : Fragment() {
     }
 
     private fun showFailureMessage(error: Error) {
-        binding.tvErrorMessage.apply {
-            text = getString(AuthErrorStringResProvider.get(error))
-            visibility = View.VISIBLE
-        }
+        binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 
 }

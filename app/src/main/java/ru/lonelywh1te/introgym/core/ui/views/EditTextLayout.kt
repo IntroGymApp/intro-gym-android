@@ -59,11 +59,11 @@ class EditTextLayout(
         }
     }
 
-    fun setErrorMessage(text: String) {
+    fun setErrorMessage(text: String?) {
         helperTextView.apply {
             setTextColor(errorMessageColor)
             setText(text)
-            visibility = if (text.isBlank()) GONE else VISIBLE
+            visibility = if (text.isNullOrBlank()) GONE else VISIBLE
         }
     }
 

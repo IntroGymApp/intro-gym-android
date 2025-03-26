@@ -49,6 +49,8 @@ class ConfirmOtpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnConfirmOtp.setOnClickListener {
+            binding.llTextInputContainer.setErrorMessage(null)
+
             val otp = binding.etOtp.text.toString()
             viewModel.confirmOtp(otp)
         }
@@ -109,7 +111,6 @@ class ConfirmOtpFragment : Fragment() {
 
         binding.tvConfirmOtpTitle.visibility = if (!isLoading) View.VISIBLE else View.GONE
         binding.tvConfirmOtpDescription.visibility = if (!isLoading) View.VISIBLE else View.GONE
-        binding.tvErrorMessage.visibility = if (!isLoading) View.GONE else View.VISIBLE
         binding.etOtp.visibility = if (!isLoading) View.VISIBLE else View.GONE
         binding.flSignUpButtonContainer.visibility = if (!isLoading) View.VISIBLE else View.GONE
         binding.btnSendOtp.visibility = if (!isLoading) View.VISIBLE else View.GONE
@@ -122,10 +123,7 @@ class ConfirmOtpFragment : Fragment() {
     }
 
     private fun showFailureMessage(error: Error) {
-        binding.tvErrorMessage.apply {
-            text = getString(AuthErrorStringResProvider.get(error))
-            visibility = View.VISIBLE
-        }
+        binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 
     companion object {

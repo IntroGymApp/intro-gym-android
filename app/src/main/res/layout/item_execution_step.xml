@@ -10,9 +10,8 @@
         android:id="@+id/tv_step_number"
         android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
         android:textColor="?attr/igPrimaryColor"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         tools:text="№ 1" />
 
     <TextView

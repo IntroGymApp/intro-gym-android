@@ -30,15 +30,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-    <EditText
-        android:id="@+id/et_username"
-        style="@style/Widget.IntroGym.TextInput"
+    <ru.lonelywh1te.introgym.core.ui.views.EditTextLayout
+        android:id="@+id/ll_text_input_container"
         android:layout_width="match_parent"
-        android:hint="@string/label_your_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        tools:layout_editor_absoluteX="20dp">
 
+        <EditText
+            android:id="@+id/et_username"
+            style="@style/Widget.IntroGym.TextInput"
+            android:layout_width="match_parent"
+            android:hint="@string/label_your_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    </ru.lonelywh1te.introgym.core.ui.views.EditTextLayout>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/materialButtonToggleGroup"
@@ -47,7 +55,7 @@
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_username">
+        app:layout_constraintTop_toBottomOf="@+id/ll_text_input_container">
 
         <Button
             android:id="@+id/btn_male"

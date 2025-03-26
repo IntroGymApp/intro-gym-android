@@ -18,12 +18,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+
+    <ru.lonelywh1te.introgym.core.ui.views.EditTextLayout
         android:id="@+id/ll_text_input_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_rounded_plate_filled"
-        android:orientation="vertical"
+        app:helperMessage="@string/label_workout_info_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_workout_info">
@@ -34,27 +34,12 @@
             android:inputType="textEmailAddress"
             android:hint="@string/label_name"/>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:dividerColor="?attr/igHintColor"/>
-
         <EditText
             android:id="@+id/et_workout_description"
             style="@style/Widget.IntroGym.TextInput"
             android:hint="@string/label_comment"/>
 
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_error_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/label_workout_info_description"
-        android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_text_input_container" />
+    </ru.lonelywh1te.introgym.core.ui.views.EditTextLayout>
 
     <TextView
         android:id="@+id/tv_workout_exercises"
@@ -65,7 +50,7 @@
         android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
         app:layout_constraintEnd_toStartOf="@+id/btn_add_exercise"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_text_input_container" />
 
     <Button
         android:id="@+id/btn_add_exercise"
@@ -76,7 +61,7 @@
         app:iconGravity="textEnd"
         app:layout_constraintBottom_toBottomOf="@+id/tv_workout_exercises"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_text_input_container" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_workout_exercise_items"
