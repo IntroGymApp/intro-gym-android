@@ -38,7 +38,7 @@ class WorkoutsFragment : Fragment() {
 
         workoutItemAdapter = WorkoutItemAdapter().apply {
             setOnItemClickListener { workoutItem ->
-                // TODO: Not yet implemented
+                navigateToWorkoutFragment(workoutItem.workoutId)
             }
         }
 
@@ -64,8 +64,13 @@ class WorkoutsFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
+    private fun navigateToWorkoutFragment(workoutId: Long) {
+        val action = WorkoutsFragmentDirections.toWorkoutFragment(workoutId)
+        findNavController().safeNavigate(action)
+    }
+
     private fun navigateToCreateWorkout() {
-        val action = WorkoutsFragmentDirections.toWorkoutEditorFragment()
+        val action = WorkoutsFragmentDirections.toWorkoutEditorFragment(-1L)
         findNavController().safeNavigate(action)
     }
 }

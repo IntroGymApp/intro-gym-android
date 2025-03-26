@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    tools:context=".features.workout.presentation.WorkoutFragment">
+
+    <TextView
+        android:id="@+id/tv_workout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        style="@style/Widget.IntroGym.TextView.Title"
+        tools:text="Название тренировки" />
+
+    <TextView
+        android:id="@+id/tv_workout_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        style="@style/Widget.IntroGym.TextView.Body"
+        tools:text="Описание тренировки" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:text="@string/label_exercises" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_workout_exercise_items"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/item_exercise" />
+
+</LinearLayout>

@@ -5,7 +5,7 @@
     <item
         android:id="@+id/exerciseInfo"
         android:icon="@drawable/ic_info"
-        android:title="@string/label_save"
+        android:title="@string/label_about_exercise"
         app:showAsAction="ifRoom"/>
 
     <item

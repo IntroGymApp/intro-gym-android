@@ -101,5 +101,8 @@
     <string name="label_exercise_plan_fields_description">Выберите типы полей для ввода показателей и заполните их желаемыми значениями</string>
     <string name="label_plan">Планирование</string>
     <string name="label_save">Сохранить</string>
+    <string name="label_about_exercise">Об упражнении</string>
+    <string name="label_edit">Изменить</string>
+    <string name="label_delete">Удалить</string>
 
 </resources>

@@ -219,6 +219,9 @@
         <action
             android:id="@+id/to_workoutEditorFragment"
             app:destination="@id/workoutEditorGraph" />
+        <action
+            android:id="@+id/to_workoutFragment"
+            app:destination="@id/workoutFragment" />
     </fragment>
     <navigation android:id="@+id/workoutEditorGraph"
         app:startDestination="@id/workoutEditorFragment">
@@ -230,13 +233,12 @@
             <action
                 android:id="@+id/to_ExerciseCategoriesFragment"
                 app:destination="@id/exerciseCategoriesFragment" />
-            <argument
-                android:name="workoutId"
-                android:defaultValue="-1L"
-                app:argType="long" />
             <action
                 android:id="@+id/to_workoutExercisePlanEditorFragment"
                 app:destination="@id/workoutExercisePlanEditorFragment" />
+            <argument
+                android:name="workoutId"
+                app:argType="long" />
         </fragment>
         <fragment
             android:id="@+id/workoutExercisePlanEditorFragment"
@@ -250,6 +252,21 @@
                 android:id="@+id/to_exerciseInfoFragment"
                 app:destination="@id/exerciseFragment" />
         </fragment>
+        <argument
+            android:name="workoutId"
+            app:argType="long" />
     </navigation>
+    <fragment
+        android:id="@+id/workoutFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutFragment"
+        android:label="@string/label_workout"
+        tools:layout="@layout/fragment_workout" >
+        <action
+            android:id="@+id/to_workoutEditorGraph"
+            app:destination="@id/workoutEditorGraph" />
+        <argument
+            android:name="workoutId"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

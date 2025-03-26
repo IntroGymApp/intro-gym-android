@@ -9,9 +9,12 @@ import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercis
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.CreateWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutByIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExerciseItemsByWorkoutIdUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutListUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
 import kotlin.math.sin
 
@@ -39,11 +42,24 @@ val workoutDomainModule = module {
     factory<GetWorkoutListUseCase> {
         GetWorkoutListUseCase(repository = get())
     }
+
     factory<CreateWorkoutUseCase> {
         CreateWorkoutUseCase(
             workoutRepository = get(),
             workoutExercisePlanRepository = get(),
             workoutExerciseRepository = get(),
+        )
+    }
+
+    factory<GetWorkoutByIdUseCase> {
+        GetWorkoutByIdUseCase(
+            repository = get(),
+        )
+    }
+
+    factory<GetWorkoutExerciseItemsByWorkoutIdUseCase> {
+        GetWorkoutExerciseItemsByWorkoutIdUseCase(
+            repository = get(),
         )
     }
 }
@@ -65,6 +81,13 @@ val workoutPresentationModule = module {
     viewModel<WorkoutExercisePlanEditorFragmentViewModel> {
         WorkoutExercisePlanEditorFragmentViewModel(
             getExerciseUseCase = get()
+        )
+    }
+
+    viewModel<WorkoutFragmentViewModel> {
+        WorkoutFragmentViewModel(
+            getWorkoutUseCase = get(),
+            getWorkoutExerciseItemsByWorkoutIdUseCase = get(),
         )
     }
 }
