@@ -14,7 +14,6 @@
             android:id="@+id/iv_exercise_animation"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:scaleType="centerCrop"
             android:layout_marginTop="20dp"
             tools:src="@drawable/ic_launcher_background"/>
 

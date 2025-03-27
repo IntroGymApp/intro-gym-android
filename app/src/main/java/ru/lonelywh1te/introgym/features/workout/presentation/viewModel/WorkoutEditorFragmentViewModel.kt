@@ -8,7 +8,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
@@ -68,7 +67,6 @@ class WorkoutEditorFragmentViewModel(
                 _workoutExercises.value = workoutExercises
 
                 val plans = workoutExercises.map { workoutExercise ->
-                    Log.d("WorkoutEditorFragmentViewModel", "workoutExercise: $workoutExercise")
                     async { getWorkoutExercisePlanUseCase(workoutExercise.id).first() }
                 }.awaitAll()
 
@@ -133,6 +131,11 @@ class WorkoutEditorFragmentViewModel(
     }
 
     fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
+        Log.d("WorkoutEditorVM", _workoutExercisePlans.value.toString())
+        Log.d("WorkoutEditorVM", "${workoutExercisePlans.value.map { currentPlan ->
+            if (currentPlan.workoutExerciseId == workoutExercisePlan.workoutExerciseId) workoutExercisePlan else currentPlan
+        }}")
+
         _workoutExercisePlans.value = _workoutExercisePlans.value.map { currentPlan ->
             if (currentPlan.workoutExerciseId == workoutExercisePlan.workoutExerciseId) workoutExercisePlan else currentPlan
         }

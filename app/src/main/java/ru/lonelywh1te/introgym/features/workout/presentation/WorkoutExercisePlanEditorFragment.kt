@@ -68,22 +68,14 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
             (binding.btnSelectDistance to binding.etPlanDistance),
         )
 
-        savedInstanceState?.let { bundle ->
-            mapOfButtonAndInputs.forEach { (button, editText) ->
-                val isSelected = bundle.getBoolean(button.id.toString(), false)
-                button.isSelected = isSelected
-                binding.etLayout.setEditTextVisibility(editText, isSelected)
-            }
-        }
-
         binding.etExerciseComment.setText(
             workoutEditorViewModel.getWorkoutExerciseComment(args.workoutExerciseId)
         )
 
-        startCollectFlows()
+        startCollectFlows(savedInstanceState)
     }
 
-    private fun startCollectFlows() {
+    private fun startCollectFlows(savedInstanceState: Bundle?) {
         viewModel.exerciseName.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 if (it.isBlank()) return@onEach
@@ -105,14 +97,12 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
 
         viewModel.workoutPlanExercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                setWorkoutExercisePlanData(it)
+                setWorkoutExercisePlanData(it, savedInstanceState)
             }
             .launchIn(lifecycleScope)
 
         workoutEditorViewModel.workoutExercises.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { exercises ->
-                Log.d("workoutExercisesFlow", "$exercises")
-
                 val workoutExercise = exercises.find { it.id == args.workoutExerciseId }
 
                 workoutExercise?.let {
@@ -155,7 +145,7 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         findNavController().navigateUp()
     }
 
-    private fun setWorkoutExercisePlanData(workoutExercisePlan: WorkoutExercisePlan) {
+    private fun setWorkoutExercisePlanData(workoutExercisePlan: WorkoutExercisePlan, savedInstanceState: Bundle?) {
         val dataMap = mapOf(
             binding.etPlanSets to workoutExercisePlan.sets,
             binding.etPlanReps to workoutExercisePlan.reps,
@@ -169,7 +159,9 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         }
 
         mapOfButtonAndInputs.forEach { (button, editText) ->
-            if (editText.text.isNotBlank()) button.isSelected = true
+            val hasData = dataMap[editText] != null
+
+            button.isSelected = hasData || savedInstanceState?.getBoolean(button.id.toString(), false) ?: false
             binding.etLayout.setEditTextVisibility(editText, button.isSelected)
 
             button.setOnClickListener {
