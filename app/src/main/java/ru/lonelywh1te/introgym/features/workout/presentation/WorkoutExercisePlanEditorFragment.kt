@@ -11,18 +11,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
@@ -30,10 +30,6 @@ import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBind
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
-import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExercisePlanEditorBinding? = null
@@ -44,19 +40,9 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
 
     private val args by navArgs<WorkoutExercisePlanEditorFragmentArgs>()
 
-    private lateinit var workoutExercise: WorkoutExercise
+    private var exerciseId: Long? = null
+
     private lateinit var mapOfButtonAndInputs: Map<Button, EditText>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val workoutExerciseWithPlan = workoutEditorViewModel.getWorkoutExerciseWithPlan(args.workoutExerciseId)!!
-
-        workoutExercise = workoutExerciseWithPlan.first
-        viewModel.setWorkoutExercisePlan(workoutExerciseWithPlan.second)
-
-        viewModel.getExerciseData(workoutExercise.exerciseId)
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -91,7 +77,7 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         }
 
         binding.etExerciseComment.setText(
-            workoutEditorViewModel.getWorkoutExerciseComment(args.workoutExerciseId) ?: ""
+            workoutEditorViewModel.getWorkoutExerciseComment(args.workoutExerciseId)
         )
 
         startCollectFlows()
@@ -100,12 +86,16 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private fun startCollectFlows() {
         viewModel.exerciseName.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
+                if (it.isBlank()) return@onEach
+
                 binding.tvExerciseName.text = it
             }
             .launchIn(lifecycleScope)
 
         viewModel.exerciseAnimFilename.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
+                if (it.isBlank()) return@onEach
+
                 ImageLoader(requireContext()).load(
                     uri = AssetPath.get(AssetType.EXERCISE_ANIMATION, it),
                     imageView = binding.ivExerciseAnimation
@@ -115,17 +105,37 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
 
         viewModel.workoutPlanExercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
-                Log.d("WorkoutExercisePlanEditorFragment", "$it")
                 setWorkoutExercisePlanData(it)
             }
             .launchIn(lifecycleScope)
 
+        workoutEditorViewModel.workoutExercises.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { exercises ->
+                Log.d("workoutExercisesFlow", "$exercises")
 
+                val workoutExercise = exercises.find { it.id == args.workoutExerciseId }
+
+                workoutExercise?.let {
+                    exerciseId = it.exerciseId
+                    viewModel.getExerciseData(it.exerciseId)
+                }
+            }
+            .launchIn(lifecycleScope)
+
+        workoutEditorViewModel.workoutExercisePlans.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { plans ->
+                val plan = plans.find { it.workoutExerciseId == args.workoutExerciseId }
+
+                plan?.let { viewModel.setWorkoutExercisePlan(plan) }
+            }
+            .launchIn(lifecycleScope)
     }
 
     private fun navigateToExerciseInfoFragment() {
-        val action = WorkoutExercisePlanEditorFragmentDirections.toExerciseInfoFragment(workoutExercise.exerciseId)
-        findNavController().safeNavigate(action)
+        exerciseId?.let { id ->
+            val action = WorkoutExercisePlanEditorFragmentDirections.toExerciseInfoFragment(id)
+            findNavController().safeNavigate(action)
+        }
     }
 
     private fun saveWorkoutExercisePlan() {

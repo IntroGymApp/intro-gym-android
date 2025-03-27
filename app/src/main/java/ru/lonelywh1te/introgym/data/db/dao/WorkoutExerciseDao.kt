@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.data.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -20,7 +19,7 @@ interface WorkoutExerciseDao {
     fun getWorkoutExercisesWithExerciseInfo(workoutId: Long): Flow<List<WorkoutExerciseWithExerciseInfo>>
 
     @Query("select * from workout_exercise where workout_id = :workoutId")
-    fun getWorkoutExerciseById(workoutId: Long): Flow<WorkoutExerciseEntity>
+    fun getWorkoutExercisesById(workoutId: Long): Flow<List<WorkoutExerciseEntity>>
 
     @Insert
     suspend fun addWorkoutExercise(workoutExercise: WorkoutExerciseEntity): Long

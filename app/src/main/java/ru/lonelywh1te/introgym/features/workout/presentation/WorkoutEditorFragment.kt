@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,20 +16,15 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutEditorBinding
-import ru.lonelywh1te.introgym.features.guide.presentation.GuideFragmentDirections
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 
@@ -45,6 +39,14 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
     private lateinit var workoutExerciseItemAdapter: WorkoutExerciseItemAdapter
 
     private val isCreateMode get() = args.workoutId == -1L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState == null) {
+            viewModel.setWorkout(args.workoutId)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWorkoutEditorBinding.inflate(inflater, container, false)
@@ -97,7 +99,7 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
     private fun setFragmentResultListeners() {
         setFragmentResultListener(ExerciseListFragment.PICK_REQUEST_KEY) { _, bundle ->
             val pickedExerciseId = bundle.getLong(ExerciseListFragment.PICK_RESULT_BUNDLE_KEY)
-            viewModel.addWorkoutExercise(pickedExerciseId)
+            viewModel.addPickedWorkoutExercise(pickedExerciseId)
         }
     }
 
@@ -111,14 +113,6 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
         viewModel.workoutSaved.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { workoutSaved ->
                 if (workoutSaved) findNavController().navigateUp()
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.workoutExercisesWithPlans.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                it.forEach {
-                    Log.d("WorkoutEditor", it.toString())
-                }
             }
             .launchIn(lifecycleScope)
     }

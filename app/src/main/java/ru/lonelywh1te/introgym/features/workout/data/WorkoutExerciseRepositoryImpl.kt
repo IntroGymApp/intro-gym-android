@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
+import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
@@ -19,8 +20,10 @@ class WorkoutExerciseRepositoryImpl(
         }
     }
 
-    override fun getWorkoutExerciseById(workoutId: Long): Flow<WorkoutExercise> {
-        return workoutExerciseDao.getWorkoutExerciseById(workoutId).map { it.toWorkoutExercise() }
+    override fun getWorkoutExercisesById(workoutId: Long): Flow<List<WorkoutExercise>> {
+        return workoutExerciseDao.getWorkoutExercisesById(workoutId).map { list ->
+            list.map { it.toWorkoutExercise() }
+        }
     }
 
     override suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise): Long {
