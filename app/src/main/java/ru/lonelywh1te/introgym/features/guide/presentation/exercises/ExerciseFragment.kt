@@ -73,6 +73,7 @@ class ExerciseFragment : Fragment() {
     private fun setStepsData(steps: List<String>) {
         val stepsLinearLayout = binding.llExecutionSteps
 
+        stepsLinearLayout.removeAllViews()
         steps.forEachIndexed { index, text ->
             val bind = ItemExecutionStepBinding.inflate(LayoutInflater.from(requireContext()), stepsLinearLayout, false)
             bind.tvStepNumber.text = getString(R.string.step_number, (index + 1).toString())
@@ -85,6 +86,7 @@ class ExerciseFragment : Fragment() {
     private fun setTipsData(tips: List<String>) {
         val tipsLinearLayout = binding.llExecutionTips
 
+        tipsLinearLayout.removeAllViews()
         tips.forEach { text ->
             val bind = ItemExecutionTipBinding.inflate(LayoutInflater.from(requireContext()), tipsLinearLayout, false)
             bind.tvTipDescription.text = text
