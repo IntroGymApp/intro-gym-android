@@ -8,7 +8,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -18,11 +17,11 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.CreateWorkoutUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutByIdUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExerciseItemsByWorkoutIdUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExercisePlanUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExercisesUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsByWorkoutIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 
 class WorkoutEditorFragmentViewModel(
     private val createWorkoutUseCase: CreateWorkoutUseCase,
@@ -59,6 +58,7 @@ class WorkoutEditorFragmentViewModel(
     val workoutSaved: StateFlow<Boolean> get() = _workoutSaved
 
     fun setWorkout(workoutId: Long) {
+        Log.d("WorkoutEditorFragmentViewModel", "setWorkout $workoutId")
         viewModelScope.launch(dispatcher) {
             if (workoutId == -1L) {
                 _workout.value = Workout.empty(isTemplate = true)

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutBinding
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
@@ -35,7 +36,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getWorkout(args.workoutId)
+        viewModel.loadWorkout(args.workoutId)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
@@ -75,14 +76,22 @@ class WorkoutFragment : Fragment(), MenuProvider {
                 workoutExerciseItemAdapter.update(items)
             }
             .launchIn(lifecycleScope)
+
+        viewModel.workoutDeleted.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { deleted ->
+                if (deleted) findNavController().navigateUp()
+            }
+            .launchIn(lifecycleScope)
     }
 
+    // TODO: добавить диалоговое окно с уточнением
     private fun deleteWorkout() {
-        // TODO: Not yet implemented
+        viewModel.deleteWorkout()
     }
 
     private fun navigateToWorkoutEditorFragment() {
-        // TODO: Not yet implemented
+        val action = WorkoutFragmentDirections.toWorkoutEditorGraph(args.workoutId)
+        findNavController().safeNavigate(action)
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

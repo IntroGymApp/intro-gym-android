@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutListUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
 
 class WorkoutsFragmentViewModel(
     private val getWorkoutListUseCase: GetWorkoutListUseCase,

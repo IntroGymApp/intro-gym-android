@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.workout.domain.usecase
+package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise
 
 import kotlinx.coroutines.flow.Flow
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise

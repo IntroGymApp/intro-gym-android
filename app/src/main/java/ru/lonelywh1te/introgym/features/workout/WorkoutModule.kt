@@ -8,17 +8,17 @@ import ru.lonelywh1te.introgym.features.workout.data.WorkoutRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.CreateWorkoutUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutByIdUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExerciseItemsByWorkoutIdUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExercisePlanUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutExercisesUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.GetWorkoutListUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsByWorkoutIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
-import kotlin.math.sin
 
 val workoutDataModule = module {
     single<WorkoutRepository> {
@@ -76,6 +76,12 @@ val workoutDomainModule = module {
             repository = get(),
         )
     }
+
+    factory<DeleteWorkoutUseCase> {
+        DeleteWorkoutUseCase(
+            repository = get(),
+        )
+    }
 }
 
 val workoutPresentationModule = module {
@@ -106,6 +112,7 @@ val workoutPresentationModule = module {
         WorkoutFragmentViewModel(
             getWorkoutUseCase = get(),
             getWorkoutExerciseItemsByWorkoutIdUseCase = get(),
+            deleteWorkoutUseCase = get(),
         )
     }
 }
