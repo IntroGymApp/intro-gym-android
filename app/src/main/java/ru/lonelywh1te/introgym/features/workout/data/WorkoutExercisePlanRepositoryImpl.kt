@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.data
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
@@ -11,6 +12,7 @@ class WorkoutExercisePlanRepositoryImpl(
     private val workoutExercisePlanDao: WorkoutExercisePlanDao,
 ): WorkoutExercisePlanRepository {
     override fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<WorkoutExercisePlan> {
+        Log.d("WorkoutExercisePlanRepositoryImpl", "workoutExerciseId: $workoutExerciseId")
         return workoutExercisePlanDao.getWorkoutExercisePlanById(workoutExerciseId).map { it.toWorkoutExercisePlan() }
     }
 
@@ -23,7 +25,7 @@ class WorkoutExercisePlanRepositoryImpl(
         return workoutExercisePlanDao.createWorkoutExercisePlan(workoutExercisePlanEntity)
     }
 
-    override suspend fun updateWorkoutExercise(workoutExercisePlan: WorkoutExercisePlan) {
+    override suspend fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
         val workoutExercisePlanEntity = workoutExercisePlan.copy(
             lastUpdated = LocalDateTime.now(),
         ).toWorkoutExercisePlanEntity()
@@ -31,7 +33,7 @@ class WorkoutExercisePlanRepositoryImpl(
         workoutExercisePlanDao.updateWorkoutExercisePlan(workoutExercisePlanEntity)
     }
 
-    override suspend fun deleteWorkoutExercise(id: Long) {
+    override suspend fun deleteWorkoutExercisePlan(id: Long) {
         workoutExercisePlanDao.deleteWorkoutExercisePlan(id)
     }
 }

@@ -19,12 +19,14 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsByWorkoutIdUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 
 class WorkoutEditorFragmentViewModel(
     private val createWorkoutUseCase: CreateWorkoutUseCase,
+    private val updateWorkoutUseCase: UpdateWorkoutUseCase,
     private val getExerciseUseCase: GetExerciseUseCase,
     private val getWorkoutByIdUseCase: GetWorkoutByIdUseCase,
     private val getWorkoutExercisesUseCase: GetWorkoutExercisesUseCase,
@@ -40,15 +42,6 @@ class WorkoutEditorFragmentViewModel(
     private val _workoutExercisePlans: MutableStateFlow<List<WorkoutExercisePlan>> = MutableStateFlow(listOf())
     val workoutExercisePlans: StateFlow<List<WorkoutExercisePlan>> get() = _workoutExercisePlans
 
-    private val workoutExerciseWithPlanMap: Map<WorkoutExercise, WorkoutExercisePlan> get() {
-        val exercises = _workoutExercises.value
-        val plans = _workoutExercisePlans.value
-
-        return exercises.associateWith { exercise ->
-            plans.firstOrNull { it.id == exercise.id } ?: WorkoutExercisePlan.empty()
-        }
-    }
-
     private val _workoutExerciseItems: MutableStateFlow<List<WorkoutExerciseItem>> = MutableStateFlow(listOf())
     val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> get() = _workoutExerciseItems
 
@@ -58,30 +51,31 @@ class WorkoutEditorFragmentViewModel(
     val workoutSaved: StateFlow<Boolean> get() = _workoutSaved
 
     fun setWorkout(workoutId: Long) {
-        Log.d("WorkoutEditorFragmentViewModel", "setWorkout $workoutId")
         viewModelScope.launch(dispatcher) {
             if (workoutId == -1L) {
                 _workout.value = Workout.empty(isTemplate = true)
                 _workoutExercises.value = listOf()
                 _workoutExercisePlans.value = listOf()
             } else {
-                getWorkoutByIdUseCase(workoutId).collectLatest {
-                    _workout.value = it
-                }
+                val workoutDeferred = async { getWorkoutByIdUseCase(workoutId).first() }
+                val workoutExercisesDeferred = async { getWorkoutExercisesUseCase(workoutId).first() }
+                val workoutExerciseItemsDeferred = async { getWorkoutExerciseItemsByWorkoutIdUseCase(workoutId).first() }
 
-                getWorkoutExercisesUseCase(workoutId).collectLatest { exercises ->
-                    _workoutExercises.value = exercises
+                val workout = workoutDeferred.await()
+                _workout.value = workout
 
-                    val plans = exercises.map { exercise ->
-                        async { getWorkoutExercisePlanUseCase(exercise.id).first() }
-                    }.awaitAll()
+                val workoutExercises = workoutExercisesDeferred.await()
+                _workoutExercises.value = workoutExercises
 
-                    _workoutExercisePlans.value = plans
-                }
+                val plans = workoutExercises.map { workoutExercise ->
+                    Log.d("WorkoutEditorFragmentViewModel", "workoutExercise: $workoutExercise")
+                    async { getWorkoutExercisePlanUseCase(workoutExercise.id).first() }
+                }.awaitAll()
 
-                getWorkoutExerciseItemsByWorkoutIdUseCase.invoke(workoutId).collectLatest {
-                    _workoutExerciseItems.value = it
-                }
+                _workoutExercisePlans.value = plans
+
+                val exerciseItems = workoutExerciseItemsDeferred.await()
+                _workoutExerciseItems.value = exerciseItems
             }
         }
     }
@@ -89,9 +83,17 @@ class WorkoutEditorFragmentViewModel(
     fun saveWorkout() {
         viewModelScope.launch (dispatcher) {
             if (_workout.value.id == -1L) {
-                createWorkoutUseCase(_workout.value, workoutExerciseWithPlanMap)
+                createWorkoutUseCase(
+                    workout = _workout.value,
+                    exercises = _workoutExercises.value,
+                    exercisePlans = _workoutExercisePlans.value
+                )
             } else {
-                // TODO: Update workout usecase
+                updateWorkoutUseCase(
+                    workout = _workout.value,
+                    exercises = _workoutExercises.value,
+                    exercisePlans = _workoutExercisePlans.value
+                )
             }
 
             _workoutSaved.value = true

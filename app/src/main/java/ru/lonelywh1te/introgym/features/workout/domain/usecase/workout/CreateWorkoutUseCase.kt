@@ -16,11 +16,14 @@ class CreateWorkoutUseCase(
 
     suspend operator fun invoke(
         workout: Workout,
-        exercisesWithPlans: Map<WorkoutExercise, WorkoutExercisePlan>
+        exercises: List<WorkoutExercise>,
+        exercisePlans: List<WorkoutExercisePlan>
     ) {
+        if (exercises.size != exercisePlans.size) throw Exception("Exercises and exercise plans have different sizes")
+
         val workoutId = workoutRepository.createWorkout(workout.copy(id = resetId))
 
-        exercisesWithPlans.forEach { (workoutExercise, workoutExercisePlan) ->
+        exercises.forEach { workoutExercise ->
             val workoutExerciseId = workoutExerciseRepository.addWorkoutExercise(
                 workoutExercise.copy(
                     id = resetId,
@@ -28,12 +31,16 @@ class CreateWorkoutUseCase(
                 )
             )
 
-            workoutExercisePlanRepository.addWorkoutExercisePlan(
-                workoutExercisePlan.copy(
-                    id = resetId,
-                    workoutExerciseId = workoutExerciseId
+            val workoutExercisePlan = exercisePlans.find { it.workoutExerciseId == workoutExercise.id }
+
+            if (workoutExercisePlan != null) {
+                workoutExercisePlanRepository.addWorkoutExercisePlan(
+                    workoutExercisePlan.copy(
+                        id = resetId,
+                        workoutExerciseId = workoutExerciseId
+                    )
                 )
-            )
+            }
         }
     }
 }

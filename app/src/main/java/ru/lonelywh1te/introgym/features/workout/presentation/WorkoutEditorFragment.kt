@@ -72,14 +72,6 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        binding.etWorkoutName.addTextChangedListener {
-            viewModel.updateWorkoutName(it.toString())
-        }
-
-        binding.etWorkoutDescription.addTextChangedListener {
-            viewModel.updateWorkoutDescription(it.toString())
-        }
-
         setFragmentResultListeners()
         startCollectFlows()
     }
@@ -104,6 +96,15 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
     }
 
     private fun startCollectFlows() {
+        viewModel.workout.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { workout ->
+
+                workout?.let {
+                    binding.etWorkoutName.setText(it.name)
+                    binding.etWorkoutDescription.setText(it.description)
+                }
+            }
+            .launchIn(lifecycleScope)
         viewModel.workoutExerciseItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 workoutExerciseItemAdapter.update(it)
@@ -121,10 +122,24 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
         menuInflater.inflate(R.menu.workout_editor_menu, menu)
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        viewModel.updateWorkoutName(binding.etWorkoutName.text.toString())
+        viewModel.updateWorkoutDescription(binding.etWorkoutDescription.text.toString())
+    }
+
+    private fun saveWorkout() {
+        viewModel.updateWorkoutName(binding.etWorkoutName.text.toString())
+        viewModel.updateWorkoutDescription(binding.etWorkoutDescription.text.toString())
+
+        viewModel.saveWorkout()
+    }
+
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             android.R.id.home -> findNavController().navigateUp()
-            R.id.saveWorkout -> viewModel.saveWorkout()
+            R.id.saveWorkout -> saveWorkout()
         }
 
         return true

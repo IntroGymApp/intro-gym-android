@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
