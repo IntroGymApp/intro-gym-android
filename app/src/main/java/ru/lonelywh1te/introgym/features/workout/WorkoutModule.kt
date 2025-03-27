@@ -15,6 +15,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.MoveWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
@@ -91,12 +92,19 @@ val workoutDomainModule = module {
             workoutExerciseRepository = get(),
         )
     }
+
+    factory<MoveWorkoutUseCase> {
+        MoveWorkoutUseCase(
+            repository = get()
+        )
+    }
 }
 
 val workoutPresentationModule = module {
     viewModel<WorkoutsFragmentViewModel> {
         WorkoutsFragmentViewModel(
             getWorkoutListUseCase = get(),
+            moveWorkoutUseCase = get(),
         )
     }
 

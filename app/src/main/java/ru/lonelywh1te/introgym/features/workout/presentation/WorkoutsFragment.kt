@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
@@ -46,6 +47,36 @@ class WorkoutsFragment : Fragment() {
             adapter = workoutItemAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+            private var fromPosition: Int? = null
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                val from = viewHolder.adapterPosition
+                val to = target.adapterPosition
+
+                if (fromPosition == null) fromPosition = from
+
+                workoutItemAdapter.move(from, to)
+                return true
+            }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                val from = fromPosition
+                val to = viewHolder.adapterPosition
+
+                from?.let {
+                    viewModel.moveWorkout(from, to)
+                }
+
+                fromPosition = null
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // TODO: Not yet implemented
+            }
+        }).attachToRecyclerView(recycler)
 
         binding.btnCreateWorkout.setOnClickListener {
             navigateToCreateWorkout()

@@ -41,6 +41,15 @@ class WorkoutItemAdapter: RecyclerView.Adapter<WorkoutItemViewHolder>() {
         diffUtilResult.dispatchUpdatesTo(this)
     }
 
+    fun move(from: Int, to: Int) {
+        val list = this.workoutItems.toMutableList()
+
+        val item = list.removeAt(from)
+        list.add(to, item)
+
+        update(list)
+    }
+
     fun setOnItemClickListener(listener: ((workout: WorkoutItem) -> Unit)?) {
         this.onItemClickListener = listener
     }

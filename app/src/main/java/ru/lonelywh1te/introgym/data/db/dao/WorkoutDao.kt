@@ -19,8 +19,9 @@ interface WorkoutDao {
         select *
         from workout
         where is_template = 1
+        order by `order`
     """)
-    fun getWorkouts(): Flow<List<WorkoutEntity>>
+    fun getWorkouts(): List<WorkoutEntity>
 
     @Query("""
         select w.*,
@@ -31,6 +32,9 @@ interface WorkoutDao {
         group by w.id
     """)
     fun getWorkoutWithCountOfExercises(): Flow<List<WorkoutEntityWithCountOfExercises>>
+
+    @Query("select count(*) from workout where is_template = 1")
+    suspend fun getCountOfWorkouts(): Int
 
     @Insert
     suspend fun createWorkout(workout: WorkoutEntity): Long

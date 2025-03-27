@@ -27,6 +27,12 @@ class WorkoutRepositoryImpl (
         }
     }
 
+    override fun getWorkouts(): List<Workout> {
+        return workoutDao.getWorkouts().map {
+            it.toWorkout()
+        }
+    }
+
     override fun getWorkoutById(workoutId: Long): Flow<Workout> {
         return workoutDao.getWorkoutById(workoutId)
             .filterNotNull()
@@ -47,10 +53,16 @@ class WorkoutRepositoryImpl (
             lastUpdated = LocalDateTime.now(zoneOffset)
         ).toWorkoutEntity()
 
+        Log.d("WorkoutRepositoryImpl", "UPDATED: $workoutEntity")
+
         workoutDao.updateWorkout(workoutEntity)
     }
 
     override suspend fun deleteWorkout(id: Long) {
         workoutDao.deleteWorkout(id)
+    }
+
+    override suspend fun getCountOfWorkouts(): Int {
+        return workoutDao.getCountOfWorkouts()
     }
 }

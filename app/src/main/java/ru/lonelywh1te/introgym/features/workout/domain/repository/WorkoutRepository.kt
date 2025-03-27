@@ -8,6 +8,8 @@ interface WorkoutRepository {
 
     fun getWorkoutItems(): Flow<List<WorkoutItem>>
 
+    fun getWorkouts(): List<Workout>
+
     fun getWorkoutById(workoutId: Long): Flow<Workout>
 
     suspend fun createWorkout(workout: Workout): Long
@@ -15,5 +17,7 @@ interface WorkoutRepository {
     suspend fun updateWorkout(workout: Workout)
 
     suspend fun deleteWorkout(id: Long)
+
+    suspend fun getCountOfWorkouts(): Int
 
 }

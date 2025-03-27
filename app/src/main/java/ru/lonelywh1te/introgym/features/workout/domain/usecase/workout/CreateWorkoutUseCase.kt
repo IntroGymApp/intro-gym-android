@@ -21,7 +21,12 @@ class CreateWorkoutUseCase(
     ) {
         if (exercises.size != exercisePlans.size) throw Exception("Exercises and exercise plans have different sizes")
 
-        val workoutId = workoutRepository.createWorkout(workout.copy(id = resetId))
+        val workoutId = workoutRepository.createWorkout(
+            workout.copy(
+                id = resetId,
+                order = workoutRepository.getCountOfWorkouts()
+            )
+        )
 
         exercises.forEach { workoutExercise ->
             val workoutExerciseId = workoutExerciseRepository.addWorkoutExercise(
