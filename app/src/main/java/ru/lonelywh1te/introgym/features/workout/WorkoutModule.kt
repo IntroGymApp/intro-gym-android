@@ -105,6 +105,7 @@ val workoutPresentationModule = module {
         WorkoutsFragmentViewModel(
             getWorkoutListUseCase = get(),
             moveWorkoutUseCase = get(),
+            deleteWorkoutUseCase = get(),
         )
     }
 

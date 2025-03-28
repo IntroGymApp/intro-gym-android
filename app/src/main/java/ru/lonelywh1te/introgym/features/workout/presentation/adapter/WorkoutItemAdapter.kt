@@ -50,6 +50,10 @@ class WorkoutItemAdapter: RecyclerView.Adapter<WorkoutItemViewHolder>() {
         update(list)
     }
 
+    fun getItem(position: Int): WorkoutItem {
+        return workoutItems[position]
+    }
+
     fun setOnItemClickListener(listener: ((workout: WorkoutItem) -> Unit)?) {
         this.onItemClickListener = listener
     }
