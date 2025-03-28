@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Container.IntroGym.ScrollView"
+    android:overScrollMode="never"
     tools:context=".features.guide.presentation.exercises.ExerciseFragment">
 
     <LinearLayout

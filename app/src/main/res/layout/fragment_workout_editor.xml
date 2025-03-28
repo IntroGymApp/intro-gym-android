@@ -67,6 +67,7 @@
         android:id="@+id/rv_workout_exercise_items"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         tools:listitem="@layout/item_exercise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

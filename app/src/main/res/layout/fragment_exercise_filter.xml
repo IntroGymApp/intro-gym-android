@@ -30,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:overScrollMode="never"
                 tools:listitem="@layout/item_tag"
                 tools:itemCount="5"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
@@ -45,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:overScrollMode="never"
                 tools:listitem="@layout/item_tag"
                 tools:itemCount="5"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"/>
@@ -59,6 +61,7 @@
                 android:id="@+id/rv_difficulty_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 android:orientation="vertical"
                 tools:listitem="@layout/item_tag"
                 tools:itemCount="3"
