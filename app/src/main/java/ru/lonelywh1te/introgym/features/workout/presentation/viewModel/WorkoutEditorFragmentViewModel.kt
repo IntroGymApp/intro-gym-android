@@ -130,12 +130,39 @@ class WorkoutEditorFragmentViewModel(
         )
     }
 
-    fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
-        Log.d("WorkoutEditorVM", _workoutExercisePlans.value.toString())
-        Log.d("WorkoutEditorVM", "${workoutExercisePlans.value.map { currentPlan ->
-            if (currentPlan.workoutExerciseId == workoutExercisePlan.workoutExerciseId) workoutExercisePlan else currentPlan
-        }}")
+    fun moveWorkoutExercise(from: Int, to: Int){
+        val reorderedWorkoutExercises = _workoutExercises.value.toMutableList()
 
+        val item = reorderedWorkoutExercises.removeAt(from)
+        reorderedWorkoutExercises.add(to, item)
+
+        _workoutExercises.value = reorderedWorkoutExercises.mapIndexed { index, workoutExercise -> workoutExercise.copy(order = index) }
+    }
+
+    fun moveWorkoutExerciseItem(from: Int, to: Int) {
+        val reorderedWorkoutExerciseItems = _workoutExerciseItems.value.toMutableList()
+
+        val item = reorderedWorkoutExerciseItems.removeAt(from)
+        reorderedWorkoutExerciseItems.add(to, item)
+
+        _workoutExerciseItems.value = reorderedWorkoutExerciseItems
+    }
+
+    fun deleteWorkoutExercise(position: Int) {
+        val workoutExercises = _workoutExercises.value.toMutableList()
+        val workoutExercisePlans = _workoutExercisePlans.value.toMutableList()
+        val workoutExerciseItems = _workoutExerciseItems.value.toMutableList()
+
+        val deletedWorkoutExercise = workoutExercises.removeAt(position)
+        workoutExercisePlans.removeIf { it.workoutExerciseId == deletedWorkoutExercise.id }
+        workoutExerciseItems.removeIf { it.workoutExerciseId == deletedWorkoutExercise.id }
+
+        _workoutExercises.value = workoutExercises.mapIndexed { index, workoutExercise -> workoutExercise.copy(order = index) }
+        _workoutExercisePlans.value = workoutExercisePlans
+        _workoutExerciseItems.value = workoutExerciseItems.mapIndexed { index, workoutExerciseItem -> workoutExerciseItem.copy(order = index) }
+    }
+
+    fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
         _workoutExercisePlans.value = _workoutExercisePlans.value.map { currentPlan ->
             if (currentPlan.workoutExerciseId == workoutExercisePlan.workoutExerciseId) workoutExercisePlan else currentPlan
         }
@@ -159,14 +186,5 @@ class WorkoutEditorFragmentViewModel(
 
     fun updateWorkoutDescription(description: String) {
         _workout.value = _workout.value.copy(description = description)
-    }
-
-    init {
-        Log.d("ViewModel", "ViewModel initialized")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("ViewModel", "ViewModel cleared")
     }
 }

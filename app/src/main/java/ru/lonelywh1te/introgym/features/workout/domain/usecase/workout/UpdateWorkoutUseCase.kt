@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -24,10 +23,11 @@ class UpdateWorkoutUseCase(
         workoutRepository.updateWorkout(workout)
 
         val existingExercises = workoutExerciseRepository.getWorkoutExercisesById(workout.id).first()
+
         val existingExercisesIds = existingExercises.map { it.id }.toSet()
         val updatedExercisesIds = exercises.map { it.id }.toSet()
 
-        val exercisesToDelete = existingExercises.filter { it.id !in existingExercisesIds }
+        val exercisesToDelete = existingExercises.filter { it.id !in updatedExercisesIds }
         val exercisesToAdd = exercises.filter { it.id !in existingExercisesIds }
         val exercisesToUpdate = exercises.filter { it.id in updatedExercisesIds }
 

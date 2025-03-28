@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
+import android.util.Log
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -47,5 +48,8 @@ class CreateWorkoutUseCase(
                 )
             }
         }
+
+        Log.d("CreateWorkoutUseCase", "CREATE_WORKOUT: ${workout.name} | id: $workoutId")
+        Log.d("CreateWorkoutUseCase", "COUNT_EXERCISES: ${exercises.size} \n COUNT_EXERCISE_PLANS: ${exercisePlans.size}")
     }
 }

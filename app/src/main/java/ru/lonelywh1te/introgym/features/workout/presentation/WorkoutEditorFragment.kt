@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,13 +8,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutEditorBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
@@ -70,6 +70,25 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
         recycler = binding.rvWorkoutExerciseItems.apply {
             adapter = workoutExerciseItemAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        ItemTouchHelperCallback(
+            dragDirs = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            swipeDirs = ItemTouchHelper.LEFT,
+        ).apply {
+            setOnMoveListener { from, to ->
+                viewModel.moveWorkoutExerciseItem(from, to)
+            }
+
+            setOnMoveFinishedListener { from, to ->
+                viewModel.moveWorkoutExercise(from, to)
+            }
+
+            setOnLeftSwipeListener { position ->
+                viewModel.deleteWorkoutExercise(position)
+            }
+
+            attachToRecyclerView(recycler)
         }
 
         setFragmentResultListeners()

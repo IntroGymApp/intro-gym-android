@@ -5,8 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.graphics.Typeface
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -45,12 +43,14 @@ class ItemTouchHelperCallback(dragDirs: Int, swipeDirs: Int): ItemTouchHelper.Si
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-
         val from = fromPosition
         val to = viewHolder.adapterPosition
 
         from?.let {
+            if (from < 0 || to < 0) return
+
             onMoveFinished?.invoke(from, to)
+            fromPosition = null
         }
     }
 
