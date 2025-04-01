@@ -71,6 +71,11 @@ class RestorePasswordFragment : Fragment() {
             }
         }
 
+        binding.llTextInputContainer.apply {
+            setEditTextVisibility(binding.etConfirmPassword, otpConfirmed)
+            setEditTextVisibility(binding.etPassword, otpConfirmed)
+        }
+
         setConfirmOtpFragmentResultListener()
         setOnChangePasswordListener()
         startCollectFlows()

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_day_of_week_short"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:maxLength="2"
+        tools:text="ср"
+        android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+    <TextView
+        android:id="@+id/tv_day_number"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        tools:text="12"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular" />
+
+    <ImageView
+        android:id="@+id/iv_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        android:src="@drawable/ic_indicator" />
+
+</LinearLayout>

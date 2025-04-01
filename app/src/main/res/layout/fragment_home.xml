@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="20dp"
     tools:context=".features.home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <ru.lonelywh1te.introgym.core.ui.views.WeeklyCalendarView
+        android:id="@+id/weekly_calendar_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HOME FRAGMENT"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
