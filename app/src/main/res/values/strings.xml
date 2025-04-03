@@ -12,7 +12,7 @@
     <string name="validation_error_invalid_password_format">Некорректный пароль. Убедитесь, что он соответствует требованиям.</string>
 
     <string name="network_error_no_internet">Нет подключения к интернету. Проверьте сеть.</string>
-    <string name="network_error_unknown">Произошла неизвестная ошибка сети. Попробуйте снова.</string>
+    <string name="app_error_unknown">Произошла неизвестная ошибка. Попробуйте снова.</string>
     <string name="network_error_request_timeout">Превышено время ожидания. Проверьте соединение и попробуйте снова.</string>
     <string name="network_error_server">Ошибка сервера. Попробуйте позже.</string>
     <string name="validation_error_password_mismatch">Пароли не совпадают. Попробуйте снова.</string>

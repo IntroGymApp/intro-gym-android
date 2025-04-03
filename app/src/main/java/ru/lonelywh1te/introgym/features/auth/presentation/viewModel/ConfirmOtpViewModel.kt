@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.data.network.NetworkError
@@ -31,7 +32,7 @@ class ConfirmOtpViewModel(
         Log.d("ConfirmOtpViewModel", "$email, $otpType")
         viewModelScope.launch(dispatcher) {
             if (otpType == null) {
-                _confirmOtpResult.emit(UIState.Failure(NetworkError.UNKNOWN))
+                _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
                 return@launch
             }
 
@@ -45,7 +46,7 @@ class ConfirmOtpViewModel(
     fun confirmOtp(otp: String) {
         viewModelScope.launch(dispatcher) {
             if (otpType == null) {
-                _confirmOtpResult.emit(UIState.Failure(NetworkError.UNKNOWN))
+                _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
                 return@launch
             }
 

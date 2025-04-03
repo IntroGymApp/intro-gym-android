@@ -30,7 +30,7 @@ import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewModel
@@ -75,9 +75,9 @@ class SignUpFragment : Fragment() {
 
         binding.passwordValidationView.apply {
             errorRequirements = mapOf(
-                ValidationError.PASSWORD_TOO_SHORT to getString(R.string.label_min_8_symbols),
-                ValidationError.PASSWORD_MISSING_UPPERCASE to getString(R.string.label_has_upper_letter),
-                ValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL to getString(R.string.label_has_special_symbol),
+                AuthValidationError.PASSWORD_TOO_SHORT to getString(R.string.label_min_8_symbols),
+                AuthValidationError.PASSWORD_MISSING_UPPERCASE to getString(R.string.label_has_upper_letter),
+                AuthValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL to getString(R.string.label_has_special_symbol),
             )
         }
 

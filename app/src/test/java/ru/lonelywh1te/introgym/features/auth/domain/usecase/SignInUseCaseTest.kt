@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 
 class SignInUseCaseTest {
     private lateinit var authRepository: AuthRepository
@@ -40,9 +40,9 @@ class SignInUseCaseTest {
     @Test
     fun `signIn with validate failure`() = runTest {
         every { validator.validate(email, password) } returns Result.Failure(
-            ValidationError.INVALID_EMAIL_FORMAT)
+            AuthValidationError.INVALID_EMAIL_FORMAT)
 
-        val expected = listOf(Result.Failure(ValidationError.INVALID_EMAIL_FORMAT))
+        val expected = listOf(Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT))
         val actual = useCase(email, password).toList()
 
         assertEquals(expected, actual)

@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -23,6 +24,6 @@ fun <T> Flow<Result<T>>.asSafeNetworkFlow(): Flow<Result<T>> = flow {
         throw e
     } catch (e: Exception) {
         Log.e(logTag, "UNKNOWN_EXCEPTION: $e")
-        emit(Result.Failure(NetworkError.UNKNOWN))
+        emit(Result.Failure(AppError.UNKNOWN))
     }
 }

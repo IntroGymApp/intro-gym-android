@@ -10,7 +10,7 @@ import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignUpUseCase
 
 class SignUpViewModel(
@@ -34,7 +34,7 @@ class SignUpViewModel(
         return validator.validate(email, password, confirmPassword)
     }
 
-    fun getPasswordState(password: String): List<ValidationError> {
+    fun getPasswordState(password: String): List<AuthValidationError> {
         return validator.getPasswordStates(password)
     }
 }

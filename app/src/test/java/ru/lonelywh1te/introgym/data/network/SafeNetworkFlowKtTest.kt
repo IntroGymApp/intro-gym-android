@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -67,7 +68,7 @@ class SafeNetworkFlowKtTest {
             throw Exception()
         }.asSafeNetworkFlow()
 
-        val expected = listOf(Result.Failure(NetworkError.UNKNOWN))
+        val expected = listOf(Result.Failure(AppError.UNKNOWN))
         val actual = flow.toList()
 
         assertEquals(expected, actual)

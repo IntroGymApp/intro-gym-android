@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import ru.lonelywh1te.introgym.core.result.Result
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 
 class EmailPasswordValidatorTest {
     private val validator = EmailPasswordValidator
@@ -29,7 +29,7 @@ class EmailPasswordValidatorTest {
             val password = "TestPassword123!"
             val confirmPassword = "Testpassword123"
 
-            val expected = Result.Failure(ValidationError.PASSWORD_MISMATCH)
+            val expected = Result.Failure(AuthValidationError.PASSWORD_MISMATCH)
             val actual = validator.validate(email, password, confirmPassword)
 
             Assertions.assertEquals(expected, actual)
@@ -54,7 +54,7 @@ class EmailPasswordValidatorTest {
             val email = "tes t@example_com"
             val password = "reff fds"
 
-            val expected = Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
+            val expected = Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
             val actual = validator.validate(email, password)
 
             Assertions.assertEquals(expected, actual)
@@ -65,7 +65,7 @@ class EmailPasswordValidatorTest {
             val email = "tes t@example_com"
             val password = "TestPassword123!"
 
-            val expected = Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
+            val expected = Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
             val actual = validator.validate(email, password)
 
             Assertions.assertEquals(expected, actual)
@@ -76,7 +76,7 @@ class EmailPasswordValidatorTest {
             val email = "test@example.com"
             val password = "reff fds"
 
-            val expected = Result.Failure(ValidationError.INVALID_PASSWORD_FORMAT)
+            val expected = Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
             val actual = validator.validate(email, password)
 
             Assertions.assertEquals(expected, actual)
@@ -87,7 +87,7 @@ class EmailPasswordValidatorTest {
             val email = "test@example.com"
             val password = ""
 
-            val expected = Result.Failure(ValidationError.INVALID_PASSWORD_FORMAT)
+            val expected = Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
             val actual = validator.validate(email, password)
 
             Assertions.assertEquals(expected, actual)
@@ -110,7 +110,7 @@ class EmailPasswordValidatorTest {
         fun `validate with incorrect email returns INVALID_EMAIL_FORMAT`() {
             val email = "tes t@example_com"
 
-            val expected = Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
+            val expected = Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
             val actual = validator.validate(email)
 
             Assertions.assertEquals(expected, actual)

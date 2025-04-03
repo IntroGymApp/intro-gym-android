@@ -48,8 +48,5 @@ class CreateWorkoutUseCase(
                 )
             }
         }
-
-        Log.d("CreateWorkoutUseCase", "CREATE_WORKOUT: ${workout.name} | id: $workoutId")
-        Log.d("CreateWorkoutUseCase", "COUNT_EXERCISES: ${exercises.size} \n COUNT_EXERCISE_PLANS: ${exercisePlans.size}")
     }
 }

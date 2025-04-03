@@ -79,7 +79,7 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
                 setPadding(10.dp(), 10.dp(), 10.dp(), 10.dp())
             }
 
-            setTextAppearance(R.style.TextAppearance_IntroGym_Body)
+            setTextAppearance(R.style.TextAppearance_IntroGym_Body_Regular)
             gravity = CENTER
         }
 

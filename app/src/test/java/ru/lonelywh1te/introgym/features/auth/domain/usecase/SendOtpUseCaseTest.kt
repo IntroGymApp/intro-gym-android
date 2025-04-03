@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
-import ru.lonelywh1te.introgym.features.auth.domain.error.ValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 
 class SendOtpUseCaseTest {
@@ -33,8 +33,8 @@ class SendOtpUseCaseTest {
 
     @Test
     fun `sendOtp with validate failure`() = runTest {
-        every { validator.validate(email) } returns Result.Failure(ValidationError.INVALID_EMAIL_FORMAT)
-        val expected = listOf(Result.Failure(ValidationError.INVALID_EMAIL_FORMAT))
+        every { validator.validate(email) } returns Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
+        val expected = listOf(Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT))
         val actual = useCase(email, otpType).toList()
 
         coVerify { authRepository wasNot Called }
