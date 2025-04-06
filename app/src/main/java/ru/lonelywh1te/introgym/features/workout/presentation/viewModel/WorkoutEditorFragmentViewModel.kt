@@ -16,6 +16,7 @@ import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
@@ -52,9 +53,9 @@ class WorkoutEditorFragmentViewModel(
 
     private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
     val errors: MutableSharedFlow<Error> get() = _errors
-    
-    private val _workoutSaved: MutableSharedFlow<Boolean> = MutableSharedFlow()
-    val workoutSaved: SharedFlow<Boolean> get() = _workoutSaved
+
+    private val _workoutSaveState: MutableStateFlow<Result<Unit>?> = MutableStateFlow(null)
+    val workoutSaveState: StateFlow<Result<Unit>?> get() = _workoutSaveState
 
     private fun initNewWorkout() {
         _workout.value = Workout.empty(isTemplate = true)
@@ -115,7 +116,7 @@ class WorkoutEditorFragmentViewModel(
                     exercisePlans = _workoutExercisePlans.value
                 )
 
-                if (createWorkoutResult is Result.Failure) _errors.emit(createWorkoutResult.error)
+                _workoutSaveState.emit(createWorkoutResult)
             } else {
                 val updateWorkoutResult = updateWorkoutUseCase(
                     workout = _workout.value,
@@ -123,10 +124,8 @@ class WorkoutEditorFragmentViewModel(
                     exercisePlans = _workoutExercisePlans.value
                 )
 
-                if (updateWorkoutResult is Result.Failure) _errors.emit(updateWorkoutResult.error)
+                _workoutSaveState.emit(updateWorkoutResult)
             }
-
-            _workoutSaved.emit(true)
         }
     }
 

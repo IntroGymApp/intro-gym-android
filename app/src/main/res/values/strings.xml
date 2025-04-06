@@ -104,5 +104,9 @@
     <string name="label_about_exercise">Об упражнении</string>
     <string name="label_edit">Изменить</string>
     <string name="label_delete">Удалить</string>
+    <string name="workout_error_empty_name">Тренировка должна иметь название</string>
+    <string name="workout_error_has_no_exercises">Тренировка должна содержать хотя бы одно упражнение</string>
+    <string name="workout_error_empty_exercise_plan">План упражнений не может быть пустым</string>
+    <string name="workout_error_exercise_and_plans_mismatch">Количество упражнений и планов упражнений не совпадает</string>
 
 </resources>

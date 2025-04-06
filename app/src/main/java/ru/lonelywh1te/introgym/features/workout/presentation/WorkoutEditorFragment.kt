@@ -22,10 +22,12 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutEditorBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
+import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 
 class WorkoutEditorFragment : Fragment(), MenuProvider {
@@ -130,9 +132,17 @@ class WorkoutEditorFragment : Fragment(), MenuProvider {
             }
             .launchIn(lifecycleScope)
 
-        viewModel.workoutSaved.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { workoutSaved ->
-                if (workoutSaved) findNavController().navigateUp()
+        viewModel.workoutSaveState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { saveResult ->
+                when (saveResult) {
+                    is Result.Success -> findNavController().navigateUp()
+                    is Result.Failure -> {
+                        binding.llTextInputContainer.setErrorMessage(
+                            getString(WorkoutErrorStringMessageProvider.get(saveResult.error))
+                        )
+                    }
+                    else -> { }
+                }
             }
             .launchIn(lifecycleScope)
     }

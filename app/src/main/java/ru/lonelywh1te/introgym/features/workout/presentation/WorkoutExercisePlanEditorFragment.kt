@@ -23,11 +23,13 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
+import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 
@@ -135,14 +137,24 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         val time = if (binding.etPlanTime.isVisible) binding.etPlanTime.text.toString() else ""
         val distance = if (binding.etPlanDistance.isVisible) binding.etPlanDistance.text.toString() else ""
 
-        viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance)
+        viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance).let { updateResult ->
+            when (updateResult) {
+                is Result.Success -> {
+                    val workoutExercisePlan = viewModel.workoutPlanExercise.value
 
-        val workoutExercisePlan = viewModel.workoutPlanExercise.value
+                    workoutEditorViewModel.updateWorkoutExercisePlan(workoutExercisePlan)
+                    workoutEditorViewModel.updateWorkoutExerciseComment(workoutExercisePlan.workoutExerciseId, binding.etExerciseComment.text.toString())
 
-        workoutEditorViewModel.updateWorkoutExercisePlan(workoutExercisePlan)
-        workoutEditorViewModel.updateWorkoutExerciseComment(workoutExercisePlan.workoutExerciseId, binding.etExerciseComment.text.toString())
-
-        findNavController().navigateUp()
+                    findNavController().navigateUp()
+                }
+                is Result.Failure -> {
+                    binding.etLayout.setErrorMessage(
+                        getString(WorkoutErrorStringMessageProvider.get(updateResult.error))
+                    )
+                }
+                else -> {}
+            }
+        }
     }
 
     private fun setWorkoutExercisePlanData(workoutExercisePlan: WorkoutExercisePlan, savedInstanceState: Bundle?) {

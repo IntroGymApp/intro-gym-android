@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.workout.data.WorkoutExercisePlanRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.data.WorkoutExerciseRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.data.WorkoutRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
@@ -47,6 +48,8 @@ val workoutDataModule = module {
 }
 
 val workoutDomainModule = module {
+    single<WorkoutValidator> { WorkoutValidator }
+
     factory<GetWorkoutListUseCase> {
         GetWorkoutListUseCase(repository = get())
     }
@@ -54,6 +57,7 @@ val workoutDomainModule = module {
     factory<CreateWorkoutUseCase> {
         CreateWorkoutUseCase(
             workoutRepository = get(),
+            validator = get(),
         )
     }
 
@@ -90,6 +94,7 @@ val workoutDomainModule = module {
     factory<UpdateWorkoutUseCase> {
         UpdateWorkoutUseCase(
             workoutRepository = get(),
+            validator = get(),
         )
     }
 
@@ -129,7 +134,8 @@ val workoutPresentationModule = module {
 
     viewModel<WorkoutExercisePlanEditorFragmentViewModel> {
         WorkoutExercisePlanEditorFragmentViewModel(
-            getExerciseUseCase = get()
+            getExerciseUseCase = get(),
+            validator = get(),
         )
     }
 

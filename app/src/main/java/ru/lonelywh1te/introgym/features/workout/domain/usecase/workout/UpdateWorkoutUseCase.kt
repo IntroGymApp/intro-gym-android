@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -8,12 +9,18 @@ import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutReposit
 
 class UpdateWorkoutUseCase(
     private val workoutRepository: WorkoutRepository,
+    private val validator: WorkoutValidator,
 ) {
     suspend operator fun invoke(
         workout: Workout,
         exercises: List<WorkoutExercise>,
         exercisePlans: List<WorkoutExercisePlan>
     ): Result<Unit> {
+
+        validator.validate(workout, exercises, exercisePlans).let { result ->
+            if (result is Result.Failure) return result
+        }
+
         return workoutRepository.updateFullWorkout(workout, exercises, exercisePlans)
     }
 }

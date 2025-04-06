@@ -7,11 +7,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 
 class WorkoutExercisePlanEditorFragmentViewModel(
     private val getExerciseUseCase: GetExerciseUseCase,
+    private val validator: WorkoutValidator,
 ): ViewModel() {
     private val _exerciseName: MutableStateFlow<String> = MutableStateFlow("")
     val exerciseName: StateFlow<String> = _exerciseName
@@ -38,14 +41,22 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         weight: String,
         timeInSec: String,
         distanceInMeters: String
-    ) {
-        _workoutPlanExercise.value = workoutPlanExercise.value.copy(
+    ): Result<Unit> {
+        val updatedWorkoutExercisePlan = workoutPlanExercise.value.copy(
             sets = if (sets.isBlank()) null else sets.toInt(),
             reps = if (reps.isBlank()) null else reps.toInt(),
             weightKg = if (weight.isBlank()) null else weight.toFloat(),
             timeInSec = if (timeInSec.isBlank()) null else timeInSec.toInt(),
             distanceInMeters = if (distanceInMeters.isBlank()) null else distanceInMeters.toInt()
         )
+
+        validator.validatePlans(listOf(updatedWorkoutExercisePlan)).let { result ->
+            if (result is Result.Failure) return result
+        }
+
+        _workoutPlanExercise.value = updatedWorkoutExercisePlan
+
+        return Result.Success(Unit)
     }
 
     fun setWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan?) {
