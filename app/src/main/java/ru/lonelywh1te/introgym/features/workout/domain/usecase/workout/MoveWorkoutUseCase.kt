@@ -1,23 +1,31 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
+import ru.lonelywh1te.introgym.core.result.AppError
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 
 class MoveWorkoutUseCase(
-    private val repository: WorkoutRepository
+    private val repository: WorkoutRepository,
+    private val reorderWorkoutsUseCase: ReorderWorkoutsUseCase,
 ) {
-    suspend operator fun invoke(from: Int, to: Int) {
-        if (from == to) return
-        val workouts = repository.getWorkouts().toMutableList()
+    suspend operator fun invoke(from: Int, to: Int): Result<Unit> {
+        if (from == to) return Result.Success(Unit)
 
-        if (from < 0 || to < 0 || from >= workouts.size || to >= workouts.size) throw Exception("Invalid indexes")
+        val getWorkoutsResult = repository.getWorkouts()
 
-        val item = workouts.removeAt(from)
-        workouts.add(to, item)
+        when (getWorkoutsResult) {
+            is Result.Success -> {
+                val workouts = getWorkoutsResult.data.toMutableList()
 
-        workouts
-            .mapIndexed { index, workout -> workout.copy(order = index) }
-            .forEach {
-                repository.updateWorkout(it)
+                if (from < 0 || to < 0 || from >= workouts.size || to >= workouts.size) return Result.Failure(AppError.UNKNOWN)
+
+                val item = workouts.removeAt(from)
+                workouts.add(to, item)
+
+                return reorderWorkoutsUseCase(workouts)
             }
+            is Result.Failure -> return getWorkoutsResult
+            is Result.InProgress -> return getWorkoutsResult
+        }
     }
 }

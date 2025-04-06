@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
 import kotlinx.coroutines.flow.first
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -17,12 +18,16 @@ class UpdateWorkoutUseCase(
         workout: Workout,
         exercises: List<WorkoutExercise>,
         exercisePlans: List<WorkoutExercisePlan>
-    ) {
+    ): Result<Unit> {
         if (exercises.size != exercisePlans.size) throw Exception("Exercises and exercise plans have different sizes")
 
-        workoutRepository.updateWorkout(workout)
+        val updateWorkoutResult = workoutRepository.updateWorkout(workout)
+        if (updateWorkoutResult is Result.Failure) return updateWorkoutResult
 
-        val existingExercises = workoutExerciseRepository.getWorkoutExercisesById(workout.id).first()
+        val getWorkoutExercisesByIdResult = workoutExerciseRepository.getWorkoutExercisesById(workout.id).first()
+        if (getWorkoutExercisesByIdResult is Result.Failure) return getWorkoutExercisesByIdResult
+
+        val existingExercises = (getWorkoutExercisesByIdResult as Result.Success).data
 
         val existingExercisesIds = existingExercises.map { it.id }.toSet()
         val updatedExercisesIds = exercises.map { it.id }.toSet()
@@ -36,7 +41,11 @@ class UpdateWorkoutUseCase(
         }
 
         exercisesToAdd.forEach { exercise ->
-            val workoutExerciseId = workoutExerciseRepository.addWorkoutExercise(exercise.copy(workoutId = workout.id))
+            val addWorkoutExerciseResult = workoutExerciseRepository.addWorkoutExercise(exercise.copy(workoutId = workout.id))
+            if (addWorkoutExerciseResult is Result.Failure) return addWorkoutExerciseResult
+
+            val workoutExerciseId = (addWorkoutExerciseResult as Result.Success<Long>).data
+
             val exercisePlan = exercisePlans.find { it.workoutExerciseId == exercise.id }
 
             if (exercisePlan != null) {
@@ -47,12 +56,15 @@ class UpdateWorkoutUseCase(
         }
 
         exercisesToUpdate.forEach {
-            workoutExerciseRepository.updateWorkoutExercise(it)
+            val updateWorkoutExerciseResult = workoutExerciseRepository.updateWorkoutExercise(it)
+            if (updateWorkoutExerciseResult is Result.Failure) return updateWorkoutExerciseResult
         }
 
         exercisePlans.forEach { plan ->
-            workoutExercisePlanRepository.updateWorkoutExercisePlan(plan)
+            val updateWorkoutExercisePlanResult = workoutExercisePlanRepository.updateWorkoutExercisePlan(plan)
+            if (updateWorkoutExercisePlanResult is Result.Failure) return updateWorkoutExercisePlanResult
         }
 
+        return Result.Success(Unit)
     }
 }

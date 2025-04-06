@@ -5,11 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import ru.lonelywh1te.introgym.core.result.AppError
+import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
@@ -20,7 +24,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWor
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsByWorkoutIdUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlansUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 
 class WorkoutEditorFragmentViewModel(
@@ -29,11 +33,11 @@ class WorkoutEditorFragmentViewModel(
     private val getExerciseUseCase: GetExerciseUseCase,
     private val getWorkoutByIdUseCase: GetWorkoutByIdUseCase,
     private val getWorkoutExercisesUseCase: GetWorkoutExercisesUseCase,
-    private val getWorkoutExercisePlanUseCase: GetWorkoutExercisePlanUseCase,
+    private val getWorkoutExercisePlansUseCase: GetWorkoutExercisePlansUseCase,
     private val getWorkoutExerciseItemsByWorkoutIdUseCase: GetWorkoutExerciseItemsByWorkoutIdUseCase,
 ): ViewModel() {
     private val _workout: MutableStateFlow<Workout> = MutableStateFlow(Workout.empty(isTemplate = true))
-    val workout: StateFlow<Workout?> get() = _workout
+    val workout: StateFlow<Workout> get() = _workout
 
     private val _workoutExercises: MutableStateFlow<List<WorkoutExercise>> = MutableStateFlow(listOf())
     val workoutExercises: StateFlow<List<WorkoutExercise>> get() =_workoutExercises
@@ -46,34 +50,58 @@ class WorkoutEditorFragmentViewModel(
 
     private val dispatcher = Dispatchers.IO
 
-    private val _workoutSaved: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val workoutSaved: StateFlow<Boolean> get() = _workoutSaved
+    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
+    val errors: MutableSharedFlow<Error> get() = _errors
+    
+    private val _workoutSaved: MutableSharedFlow<Boolean> = MutableSharedFlow()
+    val workoutSaved: SharedFlow<Boolean> get() = _workoutSaved
+
+    private fun initNewWorkout() {
+        _workout.value = Workout.empty(isTemplate = true)
+        _workoutExercises.value = emptyList()
+        _workoutExercisePlans.value = emptyList()
+    }
 
     fun setWorkout(workoutId: Long) {
-        viewModelScope.launch(dispatcher) {
-            if (workoutId == -1L) {
-                _workout.value = Workout.empty(isTemplate = true)
-                _workoutExercises.value = listOf()
-                _workoutExercisePlans.value = listOf()
+        if (workoutId == -1L) {
+            initNewWorkout()
+        } else {
+            loadWorkout(workoutId)
+        }
+    }
+
+    private fun loadWorkout(workoutId: Long) {
+        viewModelScope.launch (dispatcher) {
+            val getWorkoutByIdResultDeferred = async { getWorkoutByIdUseCase(workoutId).first() }
+            val getWorkoutExercisesResultDeferred = async { getWorkoutExercisesUseCase(workoutId).first() }
+            val getWorkoutExerciseItemsDeferred = async { getWorkoutExerciseItemsByWorkoutIdUseCase(workoutId).first() }
+
+            val workoutResult = getWorkoutByIdResultDeferred.await()
+            val workoutExercisesResult = getWorkoutExercisesResultDeferred.await()
+            val workoutExerciseItemsResult = getWorkoutExerciseItemsDeferred.await()
+
+            if (workoutResult is Result.Success && workoutExercisesResult is Result.Success && workoutExerciseItemsResult is Result.Success) {
+                _workout.value = workoutResult.data
+                _workoutExercises.value = workoutExercisesResult.data
+                _workoutExerciseItems.value = workoutExerciseItemsResult.data
+
+                val getWorkoutExercisePlansResult = getWorkoutExercisePlansUseCase(_workoutExercises.value.map { it.id })
+
+                when (getWorkoutExercisePlansResult) {
+                    is Result.Success -> _workoutExercisePlans.value = getWorkoutExercisePlansResult.data
+                    is Result.Failure -> errors.emit(getWorkoutExercisePlansResult.error)
+                    else -> {}
+                }
+
             } else {
-                val workoutDeferred = async { getWorkoutByIdUseCase(workoutId).first() }
-                val workoutExercisesDeferred = async { getWorkoutExercisesUseCase(workoutId).first() }
-                val workoutExerciseItemsDeferred = async { getWorkoutExerciseItemsByWorkoutIdUseCase(workoutId).first() }
-
-                val workout = workoutDeferred.await()
-                _workout.value = workout
-
-                val workoutExercises = workoutExercisesDeferred.await()
-                _workoutExercises.value = workoutExercises
-
-                val plans = workoutExercises.map { workoutExercise ->
-                    async { getWorkoutExercisePlanUseCase(workoutExercise.id).first() }
-                }.awaitAll()
-
-                _workoutExercisePlans.value = plans
-
-                val exerciseItems = workoutExerciseItemsDeferred.await()
-                _workoutExerciseItems.value = exerciseItems
+                errors.emit(
+                    when {
+                        workoutResult is Result.Failure -> workoutResult.error
+                        workoutExercisesResult is Result.Failure -> workoutExercisesResult.error
+                        workoutExerciseItemsResult is Result.Failure -> workoutExerciseItemsResult.error
+                        else -> AppError.UNKNOWN
+                    }
+                )
             }
         }
     }
@@ -81,20 +109,24 @@ class WorkoutEditorFragmentViewModel(
     fun saveWorkout() {
         viewModelScope.launch (dispatcher) {
             if (_workout.value.id == -1L) {
-                createWorkoutUseCase(
+                val createWorkoutResult = createWorkoutUseCase(
                     workout = _workout.value,
                     exercises = _workoutExercises.value,
                     exercisePlans = _workoutExercisePlans.value
                 )
+
+                if (createWorkoutResult is Result.Failure) _errors.emit(createWorkoutResult.error)
             } else {
-                updateWorkoutUseCase(
+                val updateWorkoutResult = updateWorkoutUseCase(
                     workout = _workout.value,
                     exercises = _workoutExercises.value,
                     exercisePlans = _workoutExercisePlans.value
                 )
+
+                if (updateWorkoutResult is Result.Failure) _errors.emit(updateWorkoutResult.error)
             }
 
-            _workoutSaved.value = true
+            _workoutSaved.emit(true)
         }
     }
 
