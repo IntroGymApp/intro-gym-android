@@ -16,7 +16,6 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.MoveWorkoutUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.ReorderWorkoutsUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlansUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
@@ -28,6 +27,9 @@ val workoutDataModule = module {
     single<WorkoutRepository> {
         WorkoutRepositoryImpl(
             workoutDao = get(),
+            workoutExerciseDao = get(),
+            workoutExercisePlanDao = get(),
+            db = get(),
         )
     }
 
@@ -52,8 +54,6 @@ val workoutDomainModule = module {
     factory<CreateWorkoutUseCase> {
         CreateWorkoutUseCase(
             workoutRepository = get(),
-            workoutExercisePlanRepository = get(),
-            workoutExerciseRepository = get(),
         )
     }
 
@@ -84,28 +84,18 @@ val workoutDomainModule = module {
     factory<DeleteWorkoutUseCase> {
         DeleteWorkoutUseCase(
             repository = get(),
-            reorderWorkoutsUseCase = get(),
         )
     }
 
     factory<UpdateWorkoutUseCase> {
         UpdateWorkoutUseCase(
             workoutRepository = get(),
-            workoutExercisePlanRepository = get(),
-            workoutExerciseRepository = get(),
         )
     }
 
     factory<MoveWorkoutUseCase> {
         MoveWorkoutUseCase(
             repository = get(),
-            reorderWorkoutsUseCase = get()
-        )
-    }
-
-    factory<ReorderWorkoutsUseCase> {
-        ReorderWorkoutsUseCase(
-            repository = get()
         )
     }
 

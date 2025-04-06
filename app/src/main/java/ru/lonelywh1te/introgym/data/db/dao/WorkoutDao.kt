@@ -33,6 +33,9 @@ interface WorkoutDao {
     """)
     fun getWorkoutWithCountOfExercises(): Flow<List<WorkoutEntityWithCountOfExercises>>
 
+    @Query("select * from workout where `order` > :order")
+    suspend fun getWorkoutsWithOrderGreaterThan(order: Int): List<WorkoutEntity>
+
     @Query("select count(*) from workout where is_template = 1")
     suspend fun getCountOfWorkouts(): Int
 

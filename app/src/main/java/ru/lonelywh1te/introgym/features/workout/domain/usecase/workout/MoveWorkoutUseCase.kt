@@ -6,7 +6,6 @@ import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutReposit
 
 class MoveWorkoutUseCase(
     private val repository: WorkoutRepository,
-    private val reorderWorkoutsUseCase: ReorderWorkoutsUseCase,
 ) {
     suspend operator fun invoke(from: Int, to: Int): Result<Unit> {
         if (from == to) return Result.Success(Unit)
@@ -22,7 +21,22 @@ class MoveWorkoutUseCase(
                 val item = workouts.removeAt(from)
                 workouts.add(to, item)
 
-                return reorderWorkoutsUseCase(workouts)
+                var moveResult: Result<Unit> = Result.Success(Unit)
+
+                workouts
+                    .mapIndexed { index, workout -> workout.copy(order = index) }
+                    .forEachIndexed { index, workout ->
+                        if (workouts[index].order != workout.order) {
+                            val updateWorkoutResult = repository.updateWorkout(workout)
+
+                            if (updateWorkoutResult is Result.Failure) {
+                                moveResult = updateWorkoutResult
+                                return@forEachIndexed
+                            }
+                        }
+                    }
+
+                return moveResult
             }
             is Result.Failure -> return getWorkoutsResult
             is Result.InProgress -> return getWorkoutsResult
