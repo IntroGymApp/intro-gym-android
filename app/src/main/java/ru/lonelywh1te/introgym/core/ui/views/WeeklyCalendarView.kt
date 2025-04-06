@@ -78,9 +78,9 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                 setPadding(10.dp(), 10.dp(), 10.dp(), 10.dp())
             }
+            gravity = CENTER
 
             setTextAppearance(R.style.TextAppearance_IntroGym_Body_Regular)
-            gravity = CENTER
         }
 
         addView(textViewSelectedDate)
