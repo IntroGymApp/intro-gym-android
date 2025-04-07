@@ -24,7 +24,7 @@ fun ExerciseEntityWithTags.toExerciseItem(): ExerciseItem {
         name = this.exercise.name,
         imgFilename = this.exercise.imgFilename,
         categoryId = this.exercise.categoryId,
-        tagsIds = this.tags.map { it.toTag().id }.toList(),
+        tagsIds = this.tags.map { it.toTag().id },
     )
 }
 
