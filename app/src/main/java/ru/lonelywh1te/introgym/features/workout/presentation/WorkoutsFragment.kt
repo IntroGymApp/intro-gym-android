@@ -98,7 +98,7 @@ class WorkoutsFragment : Fragment() {
     }
 
     private fun navigateToCreateWorkout() {
-        val action = WorkoutsFragmentDirections.toWorkoutEditorFragment(-1L)
+        val action = WorkoutsFragmentDirections.toWorkoutEditorFragment()
         findNavController().safeNavigate(action)
     }
 }

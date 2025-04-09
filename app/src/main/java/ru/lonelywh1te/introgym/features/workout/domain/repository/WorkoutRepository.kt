@@ -22,12 +22,6 @@ interface WorkoutRepository {
 
     suspend fun updateWorkout(workout: Workout): Result<Unit>
 
-    suspend fun updateFullWorkout(
-        workout: Workout,
-        exercises: List<WorkoutExercise>,
-        exercisePlans: List<WorkoutExercisePlan>
-    ): Result<Unit>
-
     suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit>
 
     suspend fun getCountOfWorkouts(): Result<Int>

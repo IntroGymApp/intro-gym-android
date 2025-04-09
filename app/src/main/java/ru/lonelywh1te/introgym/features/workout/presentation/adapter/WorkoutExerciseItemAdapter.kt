@@ -48,6 +48,10 @@ class WorkoutExerciseItemAdapter: RecyclerView.Adapter<WorkoutExerciseItemViewHo
     fun setOnItemClickListener(listener: ((item: WorkoutExerciseItem) -> Unit)?) {
         onItemClickListener = listener
     }
+
+    fun getItem(position: Int): WorkoutExerciseItem {
+        return workoutExerciseItems[position]
+    }
 }
 
 class WorkoutExerciseItemViewHolder(

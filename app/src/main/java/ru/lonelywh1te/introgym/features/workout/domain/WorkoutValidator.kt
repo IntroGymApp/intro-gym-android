@@ -18,9 +18,6 @@ object WorkoutValidator {
         val validateExercisesResult = validateExercises(exercises)
         if (validateExercisesResult is Result.Failure) return validateExercisesResult
 
-        val validatePlansResult = validatePlans(plans)
-        if (validatePlansResult is Result.Failure) return validatePlansResult
-
         return Result.Success(Unit)
     }
 
@@ -39,18 +36,5 @@ object WorkoutValidator {
             exercises.isEmpty() -> Result.Failure(WorkoutError.WORKOUT_HAS_NO_EXERCISES)
             else -> Result.Success(Unit)
         }
-    }
-
-    // публичный, потому что будет использоваться отдельно
-    fun validatePlans(plans: List<WorkoutExercisePlan>): Result<Unit> {
-        plans.forEach { plan ->
-            if (plan.isEmpty()) return Result.Failure(WorkoutError.EMPTY_EXERCISE_PLAN)
-        }
-
-        return Result.Success(Unit)
-    }
-
-    private fun WorkoutExercisePlan.isEmpty(): Boolean {
-        return listOf(sets, reps, weightKg, timeInSec, distanceInMeters).all { it == null || it == 0 }
     }
 }

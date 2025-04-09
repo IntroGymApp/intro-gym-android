@@ -146,69 +146,6 @@ class WorkoutRepositoryImpl (
         }
     }
 
-    override suspend fun updateFullWorkout(
-        workout: Workout,
-        exercises: List<WorkoutExercise>,
-        exercisePlans: List<WorkoutExercisePlan>,
-    ): Result<Unit> {
-        return try {
-            db.withTransaction {
-                val workoutEntity = workout.copy(
-                    lastUpdated = LocalDateTime.now(zoneOffset)
-                ).toWorkoutEntity()
-
-                workoutDao.updateWorkout(workoutEntity)
-
-                val existingExercises = workoutExerciseDao.getWorkoutExercisesById(workout.id).first()
-
-                val existingExercisesIds = existingExercises.map { it.id }.toSet()
-                val updatedExercisesIds = exercises.map { it.id }.toSet()
-
-                val exercisesToDelete = existingExercises.filter { it.id !in updatedExercisesIds }
-                val exercisesToAdd = exercises.filter { it.id !in existingExercisesIds }
-                val exercisesToUpdate = exercises.filter { it.id in updatedExercisesIds }
-
-                exercisesToDelete.forEach { exercise ->
-                    workoutExerciseDao.deleteWorkoutExercise(exercise.id)
-                }
-
-                exercisesToAdd.forEach { exercise ->
-                    val workoutExerciseEntity = exercise.copy(workoutId = workout.id).toWorkoutExerciseEntity()
-
-                    val workoutExerciseId = workoutExerciseDao.addWorkoutExercise(workoutExerciseEntity)
-
-                    val exercisePlan = exercisePlans.find { it.workoutExerciseId == exercise.id }
-
-                    if (exercisePlan != null) {
-                        val workoutExercisePlanEntity = exercisePlan.copy(
-                            workoutExerciseId = workoutExerciseId
-                        ).toWorkoutExercisePlanEntity()
-
-                        workoutExercisePlanDao.createWorkoutExercisePlan(workoutExercisePlanEntity)
-                    }
-                }
-
-                exercisesToUpdate.forEach {
-                    workoutExerciseDao.updateWorkoutExercise(it.toWorkoutExerciseEntity())
-                }
-
-                exercisePlans.forEach { plan ->
-                    workoutExercisePlanDao.updateWorkoutExercisePlan(plan.toWorkoutExercisePlanEntity())
-                }
-
-            }
-
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Log.e("WorkoutRepositoryImpl", "updateWorkout", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-        }
-    }
-
     override suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit> {
         return try {
             db.withTransaction {

@@ -55,8 +55,6 @@
     <string name="label_forgot_password_question">Забыли пароль?</string>
     <string name="label_new_password">Новый пароль</string>
     <string name="label_create_new_password_description">Введите новый пароль для вашей учетной записи. Убедитесь, что пароль надежный и соответствует всем требованиям.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_skip">Пропустить</string>
     <string name="label_welcome_to_app">Приветствуем в IntroGym!</string>
     <string name="label_welcome_fragment_description">Мы поможем тебе достичь лучших результатов в тренировках</string>
@@ -108,5 +106,7 @@
     <string name="workout_error_has_no_exercises">Тренировка должна содержать хотя бы одно упражнение</string>
     <string name="workout_error_empty_exercise_plan">План упражнений не может быть пустым</string>
     <string name="workout_error_exercise_and_plans_mismatch">Количество упражнений и планов упражнений не совпадает</string>
+    <string name="label_workout_comment">Комментарий к тренировке</string>
+    <string name="label_workout_name">Название тренировки</string>
 
 </resources>

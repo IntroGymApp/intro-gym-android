@@ -21,7 +21,6 @@ fun WorkoutError.getStringRes(): Int {
     return when (this) {
         WorkoutError.WORKOUT_EMPTY_NAME -> R.string.workout_error_empty_name
         WorkoutError.WORKOUT_HAS_NO_EXERCISES -> R.string.workout_error_has_no_exercises
-        WorkoutError.EMPTY_EXERCISE_PLAN -> R.string.workout_error_empty_exercise_plan
         WorkoutError.WORKOUT_EXERCISES_AND_PLANS_MISMATCH -> R.string.workout_error_exercise_and_plans_mismatch
     }
 }

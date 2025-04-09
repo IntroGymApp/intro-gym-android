@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
-    tools:context=".features.workout.presentation.WorkoutEditorFragment">
+    tools:context=".features.workout.presentation.CreateWorkoutFragment">
 
     <TextView
         android:id="@+id/tv_workout_info"

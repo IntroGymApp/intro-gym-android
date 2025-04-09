@@ -6,28 +6,14 @@ import java.time.LocalDateTime
 
 @Parcelize
 data class WorkoutExercisePlan (
-    val id: Long,
+    val id: Long = 0L,
     val workoutExerciseId: Long,
-    val sets: Int?,
-    val reps: Int?,
-    val weightKg: Float?,
-    val timeInSec: Int?,
-    val distanceInMeters: Int?,
+    val sets: Int? = null,
+    val reps: Int? = null,
+    val weightKg: Float? = null,
+    val timeInSec: Int? = null,
+    val distanceInMeters: Int? = null,
 
-    val createdAt: LocalDateTime,
-    val lastUpdated: LocalDateTime,
-): Parcelable {
-    companion object {
-        fun empty(workoutExerciseId: Long = 0L) = WorkoutExercisePlan(
-            id = 0L,
-            workoutExerciseId = workoutExerciseId,
-            sets = null,
-            reps = null,
-            weightKg = null,
-            timeInSec = null,
-            distanceInMeters = null,
-            createdAt = LocalDateTime.now(),
-            lastUpdated = LocalDateTime.now(),
-        )
-    }
-}
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val lastUpdated: LocalDateTime = LocalDateTime.now(),
+): Parcelable

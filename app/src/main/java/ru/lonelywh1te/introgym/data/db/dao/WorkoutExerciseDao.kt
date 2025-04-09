@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutExerciseWithExerciseInfo
 
@@ -18,8 +19,19 @@ interface WorkoutExerciseDao {
     """)
     fun getWorkoutExercisesWithExerciseInfo(workoutId: Long): Flow<List<WorkoutExerciseWithExerciseInfo>>
 
-    @Query("select * from workout_exercise where workout_id = :workoutId")
+    @Query("select * from workout_exercise where id = :id")
+    fun getWorkoutExerciseById(id: Long): WorkoutExerciseEntity
+
+    @Query("""
+        select * 
+        from workout_exercise 
+        where workout_id = :workoutId 
+        order by `order`
+    """)
     fun getWorkoutExercisesById(workoutId: Long): Flow<List<WorkoutExerciseEntity>>
+
+    @Query("select * from workout_exercise where `order` > :order")
+    suspend fun getWorkoutExercisesWithOrderGreaterThan(order: Int): List<WorkoutExerciseEntity>
 
     @Insert
     suspend fun addWorkoutExercise(workoutExercise: WorkoutExerciseEntity): Long

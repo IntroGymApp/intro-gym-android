@@ -13,13 +13,18 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWor
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsByWorkoutIdUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.MoveWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisePlansUseCase
-import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.AddWorkoutExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.DeleteWorkoutExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.MoveWorkoutExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.UpdateWorkoutExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlansUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.CreateWorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
@@ -36,7 +41,9 @@ val workoutDataModule = module {
 
     single<WorkoutExerciseRepository> {
         WorkoutExerciseRepositoryImpl(
-            workoutExerciseDao = get()
+            db = get(),
+            workoutExerciseDao = get(),
+            workoutExercisePlanDao = get(),
         )
     }
 
@@ -93,8 +100,7 @@ val workoutDomainModule = module {
 
     factory<UpdateWorkoutUseCase> {
         UpdateWorkoutUseCase(
-            workoutRepository = get(),
-            validator = get(),
+            repository = get(),
         )
     }
 
@@ -106,7 +112,37 @@ val workoutDomainModule = module {
 
     factory<GetWorkoutExercisePlansUseCase> {
         GetWorkoutExercisePlansUseCase(
-            repository = get()
+            repository = get(),
+        )
+    }
+
+    factory<AddWorkoutExerciseUseCase> {
+        AddWorkoutExerciseUseCase(
+            repository = get(),
+        )
+    }
+
+    factory<UpdateWorkoutExercisePlanUseCase> {
+        UpdateWorkoutExercisePlanUseCase(
+            repository = get(),
+        )
+    }
+
+    factory<UpdateWorkoutExerciseUseCase> {
+        UpdateWorkoutExerciseUseCase(
+            repository = get(),
+        )
+    }
+
+    factory<MoveWorkoutExerciseUseCase> {
+        MoveWorkoutExerciseUseCase(
+            repository = get(),
+        )
+    }
+
+    factory<DeleteWorkoutExerciseUseCase> {
+        DeleteWorkoutExerciseUseCase(
+            repository = get(),
         )
     }
 }
@@ -120,21 +156,17 @@ val workoutPresentationModule = module {
         )
     }
 
-    viewModel<WorkoutEditorFragmentViewModel> {
-        WorkoutEditorFragmentViewModel(
+    viewModel<CreateWorkoutFragmentViewModel> {
+        CreateWorkoutFragmentViewModel(
             createWorkoutUseCase = get(),
-            updateWorkoutUseCase = get(),
             getExerciseUseCase = get(),
-            getWorkoutExercisesUseCase = get(),
-            getWorkoutByIdUseCase = get(),
-            getWorkoutExerciseItemsByWorkoutIdUseCase = get(),
-            getWorkoutExercisePlansUseCase = get(),
         )
     }
 
     viewModel<WorkoutExercisePlanEditorFragmentViewModel> {
         WorkoutExercisePlanEditorFragmentViewModel(
             getExerciseUseCase = get(),
+            getWorkoutExercisePlanUseCase = get(),
             validator = get(),
         )
     }
@@ -142,8 +174,15 @@ val workoutPresentationModule = module {
     viewModel<WorkoutFragmentViewModel> {
         WorkoutFragmentViewModel(
             getWorkoutUseCase = get(),
+            getWorkoutExercisesUseCase = get(),
             getWorkoutExerciseItemsByWorkoutIdUseCase = get(),
+            addWorkoutExerciseUseCase = get(),
             deleteWorkoutUseCase = get(),
+            updateWorkoutExerciseUseCase = get(),
+            updateWorkoutExercisePlanUseCase = get(),
+            moveWorkoutExerciseUseCase = get(),
+            deleteWorkoutExerciseUseCase = get(),
+            updateWorkoutUseCase = get(),
         )
     }
 }

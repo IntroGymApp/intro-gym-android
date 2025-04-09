@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,16 +12,17 @@ import android.widget.EditText
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
@@ -30,7 +30,6 @@ import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
-import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
@@ -38,13 +37,17 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<WorkoutExercisePlanEditorFragmentViewModel>()
-    private val workoutEditorViewModel by koinNavGraphViewModel<WorkoutEditorFragmentViewModel>(R.id.workoutEditorGraph)
 
     private val args by navArgs<WorkoutExercisePlanEditorFragmentArgs>()
 
-    private var exerciseId: Long? = null
-
     private lateinit var mapOfButtonAndInputs: Map<Button, EditText>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.setWorkoutExercise(args.workoutExercise)
+        viewModel.setWorkoutExercisePlan(args.workoutExercisePlan)
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -70,10 +73,6 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
             (binding.btnSelectDistance to binding.etPlanDistance),
         )
 
-        binding.etExerciseComment.setText(
-            workoutEditorViewModel.getWorkoutExerciseComment(args.workoutExerciseId)
-        )
-
         startCollectFlows(savedInstanceState)
     }
 
@@ -97,33 +96,24 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
             }
             .launchIn(lifecycleScope)
 
-        viewModel.workoutPlanExercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+        viewModel.workoutExercisePlan.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 setWorkoutExercisePlanData(it, savedInstanceState)
             }
             .launchIn(lifecycleScope)
 
-        workoutEditorViewModel.workoutExercises.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { exercises ->
-                val workoutExercise = exercises.find { it.id == args.workoutExerciseId }
-
+        viewModel.workoutExercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { workoutExercise ->
                 workoutExercise?.let {
-                    exerciseId = it.exerciseId
-                    viewModel.getExerciseData(it.exerciseId)
+                    binding.etExerciseComment.setText(it.comment)
                 }
-            }
-            .launchIn(lifecycleScope)
-
-        workoutEditorViewModel.workoutExercisePlans.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { plans ->
-                val plan = plans.find { it.workoutExerciseId == args.workoutExerciseId }
-
-                plan?.let { viewModel.setWorkoutExercisePlan(plan) }
             }
             .launchIn(lifecycleScope)
     }
 
     private fun navigateToExerciseInfoFragment() {
+        val exerciseId = viewModel.workoutExercise.value?.exerciseId
+
         exerciseId?.let { id ->
             val action = WorkoutExercisePlanEditorFragmentDirections.toExerciseInfoFragment(id)
             findNavController().safeNavigate(action)
@@ -137,24 +127,19 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         val time = if (binding.etPlanTime.isVisible) binding.etPlanTime.text.toString() else ""
         val distance = if (binding.etPlanDistance.isVisible) binding.etPlanDistance.text.toString() else ""
 
-        viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance).let { updateResult ->
-            when (updateResult) {
-                is Result.Success -> {
-                    val workoutExercisePlan = viewModel.workoutPlanExercise.value
+        viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance)
+        setWorkoutExercisePlanFragmentResult()
 
-                    workoutEditorViewModel.updateWorkoutExercisePlan(workoutExercisePlan)
-                    workoutEditorViewModel.updateWorkoutExerciseComment(workoutExercisePlan.workoutExerciseId, binding.etExerciseComment.text.toString())
+        findNavController().navigateUp()
+    }
 
-                    findNavController().navigateUp()
-                }
-                is Result.Failure -> {
-                    binding.etLayout.setErrorMessage(
-                        getString(WorkoutErrorStringMessageProvider.get(updateResult.error))
-                    )
-                }
-                else -> {}
-            }
+    private fun setWorkoutExercisePlanFragmentResult() {
+        val bundle = Bundle().apply {
+            putParcelable(WORKOUT_EXERCISE_PLAN_BUNDLE_KEY, viewModel.workoutExercisePlan.value)
+            putString(WORKOUT_EXERCISE_COMMENT_BUNDLE_KEY, binding.etExerciseComment.text.toString())
         }
+
+        setFragmentResult(FRAGMENT_REQUEST_KEY, bundle)
     }
 
     private fun setWorkoutExercisePlanData(workoutExercisePlan: WorkoutExercisePlan, savedInstanceState: Bundle?) {
@@ -195,5 +180,11 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         }
 
         return true
+    }
+
+    companion object {
+        const val FRAGMENT_REQUEST_KEY = "workout_exercise_plan_editor_fragment"
+        const val WORKOUT_EXERCISE_PLAN_BUNDLE_KEY = "workout_exercise_plan"
+        const val WORKOUT_EXERCISE_COMMENT_BUNDLE_KEY = "workout_exercise_comment"
     }
 }

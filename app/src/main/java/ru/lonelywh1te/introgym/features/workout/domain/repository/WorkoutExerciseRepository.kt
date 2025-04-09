@@ -13,8 +13,12 @@ interface WorkoutExerciseRepository {
 
     suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise): Result<Long>
 
+    suspend fun addWorkoutExerciseWithEmptyPlan(workoutExercise: WorkoutExercise): Result<Unit>
+
     suspend fun updateWorkoutExercise(workoutExercise: WorkoutExercise): Result<Unit>
 
     suspend fun deleteWorkoutExercise(id: Long): Result<Unit>
+
+    suspend fun deleteWorkoutExerciseWithReorder(id: Long): Result<Unit>
 
 }

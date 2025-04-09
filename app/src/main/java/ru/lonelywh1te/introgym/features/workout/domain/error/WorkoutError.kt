@@ -5,6 +5,5 @@ import ru.lonelywh1te.introgym.core.result.Error
 enum class WorkoutError: Error {
     WORKOUT_EMPTY_NAME,
     WORKOUT_HAS_NO_EXERCISES,
-    EMPTY_EXERCISE_PLAN,
     WORKOUT_EXERCISES_AND_PLANS_MISMATCH,
 }

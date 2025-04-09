@@ -5,6 +5,35 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
     <fragment
+        android:id="@+id/workoutExercisePlanEditorFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutExercisePlanEditorFragment"
+        android:label="@string/label_plan"
+        tools:layout="@layout/fragment_workout_exercise_plan_editor">
+        <action
+            android:id="@+id/to_exerciseInfoFragment"
+            app:destination="@id/exerciseFragment" />
+        <argument
+            android:name="workoutExercise"
+            app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise" />
+        <argument
+            android:name="workoutExercisePlan"
+            app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutEditorFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.CreateWorkoutFragment"
+        android:label="@string/label_workout"
+        tools:layout="@layout/fragment_create_workout">
+        <action
+            android:id="@+id/to_exerciseCategoriesFragment"
+            app:destination="@id/exerciseCategoriesFragment" />
+        <action
+            android:id="@+id/to_workoutExercisePlanEditorFragment"
+            app:destination="@id/workoutExercisePlanEditorFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/exerciseFragment"
         android:name="ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFragment"
         android:label=""
@@ -217,56 +246,26 @@
         android:label="@string/label_workouts"
         tools:layout="@layout/fragment_workouts" >
         <action
-            android:id="@+id/to_workoutEditorFragment"
-            app:destination="@id/workoutEditorGraph" />
-        <action
             android:id="@+id/to_workoutFragment"
             app:destination="@id/workoutFragment" />
+        <action
+            android:id="@+id/to_workoutEditorFragment"
+            app:destination="@id/workoutEditorFragment" />
     </fragment>
-    <navigation android:id="@+id/workoutEditorGraph"
-        app:startDestination="@id/workoutEditorFragment">
-        <fragment
-            android:id="@+id/workoutEditorFragment"
-            android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutEditorFragment"
-            android:label="@string/label_workout"
-            tools:layout="@layout/fragment_workout_editor">
-            <action
-                android:id="@+id/to_ExerciseCategoriesFragment"
-                app:destination="@id/exerciseCategoriesFragment" />
-            <action
-                android:id="@+id/to_workoutExercisePlanEditorFragment"
-                app:destination="@id/workoutExercisePlanEditorFragment" />
-            <argument
-                android:name="workoutId"
-                app:argType="long" />
-        </fragment>
-        <fragment
-            android:id="@+id/workoutExercisePlanEditorFragment"
-            android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutExercisePlanEditorFragment"
-            android:label="@string/label_plan"
-            tools:layout="@layout/fragment_workout_exercise_plan_editor">
-            <argument
-                android:name="workoutExerciseId"
-                app:argType="long" />
-            <action
-                android:id="@+id/to_exerciseInfoFragment"
-                app:destination="@id/exerciseFragment" />
-        </fragment>
-        <argument
-            android:name="workoutId"
-            app:argType="long" />
-    </navigation>
     <fragment
         android:id="@+id/workoutFragment"
         android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutFragment"
         android:label="@string/label_workout"
         tools:layout="@layout/fragment_workout" >
-        <action
-            android:id="@+id/to_workoutEditorGraph"
-            app:destination="@id/workoutEditorGraph" />
         <argument
             android:name="workoutId"
             app:argType="long" />
+        <action
+            android:id="@+id/to_workoutExercisePlanEditorFragment"
+            app:destination="@id/workoutExercisePlanEditorFragment" />
+        <action
+            android:id="@+id/to_exerciseCategoriesFragment"
+            app:destination="@id/exerciseCategoriesFragment" />
     </fragment>
 
 </navigation>

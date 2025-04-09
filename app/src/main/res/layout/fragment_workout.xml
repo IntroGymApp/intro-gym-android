@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,35 +8,66 @@
     android:paddingHorizontal="20dp"
     tools:context=".features.workout.presentation.WorkoutFragment">
 
-    <TextView
-        android:id="@+id/tv_workout_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+    <EditText
+        android:id="@+id/et_workout_name"
         style="@style/Widget.IntroGym.TextView.Title"
-        tools:text="Название тренировки" />
-
-    <TextView
-        android:id="@+id/tv_workout_description"
+        android:background="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        android:maxLines="1"
+        android:inputType="textShortMessage"
+        android:maxLength="32"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/label_workout_name"/>
+
+    <EditText
+        android:id="@+id/et_workout_description"
+        android:background="@null"
         style="@style/Widget.IntroGym.TextView.Body"
-        tools:text="Описание тренировки" />
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        android:maxLength="128"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_workout_name"
+        android:hint="@string/label_workout_comment" />
+
+    <TextView
+        android:id="@+id/tv_workout_exercises"
         style="@style/Widget.IntroGym.TextView.Title"
-        android:text="@string/label_exercises" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/label_exercises"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        app:layout_constraintEnd_toStartOf="@+id/btn_add_exercise"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_workout_description" />
+
+    <Button
+        android:id="@+id/btn_add_exercise"
+        style="@style/Widget.IntroGym.IconButton.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_add"
+        app:iconGravity="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_workout_exercises"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_workout_description" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_workout_exercise_items"
         android:layout_width="match_parent"
-        android:overScrollMode="never"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_workout_exercises"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_exercise" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
