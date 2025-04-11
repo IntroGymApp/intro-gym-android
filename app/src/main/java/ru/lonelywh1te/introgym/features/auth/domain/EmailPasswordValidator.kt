@@ -5,22 +5,11 @@ import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 
 object EmailPasswordValidator {
 
-    fun validate(email: String, password: String? = null, confirmPassword: String? = null): Result<Unit> {
-        if (!isValidEmail(email)) return Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
-        if (password != null) return validatePassword(password, confirmPassword)
-
-        return Result.Success(Unit)
+    fun validateEmail(email: String): Result<Unit> {
+        return if (isValidEmail(email)) Result.Success(Unit) else Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
     }
 
-    private fun validatePassword(password: String, confirmPassword: String? = null): Result<Unit> {
-        return when {
-            getPasswordStates(password).isNotEmpty() -> Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
-            confirmPassword != null && password != confirmPassword -> Result.Failure(AuthValidationError.PASSWORD_MISMATCH)
-            else -> Result.Success(Unit)
-        }
-    }
-
-    fun getPasswordStates(password: String): List<AuthValidationError> {
+    fun validatePassword(password: String): List<AuthValidationError> {
         val errors = mutableListOf<AuthValidationError>()
 
         if (password.length < 8) errors.add(AuthValidationError.PASSWORD_TOO_SHORT)
@@ -30,7 +19,32 @@ object EmailPasswordValidator {
         return errors
     }
 
+    fun validateEmailAndPassword(email: String, password: String): Result<Unit> {
+        return when {
+            !isValidEmail(email) -> Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
+            !isValidPassword(password) -> Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
+            else -> Result.Success(Unit)
+        }
+    }
+
+    fun validateEmailAndPasswordWithConfirm(email: String, password: String, confirmPassword: String): Result<Unit> {
+        return when {
+            !isValidEmail(email) -> Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
+            !isValidPassword(password) -> Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
+            !comparePasswords(password, confirmPassword) -> Result.Failure(AuthValidationError.PASSWORD_MISMATCH)
+            else -> Result.Success(Unit)
+        }
+    }
+
     private fun isValidEmail(email: String): Boolean {
         return email.matches(Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"))
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        return validatePassword(password).isEmpty()
+    }
+
+    private fun comparePasswords(password: String, confirmPassword: String): Boolean {
+        return password == confirmPassword
     }
 }

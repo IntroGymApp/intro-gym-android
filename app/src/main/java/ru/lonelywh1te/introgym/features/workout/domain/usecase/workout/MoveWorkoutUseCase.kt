@@ -39,7 +39,7 @@ class MoveWorkoutUseCase(
                 return moveResult
             }
             is Result.Failure -> return getWorkoutsResult
-            is Result.InProgress -> return getWorkoutsResult
+            is Result.Loading -> return getWorkoutsResult
         }
     }
 }

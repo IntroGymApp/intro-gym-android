@@ -28,7 +28,7 @@ class RestorePasswordViewModel(
         }
     }
 
-    fun getPasswordState(password: String): List<AuthValidationError> {
-        return validator.getPasswordStates(password)
+    fun validatePassword(password: String): List<AuthValidationError> {
+        return validator.validatePassword(password)
     }
 }

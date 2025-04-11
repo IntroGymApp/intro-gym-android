@@ -9,12 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
-import ru.lonelywh1te.introgym.app.MainActivity
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
@@ -62,6 +60,7 @@ class ExerciseFragment : Fragment() {
 
         binding.tvExerciseName.text = exercise.name
         binding.tvExerciseDescription.text = exercise.description
+
         setStepsData(exercise.steps)
         setTipsData(exercise.tips)
 

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType

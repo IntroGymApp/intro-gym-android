@@ -49,10 +49,8 @@ class ConfirmOtpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnConfirmOtp.setOnClickListener {
-            binding.llTextInputContainer.setErrorMessage(null)
-
-            val otp = binding.etOtp.text.toString()
-            viewModel.confirmOtp(otp)
+            hideErrorMessage()
+            confirmOtp()
         }
 
         startCollectFlows()
@@ -63,21 +61,19 @@ class ConfirmOtpFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        isLoadingFragment(false)
+                        isLoadingState(false)
                     }
                     is UIState.Loading -> {
-                        isLoadingFragment(true)
+                        isLoadingState(true)
                     }
                     is UIState.Failure -> {
                         if (state.error == AuthError.SESSION_STILL_EXIST) {
-                            showFailureMessage(state.error)
+                            showErrorMessage(state.error)
                         } else {
-                            val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, state.error) }
-
-                            setFragmentResult(REQUEST_KEY, bundle)
-                            findNavController().navigateUp()
+                            navigateUpWithError(state.error)
                         }
-                        isLoadingFragment(false)
+
+                        isLoadingState(false)
                     }
                 }
             }
@@ -87,26 +83,27 @@ class ConfirmOtpFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        val bundle = Bundle().apply { putBoolean(RESULT_BUNDLE_KEY, true) }
-
-                        setFragmentResult(REQUEST_KEY, bundle)
-                        findNavController().navigateUp()
+                        navigateUpWithResult()
                         showLoadingIndicator(false)
                     }
                     is UIState.Loading -> {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
-                        showFailureMessage(state.error)
+                        showErrorMessage(state.error)
                         showLoadingIndicator(false)
                     }
-                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)
     }
 
-    private fun isLoadingFragment(isLoading: Boolean) {
+    private fun confirmOtp() {
+        val otp = binding.etOtp.text.toString()
+        viewModel.confirmOtp(otp)
+    }
+
+    private fun isLoadingState(isLoading: Boolean) {
         binding.pbLoadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
 
         binding.tvConfirmOtpTitle.visibility = if (!isLoading) View.VISIBLE else View.GONE
@@ -114,7 +111,20 @@ class ConfirmOtpFragment : Fragment() {
         binding.etOtp.visibility = if (!isLoading) View.VISIBLE else View.GONE
         binding.flSignUpButtonContainer.visibility = if (!isLoading) View.VISIBLE else View.GONE
         binding.btnSendOtp.visibility = if (!isLoading) View.VISIBLE else View.GONE
+    }
 
+    private fun navigateUpWithResult() {
+        val bundle = Bundle().apply { putBoolean(RESULT_BUNDLE_KEY, true) }
+
+        setFragmentResult(REQUEST_KEY, bundle)
+        findNavController().navigateUp()
+    }
+
+    private fun navigateUpWithError(error: Error) {
+        val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, error) }
+
+        setFragmentResult(REQUEST_KEY, bundle)
+        findNavController().navigateUp()
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
@@ -122,8 +132,12 @@ class ConfirmOtpFragment : Fragment() {
         binding.btnConfirmOtp.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureMessage(error: Error) {
+    private fun showErrorMessage(error: Error) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
+    }
+
+    private fun hideErrorMessage() {
+        binding.llTextInputContainer.setErrorMessage(null)
     }
 
     companion object {

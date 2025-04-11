@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.onFailure
+import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentCreateWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
@@ -107,7 +109,7 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
     private fun setFragmentResultListeners() {
         setFragmentResultListener(ExerciseListFragment.PICK_REQUEST_KEY) { _, bundle ->
             val pickedExerciseId = bundle.getLong(ExerciseListFragment.PICK_RESULT_BUNDLE_KEY)
-            viewModel.addPickedWorkoutExercise(pickedExerciseId)
+            viewModel.addPickedExercise(pickedExerciseId)
         }
 
         setFragmentResultListener(WorkoutExercisePlanEditorFragment.FRAGMENT_REQUEST_KEY) { _, bundle ->
@@ -128,48 +130,37 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
 
     private fun startCollectFlows() {
         viewModel.workoutExerciseItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                workoutExerciseItemAdapter.update(it)
-            }
+            .onEach { workoutExerciseItemAdapter.update(it) }
             .launchIn(lifecycleScope)
 
-        viewModel.workoutSaveState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { saveResult ->
-                when (saveResult) {
-                    is Result.Success -> findNavController().navigateUp()
-                    is Result.Failure -> {
-                        binding.llTextInputContainer.setErrorMessage(
-                            getString(WorkoutErrorStringMessageProvider.get(saveResult.error))
-                        )
-                    }
-                    else -> { }
-                }
+        viewModel.createWorkoutResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { result ->
+                result
+                    .onSuccess { findNavController().navigateUp() }
+                    .onFailure { showErrorMessage(it) }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun showErrorMessage(error: Error) {
+        binding.llTextInputContainer.setErrorMessage(getString(WorkoutErrorStringMessageProvider.get(error)))
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.workout_editor_menu, menu)
     }
 
-    override fun onStop() {
-        super.onStop()
-
-        viewModel.updateWorkoutName(binding.etWorkoutName.text.toString())
-        viewModel.updateWorkoutDescription(binding.etWorkoutDescription.text.toString())
-    }
-
-    private fun saveWorkout() {
+    private fun createWorkout() {
         viewModel.updateWorkoutName(binding.etWorkoutName.text.toString())
         viewModel.updateWorkoutDescription(binding.etWorkoutDescription.text.toString())
 
-        viewModel.saveWorkout()
+        viewModel.createWorkout()
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             android.R.id.home -> findNavController().navigateUp()
-            R.id.saveWorkout -> saveWorkout()
+            R.id.createWorkout -> createWorkout()
         }
 
         return true

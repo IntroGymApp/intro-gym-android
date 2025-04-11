@@ -1,17 +1,18 @@
 package ru.lonelywh1te.introgym.features.workout.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.Error
-import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.core.result.onFailure
+import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
@@ -50,21 +51,19 @@ class WorkoutFragmentViewModel(
     val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> get() = _workoutExerciseItems
 
     private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors: MutableSharedFlow<Error> get() = _errors
+    val errors: SharedFlow<Error> get() = _errors
 
-    private val _workoutDeleted: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val workoutDeleted: StateFlow<Boolean> get() = _workoutDeleted
+    private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()
+    val workoutDeleted: SharedFlow<Unit> get() = _workoutDeleted
 
     private val dispatcher = Dispatchers.IO
 
     fun loadWorkout(workoutId: Long) {
         viewModelScope.launch (dispatcher) {
             getWorkoutUseCase(workoutId).collect { result ->
-                when (result) {
-                    is Result.Success -> _workout.value = result.data
-                    is Result.Failure -> _errors.emit(result.error)
-                    else -> {}
-                }
+                result
+                    .onSuccess { _workout.value = it }
+                    .onFailure { _errors.emit(it) }
             }
         }
     }
@@ -73,8 +72,8 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             workout.value?.let { workout ->
                 if (workout.name != name || workout.description != description) {
-                    val result = updateWorkoutUseCase(workout.copy(name = name, description = description))
-                    if (result is Result.Failure) _errors.emit(result.error)
+                    updateWorkoutUseCase(workout.copy(name = name, description = description))
+                        .onFailure { _errors.emit(it) }
                 }
             }
         }
@@ -82,14 +81,13 @@ class WorkoutFragmentViewModel(
 
     fun deleteWorkout() {
         viewModelScope.launch (dispatcher) {
-            _workout.value?.let {
-                val result = deleteWorkoutUseCase(it.id)
-                if (result is Result.Failure) _errors.emit(result.error)
+            _workout.value?.let { workout ->
+                deleteWorkoutUseCase(workout.id)
+                    .onSuccess { _workoutDeleted.emit(it) }
+                    .onFailure { _errors.emit(it) }
 
                 _workout.value = null
             }
-
-            _workoutDeleted.value = true
         }
     }
 
@@ -106,8 +104,8 @@ class WorkoutFragmentViewModel(
                     order = workoutExercises.value.size,
                 )
 
-                val result = addWorkoutExerciseUseCase(newWorkoutExercise)
-                if (result is Result.Failure) _errors.emit(result.error)
+                addWorkoutExerciseUseCase(newWorkoutExercise)
+                    .onFailure { _errors.emit(it) }
             }
         }
     }
@@ -115,10 +113,8 @@ class WorkoutFragmentViewModel(
     fun moveWorkoutExercise(from: Int, to: Int) {
         viewModelScope.launch {
             workout.value?.let { workout ->
-                val result = moveWorkoutExerciseUseCase(workout.id, from, to)
-                if (result is Result.Failure) _errors.emit(result.error)
-
-                Log.d("WorkoutFragmentVM", "$result")
+                moveWorkoutExerciseUseCase(workout.id, from, to)
+                    .onFailure { _errors.emit(it) }
             }
         }
     }
@@ -134,8 +130,8 @@ class WorkoutFragmentViewModel(
 
     fun deleteWorkoutExercise(id: Long) {
         viewModelScope.launch (dispatcher) {
-            val result = deleteWorkoutExerciseUseCase(id)
-            if (result is Result.Failure) _errors.emit(result.error)
+            deleteWorkoutExerciseUseCase(id)
+                .onFailure { _errors.emit(it) }
         }
     }
 
@@ -144,16 +140,16 @@ class WorkoutFragmentViewModel(
             val workoutExercise = workoutExercises.value.first { it.id == workoutExerciseId}
 
             if (workoutExercise.comment != comment) {
-                val result = updateWorkoutExerciseUseCase(workoutExercise.copy(comment = comment))
-                if (result is Result.Failure) _errors.emit(result.error)
+                updateWorkoutExerciseUseCase(workoutExercise.copy(comment = comment))
+                    .onFailure { _errors.emit(it) }
             }
         }
     }
 
     fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan) {
         viewModelScope.launch (dispatcher) {
-            val result = updateWorkoutExercisePlanUseCase(workoutExercisePlan)
-            if (result is Result.Failure) _errors.emit(result.error)
+            updateWorkoutExercisePlanUseCase(workoutExercisePlan)
+                .onFailure { _errors.emit(it) }
         }
     }
 
@@ -165,11 +161,9 @@ class WorkoutFragmentViewModel(
                     getWorkoutExerciseItemsByWorkoutIdUseCase(workout.id)
                 }
                 .collect { result ->
-                    when (result) {
-                        is Result.Success -> _workoutExerciseItems.value = result.data
-                        is Result.Failure -> _errors.emit(result.error)
-                        else -> {}
-                    }
+                    result
+                        .onSuccess { _workoutExerciseItems.value = it }
+                        .onFailure { _errors.emit(it) }
                 }
         }
 
@@ -180,11 +174,9 @@ class WorkoutFragmentViewModel(
                     getWorkoutExercisesUseCase(workout.id)
                 }
                 .collect { result ->
-                    when (result) {
-                        is Result.Success -> workoutExercises.value = result.data
-                        is Result.Failure -> _errors.emit(result.error)
-                        else -> {}
-                    }
+                    result
+                        .onSuccess { workoutExercises.value = it }
+                        .onFailure { _errors.emit(it) }
                 }
         }
     }

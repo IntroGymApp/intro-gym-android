@@ -1,8 +1,6 @@
 package ru.lonelywh1te.introgym.features.guide.presentation.exercises
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -62,8 +60,7 @@ class ExerciseListFragment : Fragment(), MenuProvider {
         adapter = ExerciseListAdapter(isPickMode).apply {
             setOnItemClickListener { exercise ->
                 if (isPickMode) {
-                    setFragmentResult(PICK_REQUEST_KEY, bundleOf(PICK_RESULT_BUNDLE_KEY to exercise.id))
-                    findNavController().popBackStack(callerFragmentId, false)
+                    navigateToCallerFragment(exercise.id)
                 } else {
                     navigateToExerciseFragment(exercise.id)
                 }
@@ -100,6 +97,11 @@ class ExerciseListFragment : Fragment(), MenuProvider {
                 setExerciseListState(list, isFilter)
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun navigateToCallerFragment(exerciseId: Long) {
+        setFragmentResult(PICK_REQUEST_KEY, bundleOf(PICK_RESULT_BUNDLE_KEY to exerciseId))
+        findNavController().popBackStack(callerFragmentId, false)
     }
 
     private fun navigateToFilterFragment() {

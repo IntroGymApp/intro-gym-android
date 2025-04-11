@@ -2,11 +2,10 @@ package ru.lonelywh1te.introgym.features.auth.presentation
 
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
@@ -36,7 +35,12 @@ class RestorePasswordFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState?.let { bundle -> setChangePasswordForm(bundle.getBoolean("otpConfirmed")) }
+
+        savedInstanceState?.let { bundle ->
+            otpConfirmed = bundle.getBoolean("otpConfirmed")
+        }
+
+        setChangePasswordFormState(otpConfirmed)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -56,16 +60,10 @@ class RestorePasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSubmit.setOnClickListener {
-            binding.llTextInputContainer.setErrorMessage(null)
+            hideErrorMessage()
 
             if (otpConfirmed) {
-
-                val email = binding.etEmail.text.toString()
-                val password = binding.etPassword.text.toString()
-                val confirmPassword = binding.etConfirmPassword.text.toString()
-
-                viewModel.changePassword(email, password, confirmPassword)
-
+                changePassword()
             } else {
                 navigateToConfirmOtpFragment()
             }
@@ -76,8 +74,12 @@ class RestorePasswordFragment : Fragment() {
             setEditTextVisibility(binding.etPassword, otpConfirmed)
         }
 
+        binding.etPassword.addTextChangedListener { password ->
+            val validationResult = viewModel.validatePassword(password.toString())
+            binding.passwordValidationView.setCurrentErrors(validationResult)
+        }
+
         setConfirmOtpFragmentResultListener()
-        setOnChangePasswordListener()
         startCollectFlows()
     }
 
@@ -93,10 +95,9 @@ class RestorePasswordFragment : Fragment() {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
-                        showFailureMessage(state.error)
+                        showErrorMessage(state.error)
                         showLoadingIndicator(false)
                     }
-                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)
@@ -107,16 +108,12 @@ class RestorePasswordFragment : Fragment() {
         findNavController().safeNavigate(action)
     }
 
-    private fun setOnChangePasswordListener() {
-        binding.etPassword.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+    private fun changePassword() {
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
+        val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            override fun afterTextChanged(password: Editable?) {
-                val validationResult = viewModel.getPasswordState(password.toString())
-                binding.passwordValidationView.setCurrentErrors(validationResult)
-            }
-        })
+        viewModel.changePassword(email, password, confirmPassword)
     }
 
     private fun setConfirmOtpFragmentResultListener() {
@@ -125,7 +122,7 @@ class RestorePasswordFragment : Fragment() {
 
             if (isConfirmed) {
                 otpConfirmed = true
-                setChangePasswordForm(otpConfirmed = true)
+                setChangePasswordFormState(otpConfirmed)
             } else {
                 val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, Error::class.java)
@@ -133,35 +130,47 @@ class RestorePasswordFragment : Fragment() {
                     bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as Error
                 }
 
-                error?.let { showFailureMessage(it) }
+                error?.let { showErrorMessage(it) }
             }
         }
     }
 
-    private fun setChangePasswordForm(otpConfirmed: Boolean) {
+    private fun setChangePasswordFormState(otpConfirmed: Boolean) {
+        showPasswordAndConfirmPasswordInputs(otpConfirmed)
+        setSubmitButtonText(otpConfirmed)
+        setRestorePasswordDescriptionText(otpConfirmed)
+        enableEmailInput(otpConfirmed)
+    }
+
+    private fun enableEmailInput(isEnabled: Boolean) {
         binding.etEmail.apply {
-            isEnabled = !otpConfirmed
-            alpha = if (otpConfirmed) 0.5f else 1f
+            this.isEnabled = isEnabled
+            alpha = if (isEnabled) 1f else 0.5f
         }
+    }
 
-        binding.etPassword.isEnabled = otpConfirmed
-        binding.etConfirmPassword.isEnabled = otpConfirmed
-
-        binding.llTextInputContainer.apply {
-            setEditTextVisibility(binding.etConfirmPassword, otpConfirmed)
-            setEditTextVisibility(binding.etPassword, otpConfirmed)
-        }
-
-        binding.passwordValidationView.visibility = if (otpConfirmed) View.VISIBLE else View.GONE
-
+    private fun setSubmitButtonText(otpConfirmed: Boolean) {
         binding.btnSubmit.text = getString(
             if (!otpConfirmed) R.string.label_send_otp else R.string.label_sign_in
         )
+    }
 
+    private fun setRestorePasswordDescriptionText(otpConfirmed: Boolean) {
         binding.tvRestorePasswordDescription.text = getString(
             if (!otpConfirmed) R.string.label_restore_password_description else R.string.label_create_new_password_description
         )
+    }
 
+    private fun showPasswordAndConfirmPasswordInputs(show: Boolean) {
+        binding.etPassword.isEnabled = show
+        binding.etConfirmPassword.isEnabled = show
+
+        binding.llTextInputContainer.apply {
+            setEditTextVisibility(binding.etConfirmPassword, show)
+            setEditTextVisibility(binding.etPassword, show)
+        }
+
+        binding.passwordValidationView.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
@@ -174,8 +183,11 @@ class RestorePasswordFragment : Fragment() {
         binding.btnSubmit.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureMessage(error: Error) {
+    private fun showErrorMessage(error: Error) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 
+    private fun hideErrorMessage() {
+        binding.llTextInputContainer.setErrorMessage(null)
+    }
 }

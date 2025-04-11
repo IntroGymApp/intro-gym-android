@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.onboarding.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,12 +37,7 @@ class AboutUserFragment : Fragment() {
         binding.tvTitle.setColorSpan(getString(R.string.app_name), R.attr.igPrimaryColor)
 
         binding.btnNext.setOnClickListener {
-            val name = binding.etUsername.text.toString()
-            val gender = getSelectedGender()
-            val birthday = getSelectedBirthday()
-
-            viewModel.saveUserPreferences(name, gender, birthday)
-
+            saveUserPreferences()
             navigateToSetNotificationFragment()
         }
 
@@ -51,10 +45,17 @@ class AboutUserFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.materialButtonToggleGroup.isSingleSelection = true
         binding.dpBirthday.apply {
             maxDate = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
         }
+    }
+
+    private fun saveUserPreferences() {
+        val name = binding.etUsername.text.toString()
+        val gender = getSelectedGender()
+        val birthday = getSelectedBirthday()
+
+        viewModel.saveUserPreferences(name, gender, birthday)
     }
 
     private fun navigateToSetNotificationFragment() {

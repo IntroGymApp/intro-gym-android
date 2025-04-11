@@ -41,7 +41,7 @@ class SignUpUseCaseTest {
 
     @Test
     fun `signUp with validate failure`() = runTest {
-        every { validator.validate(email, password, password) } returns Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
+        every { validator.validateEmailAndPasswordWithConfirm(email, password, password) } returns Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
 
         val expected = listOf(Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT))
         val actual = useCase(email, password, password).toList()
@@ -52,10 +52,10 @@ class SignUpUseCaseTest {
 
     @Test
     fun `signUp with validate success`() = runTest {
-        every { validator.validate(email, password, password) } returns Result.Success(Unit)
-        coEvery { authRepository.signUp(email, password) } returns flowOf(Result.InProgress, Result.Success(Unit))
+        every { validator.validateEmailAndPasswordWithConfirm(email, password, password) } returns Result.Success(Unit)
+        coEvery { authRepository.signUp(email, password) } returns flowOf(Result.Loading, Result.Success(Unit))
 
-        val expected = listOf(Result.InProgress, Result.Success(Unit))
+        val expected = listOf(Result.Loading, Result.Success(Unit))
         val actual = useCase(email, password, password).toList()
 
         assertEquals(expected, actual)

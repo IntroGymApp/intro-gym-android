@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -46,32 +45,24 @@ class ExerciseListFragmentViewModel(
                 exerciseItemByCategory.emit(list)
             }
         }
-
-        Log.d("ExerciseListFragmentViewModel", "getExerciseItems category $categoryId")
     }
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
-        Log.d("ExerciseListFragmentViewModel", "updateSearchQuery $query")
     }
 
     fun updateSelectedTags(tagsIds: List<Int>) {
         _selectedTagsIds.value = tagsIds
-        Log.d("ExerciseListFragmentViewModel", "updateSelectedTags $tagsIds")
     }
 
     private fun searchExercisesByName(searchQuery: String) {
         val result = exerciseItemByCategory.value.filter { it.name.contains(searchQuery, true) }
         searchResults.value = result
-
-        Log.d("ExerciseListFragmentViewModel", "searchExercisesByName $searchQuery")
     }
 
     private fun filterExercises(selectedTagsIds: List<Int>) {
         val result = exerciseItemByCategory.value.filter { it.tagsIds.containsAll(selectedTagsIds) }
         filterResults.value = result
-
-        Log.d("ExerciseListFragmentViewModel", "filterExercises $selectedTagsIds")
     }
 
     init {

@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.auth.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +9,6 @@ import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ConfirmOtpUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SendOtpUseCase
@@ -29,7 +27,6 @@ class ConfirmOtpViewModel(
     private val dispatcher = Dispatchers.IO
 
     fun sendOtp(email: String) {
-        Log.d("ConfirmOtpViewModel", "$email, $otpType")
         viewModelScope.launch(dispatcher) {
             if (otpType == null) {
                 _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
@@ -37,7 +34,6 @@ class ConfirmOtpViewModel(
             }
 
             sendOtpUseCase(email, otpType!!).collect { result ->
-                Log.d("ConfirmOtpViewModel", "$result")
                 _sendOtpResult.emit(result.toUIState())
             }
         }

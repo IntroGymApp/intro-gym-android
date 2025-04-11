@@ -12,7 +12,7 @@ class GetWorkoutListUseCase(private val repository: WorkoutRepository) {
             when (result) {
                 is Result.Success -> Result.Success(result.data.sortedBy { it.order })
                 is Result.Failure -> result
-                is Result.InProgress -> result
+                is Result.Loading -> result
             }
         }
     }

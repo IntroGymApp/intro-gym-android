@@ -87,7 +87,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Success(Unit))
+            val expected = listOf(Result.Loading, Result.Success(Unit))
             val actual = authRepository.sendOtp(email, otpType).toList()
 
             assertEquals(expected, actual)
@@ -99,7 +99,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.sendOtp(email, otpType).toList()
 
             assertEquals(expected, actual)
@@ -111,7 +111,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.SESSION_STILL_EXIST))
+            val expected = listOf(Result.Loading, Result.Failure(AuthError.SESSION_STILL_EXIST))
             val actual = authRepository.sendOtp(email, otpType).toList()
 
             assertEquals(expected, actual)
@@ -123,7 +123,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val expected = listOf(Result.Loading, Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.sendOtp(email, otpType).toList()
 
             assertEquals(expected, actual)
@@ -135,7 +135,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.sendOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.sendOtp(email, otpType).toList()
 
             assertEquals(expected, actual)
@@ -152,7 +152,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Success(Unit))
+            val expected = listOf(Result.Loading, Result.Success(Unit))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
 
             assertEquals(expected, actual)
@@ -164,7 +164,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.INVALID_OTP_CODE))
+            val expected = listOf(Result.Loading, Result.Failure(AuthError.INVALID_OTP_CODE))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
 
             assertEquals(expected, actual)
@@ -176,7 +176,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
 
             assertEquals(expected, actual)
@@ -188,7 +188,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val expected = listOf(Result.Loading, Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
 
             assertEquals(expected, actual)
@@ -200,7 +200,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.confirmOtp(requestDto, otpType) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.confirmOtp(otp, otpType).toList()
 
             assertEquals(expected, actual)
@@ -218,7 +218,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Success(Unit))
+            val expected = listOf(Result.Loading, Result.Success(Unit))
             val actual = authRepository.signUp(email, password).toList()
 
             coVerify(exactly = 1) { authStorage.clearSessionId() }
@@ -233,7 +233,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.INVALID_SESSION))
+            val expected = listOf(Result.Loading, Result.Failure(AuthError.INVALID_SESSION))
             val actual = authRepository.signUp(email, password).toList()
 
             assertEquals(expected, actual)
@@ -245,7 +245,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
+            val expected = listOf(Result.Loading, Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED))
             val actual = authRepository.signUp(email, password).toList()
 
             assertEquals(expected, actual)
@@ -257,7 +257,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val expected = listOf(Result.Loading, Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.signUp(email, password).toList()
 
             assertEquals(expected, actual)
@@ -269,7 +269,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.signUp(email, password).toList()
 
             assertEquals(expected, actual)
@@ -281,7 +281,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signUp(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.signUp(email, password).toList()
 
             assertEquals(expected, actual)
@@ -299,7 +299,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signIn(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Success(Unit))
+            val expected = listOf(Result.Loading, Result.Success(Unit))
             val actual = authRepository.signIn(email, password).toList()
 
             coVerify(exactly = 1) { authStorage.saveTokens(accessToken, refreshToken) }
@@ -312,7 +312,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signIn(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
+            val expected = listOf(Result.Loading, Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD))
             val actual = authRepository.signIn(email, password).toList()
 
             assertEquals(expected, actual)
@@ -324,7 +324,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signIn(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val expected = listOf(Result.Loading, Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.signIn(email, password).toList()
 
             assertEquals(expected, actual)
@@ -336,7 +336,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signIn(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.signIn(email, password).toList()
 
             assertEquals(expected, actual)
@@ -348,7 +348,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.signIn(requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.signIn(email, password).toList()
 
             assertEquals(expected, actual)
@@ -433,7 +433,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.changePassword(sessionId, requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Success(Unit))
+            val expected = listOf(Result.Loading, Result.Success(Unit))
             val actual = authRepository.changePassword(email, password).toList()
 
             assertEquals(expected, actual)
@@ -445,7 +445,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.changePassword(sessionId, requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AuthError.FAILED_TO_CHANGE_PASSWORD))
+            val expected = listOf(Result.Loading, Result.Failure(AuthError.FAILED_TO_CHANGE_PASSWORD))
             val actual = authRepository.changePassword(email, password).toList()
 
             assertEquals(expected, actual)
@@ -457,7 +457,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.changePassword(sessionId, requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.changePassword(email, password).toList()
 
             assertEquals(expected, actual)
@@ -469,7 +469,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.changePassword(sessionId, requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(AppError.UNKNOWN))
+            val expected = listOf(Result.Loading, Result.Failure(AppError.UNKNOWN))
             val actual = authRepository.changePassword(email, password).toList()
 
             assertEquals(expected, actual)
@@ -481,7 +481,7 @@ class AuthRepositoryImplTest {
 
             coEvery { authService.changePassword(sessionId, requestDto) } returns responseDto
 
-            val expected = listOf(Result.InProgress, Result.Failure(NetworkError.SERVER_ERROR))
+            val expected = listOf(Result.Loading, Result.Failure(NetworkError.SERVER_ERROR))
             val actual = authRepository.changePassword(email, password).toList()
 
             assertEquals(expected, actual)

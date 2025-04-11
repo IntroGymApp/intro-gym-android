@@ -2,7 +2,6 @@ package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
 import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise

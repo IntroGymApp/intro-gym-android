@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/saveWorkout"
+        android:id="@+id/createWorkout"
         android:icon="@drawable/ic_ok"
         android:title="@string/label_save"
         app:showAsAction="ifRoom"/>

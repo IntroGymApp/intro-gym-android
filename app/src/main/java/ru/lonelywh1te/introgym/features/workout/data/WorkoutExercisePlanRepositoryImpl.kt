@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.DatabaseError
-import ru.lonelywh1te.introgym.data.db.MainDatabase
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan

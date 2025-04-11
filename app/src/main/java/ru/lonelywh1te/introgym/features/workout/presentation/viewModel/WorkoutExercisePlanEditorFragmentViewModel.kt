@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.Error
-import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.core.result.onFailure
+import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
@@ -19,7 +20,6 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_
 class WorkoutExercisePlanEditorFragmentViewModel(
     private val getWorkoutExercisePlanUseCase: GetWorkoutExercisePlanUseCase,
     private val getExerciseUseCase: GetExerciseUseCase,
-    private val validator: WorkoutValidator,
 ): ViewModel() {
     private val _workoutExercise: MutableStateFlow<WorkoutExercise?> = MutableStateFlow(null)
     val workoutExercise: StateFlow<WorkoutExercise?> = _workoutExercise
@@ -34,7 +34,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
     val exerciseAnimFilename: StateFlow<String> = _exerciseAnimFilename
 
     private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors: MutableSharedFlow<Error> get() = _errors
+    val errors: SharedFlow<Error> get() = _errors
 
     val dispatcher = Dispatchers.IO
 
@@ -71,15 +71,9 @@ class WorkoutExercisePlanEditorFragmentViewModel(
     private fun loadWorkoutExercisePlan(workoutExerciseId: Long) {
         viewModelScope.launch (dispatcher) {
             getWorkoutExercisePlanUseCase(workoutExerciseId).collect { result ->
-                when(result) {
-                    is Result.Success -> {
-                        _workoutExercisePlan.value = result.data
-                    }
-                    is Result.Failure -> {
-                        _errors.emit(result.error)
-                    }
-                    else -> { }
-                }
+                result
+                    .onSuccess { _workoutExercisePlan.value = it }
+                    .onFailure { _errors.emit(it) }
             }
         }
     }

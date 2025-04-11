@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result

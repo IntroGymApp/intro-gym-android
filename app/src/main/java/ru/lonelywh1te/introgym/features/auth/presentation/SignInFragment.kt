@@ -2,10 +2,7 @@ package ru.lonelywh1te.introgym.features.auth.presentation
 
 import android.graphics.Color
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +18,7 @@ import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignInBinding
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
@@ -45,12 +43,8 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSignIn.setOnClickListener {
-            binding.llTextInputContainer.setErrorMessage(null)
-
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
-
-            viewModel.signIn(email, password)
+            hideErrorMessage()
+            signIn()
         }
 
         startCollectFlows()
@@ -62,6 +56,8 @@ class SignInFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
+                        settingsPreferences.isFirstLaunch = false
+
                         navigateToHomeFragment()
                         showLoadingIndicator(false)
                     }
@@ -69,34 +65,33 @@ class SignInFragment : Fragment() {
                         showLoadingIndicator(true)
                     }
                     is UIState.Failure -> {
-                        showFailureMessage(state.error)
+                        showErrorMessage(state.error)
                         showLoadingIndicator(false)
                     }
-                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)
     }
 
     private fun setSpannableStrings() {
-        val forgotPasswordSpannable = SpannableString(binding.tvUserForgotPassword.text)
+        binding.tvUserForgotPassword.setClickableSpan {
+            navigateToForgotPasswordFragment()
+        }
 
-        forgotPasswordSpannable.setSpan(object: ClickableSpan(){
-            override fun onClick(view: View) {
-                navigateToForgotPasswordFragment()
-            }
-        }, 0, forgotPasswordSpannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        binding.tvUserForgotPassword.text = forgotPasswordSpannable
         binding.tvUserForgotPassword.movementMethod = LinkMovementMethod.getInstance()
         binding.tvUserForgotPassword.highlightColor = Color.TRANSPARENT
+    }
+
+    private fun signIn() {
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
+
+        viewModel.signIn(email, password)
     }
 
     private fun navigateToHomeFragment() {
         val action = SignInFragmentDirections.toHomeFragment()
         findNavController().safeNavigate(action)
-
-        settingsPreferences.isFirstLaunch = false
     }
 
     private fun navigateToForgotPasswordFragment() {
@@ -109,7 +104,11 @@ class SignInFragment : Fragment() {
         binding.btnSignIn.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showFailureMessage(error: Error) {
+    private fun showErrorMessage(error: Error) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
+    }
+
+    private fun hideErrorMessage() {
+        binding.llTextInputContainer.setErrorMessage(null)
     }
 }

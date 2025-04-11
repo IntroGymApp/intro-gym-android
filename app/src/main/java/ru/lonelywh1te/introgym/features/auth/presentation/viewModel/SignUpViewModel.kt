@@ -31,10 +31,10 @@ class SignUpViewModel(
     }
 
     fun validate(email: String, password: String, confirmPassword: String): Result<Unit> {
-        return validator.validate(email, password, confirmPassword)
+        return validator.validateEmailAndPasswordWithConfirm(email, password, confirmPassword)
     }
 
-    fun getPasswordState(password: String): List<AuthValidationError> {
-        return validator.getPasswordStates(password)
+    fun validatePassword(password: String): List<AuthValidationError> {
+        return validator.validatePassword(password)
     }
 }

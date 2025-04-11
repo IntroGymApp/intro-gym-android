@@ -8,8 +8,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuProvider
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
@@ -109,8 +109,12 @@ class WorkoutFragment : Fragment(), MenuProvider {
             .launchIn(lifecycleScope)
 
         viewModel.workoutDeleted.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { deleted ->
-                if (deleted) findNavController().navigateUp()
+            .onEach { _ ->
+                // TODO: заменить на snackbar с отменой
+
+                Toast.makeText(requireContext(), "Тренировка удалена!", Toast.LENGTH_LONG).show()
+
+                findNavController().navigateUp()
             }
             .launchIn(lifecycleScope)
     }

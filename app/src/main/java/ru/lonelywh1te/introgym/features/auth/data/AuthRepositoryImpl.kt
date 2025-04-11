@@ -24,7 +24,7 @@ class AuthRepositoryImpl(
     private val userPreferences: UserPreferences,
 ): AuthRepository {
     override suspend fun sendOtp(email: String, otpType: String): Flow<Result<Unit>> = flow {
-        emit(Result.InProgress)
+        emit(Result.Loading)
 
         val response = authService.sendOtp(SendOtpRequestDto(email), otpType)
         val body = response.body()
@@ -42,7 +42,7 @@ class AuthRepositoryImpl(
     }.asSafeNetworkFlow()
 
     override suspend fun confirmOtp(otp: String, otpType: String): Flow<Result<Unit>> = flow {
-        emit(Result.InProgress)
+        emit(Result.Loading)
 
         val sessionId = authStorage.getSessionId() ?: ""
 
@@ -63,7 +63,7 @@ class AuthRepositoryImpl(
     }.asSafeNetworkFlow()
 
     override suspend fun signUp(email: String, password: String): Flow<Result<Unit>> = flow {
-        emit(Result.InProgress)
+        emit(Result.Loading)
 
         val username = userPreferences.username ?: ""
         val sessionId = authStorage.getSessionId() ?: ""
@@ -88,7 +88,7 @@ class AuthRepositoryImpl(
     }.asSafeNetworkFlow()
 
     override suspend fun signIn(email: String, password: String): Flow<Result<Unit>> = flow {
-        emit(Result.InProgress)
+        emit(Result.Loading)
 
         val response = authService.signIn(SignInRequestDto(email, password))
         val body = response.body()
@@ -108,7 +108,7 @@ class AuthRepositoryImpl(
     }.asSafeNetworkFlow()
 
     override suspend fun changePassword(email: String, password: String): Flow<Result<Unit>> = flow {
-        emit(Result.InProgress)
+        emit(Result.Loading)
 
         val sessionId = authStorage.getSessionId() ?: ""
 

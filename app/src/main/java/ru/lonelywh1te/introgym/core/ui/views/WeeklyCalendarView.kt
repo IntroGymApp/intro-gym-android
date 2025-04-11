@@ -2,7 +2,6 @@ package ru.lonelywh1te.introgym.core.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater

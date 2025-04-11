@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.guide.presentation.exercises
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -26,7 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseCategoriesBinding
-import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseFilterFragment.Companion.FILTER_RESULT_BUNDLE_KEY
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment.Companion.PICK_REQUEST_KEY
@@ -62,12 +60,7 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
         exerciseListAdapter = ExerciseListAdapter(isPickMode).apply {
             setOnItemClickListener { exercise ->
                 if (isPickMode) {
-                    setFragmentResult(
-                        PICK_REQUEST_KEY,
-                        bundleOf(PICK_RESULT_BUNDLE_KEY to exercise.id)
-                    )
-
-                    findNavController().popBackStack(callerFragmentId, false)
+                    navigateToCallerFragment(exercise.id)
                 } else {
                     navigateToExerciseFragment(exercise.id)
                 }
@@ -106,31 +99,39 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
 
         viewModel.exerciseList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { result ->
-                Log.d("ExerciseCategoriesFragment", "$result")
-
                 exerciseListAdapter.update(result)
 
-                when {
-                    viewModel.searchQuery.value.isEmpty() && viewModel.selectedTagsIds.value.isEmpty() -> {
-                        setExerciseCategoryState()
-                    }
-                    else -> {
-                        setExerciseFilterState(result)
-                    }
+                if (hasActiveSearchOrFilters()) {
+                    showFilteredExercises(result)
+                } else {
+                    showExerciseCategories()
                 }
             }
             .launchIn(lifecycleScope)
     }
 
-    private fun setExerciseFilterState(exerciseList: List<ExerciseItem>) {
+    private fun hasActiveSearchOrFilters(): Boolean {
+        return viewModel.searchQuery.value.isNotBlank() || viewModel.selectedTagsIds.value.isNotEmpty()
+    }
+
+    private fun showExerciseCategories() {
+        binding.tvListLabel.text = getString(R.string.label_exercise_categories)
+        recycler.adapter = exerciseCategoryAdapter
+    }
+
+    private fun showFilteredExercises(exerciseList: List<ExerciseItem>) {
         binding.tvListLabel.text = getString(R.string.label_search_results)
         recycler.adapter = exerciseListAdapter
         binding.groupNoResult.visibility = if (exerciseList.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    private fun setExerciseCategoryState() {
-        binding.tvListLabel.text = getString(R.string.label_exercise_categories)
-        recycler.adapter = exerciseCategoryAdapter
+    private fun navigateToCallerFragment(exerciseId: Long) {
+        setFragmentResult(
+            PICK_REQUEST_KEY,
+            bundleOf(PICK_RESULT_BUNDLE_KEY to exerciseId)
+        )
+
+        findNavController().popBackStack(callerFragmentId, false)
     }
 
     private fun navigateToFilterFragment() {

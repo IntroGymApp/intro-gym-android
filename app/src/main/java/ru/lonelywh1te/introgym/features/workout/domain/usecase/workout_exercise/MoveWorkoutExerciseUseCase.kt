@@ -55,7 +55,7 @@ class MoveWorkoutExerciseUseCase(private val repository: WorkoutExerciseReposito
                 return moveResult
             }
             is Result.Failure -> return workoutExercisesResult
-            is Result.InProgress -> return workoutExercisesResult
+            is Result.Loading -> return workoutExercisesResult
         }
     }
 }

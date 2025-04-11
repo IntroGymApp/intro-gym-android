@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutExerciseWithExerciseInfo
 

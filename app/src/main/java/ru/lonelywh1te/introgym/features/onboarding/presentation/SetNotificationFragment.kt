@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentSetNotificationBinding

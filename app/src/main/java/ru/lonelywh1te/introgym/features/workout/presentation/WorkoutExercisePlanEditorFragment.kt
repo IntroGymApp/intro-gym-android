@@ -22,14 +22,11 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.Error
-import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
-import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {

@@ -18,7 +18,7 @@ class EmailPasswordValidatorTest {
             val password = "TestPassword123!"
 
             val expected = Result.Success(Unit)
-            val actual = validator.validate(email, password, password)
+            val actual = validator.validateEmailAndPasswordWithConfirm(email, password, password)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -30,7 +30,7 @@ class EmailPasswordValidatorTest {
             val confirmPassword = "Testpassword123"
 
             val expected = Result.Failure(AuthValidationError.PASSWORD_MISMATCH)
-            val actual = validator.validate(email, password, confirmPassword)
+            val actual = validator.validateEmailAndPasswordWithConfirm(email, password, confirmPassword)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -44,7 +44,7 @@ class EmailPasswordValidatorTest {
             val password = "TestPassword123!"
 
             val expected = Result.Success(Unit)
-            val actual = validator.validate(email, password)
+            val actual = validator.validateEmailAndPassword(email, password)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -55,7 +55,7 @@ class EmailPasswordValidatorTest {
             val password = "reff fds"
 
             val expected = Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
-            val actual = validator.validate(email, password)
+            val actual = validator.validateEmailAndPassword(email, password)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -66,7 +66,7 @@ class EmailPasswordValidatorTest {
             val password = "TestPassword123!"
 
             val expected = Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
-            val actual = validator.validate(email, password)
+            val actual = validator.validateEmailAndPassword(email, password)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -77,7 +77,7 @@ class EmailPasswordValidatorTest {
             val password = "reff fds"
 
             val expected = Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
-            val actual = validator.validate(email, password)
+            val actual = validator.validateEmailAndPassword(email, password)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -88,7 +88,7 @@ class EmailPasswordValidatorTest {
             val password = ""
 
             val expected = Result.Failure(AuthValidationError.INVALID_PASSWORD_FORMAT)
-            val actual = validator.validate(email, password)
+            val actual = validator.validateEmailAndPassword(email, password)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -101,7 +101,7 @@ class EmailPasswordValidatorTest {
             val email = "test@example.com"
 
             val expected = Result.Success(Unit)
-            val actual = validator.validate(email)
+            val actual = validator.validateEmail(email)
 
             Assertions.assertEquals(expected, actual)
         }
@@ -111,7 +111,7 @@ class EmailPasswordValidatorTest {
             val email = "tes t@example_com"
 
             val expected = Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
-            val actual = validator.validate(email)
+            val actual = validator.validateEmail(email)
 
             Assertions.assertEquals(expected, actual)
         }

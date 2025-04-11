@@ -33,7 +33,7 @@ class SendOtpUseCaseTest {
 
     @Test
     fun `sendOtp with validate failure`() = runTest {
-        every { validator.validate(email) } returns Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
+        every { validator.validateEmail(email) } returns Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT)
         val expected = listOf(Result.Failure(AuthValidationError.INVALID_EMAIL_FORMAT))
         val actual = useCase(email, otpType).toList()
 
@@ -44,10 +44,10 @@ class SendOtpUseCaseTest {
 
     @Test
     fun `sendOtp with validate success`() = runTest {
-        every { validator.validate(email) } returns Result.Success(Unit)
-        coEvery { authRepository.sendOtp(email, otpType.name) } returns flowOf(Result.InProgress, Result.Success(Unit))
+        every { validator.validateEmail(email) } returns Result.Success(Unit)
+        coEvery { authRepository.sendOtp(email, otpType.name) } returns flowOf(Result.Loading, Result.Success(Unit))
 
-        val expected = listOf(Result.InProgress, Result.Success(Unit))
+        val expected = listOf(Result.Loading, Result.Success(Unit))
         val actual = useCase(email, otpType).toList()
 
         Assertions.assertEquals(expected, actual)

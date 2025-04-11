@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.guide.presentation.exercises.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
