@@ -73,6 +73,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.btnSkipSignUp.setOnClickListener {
+            settingsPreferences.isFirstLaunch = false
             navigateToHomeFragment()
         }
 
