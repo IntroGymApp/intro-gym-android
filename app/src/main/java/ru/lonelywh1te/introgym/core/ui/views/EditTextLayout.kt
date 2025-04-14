@@ -2,7 +2,6 @@ package ru.lonelywh1te.introgym.core.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -13,6 +12,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.isGone
 import com.google.android.material.color.MaterialColors
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.extensions.dp
 
 class EditTextLayout(
     context: Context,
@@ -75,7 +75,7 @@ class EditTextLayout(
     private fun initHelperTextView() {
         helperTextView.apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-                setMargins(0, 10.dp(), 0, 0)
+                setMargins(0, 10.dp, 0, 0)
                 setTextAppearance(helperTextAppearance)
             }
             visibility = GONE
@@ -110,7 +110,7 @@ class EditTextLayout(
             if (index > 0) {
                 val divider = View(context).apply {
                     setBackgroundColor(dividerColor)
-                    layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 1.dp())
+                    layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 1.dp)
                 }
                 editTextLinearLayout.addView(divider)
                 editTextDividerMap[editText] = divider
@@ -119,7 +119,4 @@ class EditTextLayout(
             editTextLinearLayout.addView(editText)
         }
     }
-
-    private fun Int.dp(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), resources.displayMetrics).toInt()
-    private fun Float.dp(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, resources.displayMetrics).toInt()
 }

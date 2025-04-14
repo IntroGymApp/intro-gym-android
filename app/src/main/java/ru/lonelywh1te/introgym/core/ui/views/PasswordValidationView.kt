@@ -2,7 +2,6 @@ package ru.lonelywh1te.introgym.core.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -10,6 +9,7 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.extensions.dp
 
 class PasswordValidationView<T>(
     context: Context,
@@ -43,7 +43,7 @@ class PasswordValidationView<T>(
         if (attributeSet == null) return
 
         val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.PasswordValidationView)
-        val errorCount = typedArray.getInt(R.styleable.PasswordValidationView_errorCount, 0)
+        val errorCount = typedArray.getInt(R.styleable.PasswordValidationView_errorCount, 3)
         typedArray.recycle()
 
         if (isInEditMode) {
@@ -69,7 +69,7 @@ class PasswordValidationView<T>(
 
     private fun initIndicatorLayout() {
         indicatorLayout.apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 5.dp())
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 5.dp)
         }
 
         initIndicators()
@@ -90,9 +90,9 @@ class PasswordValidationView<T>(
             val indicatorLayoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1f)
 
             when (i) {
-                0 -> indicatorLayoutParams.setMargins(0, 0, 2.5f.dp(), 0)
-                errorRequirements.size - 1 -> indicatorLayoutParams.setMargins(2.5f.dp(), 0, 0, 0)
-                else -> indicatorLayoutParams.setMargins(2.5f.dp(), 0, 2.5f.dp(), 0)
+                0 -> indicatorLayoutParams.setMargins(0, 0, 2.5f.dp, 0)
+                errorRequirements.size - 1 -> indicatorLayoutParams.setMargins(2.5f.dp, 0, 0, 0)
+                else -> indicatorLayoutParams.setMargins(2.5f.dp, 0, 2.5f.dp, 0)
             }
 
             indicator.layoutParams = indicatorLayoutParams
@@ -107,12 +107,12 @@ class PasswordValidationView<T>(
             val textView = TextView(context).apply {
                 text = requirement
                 layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                    setMargins(0, 10.dp(), 0, 0)
+                    setMargins(0, 10.dp, 0, 0)
                 }
                 setCompoundDrawablesRelativeWithIntrinsicBounds(ContextCompat.getDrawable(context, R.drawable.ic_point), null, null, null)
                 setTextAppearance(textRequirementsAppearance)
                 TextViewCompat.setCompoundDrawableTintList(this, ContextCompat.getColorStateList(context, textRequirementsIncompleteColor))
-                compoundDrawablePadding = 10.dp()
+                compoundDrawablePadding = 10.dp
             }
 
             textViewRequirements[error] =  textView
@@ -133,8 +133,4 @@ class PasswordValidationView<T>(
             TextViewCompat.setCompoundDrawableTintList(textView, ContextCompat.getColorStateList(context, color))
         }
     }
-
-
-    private fun Int.dp(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), resources.displayMetrics).toInt()
-    private fun Float.dp(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, resources.displayMetrics).toInt()
 }

@@ -2,7 +2,6 @@ package ru.lonelywh1te.introgym.core.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.color.MaterialColors
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.ui.extensions.dp
 import ru.lonelywh1te.introgym.databinding.ItemCalendarDayBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -75,7 +75,7 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
     private fun initTextViewDate() {
         textViewSelectedDate.apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                setPadding(10.dp(), 10.dp(), 10.dp(), 10.dp())
+                setPadding(10.dp, 10.dp, 10.dp, 10.dp)
             }
             gravity = CENTER
 
@@ -199,9 +199,6 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
             binding.ivIndicator.visibility = if (date in markedDaysOnWeek) VISIBLE else INVISIBLE
         }
     }
-
-    private fun Int.dp(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), resources.displayMetrics).toInt()
-    private fun Float.dp(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, resources.displayMetrics).toInt()
 }
 
 
