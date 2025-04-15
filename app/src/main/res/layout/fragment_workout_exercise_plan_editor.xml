@@ -108,9 +108,9 @@
             <EditText
                 android:id="@+id/et_plan_weight"
                 style="@style/Widget.IntroGym.TextInput"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:drawableEnd="@drawable/ic_weight"
-                android:maxLength="3"
+                android:maxLength="4"
                 android:hint="@string/label_weight"/>
 
             <EditText
@@ -125,6 +125,7 @@
                 android:id="@+id/et_plan_time"
                 android:drawableEnd="@drawable/ic_time"
                 style="@style/Widget.IntroGym.TextInput"
+                android:focusable="false"
                 android:inputType="number"
                 android:hint="@string/label_time"/>
 

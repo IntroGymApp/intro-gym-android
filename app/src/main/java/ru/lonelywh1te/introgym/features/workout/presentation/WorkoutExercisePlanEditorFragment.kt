@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,6 +14,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,9 +27,12 @@ import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
+import ru.lonelywh1te.introgym.core.ui.dialogs.PickHmsBottomSheetDialogFragment
+import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
+import java.time.LocalTime
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExercisePlanEditorBinding? = null
@@ -69,6 +74,10 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
             (binding.btnSelectTime to binding.etPlanTime),
             (binding.btnSelectDistance to binding.etPlanDistance),
         )
+
+        binding.etPlanTime.setOnClickListener {
+            showPickHmsDialog()
+        }
 
         startCollectFlows(savedInstanceState)
     }
@@ -117,11 +126,40 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         }
     }
 
+    private fun showPickHmsDialog() {
+        val localtime: LocalTime? = if (binding.etPlanTime.text.toString().isNotBlank()) {
+            LocalTime.parse(binding.etPlanTime.text.toString(), DateAndTimeStringFormatUtils.fullTimeFormatter)
+        } else {
+            null
+        }
+
+        if (childFragmentManager.findFragmentByTag(PickHmsBottomSheetDialogFragment.TAG) == null) {
+            PickHmsBottomSheetDialogFragment.instance(localtime).show(childFragmentManager, PickHmsBottomSheetDialogFragment.TAG)
+            setPickHmsDialogResultListener()
+        }
+    }
+
+    private fun setPickHmsDialogResultListener() {
+        childFragmentManager.setFragmentResultListener(PickHmsBottomSheetDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val localtime = bundle.getString(PickHmsBottomSheetDialogFragment.RESULT_LOCALTIME_STRING)?.let {
+                LocalTime.parse(it, DateAndTimeStringFormatUtils.fullTimeFormatter)
+            }
+
+            localtime?.let {
+                binding.etPlanTime.setText(localtime.format(DateAndTimeStringFormatUtils.fullTimeFormatter))
+            }
+
+            return@setFragmentResultListener
+        }
+    }
+
     private fun saveWorkoutExercisePlan() {
         val sets = if (binding.etPlanSets.isVisible) binding.etPlanSets.text.toString() else ""
         val reps = if (binding.etPlanReps.isVisible) binding.etPlanReps.text.toString() else ""
         val weight = if (binding.etPlanWeight.isVisible) binding.etPlanWeight.text.toString() else ""
-        val time = if (binding.etPlanTime.isVisible) binding.etPlanTime.text.toString() else ""
+        val time = if (binding.etPlanTime.isVisible && binding.etPlanTime.text.toString().isNotBlank()) {
+            LocalTime.parse(binding.etPlanTime.text.toString(), DateAndTimeStringFormatUtils.fullTimeFormatter).toSecondOfDay().toString()
+        } else ""
         val distance = if (binding.etPlanDistance.isVisible) binding.etPlanDistance.text.toString() else ""
 
         viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance)
@@ -149,7 +187,13 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         )
 
         dataMap.forEach { (editText, value) ->
-            if (editText.text.isBlank()) editText.setText(value?.toString() ?: "")
+            if (editText.text.isBlank()) {
+                if (editText == binding.etPlanTime && value != null) {
+                    editText.setText(LocalTime.ofSecondOfDay(value.toLong()).format(DateAndTimeStringFormatUtils.fullTimeFormatter))
+                } else {
+                    editText.setText(value?.toString() ?: "")
+                }
+            }
         }
 
         mapOfButtonAndInputs.forEach { (button, editText) ->
