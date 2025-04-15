@@ -54,7 +54,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">60dp</item>
         <item name="cornerRadius">10dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Bold</item>
     </style>
 
     <style name="Widget.IntroGym.Button.Black">
@@ -65,7 +65,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">60dp</item>
         <item name="cornerRadius">10dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+        <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Bold</item>
         <item name="android:textColor">?attr/igTextButtonColor</item>
     </style>
 
@@ -73,6 +73,9 @@
         <item name="android:textColor">?attr/igWarningColor</item>
     </style>
 
+    <style name="Widget.IntroGym.TextButton.Red">
+        <item name="android:textColor">?attr/igErrorColor</item>
+    </style>
 
     <style name="Widget.IntroGym.TextButton.Black">
         <item name="android:textColor">?attr/igTextPrimaryColor</item>
@@ -102,11 +105,6 @@
         <item name="iconTint">@color/selector_selectable_button_foreground</item>
     </style>
 
-    <style name="ThemeOverlay.IntroGym.CheckedButton" parent="ThemeOverlay.Material3.Button">
-        <item name="colorOnContainer">@color/selector_selectable_button_foreground</item>
-        <item name="colorContainer">@color/selector_selectable_button_background</item>
-    </style>
-
     <style name="Widget.IntroGym.IconButton.Primary">
         <item name="iconTint">?attr/igIconActionColor</item>
     </style>
@@ -132,26 +130,9 @@
         <item name="titleTextAppearance">@style/TextAppearance.IntroGym.Body.Semibold</item>
     </style>
 
-    <style name="ThemeOverlay.IntroGym.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Widget.IntroGym.BottomSheet</item>
-    </style>
-
     <style name="Widget.IntroGym.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
         <item name="backgroundTint">?attr/igBackgroundColor</item>
     </style>
-
-    <style name="ThemeOverlay.NumberPicker" parent="">
-        <item name="android:fontFamily">@font/geist_regular</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColorPrimary">?attr/igTextPrimaryColor</item>
-        <item name="android:colorControlNormal">?attr/igPrimaryColor</item>
-    </style>
-
-<!--    <style name="Widget.IntroGym.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">-->
-<!--        <item name="trackTint">?attr/igCardBackgroundColor</item>-->
-<!--        <item name="trackDecorationTint">?attr/igCardForegroundColor</item>-->
-<!--        <item name="thumbIconTint">?attr/igCardForegroundColor</item>-->
-<!--    </style>-->
 
     <!-- CONTAINERS -->
 
@@ -190,6 +171,22 @@
         <item name="colorOnContainer">?attr/igOnPrimaryColor</item>
         <item name="colorContainer">?attr/igPrimaryColor</item>
         <item name="colorSurfaceContainerHighest">?attr/igCardBackgroundColor</item>
+    </style>
+
+    <style name="ThemeOverlay.IntroGym.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.IntroGym.BottomSheet</item>
+    </style>
+
+    <style name="ThemeOverlay.NumberPicker" parent="">
+        <item name="android:fontFamily">@font/geist_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColorPrimary">?attr/igTextPrimaryColor</item>
+        <item name="android:colorControlNormal">?attr/igPrimaryColor</item>
+    </style>
+
+    <style name="ThemeOverlay.IntroGym.CheckedButton" parent="ThemeOverlay.Material3.Button">
+        <item name="colorOnContainer">@color/selector_selectable_button_foreground</item>
+        <item name="colorContainer">@color/selector_selectable_button_background</item>
     </style>
 
 </resources>

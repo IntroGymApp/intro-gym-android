@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="380dp"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_energy"
+        tools:tint="?attr/igErrorColor" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        app:layout_constraintEnd_toEndOf="@+id/tv_description"
+        app:layout_constraintStart_toStartOf="@+id/tv_description"
+        app:layout_constraintTop_toBottomOf="@+id/iv_icon"
+        tools:text="Завершить тренировку" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="Вы действительно хотите завершить тренировку? Это действие нельзя будет отменитьВы действительно хотите завершить тренировку? Это действие нельзя будет отменить" />
+
+
+    <Button
+        android:id="@+id/btn_negative"
+        style="@style/Widget.IntroGym.TextButton.Red"
+        android:layout_width="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="?attr/igErrorColor"
+        app:layout_constraintEnd_toStartOf="@+id/btn_positive"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description"
+        tools:text="Завершить" />
+
+    <Button
+        android:id="@+id/btn_positive"
+        style="@style/Widget.IntroGym.Button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_negative"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description"
+        tools:text="Отмена" />
+</androidx.constraintlayout.widget.ConstraintLayout>
