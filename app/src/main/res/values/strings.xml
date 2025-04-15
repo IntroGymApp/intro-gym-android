@@ -108,5 +108,8 @@
     <string name="workout_error_exercise_and_plans_mismatch">Количество упражнений и планов упражнений не совпадает</string>
     <string name="label_workout_comment">Комментарий к тренировке</string>
     <string name="label_workout_name">Название тренировки</string>
+    <string name="label_delete_workout">Удалить тренировку</string>
+    <string name="label_submit_message_delete_workout">Вы действительно хотите удалить тренировку? Это действие нельзя будет отменить</string>
+    <string name="label_cancel">Отмена</string>
 
 </resources>

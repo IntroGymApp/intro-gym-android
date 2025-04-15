@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -19,11 +20,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
+import ru.lonelywh1te.introgym.core.ui.dialogs.SubmitDialogFragment
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -168,9 +171,21 @@ class WorkoutFragment : Fragment(), MenuProvider {
         viewModel.updateWorkout(name, description)
     }
 
-    // TODO: добавить диалоговое окно с уточнением
     private fun deleteWorkout() {
-        viewModel.deleteWorkout()
+        SubmitDialogFragment.Builder()
+            .setTitle(getString(R.string.label_delete_workout))
+            .setMessage(getString(R.string.label_submit_message_delete_workout))
+            .setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete))
+            .setIconTint(MaterialColors.getColor(binding.root, R.attr.igErrorColor))
+            .setPositiveButton(getString(R.string.label_cancel)) { dialog ->
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.label_delete)) { dialog ->
+                viewModel.deleteWorkout()
+                dialog.dismiss()
+            }
+            .build()
+            .show(childFragmentManager, SubmitDialogFragment.TAG)
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
