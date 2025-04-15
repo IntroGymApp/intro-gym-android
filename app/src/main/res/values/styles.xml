@@ -44,7 +44,7 @@
         <item name="android:maxLength">256</item>
         <item name="android:inputType">textShortMessage</item>
         <item name="android:textColorHint">?attr/igHintColor</item>
-        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingHorizontal">20dp</item>
         <item name="android:background">@null</item>
         <item name="drawableTint">?attr/igHintColor</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
@@ -130,6 +130,21 @@
 
     <style name="Widget.IntroGym.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="titleTextAppearance">@style/TextAppearance.IntroGym.Body.Semibold</item>
+    </style>
+
+    <style name="ThemeOverlay.IntroGym.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.IntroGym.BottomSheet</item>
+    </style>
+
+    <style name="Widget.IntroGym.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">?attr/igBackgroundColor</item>
+    </style>
+
+    <style name="ThemeOverlay.NumberPicker" parent="">
+        <item name="android:fontFamily">@font/geist_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColorPrimary">?attr/igTextPrimaryColor</item>
+        <item name="android:colorControlNormal">?attr/igPrimaryColor</item>
     </style>
 
 <!--    <style name="Widget.IntroGym.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">-->

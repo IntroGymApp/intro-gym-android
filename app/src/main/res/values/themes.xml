@@ -2,8 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.IntroGym" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">?attr/igPrimaryColor</item>
+        <item name="colorAccent">?attr/igPrimaryColor</item>
         <item name="colorOnPrimary">?attr/igOnPrimaryColor</item>
         <item name="android:windowBackground">?attr/igBackgroundColor</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.IntroGym.BottomSheet</item>
     </style>
 
     <style name="Theme.IntroGym.Light" parent="Base.Theme.IntroGym" >
