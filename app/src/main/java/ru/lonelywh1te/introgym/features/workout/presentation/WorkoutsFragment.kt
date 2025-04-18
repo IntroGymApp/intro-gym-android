@@ -1,21 +1,23 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutsBinding
@@ -27,9 +29,12 @@ class WorkoutsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<WorkoutsFragmentViewModel>()
+    private val args by navArgs<WorkoutsFragmentArgs>()
 
     private lateinit var recycler: RecyclerView
     private lateinit var workoutItemAdapter: WorkoutItemAdapter
+
+    private val isPickMode by lazy { args.isPickMode }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentWorkoutsBinding.inflate(inflater, container, false)
@@ -41,7 +46,11 @@ class WorkoutsFragment : Fragment() {
 
         workoutItemAdapter = WorkoutItemAdapter().apply {
             setOnItemClickListener { workoutItem ->
-                navigateToWorkoutFragment(workoutItem.workoutId)
+                if (isPickMode) {
+                    setFragmentResultAndNavigateUp(workoutItem.workoutId)
+                } else {
+                    navigateToWorkoutFragment(workoutItem.workoutId)
+                }
             }
         }
 
@@ -67,16 +76,20 @@ class WorkoutsFragment : Fragment() {
                 val item = workoutItemAdapter.getItem(position)
                 viewModel.deleteWorkout(item.workoutId)
 
-                // TODO: заменить на snackbar с отменой
-
                 Toast.makeText(requireContext(), "Тренировка удалена!", Toast.LENGTH_LONG).show()
             }
 
             attachToRecyclerView(recycler)
         }
 
-        binding.btnCreateWorkout.setOnClickListener {
-            navigateToCreateWorkout()
+        binding.rvWorkoutsTitle.text = getString(if (isPickMode) R.string.label_choose_workout else R.string.label_your_workouts)
+
+        binding.btnCreateWorkout.apply {
+            setOnClickListener {
+                navigateToCreateWorkout()
+            }
+
+            visibility = if (isPickMode) View.GONE else View.VISIBLE
         }
 
         startCollectFlows()
@@ -86,10 +99,17 @@ class WorkoutsFragment : Fragment() {
         viewModel.workoutList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { workoutList ->
                 workoutItemAdapter.update(workoutList)
-
-                Log.d("WorkoutsFragment", "$workoutList")
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun setFragmentResultAndNavigateUp(workoutId: Long) {
+        val bundle = Bundle().apply {
+            putLong(WORKOUT_ID_BUNDLE_KEY, workoutId)
+        }
+
+        setFragmentResult(REQUEST_KEY, bundle)
+        findNavController().navigateUp()
     }
 
     private fun navigateToWorkoutFragment(workoutId: Long) {
@@ -100,5 +120,10 @@ class WorkoutsFragment : Fragment() {
     private fun navigateToCreateWorkout() {
         val action = WorkoutsFragmentDirections.toWorkoutEditorFragment()
         findNavController().safeNavigate(action)
+    }
+
+    companion object {
+        const val REQUEST_KEY = "workouts_fragment_request_key"
+        const val WORKOUT_ID_BUNDLE_KEY = "workout_id"
     }
 }

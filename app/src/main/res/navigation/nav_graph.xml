@@ -229,6 +229,9 @@
             android:name="isFirstLaunch"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/to_workoutsFragment"
+            app:destination="@id/workoutsFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -251,6 +254,10 @@
         <action
             android:id="@+id/to_workoutEditorFragment"
             app:destination="@id/workoutEditorFragment" />
+        <argument
+            android:name="isPickMode"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/workoutFragment"
