@@ -8,6 +8,7 @@ import org.koin.core.logger.Level
 import ru.lonelywh1te.introgym.data.dataModule
 import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
+import ru.lonelywh1te.introgym.features.home.homeModule
 import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
 import ru.lonelywh1te.introgym.features.workout.workoutModule
 
@@ -24,6 +25,7 @@ class App: Application() {
                 guideModule,
                 onboardingModule,
                 workoutModule,
+                homeModule,
             )
         }
     }

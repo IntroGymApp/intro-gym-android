@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
     android:paddingTop="20dp"
-    tools:context=".features.home.HomeFragment">
+    tools:context=".features.home.presentation.HomeFragment">
 
     <ru.lonelywh1te.introgym.core.ui.views.WeeklyCalendarView
         android:id="@+id/weekly_calendar_view"
@@ -15,5 +15,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_plans_title"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_your_plans"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weekly_calendar_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_workout_logs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_plans_title"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_workout_log" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

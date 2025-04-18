@@ -112,5 +112,6 @@
     <string name="label_submit_message_delete_workout">Вы действительно хотите удалить тренировку? Это действие нельзя будет отменить</string>
     <string name="label_cancel">Отмена</string>
     <string name="label_choose_workout">Выберите тренировку</string>
+    <string name="label_your_plans">Ваши планы</string>
 
 </resources>

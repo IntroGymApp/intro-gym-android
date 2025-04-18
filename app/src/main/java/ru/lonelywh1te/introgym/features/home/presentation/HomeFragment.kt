@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.home
+package ru.lonelywh1te.introgym.features.home.presentation
 
 import android.os.Bundle
 import android.util.Log

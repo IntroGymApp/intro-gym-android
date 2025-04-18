@@ -222,7 +222,7 @@
     </navigation>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="ru.lonelywh1te.introgym.features.home.HomeFragment"
+        android:name="ru.lonelywh1te.introgym.features.home.presentation.HomeFragment"
         android:label="@string/label_home"
         tools:layout="@layout/fragment_home" >
         <argument
