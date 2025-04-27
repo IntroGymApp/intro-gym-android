@@ -1,6 +1,9 @@
 package ru.lonelywh1te.introgym.core.ui.views
 
 import android.content.Context
+import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
 import android.view.LayoutInflater
@@ -18,22 +21,29 @@ import ru.lonelywh1te.introgym.databinding.ItemCalendarDayBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
+import java.time.temporal.ChronoUnit
 import java.util.Locale
+
+// TODO: навести порядок
 
 class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearLayout(context, attrs) {
     private val weekViewPager = ViewPager2(context)
     private val textViewSelectedDate = TextView(context)
 
     private val currentDate = LocalDate.now()
-    private var selectedDate = currentDate
-        set(value) {
+    var selectedDate: LocalDate = currentDate
+        private set(value) {
+            if (field == value) return
+
             field = value
             (weekViewPager.adapter as? WeekViewPagerAdapter)?.notifyDataSetChanged()
             updateTextViewDate()
+
+            onDateSelectedListener?.invoke(value)
         }
 
     private val centerWeekPosition = Int.MAX_VALUE / 2
-    private var currentWeekPosition: Int = centerWeekPosition
+    private var currentWeekPosition: Int = calculateCurrentWeekPosition()
 
     private val locale = Locale.getDefault()
 
@@ -43,12 +53,36 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
     private val markedDaysOnWeek: List<LocalDate> = listOf()
 
     init {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         gravity = CENTER
         orientation = VERTICAL
 
         initWeekViewPager()
         initTextViewDate()
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return Bundle().apply {
+            putParcelable(SUPER_STATE_KEY, super.onSaveInstanceState())
+            putString(SELECTED_DATE_KEY, selectedDate.toString())
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is Bundle) {
+            state.getString(SELECTED_DATE_KEY)?.let {
+                selectedDate = LocalDate.parse(it)
+            }
+
+            weekViewPager.setCurrentItem(calculateCurrentWeekPosition(), false)
+
+            val superState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                state.getParcelable(SUPER_STATE_KEY, Parcelable::class.java)
+            } else {
+                state.getParcelable(SUPER_STATE_KEY)
+            }
+
+            super.onRestoreInstanceState(superState)
+        }
     }
 
     private fun initWeekViewPager() {
@@ -108,11 +142,16 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
         return List(7) { startOfWeek.plusDays(it.toLong()) }
     }
 
+    private fun calculateCurrentWeekPosition(): Int {
+        val weekOffset = ChronoUnit.WEEKS.between(currentDate.with(DayOfWeek.MONDAY), selectedDate.with(DayOfWeek.MONDAY)).toInt()
+        return centerWeekPosition + weekOffset
+    }
+
     fun setOnChangeWeekListener(listener: (Int) -> Unit) {
         onWeekChangedListener = listener
     }
 
-    fun setOnDateSelectedListener(listener: (LocalDate) -> Unit) {
+    fun setOnDateSelectedListener(listener: ((LocalDate) -> Unit)?) {
         onDateSelectedListener = listener
     }
 
@@ -169,7 +208,6 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
 
             holder.itemView.setOnClickListener {
                 selectedDate = date
-                onDateSelectedListener?.invoke(date)
             }
         }
 
@@ -198,6 +236,11 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
 
             binding.ivIndicator.visibility = if (date in markedDaysOnWeek) VISIBLE else INVISIBLE
         }
+    }
+
+    companion object {
+        private const val SUPER_STATE_KEY = "super_state_key"
+        private const val SELECTED_DATE_KEY = "selected_date"
     }
 }
 
