@@ -1,10 +1,15 @@
 package ru.lonelywh1te.introgym.data.db.model
 
-// TODO: переделать с embedded
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import ru.lonelywh1te.introgym.data.db.entity.ExerciseCategoryEntity
 
 data class ExerciseCategoryWithCount(
-    val id: Long,
-    val name: String,
+
+    @Embedded
+    val exerciseCategoryEntity: ExerciseCategoryEntity,
+
+    @ColumnInfo("count_of_exercises")
     val countOfExercises: Int,
-    val imgFilename: String,
+
 )

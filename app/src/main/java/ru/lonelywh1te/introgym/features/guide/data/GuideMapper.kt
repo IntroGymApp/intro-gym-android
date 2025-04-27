@@ -11,10 +11,10 @@ import ru.lonelywh1te.introgym.features.guide.domain.model.Tag
 
 fun ExerciseCategoryWithCount.toExerciseCategoryItem(): ExerciseCategoryItem {
     return ExerciseCategoryItem(
-        id = this.id,
-        name = this.name,
+        id = this.exerciseCategoryEntity.id,
+        name = this.exerciseCategoryEntity.name,
         countOfExercises = this.countOfExercises,
-        imgFilename = this.imgFilename,
+        imgFilename = this.exerciseCategoryEntity.imgFilename,
     )
 }
 

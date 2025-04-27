@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 data class WorkoutLogEntity(
 
     @ColumnInfo(name = "id")
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
 
     @ColumnInfo(name = "workout_id")

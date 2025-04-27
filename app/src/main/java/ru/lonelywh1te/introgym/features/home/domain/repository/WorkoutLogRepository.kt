@@ -8,12 +8,12 @@ import java.time.LocalDate
 
 interface WorkoutLogRepository {
 
-    fun getWorkoutLogList(date: LocalDate): Result<Flow<List<WorkoutLogItem>>>
+    suspend fun getWorkoutLogItemList(date: LocalDate): Result<List<WorkoutLogItem>>
 
-    fun updateWorkoutLog(workoutLog: WorkoutLog): Result<Unit>
+    suspend fun updateWorkoutLog(workoutLog: WorkoutLog): Result<Unit>
 
-    fun addWorkoutLog(date: LocalDate, workoutId: Long): Result<Long>
+    suspend fun addWorkoutLog(workoutLog: WorkoutLog): Result<Unit>
 
-    fun deleteWorkoutLog(workoutLogId: Long): Result<Unit>
+    suspend fun deleteWorkoutLog(workoutLog: WorkoutLog): Result<Unit>
 
 }

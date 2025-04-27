@@ -11,10 +11,8 @@ interface ExerciseCategoryDao {
 
     @Transaction
     @Query("""
-        select ec.id, 
-               ec.name,
-               count(e.id) as countOfExercises,
-               ec.img_filename as imgFilename
+        select ec.*,
+               count(e.id) as count_of_exercises
         from exercise_category as ec
         left join exercise as e on ec.id = e.category_id
         group by ec.id

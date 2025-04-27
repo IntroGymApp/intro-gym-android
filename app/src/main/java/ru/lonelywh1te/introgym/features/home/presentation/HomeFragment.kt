@@ -40,13 +40,11 @@ class HomeFragment : Fragment(), MenuProvider {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
         binding.weeklyCalendarView.apply {
@@ -54,7 +52,6 @@ class HomeFragment : Fragment(), MenuProvider {
                 viewModel.loadWorkoutLogItemList(date)
             }
         }
-        viewModel.loadWorkoutLogItemList(binding.weeklyCalendarView.selectedDate)
 
         workoutItemAdapter = WorkoutLogItemAdapter()
 
@@ -66,6 +63,11 @@ class HomeFragment : Fragment(), MenuProvider {
         showToolbarAndBottomNavigationView()
         setWorkoutIdResultListener()
         startCollectFlows()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadWorkoutLogItemList(binding.weeklyCalendarView.selectedDate)
     }
 
     private fun showToolbarAndBottomNavigationView() {

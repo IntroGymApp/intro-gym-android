@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.data.db.converters
 
+import android.util.Log
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
 
@@ -11,7 +12,7 @@ class LocalDateTimeConverter {
     }
 
     @TypeConverter
-    fun toLocalDateTime(dateTime: String?): LocalDateTime {
-        return LocalDateTime.parse(dateTime)
+    fun toLocalDateTime(dateTime: String?): LocalDateTime? {
+        return dateTime?.let { LocalDateTime.parse(dateTime) }
     }
 }

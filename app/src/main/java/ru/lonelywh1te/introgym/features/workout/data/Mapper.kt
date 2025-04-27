@@ -13,10 +13,10 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 
 fun WorkoutEntityWithCountOfExercises.toWorkoutItem(): WorkoutItem {
     return WorkoutItem(
-        workoutId = this.id,
-        name = this.name,
+        workoutId = this.workoutEntity.id,
+        name = this.workoutEntity.name,
         countOfExercises = this.countOfExercises,
-        order = this.order,
+        order = this.workoutEntity.order,
     )
 }
 

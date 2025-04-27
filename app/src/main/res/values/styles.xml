@@ -14,12 +14,11 @@
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
     </style>
 
-    <style name="Widget.IntroGym.ListCard" parent="Widget.MaterialComponents.CardView">
+    <style name="Widget.IntroGym.ListCard" parent="Widget.Material3.CardView.Filled">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">90dp</item>
         <item name="android:padding">20dp</item>
         <item name="cardCornerRadius">10dp</item>
-        <item name="cardElevation">0dp</item>
         <item name="android:backgroundTint">?attr/igCardBackgroundColor</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>

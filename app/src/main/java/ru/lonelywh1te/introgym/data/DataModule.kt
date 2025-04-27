@@ -9,6 +9,7 @@ import ru.lonelywh1te.introgym.data.db.dao.TagDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
+import ru.lonelywh1te.introgym.data.db.dao.WorkoutLogDao
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.data.prefs.UserPreferences
 import ru.lonelywh1te.introgym.data.prefs.settings.SettingsPreferencesImpl
@@ -47,6 +48,10 @@ val dataModule = module {
 
     factory<WorkoutExercisePlanDao> {
         get<MainDatabase>().workoutExercisePlanDao()
+    }
+
+    factory<WorkoutLogDao> {
+        get<MainDatabase>().workoutLogDao()
     }
 
 

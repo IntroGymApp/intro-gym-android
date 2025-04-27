@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
+
     <fragment
         android:id="@+id/workoutExercisePlanEditorFragment"
         android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutExercisePlanEditorFragment"

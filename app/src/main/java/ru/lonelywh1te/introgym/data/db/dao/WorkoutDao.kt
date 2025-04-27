@@ -27,10 +27,21 @@ interface WorkoutDao {
                count(we.workout_id) as count_of_exercises
         from workout w
         left join workout_exercise we on w.id = we.workout_id
+        where w.id = :id
+        group by w.id
+    """)
+    fun getWorkoutWithCountOfExercises(id: Long): WorkoutEntityWithCountOfExercises
+
+    @Query("""
+        select w.*,
+               count(we.workout_id) as count_of_exercises
+        from workout w
+        left join workout_exercise we on w.id = we.workout_id
         where is_template = 1
         group by w.id
     """)
-    fun getWorkoutWithCountOfExercises(): Flow<List<WorkoutEntityWithCountOfExercises>>
+    fun getWorkoutListWithCountOfExercises(): Flow<List<WorkoutEntityWithCountOfExercises>>
+
 
     @Query("select * from workout where `order` > :order")
     suspend fun getWorkoutsWithOrderGreaterThan(order: Int): List<WorkoutEntity>

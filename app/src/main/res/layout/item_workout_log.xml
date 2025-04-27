@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="wrap_content"
     style="@style/Widget.IntroGym.ListCard.Selectable"
     android:layout_marginBottom="10dp">
 
@@ -18,12 +19,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_state_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_workout_log_indicator"/>
 
             <TextView
+                android:id="@+id/tv_state_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
@@ -34,6 +37,7 @@
 
 
         <TextView
+            android:id="@+id/tv_workout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Название тренировки"
@@ -43,8 +47,10 @@
             android:paddingVertical="15dp" />
 
         <TextView
+            android:id="@+id/tv_workout_description"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:paddingBottom="20dp"
             tools:text="Какое-то описание тренировки, которое пользователь сам написал"
             android:maxLines="2"
             android:ellipsize="end"
@@ -53,7 +59,9 @@
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/tv_count_of_exercises"
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
             tools:text="Упражнений: 8"
             android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
@@ -62,4 +70,4 @@
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -34,7 +34,7 @@ class WorkoutRepositoryImpl (
     private val zoneOffset = ZoneOffset.UTC
 
     override fun getWorkoutItems(): Flow<Result<List<WorkoutItem>>> {
-        return workoutDao.getWorkoutWithCountOfExercises()
+        return workoutDao.getWorkoutListWithCountOfExercises()
             .map<List<WorkoutEntityWithCountOfExercises>, Result<List<WorkoutItem>>> { list ->
                 Result.Success(list.map { entity -> entity.toWorkoutItem() })
             }

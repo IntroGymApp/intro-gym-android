@@ -113,5 +113,9 @@
     <string name="label_cancel">Отмена</string>
     <string name="label_choose_workout">Выберите тренировку</string>
     <string name="label_your_plans">Ваши планы</string>
+    <string name="label_add_workout">Добавить тренировку</string>
+    <string name="label_workout_log_state_not_started">не начата</string>
+    <string name="label_workout_log_state_in_progress">в процессе</string>
+    <string name="label_workout_log_state_finished">завершена</string>
 
 </resources>
