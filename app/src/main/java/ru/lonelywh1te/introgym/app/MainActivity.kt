@@ -3,6 +3,9 @@ package ru.lonelywh1te.introgym.app
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -18,7 +21,7 @@ import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
 
 private const val LOG_TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UIController {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            updateToolbarBottomBarVisibilityAndInsets(destination)
+            updateInsets(destination)
         }
     }
 
@@ -64,15 +67,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
     }
 
-    private fun updateToolbarBottomBarVisibilityAndInsets(destination: NavDestination) {
-        val shouldShow = destination.parent?.id !in listOf(
+
+    // TODO: передать полностью контроль над инсетами
+    private fun updateInsets(destination: NavDestination) {
+        val shouldUpdate = destination.parent?.id !in listOf(
             R.id.onboarding,
             R.id.auth,
         )
 
-        binding.toolbar.isVisible = shouldShow
-        binding.bottomNavigation.isVisible = shouldShow
-        if (shouldShow) WindowInsets.setInsets(binding.root)
+        if (shouldUpdate) WindowInsets.setInsets(binding.root)
     }
 
     private fun setStartDestination() {
@@ -88,5 +91,15 @@ class MainActivity : AppCompatActivity() {
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
         navGraph.setStartDestination(startDestination)
         navController.setGraph(navGraph, null)
+    }
+
+    override fun setToolbarVisibility(visible: Boolean) {
+        if (binding.toolbar.isVisible == visible) return
+        binding.toolbar.isVisible = visible
+    }
+
+    override fun setBottomNavigationViewVisibility(visible: Boolean) {
+        if (binding.bottomNavigation.isVisible == visible) return
+        binding.bottomNavigation.isVisible = visible
     }
 }

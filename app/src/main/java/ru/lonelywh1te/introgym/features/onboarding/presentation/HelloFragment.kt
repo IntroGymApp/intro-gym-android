@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
@@ -36,6 +37,8 @@ class HelloFragment : Fragment() {
         binding.btnNext.setOnClickListener {
             navigateToFeaturesFragment()
         }
+
+        hideToolbarAndBottomNavigationView()
     }
 
     private fun navigateToSignInFragment() {
@@ -46,5 +49,12 @@ class HelloFragment : Fragment() {
     private fun navigateToFeaturesFragment() {
         val action = HelloFragmentDirections.toFeaturesFragment()
         findNavController().safeNavigate(action)
+    }
+
+    private fun hideToolbarAndBottomNavigationView() {
+        (requireActivity() as UIController).apply {
+            setToolbarVisibility(false)
+            setBottomNavigationViewVisibility(false)
+        }
     }
 }
