@@ -57,7 +57,11 @@ class HomeFragment : Fragment(), MenuProvider {
             }
         }
 
-        workoutLogItemAdapter = WorkoutLogItemAdapter()
+        workoutLogItemAdapter = WorkoutLogItemAdapter().apply {
+            setOnItemClickListener { item ->
+                navigateToWorkoutFragment(item.workoutId)
+            }
+        }
 
         recycler = binding.rvWorkoutLogs.apply {
             adapter = workoutLogItemAdapter
@@ -118,7 +122,12 @@ class HomeFragment : Fragment(), MenuProvider {
     }
 
     private fun navigateToPickWorkout() {
-        val action = HomeFragmentDirections.toWorkoutsFragment(isPickMode = true)
+        val action = HomeFragmentDirections.actionPickWorkout()
+        findNavController().safeNavigate(action)
+    }
+
+    private fun navigateToWorkoutFragment(workoutId: Long) {
+        val action = HomeFragmentDirections.toWorkoutFragment(workoutId)
         findNavController().safeNavigate(action)
     }
 

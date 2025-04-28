@@ -24,6 +24,7 @@ import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.NavGraphDirections
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.core.ui.dialogs.SubmitDialogFragment
@@ -145,7 +146,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
     }
 
     private fun navigateToPickExerciseFragment() {
-        val action = WorkoutFragmentDirections.toExerciseCategoriesFragment(true, R.id.workoutFragment)
+        val action = WorkoutFragmentDirections.actionPickExercise(R.id.workoutFragment)
         findNavController().navigate(action)
     }
 
