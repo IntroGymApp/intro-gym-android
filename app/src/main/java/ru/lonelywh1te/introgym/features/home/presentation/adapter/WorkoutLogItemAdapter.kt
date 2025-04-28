@@ -46,6 +46,10 @@ class WorkoutLogItemAdapter: RecyclerView.Adapter<WorkoutLogItemViewHolder>() {
 
         diffUtilResult.dispatchUpdatesTo(this)
     }
+
+    fun getItem(position: Int): WorkoutLogItem {
+        return workoutLogItems[position]
+    }
 }
 
 class WorkoutLogItemViewHolder(private val binding: ItemWorkoutLogBinding): RecyclerView.ViewHolder(binding.root) {

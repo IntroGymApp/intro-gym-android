@@ -22,6 +22,7 @@ import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.usecase.AddWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogDatesUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogItemListUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -29,6 +30,7 @@ class HomeFragmentViewModel(
     private val addWorkoutLogUseCase: AddWorkoutLogUseCase,
     private val getWorkoutLogItemListUseCase: GetWorkoutLogItemListUseCase,
     private val getWorkoutLogDatesUseCase: GetWorkoutLogDatesUseCase,
+    private val deleteWorkoutUseCase: DeleteWorkoutUseCase,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
@@ -80,6 +82,13 @@ class HomeFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             getWorkoutLogDatesUseCase(week)
                 .onSuccess { _markedDays.value = it }
+                .onFailure { _errors.emit(it) }
+        }
+    }
+
+    fun deleteWorkoutLog(workoutId: Long) {
+        viewModelScope.launch (dispatcher) {
+            deleteWorkoutUseCase(workoutId)
                 .onFailure { _errors.emit(it) }
         }
     }

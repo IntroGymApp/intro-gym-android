@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.home.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,6 +13,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
@@ -22,12 +22,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentHomeBinding
 import ru.lonelywh1te.introgym.features.home.presentation.adapter.WorkoutLogItemAdapter
 import ru.lonelywh1te.introgym.features.home.presentation.viewModel.HomeFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.WorkoutsFragment
-import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutItemAdapter
 
 class HomeFragment : Fragment(), MenuProvider {
     private var _binding: FragmentHomeBinding? = null
@@ -36,7 +35,7 @@ class HomeFragment : Fragment(), MenuProvider {
     private val viewModel by viewModel<HomeFragmentViewModel>()
 
     private lateinit var recycler: RecyclerView
-    private lateinit var workoutItemAdapter: WorkoutLogItemAdapter
+    private lateinit var workoutLogItemAdapter: WorkoutLogItemAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -58,11 +57,32 @@ class HomeFragment : Fragment(), MenuProvider {
             }
         }
 
-        workoutItemAdapter = WorkoutLogItemAdapter()
+        workoutLogItemAdapter = WorkoutLogItemAdapter()
 
         recycler = binding.rvWorkoutLogs.apply {
-            adapter = workoutItemAdapter
+            adapter = workoutLogItemAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        ItemTouchHelperCallback(
+            dragDirs = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            swipeDirs = ItemTouchHelper.LEFT,
+        ).apply {
+
+            setOnMoveListener { from, to ->
+                // TODO: Not yet implemented
+            }
+
+            setOnMoveFinishedListener { from, to ->
+                // TODO: Not yet implemented
+            }
+
+            setOnLeftSwipeListener { position ->
+                val item = workoutLogItemAdapter.getItem(position)
+                viewModel.deleteWorkoutLog(item.workoutId)
+            }
+
+            attachToRecyclerView(recycler)
         }
 
         showToolbarAndBottomNavigationView()
@@ -80,7 +100,7 @@ class HomeFragment : Fragment(), MenuProvider {
     private fun startCollectFlows() {
         viewModel.workoutLogItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { list ->
-                workoutItemAdapter.update(list)
+                workoutLogItemAdapter.update(list)
             }
             .launchIn(lifecycleScope)
 
