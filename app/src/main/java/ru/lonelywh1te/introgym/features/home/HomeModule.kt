@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.home.data.WorkoutLogRepositoryImpl
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.home.domain.usecase.AddWorkoutLogUseCase
+import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogDatesUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogItemListUseCase
 import ru.lonelywh1te.introgym.features.home.presentation.viewModel.HomeFragmentViewModel
 
@@ -32,6 +33,12 @@ val homeDomainModule = module {
             repository = get(),
         )
     }
+
+    factory<GetWorkoutLogDatesUseCase> {
+        GetWorkoutLogDatesUseCase(
+            repository = get()
+        )
+    }
 }
 
 val homePresentationModule = module {
@@ -39,6 +46,7 @@ val homePresentationModule = module {
         HomeFragmentViewModel(
             addWorkoutLogUseCase = get(),
             getWorkoutLogItemListUseCase = get(),
+            getWorkoutLogDatesUseCase = get(),
         )
     }
 }

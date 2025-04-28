@@ -50,7 +50,11 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
     private var onWeekChangedListener: ((position: Int) -> Unit)? = null
     private var onDateSelectedListener: ((date: LocalDate) -> Unit)? = null
 
-    private val markedDaysOnWeek: List<LocalDate> = listOf()
+    private var markedDaysOnWeek: List<LocalDate> = listOf()
+        set(value) {
+            field = value
+            (weekViewPager.adapter as? WeekViewPagerAdapter)?.notifyDataSetChanged()
+        }
 
     init {
         gravity = CENTER
@@ -153,6 +157,10 @@ class WeeklyCalendarView(context: Context, attrs: AttributeSet? = null): LinearL
 
     fun setOnDateSelectedListener(listener: ((LocalDate) -> Unit)?) {
         onDateSelectedListener = listener
+    }
+
+    fun setMarkedDays(days: List<LocalDate>) {
+        markedDaysOnWeek = days
     }
 
     private inner class WeekViewPagerAdapter: RecyclerView.Adapter<WeekViewHolder>() {

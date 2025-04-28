@@ -49,7 +49,12 @@ class HomeFragment : Fragment(), MenuProvider {
 
         binding.weeklyCalendarView.apply {
             setOnDateSelectedListener { date ->
-                viewModel.loadWorkoutLogItemList(date)
+                viewModel.setSelectedDate(date)
+            }
+
+            setOnChangeWeekListener { position ->
+                val week = getWeek(position)
+                viewModel.updateMarkedDays(week)
             }
         }
 
@@ -65,11 +70,6 @@ class HomeFragment : Fragment(), MenuProvider {
         startCollectFlows()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.loadWorkoutLogItemList(binding.weeklyCalendarView.selectedDate)
-    }
-
     private fun showToolbarAndBottomNavigationView() {
         (requireActivity() as UIController).apply {
             setToolbarVisibility(true)
@@ -81,6 +81,12 @@ class HomeFragment : Fragment(), MenuProvider {
         viewModel.workoutLogItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { list ->
                 workoutItemAdapter.update(list)
+            }
+            .launchIn(lifecycleScope)
+
+        viewModel.markedDays.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { markedDaysOnWeek ->
+                binding.weeklyCalendarView.setMarkedDays(markedDaysOnWeek)
             }
             .launchIn(lifecycleScope)
 

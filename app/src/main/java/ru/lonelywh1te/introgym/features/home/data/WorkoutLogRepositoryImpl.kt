@@ -29,19 +29,19 @@ class WorkoutLogRepositoryImpl(
     private val workoutExerciseDao: WorkoutExerciseDao,
     private val workoutExercisePlanDao: WorkoutExercisePlanDao,
 ): WorkoutLogRepository {
-    override suspend fun getWorkoutLogItemList(date: LocalDate): Result<List<WorkoutLogItem>> {
-        return try {
-            val workoutLogEntities = workoutLogDao.getWorkoutLogListByDate(date)
-            Result.Success(mapWorkoutLogEntities(workoutLogEntities))
-
-        } catch (e: Exception) {
-            Log.e("WorkoutLogRepositoryImpl", "getWorkoutLogItemList", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
+    override fun getWorkoutLogItemList(date: LocalDate): Flow<Result<List<WorkoutLogItem>>> {
+        return workoutLogDao.getWorkoutLogListByDate(date)
+            .map<List<WorkoutLogEntity>, Result<List<WorkoutLogItem>>> { workoutLogEntities ->
+                Result.Success(mapWorkoutLogEntities(workoutLogEntities))
             }
-        }
+            .catch { e ->
+                Log.e("WorkoutLogRepositoryImpl", "getWorkoutLogItemList", e)
+
+                when (e) {
+                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                    else -> Result.Failure(AppError.UNKNOWN)
+                }
+            }
     }
 
     private fun mapWorkoutLogEntities(list: List<WorkoutLogEntity>): List<WorkoutLogItem> {
@@ -145,6 +145,20 @@ class WorkoutLogRepositoryImpl(
             workoutDao.deleteWorkout(workoutLog.workoutId)
 
             Result.Success(Unit)
+        } catch (e: Exception) {
+            Log.e("WorkoutLogRepositoryImpl", "deleteWorkoutLog", e)
+
+            when (e) {
+                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                else -> Result.Failure(AppError.UNKNOWN)
+            }
+
+        }
+    }
+
+    override suspend fun getWorkoutLogDates(): Result<List<LocalDate>> {
+        return try {
+            Result.Success(workoutLogDao.getWorkoutLogDates())
         } catch (e: Exception) {
             Log.e("WorkoutLogRepositoryImpl", "deleteWorkoutLog", e)
 
