@@ -46,6 +46,10 @@ class WorkoutLogItemAdapter: RecyclerView.Adapter<WorkoutLogItemViewHolder>() {
         diffUtilResult.dispatchUpdatesTo(this)
     }
 
+    fun setOnItemClickListener(listener: (WorkoutLogItem) -> Unit) {
+        onItemClickListener = listener
+    }
+
     fun getItem(position: Int): WorkoutLogItem {
         return workoutLogItems[position]
     }

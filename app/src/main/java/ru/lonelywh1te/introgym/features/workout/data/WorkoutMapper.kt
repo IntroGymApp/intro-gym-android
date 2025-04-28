@@ -37,7 +37,7 @@ fun Workout.toWorkoutEntity(): WorkoutEntity {
         id = this.id,
         name = this.name,
         description = this.description,
-        isTemplate = true,
+        isTemplate = this.isTemplate,
         order = this.order,
         createdAt = this.createdAt,
         lastUpdated = this.lastUpdated,

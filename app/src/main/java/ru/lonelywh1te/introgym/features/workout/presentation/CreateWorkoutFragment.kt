@@ -102,7 +102,7 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
     }
 
     private fun navigateToExercisePickFragment() {
-        val action = CreateWorkoutFragmentDirections.toExerciseCategoriesFragment(true, R.id.workoutEditorFragment)
+        val action = CreateWorkoutFragmentDirections.actionPickExercise(R.id.createWorkoutFragment)
         findNavController().safeNavigate(action)
     }
 

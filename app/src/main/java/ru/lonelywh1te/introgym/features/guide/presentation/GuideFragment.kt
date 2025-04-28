@@ -28,7 +28,7 @@ class GuideFragment : Fragment() {
     }
 
     private fun navigateToExerciseSection() {
-        val action = GuideFragmentDirections.toExerciseCategoriesFragment(false, R.id.guideFragment)
+        val action = GuideFragmentDirections.toExerciseCategoriesFragment(R.id.guideFragment)
         findNavController().safeNavigate(action)
     }
 }

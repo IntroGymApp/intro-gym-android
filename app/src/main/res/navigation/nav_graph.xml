@@ -23,13 +23,10 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
-        android:id="@+id/workoutEditorFragment"
+        android:id="@+id/createWorkoutFragment"
         android:name="ru.lonelywh1te.introgym.features.workout.presentation.CreateWorkoutFragment"
         android:label="@string/label_workout"
         tools:layout="@layout/fragment_create_workout">
-        <action
-            android:id="@+id/to_exerciseCategoriesFragment"
-            app:destination="@id/exerciseCategoriesFragment" />
         <action
             android:id="@+id/to_workoutExercisePlanEditorFragment"
             app:destination="@id/workoutExercisePlanEditorFragment" />
@@ -112,7 +109,11 @@
             app:argType="integer" />
         <action
             android:id="@+id/to_exerciseCategoriesFragment"
-            app:destination="@id/exerciseCategoriesFragment" />
+            app:destination="@id/exerciseCategoriesFragment" >
+            <argument
+                android:name="isPickMode"
+                android:defaultValue="false" />
+        </action>
     </fragment>
     <navigation android:id="@+id/onboarding"
         app:startDestination="@id/helloFragment">
@@ -231,8 +232,8 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <action
-            android:id="@+id/to_workoutsFragment"
-            app:destination="@id/workoutsFragment" />
+            android:id="@+id/to_workoutFragment"
+            app:destination="@id/workoutFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -254,7 +255,7 @@
             app:destination="@id/workoutFragment" />
         <action
             android:id="@+id/to_workoutEditorFragment"
-            app:destination="@id/workoutEditorFragment" />
+            app:destination="@id/createWorkoutFragment" />
         <argument
             android:name="isPickMode"
             app:argType="boolean"
@@ -271,9 +272,16 @@
         <action
             android:id="@+id/to_workoutExercisePlanEditorFragment"
             app:destination="@id/workoutExercisePlanEditorFragment" />
-        <action
-            android:id="@+id/to_exerciseCategoriesFragment"
-            app:destination="@id/exerciseCategoriesFragment" />
     </fragment>
+    <action android:id="@+id/action_pick_workout" app:destination="@id/workoutsFragment" >
+        <argument
+            android:name="isPickMode"
+            android:defaultValue="true" />
+    </action>
+    <action android:id="@+id/action_pick_exercise" app:destination="@id/exerciseCategoriesFragment" >
+        <argument
+            android:name="isPickMode"
+            android:defaultValue="true" />
+    </action>
 
 </navigation>
