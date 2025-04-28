@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/Widget.IntroGym.ListCard.Selectable"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/igCardBackgroundColor"
     android:layout_marginBottom="10dp">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"

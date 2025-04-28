@@ -11,7 +11,6 @@ import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
 import ru.lonelywh1te.introgym.databinding.ItemWorkoutLogBinding
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 
 class WorkoutLogItemAdapter: RecyclerView.Adapter<WorkoutLogItemViewHolder>() {
     private var onItemClickListener: ((workoutLogItem: WorkoutLogItem) -> Unit)? = null
@@ -54,7 +53,22 @@ class WorkoutLogItemAdapter: RecyclerView.Adapter<WorkoutLogItemViewHolder>() {
 
 class WorkoutLogItemViewHolder(private val binding: ItemWorkoutLogBinding): RecyclerView.ViewHolder(binding.root) {
     fun bind(item: WorkoutLogItem) {
-        binding.tvWorkoutName.text = item.workoutName
+        binding.tvWorkoutName.apply {
+            text = item.workoutName
+
+            when(item.state) {
+                WorkoutLogState.NotStarted -> {
+                    setTextColor(MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor))
+                }
+                WorkoutLogState.InProgress -> {
+                    setTextColor(MaterialColors.getColor(binding.root, R.attr.igWarningColor))
+                }
+                WorkoutLogState.Finished -> {
+                    setTextColor(MaterialColors.getColor(binding.root, R.attr.igPrimaryColor))
+                }
+            }
+        }
+
         binding.tvWorkoutDescription.apply {
             text = item.workoutDescription
             visibility = if (text.isBlank()) View.GONE else View.VISIBLE
@@ -79,6 +93,20 @@ class WorkoutLogItemViewHolder(private val binding: ItemWorkoutLogBinding): Recy
             }
         }
 
+        binding.ivStateIndicator.drawable.apply {
+            when(item.state) {
+                WorkoutLogState.NotStarted -> {
+                    setTint(MaterialColors.getColor(binding.root, R.attr.igTextSecondaryColor))
+                }
+                WorkoutLogState.InProgress -> {
+                    setTint(MaterialColors.getColor(binding.root, R.attr.igWarningColor))
+                }
+                WorkoutLogState.Finished -> {
+                    setTint(MaterialColors.getColor(binding.root, R.attr.igPrimaryColor))
+                }
+            }
+        }
+
         binding.root.apply {
             strokeColor = when(item.state) {
                 WorkoutLogState.NotStarted -> {
@@ -92,6 +120,13 @@ class WorkoutLogItemViewHolder(private val binding: ItemWorkoutLogBinding): Recy
                 WorkoutLogState.Finished -> {
                     MaterialColors.getColor(binding.root, R.attr.igPrimaryColor)
                 }
+            }
+        }
+
+        binding.layout.apply {
+            alpha = when(item.state) {
+                WorkoutLogState.Finished -> 0.5f
+                else -> 1f
             }
         }
     }
