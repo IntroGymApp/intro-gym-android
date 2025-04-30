@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.app
 
 import android.app.Application
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -11,8 +12,12 @@ import ru.lonelywh1te.introgym.features.guide.guideModule
 import ru.lonelywh1te.introgym.features.home.homeModule
 import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
 import ru.lonelywh1te.introgym.features.workout.workoutModule
+import ru.lonelywh1te.introgym.notifications.NotificationChannelManager
+import ru.lonelywh1te.introgym.notifications.notificationModule
 
 class App: Application() {
+    private val notificationChannelManager by inject<NotificationChannelManager>()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -26,7 +31,10 @@ class App: Application() {
                 onboardingModule,
                 workoutModule,
                 homeModule,
+                notificationModule,
             )
         }
+
+        notificationChannelManager.initChannels()
     }
 }
