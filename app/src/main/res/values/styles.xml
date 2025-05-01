@@ -56,6 +56,10 @@
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Bold</item>
     </style>
 
+    <style name="Widget.IntroGym.Button.Rounded">
+        <item name="cornerRadius">100dp</item>
+    </style>
+
     <style name="Widget.IntroGym.Button.Black">
         <item name="backgroundTint">?attr/igTextPrimaryColor</item>
     </style>
@@ -84,6 +88,12 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="iconTint">?attr/igIconStaticColor</item>
+    </style>
+
+    <style name="Widget.IntroGym.IconButton.Filled" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="iconTint">?attr/igOnPrimaryColor</item>
     </style>
 
     <style name="Widget.IntroGym.SegmentedButton" parent="Widget.Material3.Button.IconButton.Filled">

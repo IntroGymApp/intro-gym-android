@@ -24,7 +24,11 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlansUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.StartWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.StopWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.CreateWorkoutFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutControlViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
@@ -145,6 +149,24 @@ val workoutDomainModule = module {
             repository = get(),
         )
     }
+
+    factory<GetWorkoutLogUseCase> {
+        GetWorkoutLogUseCase(
+            repository = get()
+        )
+    }
+
+    factory<StartWorkoutUseCase> {
+        StartWorkoutUseCase(
+            repository = get()
+        )
+    }
+
+    factory<StopWorkoutUseCase> {
+        StopWorkoutUseCase(
+            repository = get()
+        )
+    }
 }
 
 val workoutPresentationModule = module {
@@ -182,6 +204,14 @@ val workoutPresentationModule = module {
             moveWorkoutExerciseUseCase = get(),
             deleteWorkoutExerciseUseCase = get(),
             updateWorkoutUseCase = get(),
+        )
+    }
+
+    viewModel<WorkoutControlViewModel> {
+        WorkoutControlViewModel(
+            getWorkoutLogUseCase = get(),
+            startWorkoutUseCase = get(),
+            stopWorkoutUseCase = get(),
         )
     }
 }

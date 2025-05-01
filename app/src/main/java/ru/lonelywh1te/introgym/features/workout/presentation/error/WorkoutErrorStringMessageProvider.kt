@@ -22,5 +22,6 @@ fun WorkoutError.getStringRes(): Int {
         WorkoutError.WORKOUT_EMPTY_NAME -> R.string.workout_error_empty_name
         WorkoutError.WORKOUT_HAS_NO_EXERCISES -> R.string.workout_error_has_no_exercises
         WorkoutError.WORKOUT_EXERCISES_AND_PLANS_MISMATCH -> R.string.workout_error_exercise_and_plans_mismatch
+        WorkoutError.WORKOUT_ALREADY_STARTED -> R.string.label_workout_error_already_started
     }
 }

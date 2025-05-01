@@ -14,6 +14,12 @@ interface WorkoutLogDao {
     @Query("select * from workout_log where date = :date")
     fun getWorkoutLogListByDate(date: LocalDate): Flow<List<WorkoutLogEntity>>
 
+    @Query("select * from workout_log where workout_id = :workoutId")
+    fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<WorkoutLogEntity>
+
+    @Query("select * from workout_log where start_datetime is not null and end_datetime is null")
+    suspend fun getWorkoutLogWithStartDateNotNull(): WorkoutLogEntity?
+
     @Query("select count(*) from workout_log where date = :date")
     suspend fun getCountOfWorkoutLogAtDate(date: LocalDate): Int
 

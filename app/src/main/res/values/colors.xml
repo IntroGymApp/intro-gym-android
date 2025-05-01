@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="accent_color">#7FBB47</color>
+    <color name="accent_color_light">#D9EBC8</color>
     <color name="foreground_color">#1F1F1F</color>
     <color name="background_color">#F1F1F1</color>
     <color name="plate_color">#FFFFFF</color>
@@ -8,4 +9,5 @@
     <color name="dark_hint_color">#989898</color>
     <color name="red_color">#EE534A</color>
     <color name="orange_color">#FBAF44</color>
+    <color name="orange_color_light">#FFE2B6</color>
 </resources>

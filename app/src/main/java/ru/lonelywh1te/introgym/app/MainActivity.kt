@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -7,17 +8,23 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
+import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
+import ru.lonelywh1te.introgym.features.workout.presentation.WorkoutTrackingService
+import java.time.LocalDateTime
 
 private const val LOG_TAG = "MainActivity"
 
@@ -44,6 +51,8 @@ class MainActivity : AppCompatActivity(), UIController {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateInsets(destination)
         }
+
+        restoreWorkoutTrackerService()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -91,6 +100,29 @@ class MainActivity : AppCompatActivity(), UIController {
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
         navGraph.setStartDestination(startDestination)
         navController.setGraph(navGraph, null)
+    }
+
+    private fun restoreWorkoutTrackerService() {
+        lifecycleScope.launch {
+            val workoutLogRepository: WorkoutLogRepository by inject()
+
+            workoutLogRepository.getWorkoutLogWithStartDateTime()
+                .onSuccess {
+                    if (it != null) startWorkoutTrackingService(it.startDateTime)
+                }
+        }
+    }
+
+
+    private fun startWorkoutTrackingService(startDateTime: LocalDateTime? = null) {
+        startService(
+            Intent(this, WorkoutTrackingService::class.java).apply {
+                action = WorkoutTrackingService.ACTION_START
+                startDateTime?.let { startDateTime ->
+                    putExtra(WorkoutTrackingService.START_LOCAL_DATE_TIME_EXTRA, startDateTime.toString())
+                }
+            }
+        )
     }
 
     override fun setToolbarVisibility(visible: Boolean) {

@@ -7,12 +7,15 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
+import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
@@ -27,6 +30,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.MoveWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.UpdateWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
 
 class WorkoutFragmentViewModel(
     private val getWorkoutUseCase: GetWorkoutByIdUseCase,
@@ -43,18 +47,18 @@ class WorkoutFragmentViewModel(
     private val updateWorkoutExercisePlanUseCase: UpdateWorkoutExercisePlanUseCase,
 ): ViewModel() {
     private val _workout: MutableStateFlow<Workout?> = MutableStateFlow(null)
-    val workout: StateFlow<Workout?> get() = _workout
+    val workout get() = _workout.asStateFlow()
 
     private val workoutExercises: MutableStateFlow<List<WorkoutExercise>> = MutableStateFlow(emptyList())
 
     private val _workoutExerciseItems: MutableStateFlow<List<WorkoutExerciseItem>> = MutableStateFlow(emptyList())
-    val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> get() = _workoutExerciseItems
+    val workoutExerciseItems get() = _workoutExerciseItems.asStateFlow()
 
     private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors: SharedFlow<Error> get() = _errors
+    val errors get() = _errors.asSharedFlow()
 
     private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()
-    val workoutDeleted: SharedFlow<Unit> get() = _workoutDeleted
+    val workoutDeleted get() = _workoutDeleted.asSharedFlow()
 
     private val dispatcher = Dispatchers.IO
 

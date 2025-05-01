@@ -8,33 +8,81 @@
     android:paddingHorizontal="20dp"
     tools:context=".features.workout.presentation.WorkoutFragment">
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_workout_control_panel"
+        style="@style/Widget.IntroGym.ListCard"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="20dp">
+
+            <Button
+                android:id="@+id/btn_start_workout"
+                style="@style/Widget.IntroGym.Button.Rounded"
+                android:layout_width="150dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/label_start"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Bold"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_stop_workout"
+                style="@style/Widget.IntroGym.Button.Rounded"
+                android:layout_width="150dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/label_finish"
+                android:backgroundTint="?attr/igHintColor"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_execution_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                android:text="00:00:00" />
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
     <EditText
         android:id="@+id/et_workout_name"
         style="@style/Widget.IntroGym.TextView.Title"
-        android:background="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:background="@null"
+        android:hint="@string/label_workout_name"
         android:inputType="textShortMessage"
         android:maxLength="32"
+        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="@string/label_workout_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/cv_workout_control_panel" />
 
     <EditText
         android:id="@+id/et_workout_description"
-        android:background="@null"
         style="@style/Widget.IntroGym.TextView.Body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/label_workout_comment"
         android:maxLength="128"
         android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_workout_name"
-        android:hint="@string/label_workout_comment" />
+        app:layout_constraintTop_toBottomOf="@+id/et_workout_name" />
 
     <TextView
         android:id="@+id/tv_workout_exercises"
@@ -64,10 +112,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_workout_exercises"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_exercise" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

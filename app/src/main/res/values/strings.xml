@@ -117,5 +117,7 @@
     <string name="label_workout_log_state_not_started">не начата</string>
     <string name="label_workout_log_state_in_progress">в процессе</string>
     <string name="label_workout_log_state_finished">завершена</string>
+    <string name="label_finish">Завершить</string>
+    <string name="label_workout_error_already_started">Завершите другую тренировку, чтобы начать новую.</string>
 
 </resources>

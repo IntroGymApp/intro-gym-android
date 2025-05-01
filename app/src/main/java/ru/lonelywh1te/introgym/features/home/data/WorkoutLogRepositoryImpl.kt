@@ -44,6 +44,35 @@ class WorkoutLogRepositoryImpl(
             }
     }
 
+    override fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<Result<WorkoutLog>> {
+        return workoutLogDao.getWorkoutLogByWorkoutId(workoutId)
+            .map<WorkoutLogEntity, Result<WorkoutLog>> { workoutLogEntity ->
+                Result.Success(workoutLogEntity.toWorkoutLog())
+            }
+            .catch { e ->
+                Log.e("WorkoutLogRepositoryImpl", "getWorkoutLogItemList", e)
+
+                when (e) {
+                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                    else -> Result.Failure(AppError.UNKNOWN)
+                }
+            }
+    }
+
+    override suspend fun getWorkoutLogWithStartDateTime(): Result<WorkoutLog?> {
+        return try {
+            Result.Success(workoutLogDao.getWorkoutLogWithStartDateNotNull()?.toWorkoutLog())
+        } catch (e: Exception) {
+            Log.e("WorkoutLogRepositoryImpl", "updateWorkoutLog", e)
+
+            when (e) {
+                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                else -> Result.Failure(AppError.UNKNOWN)
+            }
+
+        }
+    }
+
     private fun mapWorkoutLogEntities(list: List<WorkoutLogEntity>): List<WorkoutLogItem> {
         return list.map { workoutLogEntity ->
             val workoutEntityWithCountOfExercises = workoutDao.getWorkoutWithCountOfExercises(workoutLogEntity.workoutId)

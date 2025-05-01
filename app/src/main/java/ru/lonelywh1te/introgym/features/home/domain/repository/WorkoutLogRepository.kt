@@ -10,6 +10,10 @@ interface WorkoutLogRepository {
 
     fun getWorkoutLogItemList(date: LocalDate): Flow<Result<List<WorkoutLogItem>>>
 
+    fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<Result<WorkoutLog>>
+
+    suspend fun getWorkoutLogWithStartDateTime(): Result<WorkoutLog?>
+
     suspend fun updateWorkoutLog(workoutLog: WorkoutLog): Result<Unit>
 
     suspend fun addWorkoutLog(workoutLog: WorkoutLog): Result<Unit>
