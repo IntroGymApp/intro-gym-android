@@ -18,7 +18,7 @@
 
 
     <style name="TextAppearance.IntroGym.Title1" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">?attr/igTextPrimaryColor</item>
     </style>
 
@@ -57,7 +57,7 @@
     </style>
 
     <style name="TextAppearance.IntroGym.Title3.Regular">
-        <item name="fontFamily">@font/geist_thin</item>
+        <item name="fontFamily">@font/geist_regular</item>
     </style>
 
 

@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,13 +13,13 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
@@ -47,8 +46,22 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.setWorkoutExercise(args.workoutExercise)
-        viewModel.setWorkoutExercisePlan(args.workoutExercisePlan)
+        val workoutExerciseId = args.workoutExerciseId
+        val workoutExercise = args.workoutExercise
+        val workoutExercisePlan = args.workoutExercisePlan
+
+        when {
+            workoutExerciseId != -1L -> {
+                viewModel.setWorkoutExerciseId(workoutExerciseId)
+            }
+            workoutExercise != null && workoutExercisePlan != null -> {
+                viewModel.setWorkoutExercise(workoutExercise)
+                viewModel.setWorkoutExercisePlan(workoutExercisePlan)
+            }
+            else -> {
+                throw IllegalArgumentException("Expected workoutExerciseId or pair of WorkoutExercise and WorkoutExercisePlan")
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -83,28 +96,23 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     }
 
     private fun startCollectFlows(savedInstanceState: Bundle?) {
-        viewModel.exerciseName.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                if (it.isBlank()) return@onEach
-
-                binding.tvExerciseName.text = it
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.exerciseAnimFilename.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                if (it.isBlank()) return@onEach
-
-                ImageLoader(requireContext()).load(
-                    uri = AssetPath.get(AssetType.EXERCISE_ANIMATION, it),
-                    imageView = binding.ivExerciseAnimation
-                )
+        viewModel.exercise.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { exercise ->
+                exercise?.let {
+                    binding.tvExerciseName.text = exercise.name
+                    ImageLoader(requireContext()).load(
+                        uri = AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename),
+                        imageView = binding.ivExerciseAnimation
+                    )
+                }
             }
             .launchIn(lifecycleScope)
 
         viewModel.workoutExercisePlan.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                setWorkoutExercisePlanData(it, savedInstanceState)
+            .onEach { workoutExercisePlan ->
+                workoutExercisePlan?.let {
+                    setWorkoutExercisePlanData(it, savedInstanceState)
+                }
             }
             .launchIn(lifecycleScope)
 
@@ -153,19 +161,27 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         }
     }
 
-    private fun saveWorkoutExercisePlan() {
-        val sets = if (binding.etPlanSets.isVisible) binding.etPlanSets.text.toString() else ""
-        val reps = if (binding.etPlanReps.isVisible) binding.etPlanReps.text.toString() else ""
-        val weight = if (binding.etPlanWeight.isVisible) binding.etPlanWeight.text.toString() else ""
-        val time = if (binding.etPlanTime.isVisible && binding.etPlanTime.text.toString().isNotBlank()) {
-            LocalTime.parse(binding.etPlanTime.text.toString(), DateAndTimeStringFormatUtils.fullTimeFormatter).toSecondOfDay().toString()
-        } else ""
-        val distance = if (binding.etPlanDistance.isVisible) binding.etPlanDistance.text.toString() else ""
+    private fun saveChanges() {
+        lifecycleScope.launch {
+            val sets = if (binding.etPlanSets.isVisible) binding.etPlanSets.text.toString() else ""
+            val reps = if (binding.etPlanReps.isVisible) binding.etPlanReps.text.toString() else ""
+            val weight = if (binding.etPlanWeight.isVisible) binding.etPlanWeight.text.toString() else ""
+            val time = if (binding.etPlanTime.isVisible && binding.etPlanTime.text.toString().isNotBlank()) {
+                LocalTime.parse(binding.etPlanTime.text.toString(), DateAndTimeStringFormatUtils.fullTimeFormatter).toSecondOfDay().toString()
+            } else ""
+            val distance = if (binding.etPlanDistance.isVisible) binding.etPlanDistance.text.toString() else ""
 
-        viewModel.updateWorkoutPlanExercise(sets, reps, weight, time, distance)
-        setWorkoutExercisePlanFragmentResult()
+            viewModel.setWorkoutPlanExercise(sets, reps, weight, time, distance)
 
-        findNavController().navigateUp()
+            if (viewModel.workoutExerciseId.value != null) {
+                viewModel.updateWorkoutExercisePlan()
+                viewModel.updateWorkoutExerciseComment(binding.etExerciseComment.text.toString())
+            } else {
+                setWorkoutExercisePlanFragmentResult()
+            }
+
+            findNavController().navigateUp()
+        }
     }
 
     private fun setWorkoutExercisePlanFragmentResult() {
@@ -217,7 +233,7 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         when (menuItem.itemId) {
             android.R.id.home -> findNavController().navigateUp()
             R.id.exerciseInfo -> navigateToExerciseInfoFragment()
-            R.id.saveWorkoutExercisePlan -> saveWorkoutExercisePlan()
+            R.id.saveWorkoutExercisePlan -> saveChanges()
         }
 
         return true

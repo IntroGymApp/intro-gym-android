@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.LayoutInflater
@@ -28,31 +27,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.core.ui.dialogs.SubmitDialogFragment
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
-import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutControlViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import java.time.LocalDateTime
 
 class WorkoutFragment : Fragment(), MenuProvider {
-
     private var _binding: FragmentWorkoutBinding? = null
     private val binding get() = _binding!!
 
     private val args by navArgs<WorkoutFragmentArgs>()
     private val viewModel by viewModel<WorkoutFragmentViewModel>()
-    private val workoutControlViewModel by viewModel<WorkoutControlViewModel>()
 
     private lateinit var recycler: RecyclerView
     private lateinit var workoutExerciseItemAdapter: WorkoutExerciseItemAdapter
@@ -78,8 +75,9 @@ class WorkoutFragment : Fragment(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.loadWorkout(args.workoutId)
-        workoutControlViewModel.loadWorkoutLog(args.workoutId)
+        viewModel.loadWorkoutLog(args.workoutId)
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
@@ -91,7 +89,19 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
         workoutExerciseItemAdapter = WorkoutExerciseItemAdapter().apply {
             setOnItemClickListener { item ->
-                navigateToEditWorkoutExercisePlan(item.workoutExerciseId)
+                val workoutState = viewModel.workoutLog.value?.let { WorkoutLogState.get(it) }
+
+                when (workoutState) {
+                    WorkoutLogState.InProgress -> {
+                        navigateToWorkoutExerciseExecution(item.workoutExerciseId)
+                    }
+                    WorkoutLogState.Finished -> {
+                        navigateToWorkoutExerciseExecution(item.workoutExerciseId)
+                    }
+                    else -> {
+                        navigateToEditWorkoutExercisePlan(item.workoutExerciseId)
+                    }
+                }
             }
         }
 
@@ -105,7 +115,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
             swipeDirs = ItemTouchHelper.LEFT,
         ).apply {
             setOnMoveListener { from, to ->
-                viewModel.moveWorkoutExerciseItem(from, to)
+                workoutExerciseItemAdapter.move(from, to)
             }
 
             setOnMoveFinishedListener { from, to ->
@@ -125,11 +135,11 @@ class WorkoutFragment : Fragment(), MenuProvider {
         }
 
         binding.btnStartWorkout.setOnClickListener {
-            workoutControlViewModel.startWorkout()
+            viewModel.startWorkout()
         }
 
         binding.btnStopWorkout.setOnClickListener {
-            workoutControlViewModel.stopWorkout()
+            viewModel.stopWorkout()
 
             stopWorkoutTrackingService()
             unbindWorkoutTrackerService()
@@ -177,12 +187,11 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
     private fun startCollectFlows() {
         viewModel.workout.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .filterNotNull()
             .onEach { workout ->
-                workout?.let {
-                    binding.etWorkoutName.setText(workout.name)
-                    binding.etWorkoutDescription.setText(workout.description)
-                    binding.cvWorkoutControlPanel.isVisible = !it.isTemplate
-                }
+                binding.etWorkoutName.setText(workout.name)
+                binding.etWorkoutDescription.setText(workout.description)
+                binding.cvWorkoutControlPanel.isVisible = !workout.isTemplate
             }
             .launchIn(lifecycleScope)
 
@@ -202,32 +211,27 @@ class WorkoutFragment : Fragment(), MenuProvider {
             }
             .launchIn(lifecycleScope)
 
-        workoutControlViewModel.workoutLog.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+        viewModel.workoutLog.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .filterNotNull()
             .onEach { workoutLog ->
-                // TODO: переделать
+                when (WorkoutLogState.get(workoutLog)) {
+                    WorkoutLogState.NotStarted -> {
+                        binding.cvWorkoutControlPanel.isVisible = true
+                        binding.btnStartWorkout.isVisible = true
+                        binding.btnStopWorkout.isVisible = false
+                    }
+                    WorkoutLogState.InProgress -> {
+                        binding.cvWorkoutControlPanel.isVisible = true
+                        binding.btnStartWorkout.isVisible = false
+                        binding.btnStopWorkout.isVisible = true
 
-                workoutLog?.let {
-                    val workoutState = WorkoutLogState.get(workoutLog)
+                        startWorkoutTrackingService(workoutLog.startDateTime)
+                        bindWorkoutTrackerService()
+                    }
+                    WorkoutLogState.Finished -> {
+                        // TODO: добавить панель итогов
 
-                    when (workoutState) {
-                        WorkoutLogState.NotStarted -> {
-                            binding.cvWorkoutControlPanel.isVisible = true
-                            binding.btnStartWorkout.isVisible = true
-                            binding.btnStopWorkout.isVisible = false
-                        }
-                        WorkoutLogState.InProgress -> {
-                            binding.cvWorkoutControlPanel.isVisible = true
-                            binding.btnStartWorkout.isVisible = false
-                            binding.btnStopWorkout.isVisible = true
-
-                            startWorkoutTrackingService(workoutLog.startDateTime)
-                            bindWorkoutTrackerService()
-                        }
-                        WorkoutLogState.Finished -> {
-                            // TODO: добавить панель итогов
-                            
-                            binding.cvWorkoutControlPanel.isVisible = false
-                        }
+                        binding.cvWorkoutControlPanel.isVisible = false
                     }
                 }
             }
@@ -239,36 +243,24 @@ class WorkoutFragment : Fragment(), MenuProvider {
             val pickedExerciseId = bundle.getLong(ExerciseListFragment.PICK_RESULT_BUNDLE_KEY)
             viewModel.addWorkoutExercise(pickedExerciseId)
         }
-
-        setFragmentResultListener(WorkoutExercisePlanEditorFragment.FRAGMENT_REQUEST_KEY) { _, bundle ->
-            val workoutExercisePlan = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getParcelable(WorkoutExercisePlanEditorFragment.WORKOUT_EXERCISE_PLAN_BUNDLE_KEY, WorkoutExercisePlan::class.java)
-            } else {
-                bundle.getParcelable(WorkoutExercisePlanEditorFragment.WORKOUT_EXERCISE_PLAN_BUNDLE_KEY)
-            }
-
-            val workoutExerciseComment = bundle.getString(WorkoutExercisePlanEditorFragment.WORKOUT_EXERCISE_COMMENT_BUNDLE_KEY, "")
-
-            workoutExercisePlan?.let { plan ->
-                viewModel.updateWorkoutExercisePlan(plan)
-                viewModel.updateWorkoutExerciseComment(plan.workoutExerciseId, workoutExerciseComment)
-            }
-        }
     }
 
     private fun navigateToPickExerciseFragment() {
         val action = WorkoutFragmentDirections.actionPickExercise(R.id.workoutFragment)
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
     }
 
     private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: Long) {
-        val workoutExercise = viewModel.getWorkoutExerciseById(workoutExerciseId)
-
         val action = WorkoutFragmentDirections.toWorkoutExercisePlanEditorFragment(
-            workoutExercise = workoutExercise
+            workoutExerciseId = workoutExerciseId
         )
 
-        findNavController().navigate(action)
+        findNavController().safeNavigate(action)
+    }
+
+    private fun navigateToWorkoutExerciseExecution(workoutExerciseId: Long) {
+        val action = WorkoutFragmentDirections.toWorkoutExecutionFragment(workoutExerciseId)
+        findNavController().safeNavigate(action)
     }
 
     private fun updateWorkout() {

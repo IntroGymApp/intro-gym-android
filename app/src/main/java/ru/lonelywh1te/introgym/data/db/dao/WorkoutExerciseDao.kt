@@ -19,7 +19,7 @@ interface WorkoutExerciseDao {
     fun getWorkoutExercisesWithExerciseInfo(workoutId: Long): Flow<List<WorkoutExerciseWithExerciseInfo>>
 
     @Query("select * from workout_exercise where id = :id")
-    fun getWorkoutExerciseById(id: Long): WorkoutExerciseEntity
+    fun getWorkoutExerciseById(id: Long): Flow<WorkoutExerciseEntity>
 
     @Query("""
         select * 

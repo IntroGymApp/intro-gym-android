@@ -44,10 +44,10 @@ class WorkoutLogRepositoryImpl(
             }
     }
 
-    override fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<Result<WorkoutLog>> {
+    override fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<Result<WorkoutLog?>> {
         return workoutLogDao.getWorkoutLogByWorkoutId(workoutId)
-            .map<WorkoutLogEntity, Result<WorkoutLog>> { workoutLogEntity ->
-                Result.Success(workoutLogEntity.toWorkoutLog())
+            .map<WorkoutLogEntity?, Result<WorkoutLog?>> { workoutLogEntity ->
+                Result.Success(workoutLogEntity?.toWorkoutLog())
             }
             .catch { e ->
                 Log.e("WorkoutLogRepositoryImpl", "getWorkoutLogItemList", e)

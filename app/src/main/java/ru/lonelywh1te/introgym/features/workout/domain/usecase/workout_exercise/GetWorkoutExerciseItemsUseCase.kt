@@ -6,7 +6,7 @@ import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 
-class GetWorkoutExerciseItemsByWorkoutIdUseCase(
+class GetWorkoutExerciseItemsUseCase(
     private val repository: WorkoutExerciseRepository,
 ) {
     operator fun invoke(workoutId: Long): Flow<Result<List<WorkoutExerciseItem>>> {

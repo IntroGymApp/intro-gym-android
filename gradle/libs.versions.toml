@@ -1,7 +1,7 @@
 [versions]
-agp = "8.8.2"
+agp = "8.7.3"
 kotlin = "2.1.20"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -10,7 +10,7 @@ material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
 ksp = "2.1.20-1.0.31"
-room = "2.6.1"
+room = "2.7.1"
 gson = "2.12.1"
 junitJupiter = "5.8.2"
 koin = "4.0.2"
@@ -48,7 +48,6 @@ mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "moc
 mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockk" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
 navigation-ui = {group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation"}
-navigation-safeargs-gradle-plugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 flexbox-layout = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
 

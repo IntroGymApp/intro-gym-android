@@ -13,22 +13,24 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWor
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.MoveWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.AddWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.DeleteWorkoutExerciseUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsByWorkoutIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsWithProgressUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExercisesUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.MoveWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.UpdateWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlansUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.StartWorkoutUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.StopWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.StartWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.StopWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.CreateWorkoutFragmentViewModel
-import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutControlViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
@@ -48,6 +50,7 @@ val workoutDataModule = module {
             db = get(),
             workoutExerciseDao = get(),
             workoutExercisePlanDao = get(),
+            exerciseSetDao = get(),
         )
     }
 
@@ -78,8 +81,14 @@ val workoutDomainModule = module {
         )
     }
 
-    factory<GetWorkoutExerciseItemsByWorkoutIdUseCase> {
-        GetWorkoutExerciseItemsByWorkoutIdUseCase(
+    factory<GetWorkoutExerciseItemsUseCase> {
+        GetWorkoutExerciseItemsUseCase(
+            repository = get(),
+        )
+    }
+
+    factory<GetWorkoutExerciseItemsWithProgressUseCase> {
+        GetWorkoutExerciseItemsWithProgressUseCase(
             repository = get(),
         )
     }
@@ -150,11 +159,11 @@ val workoutDomainModule = module {
         )
     }
 
-    factory<GetWorkoutLogUseCase> {
-        GetWorkoutLogUseCase(
-            repository = get()
-        )
-    }
+//    factory<GetWorkoutLogUseCase> {
+//        GetWorkoutLogUseCase(
+//            repository = get()
+//        )
+//    }
 
     factory<StartWorkoutUseCase> {
         StartWorkoutUseCase(
@@ -164,6 +173,18 @@ val workoutDomainModule = module {
 
     factory<StopWorkoutUseCase> {
         StopWorkoutUseCase(
+            repository = get()
+        )
+    }
+
+    factory<GetWorkoutExerciseUseCase> {
+        GetWorkoutExerciseUseCase(
+            repository = get()
+        )
+    }
+
+    factory<GetWorkoutLogUseCase> {
+        GetWorkoutLogUseCase(
             repository = get()
         )
     }
@@ -189,29 +210,33 @@ val workoutPresentationModule = module {
         WorkoutExercisePlanEditorFragmentViewModel(
             getExerciseUseCase = get(),
             getWorkoutExercisePlanUseCase = get(),
+            getWorkoutExerciseUseCase = get(),
+            updateWorkoutExerciseUseCase = get(),
+            updateWorkoutExercisePlanUseCase = get(),
         )
     }
 
     viewModel<WorkoutFragmentViewModel> {
         WorkoutFragmentViewModel(
             getWorkoutUseCase = get(),
-            getWorkoutExercisesUseCase = get(),
-            getWorkoutExerciseItemsByWorkoutIdUseCase = get(),
+            getWorkoutExerciseItemsUseCase = get(),
             addWorkoutExerciseUseCase = get(),
             deleteWorkoutUseCase = get(),
-            updateWorkoutExerciseUseCase = get(),
-            updateWorkoutExercisePlanUseCase = get(),
             moveWorkoutExerciseUseCase = get(),
             deleteWorkoutExerciseUseCase = get(),
             updateWorkoutUseCase = get(),
+            getWorkoutExerciseItemsWithProgressUseCase = get(),
+            startWorkoutUseCase = get(),
+            stopWorkoutUseCase = get(),
+            getWorkoutLogUseCase = get(),
         )
     }
 
-    viewModel<WorkoutControlViewModel> {
-        WorkoutControlViewModel(
-            getWorkoutLogUseCase = get(),
-            startWorkoutUseCase = get(),
-            stopWorkoutUseCase = get(),
+    viewModel<WorkoutExerciseExecutionViewModel> {
+        WorkoutExerciseExecutionViewModel(
+            getExerciseUseCase = get(),
+            getWorkoutExerciseUseCase = get(),
+            getWorkoutExercisePlanUseCase = get(),
         )
     }
 }

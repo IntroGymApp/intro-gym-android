@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    tools:context=".features.workout.presentation.WorkoutExerciseExecutionFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:id="@+id/iv_exercise_animation"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/tv_exercise_name"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_exercise_animation"
+            tools:text="Название упражнения" />
+
+        <TextView
+            android:id="@+id/tv_exercise_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_exercise_name"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="Комментарий пользователя" />
+
+        <TextView
+            android:id="@+id/tv_effort_title"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title3.Regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_exercise_comment"
+            android:text="@string/label_effort" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/group_effort_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_effort_title">
+
+            <Button
+                android:id="@+id/btn_warm_up_effort"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Размин." />
+
+
+            <Button
+                android:id="@+id/btn_low_effort"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Низк." />
+
+
+            <Button
+                android:id="@+id/btn_mid_effort"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Средн." />
+
+
+            <Button
+                android:id="@+id/btn_hard_effort"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Высок." />
+
+
+            <Button
+                android:id="@+id/btn_max_effort"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Макс." />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <LinearLayout
+            android:id="@+id/ll_weight_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_rounded_plate_filled"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_effort_buttons">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:text="@string/label_weight"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                android:textColor="?attr/igPrimaryColor"
+                app:drawableStartCompat="@drawable/ic_weight"
+                app:drawableTint="?attr/igPrimaryColor" />
+
+            <Button
+                android:id="@+id/btn_minus_weight"
+                style="@style/Widget.IntroGym.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_minus" />
+
+            <EditText
+                android:id="@+id/et_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                tools:hint="0" />
+
+            <Button
+                android:id="@+id/btn_plus_weight"
+                style="@style/Widget.IntroGym.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_plus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_reps_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_rounded_plate_filled"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_weight_input">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:text="@string/label_reps"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                android:textColor="?attr/igPrimaryColor"
+                app:drawableStartCompat="@drawable/ic_repeat"
+                app:drawableTint="?attr/igPrimaryColor" />
+
+            <Button
+                android:id="@+id/btn_minus_reps"
+                style="@style/Widget.IntroGym.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_minus" />
+
+            <EditText
+                android:id="@+id/et_reps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                tools:hint="0" />
+
+            <Button
+                android:id="@+id/btn_plus_reps"
+                style="@style/Widget.IntroGym.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_plus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_distance_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_rounded_plate_filled"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_reps_input">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:text="@string/label_distance"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                android:textColor="?attr/igPrimaryColor"
+                app:drawableStartCompat="@drawable/ic_distance"
+                app:drawableTint="?attr/igPrimaryColor" />
+
+            <Button
+                android:id="@+id/btn_minus_distance"
+                style="@style/Widget.IntroGym.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_minus" />
+
+            <EditText
+                android:id="@+id/et_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                tools:hint="0" />
+
+            <Button
+                android:id="@+id/btn_plus_distance"
+                style="@style/Widget.IntroGym.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:icon="@drawable/ic_plus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_time_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_rounded_plate_filled"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_distance_input">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:text="@string/label_time"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                android:textColor="?attr/igPrimaryColor"
+                app:drawableStartCompat="@drawable/ic_time"
+                app:drawableTint="?attr/igPrimaryColor" />
+
+            <EditText
+                android:id="@+id/et_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="100dp"
+                android:paddingHorizontal="20dp"
+                android:layout_marginEnd="10dp"
+                android:textAlignment="center"
+                android:focusable="false"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                tools:hint="00:00:00" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add_set"
+            style="@style/Widget.IntroGym.Button"
+            android:layout_marginTop="20dp"
+            android:drawablePadding="0dp"
+            android:text="@string/label_add_set"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_time_input" />
+
+        <TextView
+            android:id="@+id/tv_sets_title"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title3.Regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_set"
+            android:text="@string/label_history_of_sets" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_set"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sets_title"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

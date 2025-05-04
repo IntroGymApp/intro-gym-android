@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ru.lonelywh1te.introgym.data.db.MainDatabase
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseCategoryDao
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseDao
+import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
 import ru.lonelywh1te.introgym.data.db.dao.TagDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
@@ -32,6 +33,10 @@ val dataModule = module {
 
     factory<ExerciseDao> {
         get<MainDatabase>().exerciseDao()
+    }
+
+    factory<ExerciseSetDao> {
+        get<MainDatabase>().exerciseSetDao()
     }
 
     factory<TagDao> {

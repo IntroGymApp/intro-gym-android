@@ -10,7 +10,4 @@ buildscript {
     repositories {
         google()
     }
-    dependencies {
-        classpath(libs.navigation.safeargs.gradle.plugin)
-    }
 }

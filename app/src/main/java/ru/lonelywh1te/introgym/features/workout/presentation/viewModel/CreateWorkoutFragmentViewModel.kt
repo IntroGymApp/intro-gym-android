@@ -29,7 +29,7 @@ class CreateWorkoutFragmentViewModel(
     private val workoutExercises: MutableStateFlow<List<WorkoutExercise>> = MutableStateFlow(listOf())
     private val workoutExercisePlans: MutableStateFlow<List<WorkoutExercisePlan>> = MutableStateFlow(listOf())
 
-    private val _workoutExerciseItems: MutableStateFlow<List<WorkoutExerciseItem>> = MutableStateFlow(listOf())
+    private val _workoutExerciseItems: MutableStateFlow<List<WorkoutExerciseItem.Default>> = MutableStateFlow(listOf())
     val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> get() = _workoutExerciseItems
 
     private val dispatcher = Dispatchers.IO
@@ -59,7 +59,7 @@ class CreateWorkoutFragmentViewModel(
             val exercise = getExerciseUseCase(exerciseId).first()
 
             val newWorkoutExercise = createWorkoutExercise(exercise.id)
-            val workoutExerciseItem = WorkoutExerciseItem.create(exercise, newWorkoutExercise)
+            val workoutExerciseItem = WorkoutExerciseItem.Default.create(exercise, newWorkoutExercise)
             val newWorkoutExercisePlan = createWorkoutExercisePlan(newWorkoutExercise.id)
 
             addWorkoutExercise(newWorkoutExercise)
@@ -94,7 +94,7 @@ class CreateWorkoutFragmentViewModel(
         workoutExercisePlans.value = workoutExercisePlans.value.plus(workoutExercisePlan)
     }
 
-    private fun addWorkoutExerciseItem(workoutExerciseItem: WorkoutExerciseItem) {
+    private fun addWorkoutExerciseItem(workoutExerciseItem: WorkoutExerciseItem.Default) {
         _workoutExerciseItems.value = _workoutExerciseItems.value.plus(workoutExerciseItem)
     }
 

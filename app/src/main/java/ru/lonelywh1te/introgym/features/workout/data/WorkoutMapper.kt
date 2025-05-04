@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.data
 
+import ru.lonelywh1te.introgym.data.db.entity.ExerciseSetEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
@@ -44,11 +45,25 @@ fun Workout.toWorkoutEntity(): WorkoutEntity {
     )
 }
 
-fun WorkoutExerciseWithExerciseInfo.toWorkoutExerciseItem(): WorkoutExerciseItem {
-    return WorkoutExerciseItem(
+fun WorkoutExerciseWithExerciseInfo.toWorkoutExerciseItemDefault(): WorkoutExerciseItem.Default {
+    return WorkoutExerciseItem.Default(
         workoutExerciseId = this.workoutExercise.id,
         name = this.exerciseInfo.name,
         imgFilename = this.exerciseInfo.imgFilename,
+        order = this.workoutExercise.order,
+    )
+}
+
+fun WorkoutExerciseWithExerciseInfo.toWorkoutExerciseItemWithProgress(
+    sets: List<ExerciseSetEntity>,
+    plan: WorkoutExercisePlanEntity,
+): WorkoutExerciseItem.WithProgress {
+    return WorkoutExerciseItem.WithProgress(
+        workoutExerciseId = this.workoutExercise.id,
+        name = this.exerciseInfo.name,
+        imgFilename = this.exerciseInfo.imgFilename,
+        plannedSets = plan.sets ?: 0,
+        completedSets = sets.size,
         order = this.workoutExercise.order,
     )
 }

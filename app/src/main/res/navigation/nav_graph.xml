@@ -15,12 +15,16 @@
             app:destination="@id/exerciseFragment" />
         <argument
             android:name="workoutExercise"
-            app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise" />
+            app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise"
+            app:nullable="true"/>
         <argument
             android:name="workoutExercisePlan"
             app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true"/>
+        <argument
+            android:name="workoutExerciseId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
     <fragment
         android:id="@+id/createWorkoutFragment"
@@ -29,7 +33,12 @@
         tools:layout="@layout/fragment_create_workout">
         <action
             android:id="@+id/to_workoutExercisePlanEditorFragment"
-            app:destination="@id/workoutExercisePlanEditorFragment" />
+            app:destination="@id/workoutExercisePlanEditorFragment" >
+            <argument
+                android:name="workoutExerciseId"
+                android:defaultValue="-1L"
+                app:argType="long" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/exerciseFragment"
@@ -271,7 +280,21 @@
             app:argType="long" />
         <action
             android:id="@+id/to_workoutExercisePlanEditorFragment"
-            app:destination="@id/workoutExercisePlanEditorFragment" />
+            app:destination="@id/workoutExercisePlanEditorFragment" >
+            <argument
+                android:name="workoutExercise"
+                android:defaultValue="@null"
+                app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise"
+                app:nullable="true" />
+            <argument
+                android:name="workoutExercisePlan"
+                android:defaultValue="@null"
+                app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/to_workoutExecutionFragment"
+            app:destination="@id/workoutExecutionFragment" />
     </fragment>
     <action android:id="@+id/action_pick_workout" app:destination="@id/workoutsFragment" >
         <argument
@@ -283,5 +306,14 @@
             android:name="isPickMode"
             android:defaultValue="true" />
     </action>
+    <fragment
+        android:id="@+id/workoutExecutionFragment"
+        android:name="ru.lonelywh1te.introgym.features.workout.presentation.WorkoutExerciseExecutionFragment"
+        android:label="@string/label_workout"
+        tools:layout="@layout/fragment_workout_exercise_execution" >
+        <argument
+            android:name="workoutExerciseId"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

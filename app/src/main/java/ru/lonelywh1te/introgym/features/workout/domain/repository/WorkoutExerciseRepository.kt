@@ -7,9 +7,13 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 
 interface WorkoutExerciseRepository {
 
-    fun getWorkoutExerciseItems(workoutId: Long): Flow<Result<List<WorkoutExerciseItem>>>
+    fun getWorkoutExerciseItems(workoutId: Long): Flow<Result<List<WorkoutExerciseItem.Default>>>
 
-    fun getWorkoutExercisesById(workoutId: Long): Flow<Result<List<WorkoutExercise>>>
+    fun getWorkoutExerciseItemsWithProgress(workoutId: Long): Flow<Result<List<WorkoutExerciseItem.WithProgress>>>
+
+    fun getWorkoutExercisesByWorkoutId(workoutId: Long): Flow<Result<List<WorkoutExercise>>>
+
+    fun getWorkoutExerciseById(id: Long): Flow<Result<WorkoutExercise>>
 
     suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise): Result<Long>
 

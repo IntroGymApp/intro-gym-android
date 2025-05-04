@@ -12,7 +12,7 @@ class MoveWorkoutExerciseUseCase(private val repository: WorkoutExerciseReposito
 
         if (from == to) return Result.Success(Unit)
 
-        val workoutExercisesResult = repository.getWorkoutExercisesById(workoutId).first()
+        val workoutExercisesResult = repository.getWorkoutExercisesByWorkoutId(workoutId).first()
 
         Log.d("MoveWorkoutExercise", "$workoutExercisesResult")
 

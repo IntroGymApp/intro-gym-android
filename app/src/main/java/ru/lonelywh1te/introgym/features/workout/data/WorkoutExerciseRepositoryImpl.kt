@@ -5,11 +5,13 @@ import android.util.Log
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.DatabaseError
 import ru.lonelywh1te.introgym.data.db.MainDatabase
+import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
@@ -24,12 +26,13 @@ class WorkoutExerciseRepositoryImpl(
     private val db: MainDatabase,
     private val workoutExerciseDao: WorkoutExerciseDao,
     private val workoutExercisePlanDao: WorkoutExercisePlanDao,
+    private val exerciseSetDao: ExerciseSetDao,
 ): WorkoutExerciseRepository {
 
-    override fun getWorkoutExerciseItems(workoutId: Long): Flow<Result<List<WorkoutExerciseItem>>> {
+    override fun getWorkoutExerciseItems(workoutId: Long): Flow<Result<List<WorkoutExerciseItem.Default>>> {
         return workoutExerciseDao.getWorkoutExercisesWithExerciseInfo(workoutId)
-            .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem>>> {
-                list -> Result.Success(list.map { it.toWorkoutExerciseItem() })
+            .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem.Default>>> {
+                list -> Result.Success(list.map { it.toWorkoutExerciseItemDefault() })
             }
             .catch { e ->
                 Log.e("WorkoutExerciseRepositoryImpl", "getWorkoutExerciseItems", e)
@@ -43,13 +46,52 @@ class WorkoutExerciseRepositoryImpl(
             }
     }
 
-    override fun getWorkoutExercisesById(workoutId: Long): Flow<Result<List<WorkoutExercise>>> {
+    override fun getWorkoutExerciseItemsWithProgress(workoutId: Long): Flow<Result<List<WorkoutExerciseItem.WithProgress>>> {
+        return workoutExerciseDao.getWorkoutExercisesWithExerciseInfo(workoutId)
+            .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem.WithProgress>>> { list ->
+                Result.Success(list.map {
+                    val plan = workoutExercisePlanDao.getWorkoutExercisePlanById(it.workoutExercise.id).first()
+                    val sets = exerciseSetDao.getExerciseSets(it.workoutExercise.id).first()
+
+                    it.toWorkoutExerciseItemWithProgress(sets, plan)
+                })
+            }
+            .catch { e ->
+                Log.e("WorkoutExerciseRepositoryImpl", "getWorkoutExerciseItemsWithProgress", e)
+
+                val errorResult = when (e) {
+                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                    else -> Result.Failure(AppError.UNKNOWN)
+                }
+
+                emit(errorResult)
+            }
+    }
+
+    override fun getWorkoutExercisesByWorkoutId(workoutId: Long): Flow<Result<List<WorkoutExercise>>> {
         return workoutExerciseDao.getWorkoutExercisesById(workoutId)
             .map<List<WorkoutExerciseEntity>, Result<List<WorkoutExercise>>> {
                 list -> Result.Success(list.map { it.toWorkoutExercise() })
             }
             .catch { e ->
                 Log.e("WorkoutExerciseRepositoryImpl", "getWorkoutExercisesById", e)
+
+                val errorResult = when (e) {
+                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                    else -> Result.Failure(AppError.UNKNOWN)
+                }
+
+                emit(errorResult)
+            }
+    }
+
+    override fun getWorkoutExerciseById(id: Long): Flow<Result<WorkoutExercise>> {
+        return workoutExerciseDao.getWorkoutExerciseById(id)
+            .map<WorkoutExerciseEntity, Result<WorkoutExercise>> {
+                Result.Success(it.toWorkoutExercise())
+            }
+            .catch { e ->
+                Log.e("WorkoutExerciseRepositoryImpl", "getWorkoutExerciseById", e)
 
                 val errorResult = when (e) {
                     is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
@@ -138,7 +180,7 @@ class WorkoutExerciseRepositoryImpl(
     override suspend fun deleteWorkoutExerciseWithReorder(id: Long): Result<Unit> {
         return try {
             db.withTransaction {
-                val workoutToDelete = workoutExerciseDao.getWorkoutExerciseById(id)
+                val workoutToDelete = workoutExerciseDao.getWorkoutExerciseById(id).first()
                 val workoutsToReorder = workoutExerciseDao.getWorkoutExercisesWithOrderGreaterThan(workoutToDelete.order)
 
                 workoutExerciseDao.deleteWorkoutExercise(workoutToDelete.id)
