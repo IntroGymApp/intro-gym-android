@@ -46,7 +46,17 @@ class AboutUserFragment : Fragment() {
         }
 
         binding.dpBirthday.apply {
-            maxDate = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+            maxDate = LocalDate.now().atStartOfDay().minusYears(14).toInstant(ZoneOffset.UTC).toEpochMilli()
+        }
+
+        binding.btnMale.setOnClickListener {
+            it.isSelected = !it.isSelected
+            if (it.isSelected) binding.btnFemale.isSelected = false
+        }
+
+        binding.btnFemale.setOnClickListener {
+            it.isSelected = !it.isSelected
+            if (it.isSelected) binding.btnMale.isSelected = false
         }
     }
 
@@ -64,9 +74,9 @@ class AboutUserFragment : Fragment() {
     }
 
     private fun getSelectedGender(): Gender? {
-        return when (binding.materialButtonToggleGroup.checkedButtonId) {
-            binding.btnMale.id -> Gender.MALE
-            binding.btnFemale.id -> Gender.FEMALE
+        return when {
+            binding.btnMale.isSelected -> Gender.MALE
+            binding.btnFemale.isSelected -> Gender.FEMALE
             else -> null
         }
     }

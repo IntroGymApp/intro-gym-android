@@ -112,6 +112,7 @@
         <item name="iconGravity">textTop</item>
         <item name="backgroundTint">@color/selector_selectable_button_background</item>
         <item name="iconTint">@color/selector_selectable_button_foreground</item>
+        <item name="iconSize">30dp</item>
     </style>
 
     <style name="Widget.IntroGym.IconButton.Primary">
@@ -122,6 +123,7 @@
         <item name="android:headerDayOfMonthTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
         <item name="android:headerMonthTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
         <item name="android:headerYearTextAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
+        <item name="theme">@style/ThemeOverlay.NumberPicker</item>
     </style>
 
     <style name="Widget.IntroGym.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
