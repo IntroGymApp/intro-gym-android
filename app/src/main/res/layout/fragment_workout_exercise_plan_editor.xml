@@ -110,7 +110,6 @@
                 style="@style/Widget.IntroGym.TextInput"
                 android:inputType="numberDecimal"
                 android:drawableEnd="@drawable/ic_weight"
-                android:maxLength="4"
                 android:hint="@string/label_weight"/>
 
             <EditText
@@ -126,7 +125,6 @@
                 android:drawableEnd="@drawable/ic_time"
                 style="@style/Widget.IntroGym.TextInput"
                 android:focusable="false"
-                android:inputType="number"
                 android:hint="@string/label_time"/>
 
             <EditText

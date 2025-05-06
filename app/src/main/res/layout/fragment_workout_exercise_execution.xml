@@ -152,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:minWidth="80dp"
                 android:textAlignment="center"
+                android:inputType="numberDecimal"
                 android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
                 tools:hint="0" />
 
@@ -203,6 +204,8 @@
                 android:layout_height="wrap_content"
                 android:minWidth="80dp"
                 android:textAlignment="center"
+                android:inputType="number"
+                android:maxLength="3"
                 android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
                 tools:hint="0" />
 
@@ -241,28 +244,18 @@
                 app:drawableStartCompat="@drawable/ic_distance"
                 app:drawableTint="?attr/igPrimaryColor" />
 
-            <Button
-                android:id="@+id/btn_minus_distance"
-                style="@style/Widget.IntroGym.IconButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:icon="@drawable/ic_minus" />
 
             <EditText
                 android:id="@+id/et_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="80dp"
+                android:minWidth="135dp"
                 android:textAlignment="center"
+                android:inputType="number"
+                android:maxLength="5"
+                android:layout_marginEnd="20dp"
                 android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
                 tools:hint="0" />
-
-            <Button
-                android:id="@+id/btn_plus_distance"
-                style="@style/Widget.IntroGym.IconButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:icon="@drawable/ic_plus" />
 
         </LinearLayout>
 

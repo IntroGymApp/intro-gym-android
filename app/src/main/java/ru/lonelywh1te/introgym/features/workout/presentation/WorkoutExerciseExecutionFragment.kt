@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.core.InputFilters
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
+import ru.lonelywh1te.introgym.core.ui.dialogs.PickHmsBottomSheetDialogFragment
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExerciseExecutionBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
@@ -68,6 +70,12 @@ class WorkoutExerciseExecutionFragment : Fragment() {
                 }
             }
         }
+
+        binding.etTime.setOnClickListener {
+            showPickHmsDialog()
+        }
+
+        binding.etWeight.filters = arrayOf(InputFilters.DecimalDigitsInputFilter())
 
         binding.btnAddSet.setOnClickListener {
             addWorkoutExerciseSet()
@@ -127,6 +135,33 @@ class WorkoutExerciseExecutionFragment : Fragment() {
         binding.tvExerciseComment.apply {
             text = workoutExercise.comment
             isVisible = workoutExercise.comment.isNotBlank()
+        }
+    }
+
+    private fun showPickHmsDialog() {
+        val localtime: LocalTime? = if (binding.etTime.text.toString().isNotBlank()) {
+            LocalTime.parse(binding.etTime.text.toString(), DateAndTimeStringFormatUtils.fullTimeFormatter)
+        } else {
+            null
+        }
+
+        if (childFragmentManager.findFragmentByTag(PickHmsBottomSheetDialogFragment.TAG) == null) {
+            PickHmsBottomSheetDialogFragment.instance(localtime).show(childFragmentManager, PickHmsBottomSheetDialogFragment.TAG)
+            setPickHmsDialogResultListener()
+        }
+    }
+
+    private fun setPickHmsDialogResultListener() {
+        childFragmentManager.setFragmentResultListener(PickHmsBottomSheetDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val localtime = bundle.getString(PickHmsBottomSheetDialogFragment.RESULT_LOCALTIME_STRING)?.let {
+                LocalTime.parse(it, DateAndTimeStringFormatUtils.fullTimeFormatter)
+            }
+
+            localtime?.let {
+                binding.etTime.setText(localtime.format(DateAndTimeStringFormatUtils.fullTimeFormatter))
+            }
+
+            return@setFragmentResultListener
         }
     }
 
