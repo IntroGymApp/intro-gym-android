@@ -124,7 +124,16 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
             setOnLeftSwipeListener { position ->
                 val item = workoutExerciseItemAdapter.getItem(position)
-                viewModel.deleteWorkoutExercise(item.workoutExerciseId)
+
+                if (workoutExerciseItemAdapter.itemCount - 1 == 0) {
+                    showDeleteWorkoutDialog(
+                        onDismiss = {
+                            workoutExerciseItemAdapter.refresh()
+                        }
+                    )
+                } else {
+                    viewModel.deleteWorkoutExercise(item.workoutExerciseId)
+                }
             }
 
             attachToRecyclerView(recycler)
@@ -270,12 +279,15 @@ class WorkoutFragment : Fragment(), MenuProvider {
         viewModel.updateWorkout(name, description)
     }
 
-    private fun deleteWorkout() {
+    private fun showDeleteWorkoutDialog(onDismiss: (() -> Unit)? = null) {
         SubmitDialogFragment.Builder()
             .setTitle(getString(R.string.label_delete_workout))
             .setMessage(getString(R.string.label_submit_message_delete_workout))
             .setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete))
             .setIconTint(MaterialColors.getColor(binding.root, R.attr.igErrorColor))
+            .setOnDismissDialog {
+                onDismiss?.invoke()
+            }
             .setPositiveButton(getString(R.string.label_cancel)) { dialog ->
                 dialog.dismiss()
             }
@@ -295,7 +307,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             android.R.id.home -> findNavController().navigateUp()
-            R.id.deleteWorkout -> deleteWorkout()
+            R.id.deleteWorkout -> showDeleteWorkoutDialog()
         }
 
         return true

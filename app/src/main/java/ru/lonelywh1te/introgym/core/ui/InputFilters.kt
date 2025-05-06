@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.core
+package ru.lonelywh1te.introgym.core.ui
 
 import android.text.InputFilter
 import android.text.Spanned

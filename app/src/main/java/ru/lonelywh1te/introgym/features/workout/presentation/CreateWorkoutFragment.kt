@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
@@ -130,7 +131,10 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
 
     private fun startCollectFlows() {
         viewModel.workoutExerciseItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { workoutExerciseItemAdapter.update(it) }
+            .onEach {
+                workoutExerciseItemAdapter.update(it)
+                binding.tvEmptyListDescription.isVisible = it.isEmpty()
+            }
             .launchIn(lifecycleScope)
 
         viewModel.createWorkoutResult.flowWithLifecycle(viewLifecycleOwner.lifecycle)

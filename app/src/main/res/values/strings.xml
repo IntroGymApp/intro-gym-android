@@ -124,5 +124,11 @@
     <string name="label_add_set">Добавить подход</string>
     <string name="label_history_of_sets">История подходов</string>
     <string name="label_effort">Усилие</string>
+    <string name="label_empty_list">Список пуст</string>
+    <string name="label_create_your_workout_description">Создайте тренировку, чтобы начать отслеживать свои занятия и прогресс.</string>
+    <string name="label_press_plus_to_add_workout_at_schedule">Нажмите «+», чтобы добавить тренировку в расписание</string>
+    <string name="label_no_workout_available">Нет доступных тренировок</string>
+    <string name="label_no_exercises">Нет упражнений</string>
+    <string name="label_add_exercise_description">Упражнения — основа тренировки. Начните с добавления одного или нескольких</string>
 
 </resources>

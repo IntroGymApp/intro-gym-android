@@ -65,6 +65,10 @@ class WorkoutExerciseItemAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun refresh() {
+        notifyDataSetChanged()
+    }
+
     fun setOnItemClickListener(listener: ((item: WorkoutExerciseItem) -> Unit)?) {
         onItemClickListener = listener
     }

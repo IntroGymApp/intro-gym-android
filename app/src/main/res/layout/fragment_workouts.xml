@@ -25,7 +25,7 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         tools:listitem="@layout/item_workout"
-        tools:itemCount="5"
+        tools:itemCount="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +39,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_empty_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_empty_list_title, tv_empty_list_description"/>
+
+    <TextView
+        android:id="@+id/tv_empty_list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_empty_list"
+        android:paddingVertical="10dp"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        android:textColor="?attr/igHintColor"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_workout"
+        app:layout_constraintEnd_toEndOf="@+id/rv_workouts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_workouts_title" />
+
+    <TextView
+        android:id="@+id/tv_empty_list_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_create_your_workout_description"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        android:gravity="center"
+        android:textColor="?attr/igHintColor"
+        app:layout_constraintEnd_toEndOf="@+id/rv_workouts_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_empty_list_title" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

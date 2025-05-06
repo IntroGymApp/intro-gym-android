@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
@@ -24,6 +25,14 @@ class GuideFragment : Fragment() {
 
         binding.cardExerciseSection.setOnClickListener {
             navigateToExerciseSection()
+        }
+
+        binding.cardEquipmentSection.setOnClickListener {
+            Toast.makeText(requireContext(), "В разработке", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.cardArticlesSection.setOnClickListener {
+            Toast.makeText(requireContext(), "В разработке", Toast.LENGTH_SHORT).show()
         }
     }
 

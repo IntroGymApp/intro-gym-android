@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.core.ui.dialogs
 
+import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ class SubmitDialogFragment: DialogFragment() {
     private var onPositiveButtonClick: ((dialog: DialogFragment) -> Unit)? = null
     private var negativeButtonText: String? = null
     private var onNegativeButtonClick: ((dialog: DialogFragment) -> Unit)? = null
+    private var onDismissDialog: ((dialog: DialogFragment) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,11 @@ class SubmitDialogFragment: DialogFragment() {
         }
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissDialog?.invoke(this)
+    }
+
     class Builder {
         private var title: String? = null
         private var message: String? = null
@@ -79,6 +86,7 @@ class SubmitDialogFragment: DialogFragment() {
         private var onPositiveButtonClick: ((dialog: DialogFragment) -> Unit)? = null
         private var negativeButtonText: String? = null
         private var onNegativeButtonClick: ((dialog: DialogFragment) -> Unit)? = null
+        private var onDismissDialog: ((dialog: DialogFragment) -> Unit)? = null
 
         fun setTitle(title: String) = apply { this.title = title }
         fun setMessage(message: String) = apply { this.message = message }
@@ -92,6 +100,9 @@ class SubmitDialogFragment: DialogFragment() {
             this.negativeButtonText = text
             this.onNegativeButtonClick = onNegativeButtonClick
         }
+        fun setOnDismissDialog(onDismissDialog: ((dialog: DialogFragment) -> Unit)?) = apply {
+            this.onDismissDialog = onDismissDialog
+        }
 
         fun build(): SubmitDialogFragment {
             val fragment = SubmitDialogFragment()
@@ -104,6 +115,7 @@ class SubmitDialogFragment: DialogFragment() {
             fragment.onPositiveButtonClick = onPositiveButtonClick
             fragment.negativeButtonText = negativeButtonText
             fragment.onNegativeButtonClick = onNegativeButtonClick
+            fragment.onDismissDialog = onDismissDialog
 
             return fragment
         }

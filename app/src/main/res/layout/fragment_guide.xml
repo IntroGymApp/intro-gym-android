@@ -53,6 +53,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_equipment_section"
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:layout_height="150dp"
@@ -79,6 +80,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_articles_section"
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:layout_height="150dp"
