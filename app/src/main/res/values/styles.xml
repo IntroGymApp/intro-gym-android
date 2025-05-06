@@ -96,22 +96,13 @@
         <item name="iconTint">?attr/igOnPrimaryColor</item>
     </style>
 
-    <style name="Widget.IntroGym.SegmentedButton" parent="Widget.Material3.Button.IconButton.Filled">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="cornerRadius">10dp</item>
-        <item name="rippleColor">?attr/igPrimaryColor</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.IntroGym.SegmentButton</item>
-        <item name="iconGravity">textStart</item>
-    </style>
-
     <style name="Widget.IntroGym.CheckedButton" parent="Widget.Material3.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="cornerRadius">10dp</item>
         <item name="iconGravity">textTop</item>
-        <item name="backgroundTint">@color/selector_selectable_button_background</item>
-        <item name="iconTint">@color/selector_selectable_button_foreground</item>
+        <item name="backgroundTint">@color/selector_button_background_primary</item>
+        <item name="iconTint">@color/selector_button_foreground</item>
         <item name="iconSize">30dp</item>
     </style>
 
@@ -145,14 +136,15 @@
         <item name="backgroundTint">?attr/igBackgroundColor</item>
     </style>
 
-    <style name="Widget.IntroGym.Button.Segmented" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="strokeColor">?attr/igHintColor</item>
+    <style name="Widget.IntroGym.Button.Segmented" parent="Widget.Material3.Button">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Footnote.Regular</item>
+        <item name="backgroundTint">@color/selector_button_background_primary</item>
+        <item name="android:textColor">@color/selector_button_foreground</item>
     </style>
+
+
 
     <!-- CONTAINERS -->
 
@@ -186,11 +178,9 @@
 
     <!-- Theme Overlays -->
 
-    <style name="ThemeOverlay.IntroGym.SegmentButton" parent="ThemeOverlay.Material3.Button.IconButton.Filled">
-        <item name="colorOnContainerUnchecked">?attr/igHintColor</item>
-        <item name="colorOnContainer">?attr/igOnPrimaryColor</item>
-        <item name="colorContainer">?attr/igPrimaryColor</item>
-        <item name="colorSurfaceContainerHighest">?attr/igCardBackgroundColor</item>
+    <style name="ThemeOverlay.IntroGym.Button.Segmented" parent="ThemeOverlay.Material3.Button">
+        <item name="colorOnContainer">@color/selector_button_foreground</item>
+        <item name="colorContainer">@color/selector_button_background_primary</item>
     </style>
 
     <style name="ThemeOverlay.IntroGym.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
@@ -205,8 +195,8 @@
     </style>
 
     <style name="ThemeOverlay.IntroGym.CheckedButton" parent="ThemeOverlay.Material3.Button">
-        <item name="colorOnContainer">@color/selector_selectable_button_foreground</item>
-        <item name="colorContainer">@color/selector_selectable_button_background</item>
+        <item name="colorOnContainer">@color/selector_button_foreground</item>
+        <item name="colorContainer">@color/selector_button_background_primary</item>
     </style>
 
 </resources>

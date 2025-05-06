@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import ru.lonelywh1te.introgym.core.ui.ImageLoader
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExerciseExecutionBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
+import ru.lonelywh1te.introgym.features.workout.domain.model.Effort
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
@@ -42,6 +44,18 @@ class WorkoutExerciseExecutionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.groupEffortButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if(isChecked) {
+                when(checkedId) {
+                    binding.btnWarmUpEffort.id -> viewModel.setEffort(Effort.WARMUP)
+                    binding.btnLowEffort.id -> viewModel.setEffort(Effort.LOW)
+                    binding.btnMidEffort.id -> viewModel.setEffort(Effort.MEDIUM)
+                    binding.btnHardEffort.id -> viewModel.setEffort(Effort.HARD)
+                    binding.btnMaxEffort.id -> viewModel.setEffort(Effort.MAX)
+                }
+            }
+        }
 
         startCollectFlows()
     }

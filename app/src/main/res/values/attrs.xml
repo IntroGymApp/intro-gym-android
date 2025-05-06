@@ -23,11 +23,17 @@
     <attr name="igIconActionColor" format="color"/>
     <attr name="igIconStaticColor" format="color"/>
 
-    <attr name="igHintColor" type="color"/>
+    <attr name="igHintColor" format="color"/>
 
     <attr name="igSuccessColor" format="color"/>
     <attr name="igWarningColor" format="color"/>
     <attr name="igErrorColor" format="color"/>
+
+    <attr name="igWarmUpEffortColor" format="color"/>
+    <attr name="igLowEffortColor" format="color"/>
+    <attr name="igMidEffortColor" format="color"/>
+    <attr name="igHardEffortColor" format="color"/>
+    <attr name="igMaxEffortColor" format="color"/>
 
     <declare-styleable name="PasswordValidationView">
         <attr name="errorCount" format="integer"/>

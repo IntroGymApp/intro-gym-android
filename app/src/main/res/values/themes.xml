@@ -34,5 +34,11 @@
         <item name="igWarningColor">@color/orange_color</item>
         <item name="igErrorColor">@color/red_color</item>
 
+        <item name="igWarmUpEffortColor">@color/dark_hint_color</item>
+        <item name="igLowEffortColor">@color/accent_color</item>
+        <item name="igMidEffortColor">@color/orange_color</item>
+        <item name="igHardEffortColor">@color/red_color</item>
+        <item name="igMaxEffortColor">@color/purple_color</item>
+
     </style>
 </resources>

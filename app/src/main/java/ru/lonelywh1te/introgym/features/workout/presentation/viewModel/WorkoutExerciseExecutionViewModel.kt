@@ -18,6 +18,7 @@ import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.model.Effort
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseUseCase
@@ -74,12 +75,16 @@ class WorkoutExerciseExecutionViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-
+    private var effort: Effort? = null
 
     private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
     val errors get() = _errors.asSharedFlow()
 
     fun setWorkoutExerciseId(id: Long) {
         workoutExerciseId.value = id
+    }
+
+    fun setEffort(effort: Effort) {
+        this.effort = effort
     }
 }
