@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 )
 
 data class ExerciseSetEntity(
-    @ColumnInfo(name = "id") @PrimaryKey
+    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true)
     val id: Long,
 
     @ColumnInfo(name = "workout_exercise_id")

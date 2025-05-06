@@ -8,4 +8,18 @@ enum class Effort(private val percent: Int) {
     MAX(100);
 
     fun toPercent() = percent
+
+    companion object {
+        fun fromPercent(percent: Int?): Effort? {
+            return when(percent) {
+                0 -> WARMUP
+                25 -> LOW
+                50 -> MEDIUM
+                75 -> HARD
+                100 -> MAX
+                null -> null
+                else -> throw IllegalArgumentException("Unsupported effort percent: $percent")
+            }
+        }
+    }
 }

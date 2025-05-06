@@ -59,6 +59,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@+id/btn_warm_up_effort"
             app:layout_constraintTop_toBottomOf="@+id/tv_effort_title">
 
             <Button
@@ -323,10 +325,13 @@
             android:text="@string/label_history_of_sets" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_sets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="true"
             tools:listitem="@layout/item_set"
             app:layout_constraintTop_toBottomOf="@+id/tv_sets_title"/>
 

@@ -2,8 +2,11 @@ package ru.lonelywh1te.introgym.features.workout.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
+import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
@@ -113,6 +116,13 @@ class WorkoutExerciseItemWithProgressViewHolder(
             .load(AssetPath.get(AssetType.EXERCISE_PREVIEW_IMAGE, item.imgFilename), binding.ivExercisePreview)
 
         // TODO: fix string
-        binding.tvProgress.text = "${item.completedSets} / ${item.plannedSets}"
+        binding.tvProgress.apply {
+            text = "${item.completedSets} / ${item.plannedSets}"
+            setTextColor(when {
+                item.completedSets == item.plannedSets -> MaterialColors.getColor(binding.root, R.attr.igSuccessColor)
+                item.completedSets > item.plannedSets -> MaterialColors.getColor(binding.root, R.attr.igWarningColor)
+                else -> MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
+            })
+        }
     }
 }

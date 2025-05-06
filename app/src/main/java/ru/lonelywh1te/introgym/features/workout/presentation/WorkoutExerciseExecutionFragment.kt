@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +24,7 @@ import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.Effort
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
+import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseSetAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
 import java.time.LocalTime
 
@@ -31,6 +34,9 @@ class WorkoutExerciseExecutionFragment : Fragment() {
 
     private val viewModel by viewModel<WorkoutExerciseExecutionViewModel>()
     private val args by navArgs<WorkoutExerciseExecutionFragmentArgs>()
+
+    private lateinit var setsRecycler: RecyclerView
+    private lateinit var workoutExerciseSetAdapter: WorkoutExerciseSetAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +51,12 @@ class WorkoutExerciseExecutionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        workoutExerciseSetAdapter = WorkoutExerciseSetAdapter()
+        setsRecycler = binding.rvSets.apply {
+            adapter = workoutExerciseSetAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
         binding.groupEffortButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if(isChecked) {
                 when(checkedId) {
@@ -55,6 +67,10 @@ class WorkoutExerciseExecutionFragment : Fragment() {
                     binding.btnMaxEffort.id -> viewModel.setEffort(Effort.MAX)
                 }
             }
+        }
+
+        binding.btnAddSet.setOnClickListener {
+            addWorkoutExerciseSet()
         }
 
         startCollectFlows()
@@ -84,6 +100,27 @@ class WorkoutExerciseExecutionFragment : Fragment() {
                 }
             }
             .launchIn(lifecycleScope)
+
+        viewModel.workoutExerciseSets.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { workoutExerciseSets ->
+                workoutExerciseSetAdapter.update(workoutExerciseSets)
+
+                workoutExerciseSets.forEach {
+                    Log.d("WorkoutExerciseExecution", it.toString())
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun addWorkoutExerciseSet() {
+        val reps = if (binding.etReps.isVisible) binding.etReps.text.toString() else ""
+        val weight = if (binding.etWeight.isVisible) binding.etWeight.text.toString() else ""
+        val time = if (binding.etTime.isVisible && binding.etTime.text.toString().isNotBlank()) {
+            LocalTime.parse(binding.etTime.text.toString(), DateAndTimeStringFormatUtils.fullTimeFormatter).toSecondOfDay().toString()
+        } else ""
+        val distance = if (binding.etDistance.isVisible) binding.etDistance.text.toString() else ""
+
+        viewModel.addWorkoutExerciseSet(reps, weight, distance, time)
     }
 
     private fun setWorkoutExerciseData(workoutExercise: WorkoutExercise) {

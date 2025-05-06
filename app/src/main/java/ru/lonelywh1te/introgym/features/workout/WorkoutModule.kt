@@ -4,10 +4,12 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.workout.data.WorkoutExercisePlanRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.data.WorkoutExerciseRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.data.WorkoutExerciseSetRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.data.WorkoutRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
+import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseSetRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
@@ -29,6 +31,8 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.StartWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.StopWorkoutUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.AddWorkoutExerciseSetUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseSetsUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.CreateWorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
@@ -57,6 +61,12 @@ val workoutDataModule = module {
     single<WorkoutExercisePlanRepository> {
         WorkoutExercisePlanRepositoryImpl(
             workoutExercisePlanDao = get()
+        )
+    }
+
+    single<WorkoutExerciseSetRepository> {
+        WorkoutExerciseSetRepositoryImpl(
+            exerciseSetDao = get(),
         )
     }
 }
@@ -159,12 +169,6 @@ val workoutDomainModule = module {
         )
     }
 
-//    factory<GetWorkoutLogUseCase> {
-//        GetWorkoutLogUseCase(
-//            repository = get()
-//        )
-//    }
-
     factory<StartWorkoutUseCase> {
         StartWorkoutUseCase(
             repository = get()
@@ -185,6 +189,18 @@ val workoutDomainModule = module {
 
     factory<GetWorkoutLogUseCase> {
         GetWorkoutLogUseCase(
+            repository = get()
+        )
+    }
+
+    factory<GetWorkoutExerciseSetsUseCase> {
+        GetWorkoutExerciseSetsUseCase(
+            repository = get()
+        )
+    }
+
+    factory<AddWorkoutExerciseSetUseCase> {
+        AddWorkoutExerciseSetUseCase(
             repository = get()
         )
     }
@@ -237,6 +253,8 @@ val workoutPresentationModule = module {
             getExerciseUseCase = get(),
             getWorkoutExerciseUseCase = get(),
             getWorkoutExercisePlanUseCase = get(),
+            getWorkoutExerciseSetsUseCase = get(),
+            addWorkoutExerciseSetUseCase = get(),
         )
     }
 }

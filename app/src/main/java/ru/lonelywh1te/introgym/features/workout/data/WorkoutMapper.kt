@@ -6,11 +6,13 @@ import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
 import ru.lonelywh1te.introgym.data.db.model.WorkoutExerciseWithExerciseInfo
+import ru.lonelywh1te.introgym.features.workout.domain.model.Effort
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 
 fun WorkoutEntityWithCountOfExercises.toWorkoutItem(): WorkoutItem {
     return WorkoutItem(
@@ -115,6 +117,34 @@ fun WorkoutExercisePlan.toWorkoutExercisePlanEntity(): WorkoutExercisePlanEntity
         weightKg = this.weightKg,
         timeInSec = this.timeInSec,
         distanceInMeters = this.distanceInMeters,
+        createdAt = this.createdAt,
+        lastUpdated = this.lastUpdated,
+    )
+}
+
+fun ExerciseSetEntity.toWorkoutExerciseSet(): WorkoutExerciseSet {
+    return WorkoutExerciseSet(
+        id = this.id,
+        reps = this.reps,
+        workoutExerciseId = this.workoutExerciseId,
+        weightKg = this.weightKg,
+        distanceInMeters = this.distanceInMeters,
+        timeInSeconds = this.timeInSec,
+        effort = Effort.fromPercent(this.effort),
+        createdAt = this.createdAt,
+        lastUpdated = this.lastUpdated,
+    )
+}
+
+fun WorkoutExerciseSet.toExerciseSetEntity(): ExerciseSetEntity {
+    return ExerciseSetEntity(
+        id = this.id,
+        workoutExerciseId = this.workoutExerciseId,
+        reps = this.reps,
+        weightKg = this.weightKg,
+        distanceInMeters = this.distanceInMeters,
+        timeInSec = this.timeInSeconds,
+        effort = this.effort?.toPercent(),
         createdAt = this.createdAt,
         lastUpdated = this.lastUpdated,
     )
