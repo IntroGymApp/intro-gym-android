@@ -281,6 +281,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
             }
             .setNegativeButton(getString(R.string.label_delete)) { dialog ->
                 viewModel.deleteWorkout()
+                stopWorkoutTrackingService()
                 dialog.dismiss()
             }
             .build()

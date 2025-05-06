@@ -68,26 +68,26 @@ class HomeFragment : Fragment(), MenuProvider {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        ItemTouchHelperCallback(
-            dragDirs = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-            swipeDirs = ItemTouchHelper.LEFT,
-        ).apply {
-
-            setOnMoveListener { from, to ->
-                // TODO: Not yet implemented
-            }
-
-            setOnMoveFinishedListener { from, to ->
-                // TODO: Not yet implemented
-            }
-
-            setOnLeftSwipeListener { position ->
-                val item = workoutLogItemAdapter.getItem(position)
-                viewModel.deleteWorkoutLog(item.workoutId)
-            }
-
-            attachToRecyclerView(recycler)
-        }
+//        ItemTouchHelperCallback(
+//            dragDirs = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+//            swipeDirs = ItemTouchHelper.LEFT,
+//        ).apply {
+//
+//            setOnMoveListener { from, to ->
+//                // TODO: Not yet implemented
+//            }
+//
+//            setOnMoveFinishedListener { from, to ->
+//                // TODO: Not yet implemented
+//            }
+//
+//            setOnLeftSwipeListener { position ->
+//                val item = workoutLogItemAdapter.getItem(position)
+//                viewModel.deleteWorkoutLog(item.workoutId)
+//            }
+//
+//            attachToRecyclerView(recycler)
+//        }
 
         showToolbarAndBottomNavigationView()
         setWorkoutIdResultListener()
