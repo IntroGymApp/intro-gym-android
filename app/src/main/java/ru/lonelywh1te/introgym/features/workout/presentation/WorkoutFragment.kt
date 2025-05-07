@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -41,6 +42,7 @@ import ru.lonelywh1te.introgym.databinding.FragmentWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
+import ru.lonelywh1te.introgym.features.workout.presentation.helper.WorkoutExerciseSetHelper
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import java.time.LocalDateTime
 
@@ -233,15 +235,35 @@ class WorkoutFragment : Fragment(), MenuProvider {
                         binding.cvWorkoutControlPanel.isVisible = true
                         binding.btnStartWorkout.isVisible = false
                         binding.btnStopWorkout.isVisible = true
+                        binding.btnAddExercise.isVisible = false
 
                         startWorkoutTrackingService(workoutLog.startDateTime)
                         bindWorkoutTrackerService()
                     }
                     WorkoutLogState.Finished -> {
-                        // TODO: добавить панель итогов
-
+                        binding.btnAddExercise.isVisible = false
                         binding.cvWorkoutControlPanel.isVisible = false
                     }
+                }
+            }
+            .launchIn(lifecycleScope)
+
+        viewModel.workoutResults.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { workoutResult ->
+                binding.cvWorkoutResults.isVisible = workoutResult != null
+
+                workoutResult?.let {
+                    binding.tvTotalTime.text = workoutResult.totalTime.format(DateAndTimeStringFormatUtils.fullTimeFormatter)
+                    binding.tvTotalWeight.text = workoutResult.totalWeight.toString()
+                    binding.tvTotalEffortPercent.text = "${workoutResult.totalEffort}%"
+                    binding.tvProgress.text = "${workoutResult.progress}%"
+                    binding.ivEffortIndicator.background.setTint(
+                        MaterialColors.getColor(
+                            requireContext(),
+                            WorkoutExerciseSetHelper.getEffortColor(workoutResult.totalEffort),
+                            R.attr.igWarmUpEffortColor
+                        )
+                    )
                 }
             }
             .launchIn(lifecycleScope)

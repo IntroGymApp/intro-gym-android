@@ -13,6 +13,9 @@ interface ExerciseSetDao {
     @Query("select * from exercise_set where workout_exercise_id = :workoutExerciseId")
     fun getExerciseSets(workoutExerciseId: Long): Flow<List<ExerciseSetEntity>>
 
+    @Query("select * from exercise_set where workout_exercise_id in (:workoutExerciseIds)")
+    fun getExerciseSetsByIds(workoutExerciseIds: List<Long>): Flow<List<ExerciseSetEntity>>
+
     @Insert
     suspend fun addExerciseSet(exerciseSet: ExerciseSetEntity): Long
 

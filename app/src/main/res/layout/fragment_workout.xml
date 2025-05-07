@@ -9,17 +9,152 @@
     tools:context=".features.workout.presentation.WorkoutFragment">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_workout_control_panel"
+        android:id="@+id/cv_workout_results"
         style="@style/Widget.IntroGym.ListCard"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:cardCornerRadius="100dp"
-        android:visibility="gone"
         tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/iv_effort_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_circle_plate_filled"
+                android:padding="5dp"
+                android:src="@drawable/ic_energy"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_time"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+                <TextView
+                    android:id="@+id/tv_total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_00_00_00"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold" />
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_effort_indicator" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_progress"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_0_percent"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_effort"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+                <TextView
+                    android:id="@+id/tv_total_effort_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_0_percent"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_tonnage"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular" />
+
+                <TextView
+                    android:id="@+id/tv_total_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_0_kg"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_workout_control_panel"
+        style="@style/Widget.IntroGym.ListCard"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        tools:visibility="visible"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_workout_results">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -40,8 +175,8 @@
                 style="@style/Widget.IntroGym.Button.Rounded"
                 android:layout_width="150dp"
                 android:layout_gravity="center_vertical"
-                android:text="@string/label_finish"
                 android:backgroundTint="?attr/igHintColor"
+                android:text="@string/label_finish"
                 android:textAppearance="@style/TextAppearance.IntroGym.Body.Bold"
                 android:visibility="gone" />
 
@@ -50,8 +185,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
-                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
-                android:text="00:00:00" />
+                android:text="00:00:00"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold" />
 
         </FrameLayout>
 

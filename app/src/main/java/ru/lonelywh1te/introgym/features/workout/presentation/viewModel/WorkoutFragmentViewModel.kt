@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -22,10 +24,12 @@ import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutResult
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutByIdUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutResultsUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.UpdateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.AddWorkoutExerciseUseCase
@@ -51,6 +55,8 @@ class WorkoutFragmentViewModel(
     private val startWorkoutUseCase: StartWorkoutUseCase,
     private val stopWorkoutUseCase: StopWorkoutUseCase,
     private val getWorkoutLogUseCase: GetWorkoutLogUseCase,
+
+    private val getWorkoutResultsUseCase: GetWorkoutResultsUseCase,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
@@ -87,6 +93,24 @@ class WorkoutFragmentViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
+   // private val _workoutResults: MutableStateFlow<WorkoutResult?> = MutableStateFlow(null)
+    val workoutResults: StateFlow<WorkoutResult?> = _workoutLog
+        .flatMapLatest { workoutLog ->
+            var results: WorkoutResult? = null
+            val state = workoutLog?.let { WorkoutLogState.get(workoutLog) }
+
+            if (state != WorkoutLogState.Finished) return@flatMapLatest flowOf(null)
+
+            getWorkoutResultsUseCase(workoutLog.workoutId).map { result ->
+                result
+                    .onSuccess { results = it }
+                    .onFailure { _errors.emit(it) }
+
+                results
+            }
+        }
+        .flowOn(dispatcher)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
     val errors get() = _errors.asSharedFlow()

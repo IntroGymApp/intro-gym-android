@@ -16,6 +16,9 @@ interface WorkoutExercisePlanDao {
     @Query("select * from workout_exercise_plan where workout_exercise_id = :workoutExerciseId")
     fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<WorkoutExercisePlanEntity>
 
+    @Query("select * from workout_exercise_plan where workout_exercise_id in (:workoutExerciseIds)")
+    fun getWorkoutExercisePlans(workoutExerciseIds: List<Long>): Flow<List<WorkoutExercisePlanEntity>>
+
     @Update
     suspend fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlanEntity)
 

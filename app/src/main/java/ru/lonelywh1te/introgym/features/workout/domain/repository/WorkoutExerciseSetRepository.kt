@@ -6,6 +6,8 @@ import ru.lonelywh1te.introgym.core.result.Result
 
 interface WorkoutExerciseSetRepository {
 
+    fun getWorkoutSets(workoutId: Long): Flow<Result<List<WorkoutExerciseSet>>>
+
     fun getWorkoutExerciseSets(workoutExerciseId: Long): Flow<Result<List<WorkoutExerciseSet>>>
 
     suspend fun addWorkoutExerciseSet(workoutExerciseSet: WorkoutExerciseSet): Result<Unit>

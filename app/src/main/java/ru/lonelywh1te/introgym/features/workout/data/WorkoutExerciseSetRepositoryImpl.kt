@@ -4,11 +4,13 @@ import android.database.sqlite.SQLiteException
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.DatabaseError
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
+import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseSetEntity
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseSetRepository
@@ -16,7 +18,32 @@ import java.time.LocalDateTime
 
 class WorkoutExerciseSetRepositoryImpl(
     private val exerciseSetDao: ExerciseSetDao,
+    private val workoutExerciseDao: WorkoutExerciseDao,
 ): WorkoutExerciseSetRepository {
+    override fun getWorkoutSets(workoutId: Long): Flow<Result<List<WorkoutExerciseSet>>> {
+        return workoutExerciseDao.getWorkoutExercisesById(workoutId)
+            .flatMapLatest { workoutExercises ->
+                val ids = workoutExercises.map { it.id }
+                Log.d("WorkoutExerciseSetRepositoryImpl", "ids: $ids")
+
+                exerciseSetDao.getExerciseSetsByIds(ids)
+                    .map<List<ExerciseSetEntity>, Result<List<WorkoutExerciseSet>>> { list ->
+                        Log.d("WorkoutExerciseSetRepositoryImpl", "sets: $list")
+                        Result.Success(list.map { it.toWorkoutExerciseSet() })
+                    }
+                }
+            .catch { e ->
+                Log.e("WorkoutExerciseSetRepositoryImpl", "getWorkoutSets", e)
+
+                val errorResult = when (e) {
+                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
+                    else -> Result.Failure(AppError.UNKNOWN)
+                }
+
+                emit(errorResult)
+            }
+    }
+
     override fun getWorkoutExerciseSets(workoutExerciseId: Long): Flow<Result<List<WorkoutExerciseSet>>> {
         return exerciseSetDao.getExerciseSets(workoutExerciseId)
             .map<List<ExerciseSetEntity>, Result<List<WorkoutExerciseSet>>> {

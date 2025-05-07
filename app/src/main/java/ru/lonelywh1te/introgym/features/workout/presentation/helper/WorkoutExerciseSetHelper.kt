@@ -50,4 +50,15 @@ object WorkoutExerciseSetHelper {
             null -> R.attr.igWarmUpEffortColor
         }
     }
+
+    @AttrRes
+    fun getEffortColor(percent: Int): Int {
+        return when(percent) {
+            in 0..25 -> R.attr.igWarmUpEffortColor
+            in 25..50 -> R.attr.igLowEffortColor
+            in 50..75 -> R.attr.igMidEffortColor
+            in 75..100 -> R.attr.igHardEffortColor
+            else -> R.attr.igMaxEffortColor
+        }
+    }
 }

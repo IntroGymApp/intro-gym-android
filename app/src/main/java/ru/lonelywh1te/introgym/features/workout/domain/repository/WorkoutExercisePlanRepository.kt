@@ -6,6 +6,8 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 
 interface WorkoutExercisePlanRepository {
 
+    fun getWorkoutExercisePlans(workoutId: Long): Flow<Result<List<WorkoutExercisePlan>>>
+
     fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<Result<WorkoutExercisePlan>>
 
     suspend fun addWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan): Result<Long>

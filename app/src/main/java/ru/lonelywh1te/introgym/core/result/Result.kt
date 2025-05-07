@@ -23,6 +23,10 @@ inline fun <T> Result<T>.onFailure(action: (Error) -> Unit): Result<T> {
     return this
 }
 
+fun <T> Result<T>.getOrNull(): T? {
+    return if (this is Result.Success) this.data else null
+}
+
 fun Result<*>.toUIState(): UIState<*>  {
     return when (this) {
         is Result.Loading -> UIState.Loading
