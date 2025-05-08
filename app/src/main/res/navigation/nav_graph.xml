@@ -314,6 +314,20 @@
         <argument
             android:name="workoutExerciseId"
             app:argType="long" />
+        <action
+            android:id="@+id/to_workoutExercisePlanEditorFragment"
+            app:destination="@id/workoutExercisePlanEditorFragment" >
+            <argument
+                android:name="workoutExercise"
+                android:defaultValue="@null"
+                app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise"
+                app:nullable="true" />
+            <argument
+                android:name="workoutExercisePlan"
+                android:defaultValue="@null"
+                app:argType="ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan"
+                app:nullable="true" />
+        </action>
     </fragment>
 
 </navigation>

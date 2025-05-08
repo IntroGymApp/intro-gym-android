@@ -1,24 +1,30 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.lonelywh1te.introgym.core.ui.InputFilters
+import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
 import ru.lonelywh1te.introgym.core.ui.ImageLoader
+import ru.lonelywh1te.introgym.core.ui.InputFilters
 import ru.lonelywh1te.introgym.core.ui.dialogs.PickHmsBottomSheetDialogFragment
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExerciseExecutionBinding
@@ -30,7 +36,7 @@ import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExer
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
 import java.time.LocalTime
 
-class WorkoutExerciseExecutionFragment : Fragment() {
+class WorkoutExerciseExecutionFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExerciseExecutionBinding? = null
     private val binding get() = _binding!!
 
@@ -52,6 +58,7 @@ class WorkoutExerciseExecutionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
         workoutExerciseSetAdapter = WorkoutExerciseSetAdapter()
         setsRecycler = binding.rvSets.apply {
@@ -142,8 +149,18 @@ class WorkoutExerciseExecutionFragment : Fragment() {
         viewModel.workoutExerciseSets.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { workoutExerciseSets ->
                 workoutExerciseSetAdapter.update(workoutExerciseSets)
+
+                binding.tvSetsTitle.isVisible = workoutExerciseSets.isNotEmpty()
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun navigateToWorkoutExercisePlanEditor() {
+        val action = WorkoutExerciseExecutionFragmentDirections.toWorkoutExercisePlanEditorFragment(
+            workoutExerciseId = args.workoutExerciseId
+        )
+
+        findNavController().safeNavigate(action)
     }
 
     private fun addWorkoutExerciseSet() {
@@ -221,5 +238,18 @@ class WorkoutExerciseExecutionFragment : Fragment() {
             .load(AssetPath.get(AssetType.EXERCISE_ANIMATION, exercise.animFilename), binding.ivExerciseAnimation)
 
         binding.tvExerciseName.text = exercise.name
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.workout_exercise_execution_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
+            R.id.edit_workout_exercise_plan -> navigateToWorkoutExercisePlanEditor()
+        }
+
+        return true
     }
 }
