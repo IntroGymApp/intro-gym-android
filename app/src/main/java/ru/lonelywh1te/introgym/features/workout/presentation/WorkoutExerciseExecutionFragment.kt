@@ -81,6 +81,36 @@ class WorkoutExerciseExecutionFragment : Fragment() {
             addWorkoutExerciseSet()
         }
 
+        // TODO: вынести в VM
+
+        binding.btnMinusReps.setOnClickListener {
+            var reps = (binding.etReps.text.takeIf { it.toString() != "" } ?: "0").toString().toInt()
+            if (reps > 0) reps--
+
+            binding.etReps.setText(reps.toString())
+        }
+
+        binding.btnPlusReps.setOnClickListener {
+            var reps = (binding.etReps.text.takeIf { it.toString() != "" } ?: "0").toString().toInt()
+            if (reps < 999) reps++
+
+            binding.etReps.setText(reps.toString())
+        }
+
+        binding.btnMinusWeight.setOnClickListener {
+            var weight = (binding.etWeight.text.takeIf { it.toString() != "" } ?: "0").toString().toFloat()
+            if (weight > 0) weight -= 2.5f
+
+            binding.etWeight.setText(weight.toString())
+        }
+
+        binding.btnPlusWeight.setOnClickListener {
+            var weight = (binding.etWeight.text.takeIf { it.toString() != "" } ?: "0").toString().toFloat()
+            if (weight < 9999.99f) weight += 2.5f
+
+            binding.etWeight.setText(weight.toString())
+        }
+
         startCollectFlows()
     }
 
@@ -112,10 +142,6 @@ class WorkoutExerciseExecutionFragment : Fragment() {
         viewModel.workoutExerciseSets.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { workoutExerciseSets ->
                 workoutExerciseSetAdapter.update(workoutExerciseSets)
-
-                workoutExerciseSets.forEach {
-                    Log.d("WorkoutExerciseExecution", it.toString())
-                }
             }
             .launchIn(lifecycleScope)
     }
