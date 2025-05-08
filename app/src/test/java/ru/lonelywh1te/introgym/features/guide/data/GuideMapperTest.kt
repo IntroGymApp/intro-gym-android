@@ -3,6 +3,7 @@ package ru.lonelywh1te.introgym.features.guide.data
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import ru.lonelywh1te.introgym.data.db.TagType
+import ru.lonelywh1te.introgym.data.db.entity.ExerciseCategoryEntity
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.TagEntity
 import ru.lonelywh1te.introgym.data.db.model.ExerciseCategoryWithCount
@@ -14,7 +15,7 @@ import ru.lonelywh1te.introgym.features.guide.domain.model.Tag
 
 class GuideMapperTest {
     private val testExerciseEntity = ExerciseEntity(1L, 1L, "test_name", "test_desc", listOf(), listOf(), "img_filename", "anim_filename")
-    private val testExerciseCategoryWithCount = ExerciseCategoryWithCount(1, "test_name", 1, "img_filename")
+    private val testExerciseCategoryWithCount = ExerciseCategoryWithCount(ExerciseCategoryEntity(1, "test_name", "img_filename"), 1)
     private val testTagEntity = TagEntity(1, "test_name", TagType.OTHER)
     private val testExerciseEntityWithTags = ExerciseEntityWithTags(testExerciseEntity, listOf(testTagEntity, testTagEntity))
 
