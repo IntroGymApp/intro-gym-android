@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.data.db.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import androidx.room.Transaction
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 

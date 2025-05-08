@@ -150,15 +150,16 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
         binding.llTextInputContainer.setErrorMessage(getString(WorkoutErrorStringMessageProvider.get(error)))
     }
 
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.workout_editor_menu, menu)
-    }
-
     private fun createWorkout() {
         viewModel.updateWorkoutName(binding.etWorkoutName.text.toString())
         viewModel.updateWorkoutDescription(binding.etWorkoutDescription.text.toString())
 
         viewModel.createWorkout()
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menu.clear()
+        menuInflater.inflate(R.menu.workout_editor_menu, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

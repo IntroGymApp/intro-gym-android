@@ -229,6 +229,7 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menu.clear()
         menuInflater.inflate(R.menu.workout_exercise_plan_editor_menu, menu)
     }
 

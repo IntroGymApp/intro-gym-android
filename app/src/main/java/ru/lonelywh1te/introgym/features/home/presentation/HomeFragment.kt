@@ -142,6 +142,7 @@ class HomeFragment : Fragment(), MenuProvider {
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menu.clear()
         menuInflater.inflate(R.menu.home_fragment_menu, menu)
     }
 

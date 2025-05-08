@@ -45,7 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_look"
-                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                    android:textColor="?attr/igPrimaryColor"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_gravity="bottom|start"/>
@@ -72,7 +73,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_look"
-                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                    android:textColor="?attr/igPrimaryColor"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_gravity="bottom|start"/>
@@ -99,7 +101,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_look"
-                    android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                    android:textColor="?attr/igPrimaryColor"
+                    android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_gravity="bottom|start"/>

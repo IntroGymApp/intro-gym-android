@@ -152,6 +152,7 @@ class ExerciseCategoriesFragment : Fragment(), MenuProvider {
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menu.clear()
         menuInflater.inflate(R.menu.filter_menu, menu)
     }
 
