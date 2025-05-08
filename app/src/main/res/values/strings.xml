@@ -135,5 +135,7 @@
     <string name="label_00_00_00">00:00:00</string>
     <string name="label_0_percent">0%</string>
     <string name="label_0_kg">0.0 кг</string>
+    <string name="label_finish_workout">Завершить тренировку</string>
+    <string name="label_finish_workout_submit_message">Вы действительно хотите завершить тренировку? Это действие нельзя будет отменить</string>
 
 </resources>

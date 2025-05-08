@@ -150,10 +150,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
         }
 
         binding.btnStopWorkout.setOnClickListener {
-            viewModel.stopWorkout()
-
-            stopWorkoutTrackingService()
-            unbindWorkoutTrackerService()
+            showSubmitStopWorkoutDialog()
         }
 
         startCollectFlows()
@@ -172,6 +169,8 @@ class WorkoutFragment : Fragment(), MenuProvider {
                 startDateTime?.let { putExtra(WorkoutTrackingService.START_LOCAL_DATE_TIME_EXTRA, startDateTime.toString()) }
             }
         )
+
+        bindWorkoutTrackerService()
     }
 
     private fun stopWorkoutTrackingService() {
@@ -180,6 +179,8 @@ class WorkoutFragment : Fragment(), MenuProvider {
                 action = WorkoutTrackingService.ACTION_STOP
             }
         )
+
+        unbindWorkoutTrackerService()
     }
 
     private fun bindWorkoutTrackerService() {
@@ -316,6 +317,26 @@ class WorkoutFragment : Fragment(), MenuProvider {
             .setNegativeButton(getString(R.string.label_delete)) { dialog ->
                 viewModel.deleteWorkout()
                 stopWorkoutTrackingService()
+
+                dialog.dismiss()
+            }
+            .build()
+            .show(childFragmentManager, SubmitDialogFragment.TAG)
+    }
+
+    private fun showSubmitStopWorkoutDialog() {
+        SubmitDialogFragment.Builder()
+            .setTitle(getString(R.string.label_finish_workout))
+            .setMessage(getString(R.string.label_finish_workout_submit_message))
+            .setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_energy))
+            .setIconTint(MaterialColors.getColor(binding.root, R.attr.igErrorColor))
+            .setPositiveButton(getString(R.string.label_cancel)) { dialog ->
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.label_finish)) { dialog ->
+                viewModel.stopWorkout()
+                stopWorkoutTrackingService()
+
                 dialog.dismiss()
             }
             .build()
