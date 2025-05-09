@@ -11,6 +11,7 @@ import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
 import ru.lonelywh1te.introgym.features.home.homeModule
 import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
+import ru.lonelywh1te.introgym.features.stats.statsModule
 import ru.lonelywh1te.introgym.features.workout.workoutModule
 import ru.lonelywh1te.introgym.notifications.NotificationChannelManager
 import ru.lonelywh1te.introgym.notifications.notificationModule
@@ -32,6 +33,7 @@ class App: Application() {
                 workoutModule,
                 homeModule,
                 notificationModule,
+                statsModule,
             )
         }
 

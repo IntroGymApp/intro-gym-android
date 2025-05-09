@@ -1,18 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".features.stats.StatsFragment">
+    tools:context=".features.stats.presentation.StatsFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="STATS FRAGMENT"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_total_weight_title"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Суммарно поднятый вес"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/group_period_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:checkedButton="@+id/btn_week_period"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_total_weight_title"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/btn_week_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="Неделя" />
+
+
+            <Button
+                android:id="@+id/btn_month_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="Месяц" />
+
+
+            <Button
+                android:id="@+id/btn_year_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="Год" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_period_buttons">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="В среднем"
+                android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                app:layout_constraintStart_toStartOf="@+id/group_effort_buttons"
+                app:layout_constraintTop_toBottomOf="@+id/group_effort_buttons" />
+
+            <TextView
+                android:id="@+id/tv_average_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="0 кг"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                app:layout_constraintStart_toStartOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/tv_period_dates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="dd.MM.yyyy - dd.MM.yyyy"
+                android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        </LinearLayout>
+
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart_total_weight"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</ScrollView>

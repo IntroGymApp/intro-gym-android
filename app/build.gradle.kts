@@ -53,16 +53,23 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
     implementation(libs.gson)
     implementation(libs.gson.retrofit2.adapter)
+
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.navigation)
+
     implementation(libs.retrofit2)
     implementation(libs.okhttp3)
+
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
     implementation(libs.glide)
     implementation(libs.flexbox.layout)
+    implementation(libs.mp.android.chart)
+
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)

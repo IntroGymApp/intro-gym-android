@@ -21,6 +21,7 @@ mockk = "1.13.16"
 navigation = "2.8.9"
 glide = "4.14.2"
 flexbox = "3.0.0"
+mp-android-chart = "v3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = {group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation"}
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 flexbox-layout = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+mp-android-chart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mp-android-chart"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -251,7 +251,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/statsFragment"
-        android:name="ru.lonelywh1te.introgym.features.stats.StatsFragment"
+        android:name="ru.lonelywh1te.introgym.features.stats.presentation.StatsFragment"
         android:label="@string/label_stats"
         tools:layout="@layout/fragment_stats" />
     <fragment
