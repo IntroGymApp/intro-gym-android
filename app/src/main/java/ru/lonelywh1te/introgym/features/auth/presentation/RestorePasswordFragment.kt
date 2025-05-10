@@ -33,16 +33,6 @@ class RestorePasswordFragment : Fragment() {
     private val otpType = OtpType.CONFIRM_CHANGE_PASSWORD
     private var otpConfirmed: Boolean = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        savedInstanceState?.let { bundle ->
-            otpConfirmed = bundle.getBoolean("otpConfirmed")
-        }
-
-        setChangePasswordFormState(otpConfirmed)
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean("otpConfirmed", otpConfirmed)
@@ -50,6 +40,12 @@ class RestorePasswordFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
+
+        savedInstanceState?.let { bundle ->
+            otpConfirmed = bundle.getBoolean("otpConfirmed")
+        }
+
+        setChangePasswordFormState(otpConfirmed)
 
         WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
@@ -139,7 +135,7 @@ class RestorePasswordFragment : Fragment() {
         showPasswordAndConfirmPasswordInputs(otpConfirmed)
         setSubmitButtonText(otpConfirmed)
         setRestorePasswordDescriptionText(otpConfirmed)
-        enableEmailInput(otpConfirmed)
+        enableEmailInput(!otpConfirmed)
     }
 
     private fun enableEmailInput(isEnabled: Boolean) {

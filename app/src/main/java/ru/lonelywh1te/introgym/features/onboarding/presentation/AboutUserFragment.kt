@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
@@ -58,6 +59,8 @@ class AboutUserFragment : Fragment() {
             it.isSelected = !it.isSelected
             if (it.isSelected) binding.btnMale.isSelected = false
         }
+
+        hideToolbarAndBottomNavigationView()
     }
 
     private fun saveUserPreferences() {
@@ -78,6 +81,13 @@ class AboutUserFragment : Fragment() {
             binding.btnMale.isSelected -> Gender.MALE
             binding.btnFemale.isSelected -> Gender.FEMALE
             else -> null
+        }
+    }
+
+    private fun hideToolbarAndBottomNavigationView() {
+        (requireActivity() as UIController).apply {
+            setToolbarVisibility(false)
+            setBottomNavigationViewVisibility(false)
         }
     }
 

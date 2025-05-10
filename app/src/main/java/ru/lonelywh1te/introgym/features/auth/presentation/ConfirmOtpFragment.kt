@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
@@ -53,6 +54,7 @@ class ConfirmOtpFragment : Fragment() {
             confirmOtp()
         }
 
+        hideToolbarAndBottomNavigationView()
         startCollectFlows()
     }
 
@@ -138,6 +140,13 @@ class ConfirmOtpFragment : Fragment() {
 
     private fun hideErrorMessage() {
         binding.llTextInputContainer.setErrorMessage(null)
+    }
+
+    private fun hideToolbarAndBottomNavigationView() {
+        (requireActivity() as UIController).apply {
+            setToolbarVisibility(false)
+            setBottomNavigationViewVisibility(false)
+        }
     }
 
     companion object {

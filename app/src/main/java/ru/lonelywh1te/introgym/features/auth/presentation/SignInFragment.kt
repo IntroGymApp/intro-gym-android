@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.Error
 import ru.lonelywh1te.introgym.core.ui.UIState
@@ -47,6 +48,7 @@ class SignInFragment : Fragment() {
             signIn()
         }
 
+        hideToolbarAndBottomNavigationView()
         startCollectFlows()
         setSpannableStrings()
     }
@@ -110,5 +112,12 @@ class SignInFragment : Fragment() {
 
     private fun hideErrorMessage() {
         binding.llTextInputContainer.setErrorMessage(null)
+    }
+
+    private fun hideToolbarAndBottomNavigationView() {
+        (requireActivity() as UIController).apply {
+            setToolbarVisibility(false)
+            setBottomNavigationViewVisibility(false)
+        }
     }
 }
