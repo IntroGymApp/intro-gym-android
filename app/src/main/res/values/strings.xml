@@ -138,5 +138,10 @@
     <string name="label_finish_workout">Завершить тренировку</string>
     <string name="label_finish_workout_submit_message">Вы действительно хотите завершить тренировку? Это действие нельзя будет отменить</string>
     <string name="placeholder_kg">%1$s кг</string>
+    <string name="label_week">Неделя</string>
+    <string name="label_month">Месяц</string>
+    <string name="label_year">Год</string>
+    <string name="label_average">В среднем</string>
+    <string name="label_total_weight">Суммарно поднятый вес</string>
 
 </resources>

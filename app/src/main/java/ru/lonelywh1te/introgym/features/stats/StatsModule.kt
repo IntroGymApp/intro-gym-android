@@ -4,6 +4,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.stats.data.StatsRepositoryImpl
 import ru.lonelywh1te.introgym.features.stats.domain.repository.StatsRepository
+import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetMusclesStatsUseCase
 import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetTotalWeightStatsUseCase
 import ru.lonelywh1te.introgym.features.stats.presentation.StatsFragmentViewModel
 
@@ -23,6 +24,12 @@ private val statsDomainModule = module {
         )
     }
 
+    factory<GetMusclesStatsUseCase> {
+        GetMusclesStatsUseCase(
+            repository = get(),
+            exerciseCategoriesUseCase = get(),
+        )
+    }
 }
 
 private val statsPresentationModule = module {
@@ -30,6 +37,7 @@ private val statsPresentationModule = module {
     viewModel<StatsFragmentViewModel> {
         StatsFragmentViewModel(
             getTotalWeightStatsUseCase = get(),
+            getMusclesStatsUseCase = get(),
         )
     }
 

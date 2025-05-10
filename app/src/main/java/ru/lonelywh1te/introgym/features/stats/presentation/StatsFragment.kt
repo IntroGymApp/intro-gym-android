@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.stats.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
+import com.github.mikephil.charting.data.RadarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.flow.filterNotNull
@@ -38,12 +43,22 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.groupPeriodButtons.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        binding.groupTotalWeightPeriodButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
-                    binding.btnWeekPeriod.id -> viewModel.setTotalWeightPeriod(StatsPeriod.Week())
-                    binding.btnMonthPeriod.id -> viewModel.setTotalWeightPeriod(StatsPeriod.Month())
-                    binding.btnYearPeriod.id -> viewModel.setTotalWeightPeriod(StatsPeriod.Year())
+                    binding.btnWeekTotalWeightPeriod.id -> viewModel.setTotalWeightPeriod(StatsPeriod.Week())
+                    binding.btnMonthTotalWeightPeriod.id -> viewModel.setTotalWeightPeriod(StatsPeriod.Month())
+                    binding.btnYearTotalWeightPeriod.id -> viewModel.setTotalWeightPeriod(StatsPeriod.Year())
+                }
+            }
+        }
+
+        binding.groupMusclesPeriodButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    binding.btnWeekMusclesPeriod.id -> viewModel.setMusclesPeriod(StatsPeriod.Week())
+                    binding.btnMonthMusclesPeriod.id -> viewModel.setMusclesPeriod(StatsPeriod.Month())
+                    binding.btnYearMusclesPeriod.id -> viewModel.setMusclesPeriod(StatsPeriod.Year())
                 }
             }
         }
@@ -52,19 +67,28 @@ class StatsFragment : Fragment() {
     }
 
     private fun startCollectFlows() {
-        viewModel.totalWeightEntries.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+        viewModel.totalWeightData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .filterNotNull()
             .onEach { entries ->
                 setTotalWeightData(entries)
             }
             .launchIn(lifecycleScope)
 
+        viewModel.musclesData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { entries ->
+                setMusclesData(entries)
+            }
+            .launchIn(lifecycleScope)
+
         viewModel.totalWeightPeriod.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { period ->
-                val startDate = period.startLocalDate.format(DateAndTimeStringFormatUtils.dateFormatter)
-                val endDate = period.endLocalDate.format(DateAndTimeStringFormatUtils.dateFormatter)
+                binding.tvTotalWeightPeriodDates.text = getPeriodString(period)
+            }
+            .launchIn(lifecycleScope)
 
-                binding.tvPeriodDates.text = "$startDate - $endDate"
+        viewModel.musclesPeriod.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { period ->
+                binding.tvMusclesPeriodDates.text = getPeriodString(period)
             }
             .launchIn(lifecycleScope)
     }
@@ -86,7 +110,7 @@ class StatsFragment : Fragment() {
         }
 
         binding.chartTotalWeight.apply {
-            setData(BarData(dataSet))
+            data = BarData(dataSet)
             description = null
             legend.isEnabled = false
             xAxis.apply {
@@ -95,12 +119,17 @@ class StatsFragment : Fragment() {
                 typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
             }
 
+            axisLeft.apply {
+                axisMinimum = 0f
+                isEnabled = false
+            }
+
             axisRight.apply {
                 typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
                 axisMinimum = 0f
             }
-            axisLeft.isEnabled = false
 
+            animateY(200)
             invalidate()
         }
 
@@ -108,5 +137,46 @@ class StatsFragment : Fragment() {
             R.string.placeholder_kg,
             String.format(Locale.US, "%.2f", viewModel.getAverageWeight())
         )
+    }
+
+    private fun setMusclesData(entries: List<RadarEntry>) {
+        val labels = viewModel.getMuscleLabels()
+
+        val dataSet = RadarDataSet(entries, null).apply {
+            setColor(MaterialColors.getColor(binding.root, R.attr.igPrimaryColor))
+            setDrawFilled(true)
+            setDrawValues(false)
+            fillColor = MaterialColors.getColor(binding.root, R.attr.igPrimaryColor)
+        }
+
+        binding.chartMuscles.apply {
+            data = RadarData(dataSet)
+
+            description = null
+            legend.isEnabled = false
+
+            xAxis.apply {
+                typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
+            }
+
+            yAxis.apply {
+                axisMinimum = 0f
+                isEnabled = false
+            }
+
+            if (labels.isNotEmpty()) {
+                xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+                notifyDataSetChanged()
+            }
+
+            animateY(200)
+        }
+    }
+
+    private fun getPeriodString(period: StatsPeriod): String {
+        val startDate = period.startLocalDate.format(DateAndTimeStringFormatUtils.dateFormatter)
+        val endDate = period.endLocalDate.format(DateAndTimeStringFormatUtils.dateFormatter)
+
+        return "$startDate - $endDate"
     }
 }

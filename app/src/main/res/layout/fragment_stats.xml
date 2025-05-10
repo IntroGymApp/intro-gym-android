@@ -18,7 +18,7 @@
             style="@style/Widget.IntroGym.TextView.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Суммарно поднятый вес"
+            android:text="@string/label_total_weight"
             android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,10 +26,10 @@
 
 
         <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/group_period_buttons"
+            android:id="@+id/group_total_weight_period_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:checkedButton="@+id/btn_week_period"
+            app:checkedButton="@+id/btn_week_total_weight_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_total_weight_title"
@@ -37,21 +37,21 @@
             app:singleSelection="true">
 
             <Button
-                android:id="@+id/btn_week_period"
+                android:id="@+id/btn_week_total_weight_period"
                 style="@style/Widget.IntroGym.Button.Segmented"
-                android:text="Неделя" />
+                android:text="@string/label_week" />
 
 
             <Button
-                android:id="@+id/btn_month_period"
+                android:id="@+id/btn_month_total_weight_period"
                 style="@style/Widget.IntroGym.Button.Segmented"
-                android:text="Месяц" />
+                android:text="@string/label_month" />
 
 
             <Button
-                android:id="@+id/btn_year_period"
+                android:id="@+id/btn_year_total_weight_period"
                 style="@style/Widget.IntroGym.Button.Segmented"
-                android:text="Год" />
+                android:text="@string/label_year" />
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -62,12 +62,12 @@
             android:orientation="vertical"
             android:paddingVertical="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group_period_buttons">
+            app:layout_constraintTop_toBottomOf="@+id/group_total_weight_period_buttons">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="В среднем"
+                android:text="@string/label_average"
                 android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
                 app:layout_constraintStart_toStartOf="@+id/group_effort_buttons"
                 app:layout_constraintTop_toBottomOf="@+id/group_effort_buttons" />
@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/tv_period_dates"
+                android:id="@+id/tv_total_weight_period_dates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="dd.MM.yyyy - dd.MM.yyyy"
@@ -100,6 +100,74 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+
+
+
+        <TextView
+            android:id="@+id/tv_muscles_title"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Проработка групп мышц"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chart_total_weight" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/group_muscles_period_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:checkedButton="@+id/btn_week_muscles_period"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_muscles_title"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/btn_week_muscles_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="@string/label_week" />
+
+
+            <Button
+                android:id="@+id/btn_month_muscles_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="@string/label_month" />
+
+
+            <Button
+                android:id="@+id/btn_year_muscles_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="@string/label_year" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <TextView
+            android:id="@+id/tv_muscles_period_dates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_muscles_period_buttons"
+            tools:text="dd.MM.yyyy - dd.MM.yyyy" />
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/chart_muscles"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_muscles_period_dates" />
+
+
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

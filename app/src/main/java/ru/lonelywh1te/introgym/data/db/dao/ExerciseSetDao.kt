@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import ru.lonelywh1te.introgym.data.db.entity.ExerciseSetEntity
+import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithExerciseCategoryId
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithWorkoutLogDate
 import java.time.LocalDate
 
@@ -24,11 +25,23 @@ interface ExerciseSetDao {
         select es.*, 
                wl.date as workout_log_date
         from exercise_set es
-        inner join workout_exercise we ON es.workout_exercise_id = we.id
-        inner join workout_log wl ON we.workout_id = wl.workout_id
+        inner join workout_exercise we on es.workout_exercise_id = we.id
+        inner join workout_log wl on we.workout_id = wl.workout_id
         where workout_log_date between :startDate and :endDate
     """)
     fun getExerciseSetsWithWorkoutLogDateAtPeriod(startDate: LocalDate, endDate: LocalDate): Flow<List<ExerciseSetWithWorkoutLogDate>>
+
+    @Query("""
+        select es.*,
+               ec.name as exercise_category_name
+        from exercise_set es
+        inner join workout_exercise we ON es.workout_exercise_id = we.id
+        inner join workout_log wl on we.workout_id = wl.workout_id
+        inner join exercise e on we.exercise_id = e.id
+        inner join exercise_category ec on e.category_id = ec.id
+        where wl.date between :startDate and :endDate
+    """)
+    fun getExerciseSetsWithExerciseCategoryIdAtPeriod(startDate: LocalDate, endDate: LocalDate): Flow<List<ExerciseSetWithExerciseCategoryId>>
 
     @Insert
     suspend fun addExerciseSet(exerciseSet: ExerciseSetEntity): Long
