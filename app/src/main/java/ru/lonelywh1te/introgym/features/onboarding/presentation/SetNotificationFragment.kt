@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentSetNotificationBinding
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.SetNotificationViewModel
 

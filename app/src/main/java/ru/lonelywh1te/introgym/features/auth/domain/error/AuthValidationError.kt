@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.auth.domain.error
 
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.BaseError
 
 sealed class AuthValidationError(override val message: String? = null, override val cause: Throwable? = null) : BaseError {

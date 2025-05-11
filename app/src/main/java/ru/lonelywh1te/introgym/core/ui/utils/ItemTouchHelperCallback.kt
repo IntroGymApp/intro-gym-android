@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.core.ui
+package ru.lonelywh1te.introgym.core.ui.utils
 
 import android.content.res.Resources
 import android.graphics.Canvas
@@ -20,8 +20,6 @@ class ItemTouchHelperCallback(dragDirs: Int, swipeDirs: Int): ItemTouchHelper.Si
     private var onMoveFinished: ((from: Int, to: Int) -> Unit)? = null
     private var onLeftSwipe: ((position: Int) -> Unit)? = null
     private var onRightSwipe: ((position: Int) -> Unit)? = null
-
-
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         val from = viewHolder.adapterPosition
@@ -102,7 +100,7 @@ class ItemTouchHelperCallback(dragDirs: Int, swipeDirs: Int): ItemTouchHelper.Si
 
                 // Текст
 
-                val text = "Удалить"
+                val text = itemView.context.getString(R.string.label_delete)
                 val textPaint = Paint().apply {
                     color = MaterialColors.getColor(itemView.context, R.attr.igBackgroundColor, Color.WHITE)
                     textSize = 12.dp().toFloat()

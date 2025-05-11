@@ -10,8 +10,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.user.Gender
 import ru.lonelywh1te.introgym.databinding.FragmentAboutUserBinding
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.AboutUserViewModel

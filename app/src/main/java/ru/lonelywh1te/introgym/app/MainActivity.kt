@@ -4,9 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -19,7 +16,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.onSuccess
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository

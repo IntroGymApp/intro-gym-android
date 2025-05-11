@@ -18,7 +18,7 @@ import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentForgotPasswordBinding
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider

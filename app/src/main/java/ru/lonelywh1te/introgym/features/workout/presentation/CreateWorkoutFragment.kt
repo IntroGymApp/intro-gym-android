@@ -26,7 +26,7 @@ import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
-import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
+import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentCreateWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan

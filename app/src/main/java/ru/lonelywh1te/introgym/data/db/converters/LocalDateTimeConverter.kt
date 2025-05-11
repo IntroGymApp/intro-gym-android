@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.data.db.converters
 
-import android.util.Log
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
 

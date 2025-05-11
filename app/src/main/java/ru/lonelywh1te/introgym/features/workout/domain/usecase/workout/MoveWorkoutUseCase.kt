@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 

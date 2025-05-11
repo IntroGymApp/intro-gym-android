@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -8,7 +7,6 @@ import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.getOrNull
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutResult
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan

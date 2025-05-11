@@ -1,13 +1,10 @@
 package ru.lonelywh1te.introgym.core.ui.dialogs
 
-import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentPickHmsBottomSheetDialogBinding
 import java.time.LocalTime

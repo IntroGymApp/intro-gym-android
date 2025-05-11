@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentHelloBinding
 
 class HelloFragment : Fragment() {

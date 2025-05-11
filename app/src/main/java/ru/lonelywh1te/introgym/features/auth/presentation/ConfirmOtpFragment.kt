@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.core.ui.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentConfirmOtpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider

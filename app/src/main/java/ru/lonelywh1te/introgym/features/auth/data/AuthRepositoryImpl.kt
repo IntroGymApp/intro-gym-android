@@ -3,7 +3,6 @@ package ru.lonelywh1te.introgym.features.auth.data
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.asSafeNetworkFlow

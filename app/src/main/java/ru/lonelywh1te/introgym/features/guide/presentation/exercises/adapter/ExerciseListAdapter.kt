@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
-import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
-import ru.lonelywh1te.introgym.core.ui.ImageLoader
+import ru.lonelywh1te.introgym.core.ui.utils.DiffUtilCallback
+import ru.lonelywh1te.introgym.core.ui.utils.ImageLoader
 import ru.lonelywh1te.introgym.databinding.ItemExerciseBinding
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseItem
 

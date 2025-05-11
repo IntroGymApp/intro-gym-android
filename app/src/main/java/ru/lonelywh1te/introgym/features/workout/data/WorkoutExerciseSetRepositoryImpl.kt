@@ -22,11 +22,9 @@ class WorkoutExerciseSetRepositoryImpl(
         return workoutExerciseDao.getWorkoutExercisesById(workoutId)
             .flatMapLatest { workoutExercises ->
                 val ids = workoutExercises.map { it.id }
-                Log.d("WorkoutExerciseSetRepositoryImpl", "ids: $ids")
 
                 exerciseSetDao.getExerciseSetsByIds(ids)
                     .map<List<ExerciseSetEntity>, Result<List<WorkoutExerciseSet>>> { list ->
-                        Log.d("WorkoutExerciseSetRepositoryImpl", "sets: $list")
                         Result.Success(list.map { it.toWorkoutExerciseSet() })
                     }
                 }

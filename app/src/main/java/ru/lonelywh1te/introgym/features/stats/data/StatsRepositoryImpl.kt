@@ -1,13 +1,8 @@
 package ru.lonelywh1te.introgym.features.stats.data
 
-import android.database.sqlite.SQLiteException
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
-import ru.lonelywh1te.introgym.data.db.DatabaseError
 import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithExerciseCategoryId

@@ -48,8 +48,6 @@ class CreateWorkoutFragmentViewModel(
                 exercisePlans = workoutExercisePlans.value
             )
 
-            Log.d("CreateWorkoutVM", "CREATE WORKOUT")
-
             _createWorkoutResult.emit(createWorkoutResult)
         }
     }

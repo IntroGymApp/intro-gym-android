@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
-import ru.lonelywh1te.introgym.core.ui.ImageLoader
+import ru.lonelywh1te.introgym.core.ui.utils.ImageLoader
 import ru.lonelywh1te.introgym.databinding.FragmentExerciseBinding
 import ru.lonelywh1te.introgym.databinding.ItemExecutionStepBinding
 import ru.lonelywh1te.introgym.databinding.ItemExecutionTipBinding
