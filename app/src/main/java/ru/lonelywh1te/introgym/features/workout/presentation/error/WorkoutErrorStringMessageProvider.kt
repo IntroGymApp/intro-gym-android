@@ -2,13 +2,13 @@ package ru.lonelywh1te.introgym.features.workout.presentation.error
 
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.AppError
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.asStringRes
 import ru.lonelywh1te.introgym.core.ui.ErrorStringResProvider
 import ru.lonelywh1te.introgym.features.workout.domain.error.WorkoutError
 
 object WorkoutErrorStringMessageProvider: ErrorStringResProvider {
-    override fun get(error: Error): Int {
+    override fun get(error: BaseError): Int {
         return when (error) {
             is WorkoutError -> error.getStringRes()
             is AppError -> error.asStringRes()
@@ -19,9 +19,9 @@ object WorkoutErrorStringMessageProvider: ErrorStringResProvider {
 
 fun WorkoutError.getStringRes(): Int {
     return when (this) {
-        WorkoutError.WORKOUT_EMPTY_NAME -> R.string.workout_error_empty_name
-        WorkoutError.WORKOUT_HAS_NO_EXERCISES -> R.string.workout_error_has_no_exercises
-        WorkoutError.WORKOUT_EXERCISES_AND_PLANS_MISMATCH -> R.string.workout_error_exercise_and_plans_mismatch
-        WorkoutError.WORKOUT_ALREADY_STARTED -> R.string.label_workout_error_already_started
+        is WorkoutError.WorkoutEmptyName -> R.string.workout_error_empty_name
+        is WorkoutError.WorkoutHasNoExercises -> R.string.workout_error_has_no_exercises
+        is WorkoutError.WorkoutExercisesAndPlansMismatch -> R.string.workout_error_exercise_and_plans_mismatch
+        is WorkoutError.WorkoutAlreadyStarted -> R.string.label_workout_error_already_started
     }
 }

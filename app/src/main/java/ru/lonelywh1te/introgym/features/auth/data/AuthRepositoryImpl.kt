@@ -31,9 +31,9 @@ class AuthRepositoryImpl(
 
         val result = when {
             response.isSuccessful && body != null -> Result.Success(Unit)
-            response.code() == 409 -> Result.Failure(AuthError.SESSION_STILL_EXIST)
-            response.code() in 500..599 -> Result.Failure(NetworkError.SERVER_ERROR)
-            else -> Result.Failure(AppError.UNKNOWN)
+            response.code() == 409 -> Result.Failure(AuthError.SessionStillExist())
+            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
         }.also {
             if (it is Result.Success && body != null) authStorage.saveSessionId(body.sessionId)
         }
@@ -51,10 +51,10 @@ class AuthRepositoryImpl(
 
         val result = when {
             response.isSuccessful && body != null && body.isSuccess -> Result.Success(Unit)
-            response.isSuccessful && body != null && !body.isSuccess -> Result.Failure(AuthError.INVALID_OTP_CODE)
-            response.code() == 400 -> Result.Failure(AuthError.INVALID_SESSION)
-            response.code() in 500..599 -> Result.Failure(NetworkError.SERVER_ERROR)
-            else -> Result.Failure(AppError.UNKNOWN)
+            response.isSuccessful && body != null && !body.isSuccess -> Result.Failure(AuthError.InvalidOtpCode())
+            response.code() == 400 -> Result.Failure(AuthError.InvalidSession())
+            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
         }
 
         if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
@@ -73,10 +73,10 @@ class AuthRepositoryImpl(
 
         val result = when {
             response.isSuccessful && body != null -> Result.Success(Unit)
-            response.code() == 409 -> Result.Failure(AuthError.EMAIL_ALREADY_REGISTERED)
-            response.code() == 400 -> Result.Failure(AuthError.INVALID_SESSION)
-            response.code() in 500..599 -> Result.Failure(NetworkError.SERVER_ERROR)
-            else -> Result.Failure(AppError.UNKNOWN)
+            response.code() == 409 -> Result.Failure(AuthError.EmailAlreadyRegistered())
+            response.code() == 400 -> Result.Failure(AuthError.InvalidSession())
+            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
         }.also {
             if (it is Result.Success && body != null) authStorage.saveTokens(body.accessToken, body.refreshToken)
             authStorage.clearSessionId()
@@ -95,9 +95,9 @@ class AuthRepositoryImpl(
 
         val result = when {
             response.isSuccessful && body != null -> Result.Success(Unit)
-            response.code() == 400 -> Result.Failure(AuthError.INVALID_EMAIL_OR_PASSWORD)
-            response.code() in 500..599 -> Result.Failure(NetworkError.SERVER_ERROR)
-            else -> Result.Failure(AppError.UNKNOWN)
+            response.code() == 400 -> Result.Failure(AuthError.InvalidEmailOrPassword())
+            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
         }.also {
             if (it is Result.Success && body != null) authStorage.saveTokens(body.accessToken, body.refreshToken)
         }
@@ -117,9 +117,9 @@ class AuthRepositoryImpl(
 
         val result = when {
             response.isSuccessful && body != null && body.isSuccess -> Result.Success(Unit)
-            response.isSuccessful && body != null && !body.isSuccess -> Result.Failure(AuthError.FAILED_TO_CHANGE_PASSWORD)
-            response.code() in 500..599 -> Result.Failure(NetworkError.SERVER_ERROR)
-            else -> Result.Failure(AppError.UNKNOWN)
+            response.isSuccessful && body != null && !body.isSuccess -> Result.Failure(AuthError.FailedToChangePassword())
+            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
         }
 
         if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
@@ -135,9 +135,9 @@ class AuthRepositoryImpl(
 
         val result = when {
             response.isSuccessful && body != null -> Result.Success(Unit)
-            response.code() == 401 -> Result.Failure(AuthError.UNAUTHORIZED)
-            response.code() in 500..599 -> Result.Failure(NetworkError.SERVER_ERROR)
-            else -> Result.Failure(AppError.UNKNOWN)
+            response.code() == 401 -> Result.Failure(AuthError.Unauthorized())
+            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
         }.also {
             if (it is Result.Success && body != null) authStorage.saveTokens(body.accessToken, body.refreshToken)
         }

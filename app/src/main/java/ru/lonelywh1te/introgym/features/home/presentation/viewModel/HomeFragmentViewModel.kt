@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
@@ -57,7 +57,7 @@ class HomeFragmentViewModel(
     private val _markedDays: MutableStateFlow<List<LocalDate>> = MutableStateFlow(emptyList())
     val markedDays get() = _markedDays.asStateFlow()
 
-    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
+    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
     val errors get() = _errors.asSharedFlow()
 
     fun addWorkoutLog(date: LocalDate, workoutId: Long) {

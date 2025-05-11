@@ -12,11 +12,13 @@ import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.DatabaseError
 import ru.lonelywh1te.introgym.data.db.MainDatabase
+import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
+import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
@@ -38,28 +40,12 @@ class WorkoutRepositoryImpl (
             .map<List<WorkoutEntityWithCountOfExercises>, Result<List<WorkoutItem>>> { list ->
                 Result.Success(list.map { entity -> entity.toWorkoutItem() })
             }
-            .catch { e ->
-                Log.e("WorkoutRepositoryImpl", "getWorkoutItems", e)
-
-                val errorResult = when (e) {
-                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                    else -> Result.Failure(AppError.UNKNOWN)
-                }
-
-                emit(errorResult)
-            }
+            .asSafeSQLiteFlow()
     }
 
     override fun getWorkouts(): Result<List<Workout>> {
-        return try {
-            Result.Success(workoutDao.getWorkouts().map { it.toWorkout() })
-        } catch (e: Exception) {
-            Log.e("WorkoutRepositoryImpl", "getWorkouts", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
+        return sqliteTryCatching {
+            workoutDao.getWorkouts().map { it.toWorkout() }
         }
     }
 
@@ -67,24 +53,14 @@ class WorkoutRepositoryImpl (
         return workoutDao.getWorkoutById(workoutId)
             .filterNotNull()
             .map<WorkoutEntity, Result<Workout>> { Result.Success(it.toWorkout()) }
-            .catch { e ->
-                Log.e("WorkoutRepositoryImpl", "getWorkoutById", e)
-
-                val errorResult = when (e) {
-                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                    else -> Result.Failure(AppError.UNKNOWN)
-                }
-
-                emit(errorResult)
-            }
+            .asSafeSQLiteFlow()
     }
 
     override suspend fun createFullWorkout(
         workout: Workout,
         exercisesWithPlans: Map<WorkoutExercise, WorkoutExercisePlan>
     ): Result<Unit> {
-        return try {
-
+        return sqliteTryCatching {
             db.withTransaction {
                 val countOfWorkouts = workoutDao.getCountOfWorkouts()
 
@@ -117,15 +93,6 @@ class WorkoutRepositoryImpl (
                     workoutExercisePlanDao.createWorkoutExercisePlan(planEntity)
                 }
             }
-
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Log.e("WorkoutRepositoryImpl", "createWorkout", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
         }
     }
 
@@ -134,20 +101,11 @@ class WorkoutRepositoryImpl (
             lastUpdated = LocalDateTime.now(zoneOffset)
         ).toWorkoutEntity()
 
-        return try {
-            Result.Success(workoutDao.updateWorkout(workoutEntity))
-        } catch (e: Exception) {
-            Log.e("WorkoutRepositoryImpl", "updateWorkout", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-        }
+        return sqliteTryCatching { workoutDao.updateWorkout(workoutEntity) }
     }
 
     override suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit> {
-        return try {
+        return sqliteTryCatching {
             db.withTransaction {
                 val workoutToDelete = workoutDao.getWorkoutById(id).first()
                 val workoutsToReorder = workoutDao.getWorkoutsWithOrderGreaterThan(workoutToDelete.order)
@@ -159,28 +117,10 @@ class WorkoutRepositoryImpl (
                     workoutDao.updateWorkout(updatedWorkout)
                 }
             }
-
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Log.e("WorkoutRepositoryImpl", "deleteWorkout", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
         }
     }
 
     override suspend fun getCountOfWorkouts(): Result<Int> {
-        return try {
-            Result.Success(workoutDao.getCountOfWorkouts())
-        } catch (e: Exception) {
-            Log.e("WorkoutRepositoryImpl", "getCountOfWorkouts", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-        }
+        return sqliteTryCatching { workoutDao.getCountOfWorkouts() }
     }
 }

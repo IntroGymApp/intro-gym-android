@@ -22,18 +22,18 @@ object WorkoutValidator {
     }
 
     private fun validateWorkout(workout: Workout): Result<Unit> {
-        return if (workout.name.isBlank()) Result.Failure(WorkoutError.WORKOUT_EMPTY_NAME)
+        return if (workout.name.isBlank()) Result.Failure(WorkoutError.WorkoutEmptyName())
         else Result.Success(Unit)
     }
 
     private fun validateExerciseWithPlans(exercises: List<WorkoutExercise>, plans: List<WorkoutExercisePlan>): Result<Unit> {
-        if (exercises.size != plans.size) return Result.Failure(WorkoutError.WORKOUT_EXERCISES_AND_PLANS_MISMATCH)
+        if (exercises.size != plans.size) return Result.Failure(WorkoutError.WorkoutExercisesAndPlansMismatch())
         return Result.Success(Unit)
     }
 
     private fun validateExercises(exercises: List<WorkoutExercise>): Result<Unit> {
         return when {
-            exercises.isEmpty() -> Result.Failure(WorkoutError.WORKOUT_HAS_NO_EXERCISES)
+            exercises.isEmpty() -> Result.Failure(WorkoutError.WorkoutHasNoExercises())
             else -> Result.Success(Unit)
         }
     }

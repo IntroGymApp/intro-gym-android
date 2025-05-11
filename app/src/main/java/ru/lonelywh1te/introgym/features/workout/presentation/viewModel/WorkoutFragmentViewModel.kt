@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -11,14 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
@@ -112,7 +110,7 @@ class WorkoutFragmentViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
+    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
     val errors get() = _errors.asSharedFlow()
 
     private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()

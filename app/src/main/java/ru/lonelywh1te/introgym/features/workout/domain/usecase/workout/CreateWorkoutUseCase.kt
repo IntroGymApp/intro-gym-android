@@ -23,7 +23,7 @@ class CreateWorkoutUseCase(
         }
 
         val exercisesWithPlans = exercises.associateWith { workoutExercise ->
-            exercisePlans.find { workoutExercise.id == it.workoutExerciseId } ?: return Result.Failure(AppError.UNKNOWN)
+            exercisePlans.find { workoutExercise.id == it.workoutExerciseId } ?: throw NoSuchElementException("No plan found for exercise with ID ${workoutExercise.id}")
         }
 
         return workoutRepository.createFullWorkout(workout, exercisesWithPlans)

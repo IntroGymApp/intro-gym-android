@@ -16,7 +16,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
@@ -106,7 +106,7 @@ class SignInFragment : Fragment() {
         binding.btnSignIn.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showErrorMessage(error: Error) {
+    private fun showErrorMessage(error: BaseError) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 

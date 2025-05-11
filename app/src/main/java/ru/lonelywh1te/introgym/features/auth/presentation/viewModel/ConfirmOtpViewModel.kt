@@ -28,10 +28,7 @@ class ConfirmOtpViewModel(
 
     fun sendOtp(email: String) {
         viewModelScope.launch(dispatcher) {
-            if (otpType == null) {
-                _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
-                return@launch
-            }
+            if (otpType == null) throw IllegalStateException("OtpType is null")
 
             sendOtpUseCase(email, otpType!!).collect { result ->
                 _sendOtpResult.emit(result.toUIState())
@@ -41,10 +38,7 @@ class ConfirmOtpViewModel(
 
     fun confirmOtp(otp: String) {
         viewModelScope.launch(dispatcher) {
-            if (otpType == null) {
-                _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
-                return@launch
-            }
+            if (otpType == null) throw IllegalStateException("OtpType is null")
 
             confirmOtpUseCase(otp, otpType!!).collect { result ->
                 _confirmOtpResult.emit(result.toUIState())

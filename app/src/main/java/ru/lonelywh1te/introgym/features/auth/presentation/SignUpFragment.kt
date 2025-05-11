@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
@@ -29,7 +29,6 @@ import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
-import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
@@ -67,9 +66,9 @@ class SignUpFragment : Fragment() {
 
         binding.passwordValidationView.apply {
             errorRequirements = mapOf(
-                AuthValidationError.PASSWORD_TOO_SHORT to getString(R.string.label_min_8_symbols),
-                AuthValidationError.PASSWORD_MISSING_UPPERCASE to getString(R.string.label_has_upper_letter),
-                AuthValidationError.PASSWORD_MISSING_SPECIAL_SYMBOL to getString(R.string.label_has_special_symbol),
+                AuthValidationError.PasswordTooShort() to getString(R.string.label_min_8_symbols),
+                AuthValidationError.PasswordMissingUppercase() to getString(R.string.label_has_upper_letter),
+                AuthValidationError.PasswordMissingSpecialSymbol() to getString(R.string.label_has_special_symbol),
             )
         }
 
@@ -105,10 +104,6 @@ class SignUpFragment : Fragment() {
                     }
 
                     is UIState.Failure -> {
-                        if (state.error == AuthError.EMAIL_ALREADY_REGISTERED) {
-                            navigateToSignInFragment()
-                        }
-
                         showErrorMessage(state.error)
                         showLoadingIndicator(false)
                     }
@@ -142,9 +137,9 @@ class SignUpFragment : Fragment() {
             val isConfirmed = bundle.getBoolean(ConfirmOtpFragment.RESULT_BUNDLE_KEY)
 
             val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, Error::class.java)
+                bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, BaseError::class.java)
             } else {
-                bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as Error
+                bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as BaseError
             }
 
             if (isConfirmed) {
@@ -189,7 +184,7 @@ class SignUpFragment : Fragment() {
         binding.btnSignUp.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showErrorMessage(error: Error) {
+    private fun showErrorMessage(error: BaseError) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 

@@ -10,7 +10,7 @@ interface BaseError: Serializable {
 
 sealed class AppError: BaseError {
     data class Unknown(
-        override val message: String?,
+        override val message: String? = null,
         override val cause: Throwable?,
     ): AppError()
 }

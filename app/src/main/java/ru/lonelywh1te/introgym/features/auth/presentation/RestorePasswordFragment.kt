@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentForgotPasswordBinding
@@ -121,9 +121,9 @@ class RestorePasswordFragment : Fragment() {
                 setChangePasswordFormState(otpConfirmed)
             } else {
                 val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, Error::class.java)
+                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, BaseError::class.java)
                 } else {
-                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as Error
+                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as BaseError
                 }
 
                 error?.let { showErrorMessage(it) }
@@ -179,7 +179,7 @@ class RestorePasswordFragment : Fragment() {
         binding.btnSubmit.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showErrorMessage(error: Error) {
+    private fun showErrorMessage(error: BaseError) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 

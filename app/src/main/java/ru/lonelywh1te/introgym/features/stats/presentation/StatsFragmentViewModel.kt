@@ -15,10 +15,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
-import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.features.stats.domain.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetMusclesStatsUseCase
 import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetTotalWeightStatsUseCase
@@ -85,8 +84,8 @@ class StatsFragmentViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors: SharedFlow<Error> get() = _errors
+    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
+    val errors: SharedFlow<BaseError> get() = _errors
 
     fun setTotalWeightPeriod(statsPeriod: StatsPeriod) {
         _totalWeightPeriod.value = statsPeriod

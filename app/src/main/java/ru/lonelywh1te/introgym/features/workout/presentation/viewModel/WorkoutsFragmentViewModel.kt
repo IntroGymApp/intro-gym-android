@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
@@ -23,8 +23,8 @@ class WorkoutsFragmentViewModel(
     private val _workoutsList: MutableStateFlow<List<WorkoutItem>> = MutableStateFlow(listOf())
     val workoutList get() = _workoutsList
 
-    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors: SharedFlow<Error> get() = _errors
+    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
+    val errors: SharedFlow<BaseError> get() = _errors
 
     private val dispatcher = Dispatchers.IO
 

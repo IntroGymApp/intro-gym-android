@@ -1,20 +1,16 @@
 package ru.lonelywh1te.introgym.features.workout.data
 
-import android.database.sqlite.SQLiteException
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
-import ru.lonelywh1te.introgym.data.db.DatabaseError
+import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
+import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
-import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import java.time.LocalDateTime
 
 class WorkoutExercisePlanRepositoryImpl(
@@ -31,16 +27,7 @@ class WorkoutExercisePlanRepositoryImpl(
                         Result.Success(list.map { it.toWorkoutExercisePlan() })
                     }
             }
-            .catch { e ->
-                Log.e("WorkoutExercisePlanRepositoryImpl", "getWorkoutExercisePlans", e)
-
-                val errorResult = when (e) {
-                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                    else -> Result.Failure(AppError.UNKNOWN)
-                }
-
-                emit(errorResult)
-            }
+            .asSafeSQLiteFlow()
     }
 
     override fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<Result<WorkoutExercisePlan>> {
@@ -48,16 +35,7 @@ class WorkoutExercisePlanRepositoryImpl(
             .map<WorkoutExercisePlanEntity, Result<WorkoutExercisePlan>> {
                 Result.Success(it.toWorkoutExercisePlan())
             }
-            .catch { e ->
-                Log.e("WorkoutExercisePlanRepositoryImpl", "getWorkoutExercisePlanById", e)
-
-                val errorResult = when (e) {
-                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                    else -> Result.Failure(AppError.UNKNOWN)
-                }
-
-                emit(errorResult)
-            }
+            .asSafeSQLiteFlow()
     }
 
     override suspend fun addWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan): Result<Long> {
@@ -66,17 +44,8 @@ class WorkoutExercisePlanRepositoryImpl(
             lastUpdated = LocalDateTime.now(),
         ).toWorkoutExercisePlanEntity()
 
-        return try {
-            Result.Success(
-                workoutExercisePlanDao.createWorkoutExercisePlan(workoutExercisePlanEntity)
-            )
-        } catch (e: Exception) {
-            Log.e("WorkoutExercisePlanRepositoryImpl", "getWorkoutExercisePlanById", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
+        return sqliteTryCatching {
+            workoutExercisePlanDao.createWorkoutExercisePlan(workoutExercisePlanEntity)
         }
     }
 
@@ -85,32 +54,14 @@ class WorkoutExercisePlanRepositoryImpl(
             lastUpdated = LocalDateTime.now(),
         ).toWorkoutExercisePlanEntity()
 
-        return try {
-            Result.Success(
-                workoutExercisePlanDao.updateWorkoutExercisePlan(workoutExercisePlanEntity)
-            )
-        } catch (e: Exception) {
-            Log.e("WorkoutExercisePlanRepositoryImpl", "updateWorkoutExercisePlan", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
+        return sqliteTryCatching {
+            workoutExercisePlanDao.updateWorkoutExercisePlan(workoutExercisePlanEntity)
         }
     }
 
     override suspend fun deleteWorkoutExercisePlan(id: Long): Result<Unit> {
-        return try {
-            Result.Success(
-                workoutExercisePlanDao.deleteWorkoutExercisePlan(id)
-            )
-        } catch (e: Exception) {
-            Log.e("WorkoutExercisePlanRepositoryImpl", "deleteWorkoutExercisePlan", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
+        return sqliteTryCatching {
+            workoutExercisePlanDao.deleteWorkoutExercisePlan(id)
         }
     }
 }

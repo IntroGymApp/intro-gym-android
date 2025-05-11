@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.app.UIController
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentConfirmOtpBinding
@@ -69,7 +69,7 @@ class ConfirmOtpFragment : Fragment() {
                         isLoadingState(true)
                     }
                     is UIState.Failure -> {
-                        if (state.error == AuthError.SESSION_STILL_EXIST) {
+                        if (state.error is AuthError.SessionStillExist) {
                             showErrorMessage(state.error)
                         } else {
                             navigateUpWithError(state.error)
@@ -122,7 +122,7 @@ class ConfirmOtpFragment : Fragment() {
         findNavController().navigateUp()
     }
 
-    private fun navigateUpWithError(error: Error) {
+    private fun navigateUpWithError(error: BaseError) {
         val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, error) }
 
         setFragmentResult(REQUEST_KEY, bundle)
@@ -134,7 +134,7 @@ class ConfirmOtpFragment : Fragment() {
         binding.btnConfirmOtp.visibility = if (isLoading) View.GONE else View.VISIBLE
     }
 
-    private fun showErrorMessage(error: Error) {
+    private fun showErrorMessage(error: BaseError) {
         binding.llTextInputContainer.setErrorMessage(getString(AuthErrorStringResProvider.get(error)))
     }
 

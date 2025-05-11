@@ -11,11 +11,13 @@ import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.DatabaseError
 import ru.lonelywh1te.introgym.data.db.MainDatabase
+import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutLogDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutLogEntity
+import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
@@ -34,14 +36,7 @@ class WorkoutLogRepositoryImpl(
             .map<List<WorkoutLogEntity>, Result<List<WorkoutLogItem>>> { workoutLogEntities ->
                 Result.Success(mapWorkoutLogEntities(workoutLogEntities))
             }
-            .catch { e ->
-                Log.e("WorkoutLogRepositoryImpl", "getWorkoutLogItemList", e)
-
-                when (e) {
-                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                    else -> Result.Failure(AppError.UNKNOWN)
-                }
-            }
+            .asSafeSQLiteFlow()
     }
 
     override fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<Result<WorkoutLog?>> {
@@ -49,28 +44,11 @@ class WorkoutLogRepositoryImpl(
             .map<WorkoutLogEntity?, Result<WorkoutLog?>> { workoutLogEntity ->
                 Result.Success(workoutLogEntity?.toWorkoutLog())
             }
-            .catch { e ->
-                Log.e("WorkoutLogRepositoryImpl", "getWorkoutLogItemList", e)
-
-                when (e) {
-                    is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                    else -> Result.Failure(AppError.UNKNOWN)
-                }
-            }
+            .asSafeSQLiteFlow()
     }
 
     override suspend fun getWorkoutLogWithStartDateTime(): Result<WorkoutLog?> {
-        return try {
-            Result.Success(workoutLogDao.getWorkoutLogWithStartDateNotNull()?.toWorkoutLog())
-        } catch (e: Exception) {
-            Log.e("WorkoutLogRepositoryImpl", "updateWorkoutLog", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-
-        }
+        return sqliteTryCatching { workoutLogDao.getWorkoutLogWithStartDateNotNull()?.toWorkoutLog() }
     }
 
     private fun mapWorkoutLogEntities(list: List<WorkoutLogEntity>): List<WorkoutLogItem> {
@@ -85,27 +63,17 @@ class WorkoutLogRepositoryImpl(
     }
 
     override suspend fun updateWorkoutLog(workoutLog: WorkoutLog): Result<Unit> {
-        return try {
+        return sqliteTryCatching {
             val workoutLogEntity = workoutLog.copy(
                 lastUpdatedAt = LocalDateTime.now(),
             ).toWorkoutLogEntity()
 
             workoutLogDao.updateWorkoutLog(workoutLogEntity)
-
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Log.e("WorkoutLogRepositoryImpl", "updateWorkoutLog", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-
         }
     }
 
     override suspend fun addWorkoutLog(workoutLog: WorkoutLog): Result<Unit> {
-        return try {
+        return sqliteTryCatching {
             db.withTransaction {
                 val workoutEntity = workoutDao.getWorkoutById(workoutLog.workoutId).first()
                 val workoutExercises = workoutExerciseDao.getWorkoutExercisesById(workoutLog.workoutId).first()
@@ -156,46 +124,14 @@ class WorkoutLogRepositoryImpl(
 
                 workoutLogDao.addWorkoutLog(newWorkoutLog)
             }
-
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Log.e("WorkoutLogRepositoryImpl", "addWorkoutLog", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-
         }
     }
 
     override suspend fun deleteWorkoutLog(workoutLog: WorkoutLog): Result<Unit> {
-        return try {
-            workoutDao.deleteWorkout(workoutLog.workoutId)
-
-            Result.Success(Unit)
-        } catch (e: Exception) {
-            Log.e("WorkoutLogRepositoryImpl", "deleteWorkoutLog", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-
-        }
+        return sqliteTryCatching { workoutDao.deleteWorkout(workoutLog.workoutId) }
     }
 
     override suspend fun getWorkoutLogDates(): Result<List<LocalDate>> {
-        return try {
-            Result.Success(workoutLogDao.getWorkoutLogDates())
-        } catch (e: Exception) {
-            Log.e("WorkoutLogRepositoryImpl", "deleteWorkoutLog", e)
-
-            when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLITE_ERROR)
-                else -> Result.Failure(AppError.UNKNOWN)
-            }
-
-        }
+        return sqliteTryCatching { workoutLogDao.getWorkoutLogDates() }
     }
 }
