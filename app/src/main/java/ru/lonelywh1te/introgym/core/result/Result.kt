@@ -5,7 +5,7 @@ import ru.lonelywh1te.introgym.core.ui.UIState
 sealed interface Result<out T> {
     data class Success<out T>(val data: T): Result<T>
     data object Loading: Result<Nothing>
-    data class Failure(val error: Error): Result<Nothing>
+    data class Failure(val error: BaseError): Result<Nothing>
 }
 
 inline fun <T> Result<T>.onSuccess(action: (data: T) -> Unit): Result<T> {
@@ -18,7 +18,7 @@ inline fun <T> Result<T>.onLoading(action: () -> Unit): Result<T> {
     return this
 }
 
-inline fun <T> Result<T>.onFailure(action: (Error) -> Unit): Result<T> {
+inline fun <T> Result<T>.onFailure(action: (BaseError) -> Unit): Result<T> {
     if (this is Result.Failure) action(this.error)
     return this
 }

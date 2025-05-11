@@ -1,11 +1,11 @@
 package ru.lonelywh1te.introgym.core.ui
 
 import androidx.annotation.StringRes
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 
 interface ErrorStringResProvider {
 
     @StringRes
-    fun get(error: Error): Int
+    fun get(error: BaseError): Int
 
 }
