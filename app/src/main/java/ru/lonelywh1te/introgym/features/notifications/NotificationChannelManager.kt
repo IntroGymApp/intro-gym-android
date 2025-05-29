@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.notifications
+package ru.lonelywh1te.introgym.features.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

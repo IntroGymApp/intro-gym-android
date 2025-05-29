@@ -38,6 +38,7 @@ private val statsPresentationModule = module {
         StatsFragmentViewModel(
             getTotalWeightStatsUseCase = get(),
             getMusclesStatsUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 

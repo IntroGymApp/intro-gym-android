@@ -223,6 +223,7 @@ val workoutPresentationModule = module {
             getWorkoutListUseCase = get(),
             moveWorkoutUseCase = get(),
             deleteWorkoutUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 
@@ -230,6 +231,7 @@ val workoutPresentationModule = module {
         CreateWorkoutFragmentViewModel(
             createWorkoutUseCase = get(),
             getExerciseUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 
@@ -240,6 +242,7 @@ val workoutPresentationModule = module {
             getWorkoutExerciseUseCase = get(),
             updateWorkoutExerciseUseCase = get(),
             updateWorkoutExercisePlanUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 
@@ -257,6 +260,7 @@ val workoutPresentationModule = module {
             stopWorkoutUseCase = get(),
             getWorkoutLogUseCase = get(),
             getWorkoutResultsUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 
@@ -267,6 +271,7 @@ val workoutPresentationModule = module {
             getWorkoutExercisePlanUseCase = get(),
             getWorkoutExerciseSetsUseCase = get(),
             addWorkoutExerciseSetUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 }

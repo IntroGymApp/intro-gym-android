@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
@@ -19,24 +20,22 @@ class WorkoutsFragmentViewModel(
     private val getWorkoutListUseCase: GetWorkoutListUseCase,
     private val moveWorkoutUseCase: MoveWorkoutUseCase,
     private val deleteWorkoutUseCase: DeleteWorkoutUseCase,
+    private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val _workoutsList: MutableStateFlow<List<WorkoutItem>> = MutableStateFlow(listOf())
     val workoutList get() = _workoutsList
-
-    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
-    val errors: SharedFlow<BaseError> get() = _errors
 
     private val dispatcher = Dispatchers.IO
 
     fun moveWorkout(from: Int, to: Int) {
         viewModelScope.launch (dispatcher) {
-            moveWorkoutUseCase(from, to).onFailure { _errors.emit(it) }
+            moveWorkoutUseCase(from, to).onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
     fun deleteWorkout(workoutId: Long) {
         viewModelScope.launch (dispatcher) {
-            deleteWorkoutUseCase(workoutId).onFailure { _errors.emit(it) }
+            deleteWorkoutUseCase(workoutId).onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
@@ -45,7 +44,7 @@ class WorkoutsFragmentViewModel(
             getWorkoutListUseCase().collect { result ->
                 result
                     .onSuccess { _workoutsList.value = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }

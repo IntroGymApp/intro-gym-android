@@ -1,10 +1,11 @@
-package ru.lonelywh1te.introgym.app
+package ru.lonelywh1te.introgym.app.activity
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -12,24 +13,33 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.app.UIController
+import ru.lonelywh1te.introgym.core.result.AppError
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
+import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.presentation.WorkoutTrackingService
 import java.time.LocalDateTime
-
-private const val LOG_TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity(), UIController {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
-    private val settingsPreferences: SettingsPreferences by inject<SettingsPreferences>()
+    private val viewModel by viewModel<MainActivityViewModel>()
+
+    private var showingError: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +51,7 @@ class MainActivity : AppCompatActivity(), UIController {
         setStartDestination()
         setupBottomNavigationView()
         setupToolbar()
+        startCollectFlows()
         setContentView(binding.root)
 
         enableEdgeToEdge()
@@ -57,12 +68,14 @@ class MainActivity : AppCompatActivity(), UIController {
     }
 
     private fun setupToolbar() {
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.homeFragment,
-            R.id.workoutsFragment,
-            R.id.guideFragment,
-            R.id.statsFragment,
-            R.id.profileFragment)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.homeFragment,
+                R.id.workoutsFragment,
+                R.id.guideFragment,
+                R.id.statsFragment,
+                R.id.profileFragment
+            )
         )
 
         setSupportActionBar(binding.toolbar)
@@ -72,7 +85,6 @@ class MainActivity : AppCompatActivity(), UIController {
     private fun setupBottomNavigationView() {
         binding.bottomNavigation.setupWithNavController(navController)
     }
-
 
     // TODO: передать полностью контроль над инсетами
     private fun updateInsets(destination: NavDestination) {
@@ -85,8 +97,8 @@ class MainActivity : AppCompatActivity(), UIController {
     }
 
     private fun setStartDestination() {
-        val isFirstLaunch = settingsPreferences.isFirstLaunch
-        val onboardingCompleted = settingsPreferences.onboardingCompleted
+        val isFirstLaunch = viewModel.isFirstLaunch
+        val onboardingCompleted = viewModel.onboardingCompleted
 
         val startDestination = when {
             !onboardingCompleted && isFirstLaunch -> R.id.onboarding
@@ -120,6 +132,39 @@ class MainActivity : AppCompatActivity(), UIController {
                 }
             }
         )
+    }
+
+    private fun startCollectFlows() {
+        viewModel.errors.flowWithLifecycle(lifecycle)
+            .onEach { error ->
+                showError(error)
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun showError(error: BaseError) {
+        showingError?.cancel()
+
+        showingError = lifecycleScope.launch {
+            binding.tvError.text = "Ошибка: ${error.message}"
+            binding.tvError.isVisible = true
+            binding.tvError.scaleY = 0f
+
+            binding.tvError.animate()
+                .scaleY(1f)
+                .setDuration(100)
+                .start()
+
+            delay(5000)
+
+            binding.tvError.animate()
+                .scaleY(0f)
+                .setDuration(100)
+                .withEndAction {
+                    binding.tvError.isVisible = false
+                }
+                .start()
+        }
     }
 
     override fun setToolbarVisibility(visible: Boolean) {

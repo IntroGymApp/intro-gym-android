@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import java.time.LocalDateTime
 
 class LocalDateTimeConverter {
-
     @TypeConverter
     fun toString(localDateTime: LocalDateTime): String {
         return localDateTime.toString()

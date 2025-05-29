@@ -48,6 +48,7 @@ val homePresentationModule = module {
             getWorkoutLogItemListUseCase = get(),
             getWorkoutLogDatesUseCase = get(),
             deleteWorkoutUseCase = get(),
+            errorDispatcher = get(),
         )
     }
 }

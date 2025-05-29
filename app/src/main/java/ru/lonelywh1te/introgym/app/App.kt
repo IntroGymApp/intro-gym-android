@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import ru.lonelywh1te.introgym.core.coreModule
 import ru.lonelywh1te.introgym.data.dataModule
 import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
@@ -13,8 +14,8 @@ import ru.lonelywh1te.introgym.features.home.homeModule
 import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
 import ru.lonelywh1te.introgym.features.stats.statsModule
 import ru.lonelywh1te.introgym.features.workout.workoutModule
-import ru.lonelywh1te.introgym.notifications.NotificationChannelManager
-import ru.lonelywh1te.introgym.notifications.notificationModule
+import ru.lonelywh1te.introgym.features.notifications.NotificationChannelManager
+import ru.lonelywh1te.introgym.features.notifications.notificationModule
 
 class App: Application() {
     private val notificationChannelManager by inject<NotificationChannelManager>()
@@ -26,6 +27,8 @@ class App: Application() {
             androidContext(applicationContext)
             androidLogger(level = Level.DEBUG)
             modules(
+                appModule,
+                coreModule,
                 dataModule,
                 authModule,
                 guideModule,

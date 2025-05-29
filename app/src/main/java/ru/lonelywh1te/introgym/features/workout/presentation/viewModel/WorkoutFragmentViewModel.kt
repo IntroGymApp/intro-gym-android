@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
@@ -55,6 +56,7 @@ class WorkoutFragmentViewModel(
     private val getWorkoutLogUseCase: GetWorkoutLogUseCase,
 
     private val getWorkoutResultsUseCase: GetWorkoutResultsUseCase,
+    private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
@@ -74,7 +76,7 @@ class WorkoutFragmentViewModel(
                 getWorkoutExerciseItemsUseCase(_workout.value!!.id).map { result ->
                     result
                         .onSuccess { list = it }
-                        .onFailure { _errors.emit(it) }
+                        .onFailure { errorDispatcher.dispatch(it) }
 
                     list
                 }
@@ -82,7 +84,7 @@ class WorkoutFragmentViewModel(
                 getWorkoutExerciseItemsWithProgressUseCase(_workout.value!!.id).map { result ->
                     result
                         .onSuccess { list = it }
-                        .onFailure { _errors.emit(it) }
+                        .onFailure { errorDispatcher.dispatch(it) }
 
                     list
                 }
@@ -102,16 +104,13 @@ class WorkoutFragmentViewModel(
             getWorkoutResultsUseCase(workoutLog.workoutId).map { result ->
                 result
                     .onSuccess { results = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
 
                 results
             }
         }
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
-
-    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
-    val errors get() = _errors.asSharedFlow()
 
     private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()
     val workoutDeleted get() = _workoutDeleted.asSharedFlow()
@@ -121,7 +120,7 @@ class WorkoutFragmentViewModel(
             getWorkoutUseCase(workoutId).collectLatest { result ->
                 result
                     .onSuccess { _workout.value = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }
@@ -131,7 +130,7 @@ class WorkoutFragmentViewModel(
             getWorkoutLogUseCase(workoutId).collectLatest { result ->
                 result
                     .onSuccess { _workoutLog.value = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }
@@ -140,7 +139,7 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             workout.value?.let {
                 startWorkoutUseCase(it.id)
-                    .onFailure { error -> _errors.emit(error) }
+                    .onFailure { error -> errorDispatcher.dispatch(error) }
             }
         }
     }
@@ -149,7 +148,7 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             workout.value?.let {
                 stopWorkoutUseCase(it.id)
-                    .onFailure { error -> _errors.emit(error) }
+                    .onFailure { error -> errorDispatcher.dispatch(error) }
             }
         }
     }
@@ -159,7 +158,7 @@ class WorkoutFragmentViewModel(
             workout.value?.let { workout ->
                 if (workout.name != name || workout.description != description) {
                     updateWorkoutUseCase(workout.copy(name = name, description = description))
-                        .onFailure { _errors.emit(it) }
+                        .onFailure { errorDispatcher.dispatch(it) }
                 }
             }
         }
@@ -170,7 +169,7 @@ class WorkoutFragmentViewModel(
             workout.value?.let { workout ->
                 deleteWorkoutUseCase(workout.id)
                     .onSuccess { _workoutDeleted.emit(it) }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }
@@ -185,7 +184,7 @@ class WorkoutFragmentViewModel(
                 )
 
                 addWorkoutExerciseUseCase(newWorkoutExercise)
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }
@@ -194,7 +193,7 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch {
             workout.value?.let { workout ->
                 moveWorkoutExerciseUseCase(workout.id, from, to)
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }
@@ -202,7 +201,7 @@ class WorkoutFragmentViewModel(
     fun deleteWorkoutExercise(id: Long) {
         viewModelScope.launch (dispatcher) {
             deleteWorkoutExerciseUseCase(id)
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 }

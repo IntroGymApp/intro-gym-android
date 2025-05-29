@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
@@ -35,6 +36,7 @@ class WorkoutExerciseExecutionViewModel(
 
     private val addWorkoutExerciseSetUseCase: AddWorkoutExerciseSetUseCase,
     private val getWorkoutExerciseSetsUseCase: GetWorkoutExerciseSetsUseCase,
+    private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
@@ -47,7 +49,7 @@ class WorkoutExerciseExecutionViewModel(
 
                 result
                     .onSuccess { workoutExercise = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
 
                 workoutExercise
             }
@@ -62,7 +64,7 @@ class WorkoutExerciseExecutionViewModel(
 
                 result
                     .onSuccess { workoutExercisePlan = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
 
                 workoutExercisePlan
             }
@@ -77,7 +79,7 @@ class WorkoutExerciseExecutionViewModel(
             getWorkoutExerciseSetsUseCase(id).map { result ->
                 result
                     .onSuccess { list = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
 
 
                 list
@@ -99,9 +101,6 @@ class WorkoutExerciseExecutionViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private var effort: Effort = Effort.WARMUP
-
-    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
-    val errors get() = _errors.asSharedFlow()
 
     fun setWorkoutExerciseId(id: Long) {
         workoutExerciseId.value = id
@@ -128,7 +127,7 @@ class WorkoutExerciseExecutionViewModel(
             )
 
             addWorkoutExerciseSetUseCase(set)
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 }

@@ -111,12 +111,6 @@ class HomeFragment : Fragment(), MenuProvider {
                 binding.weeklyCalendarView.setMarkedDays(markedDaysOnWeek)
             }
             .launchIn(lifecycleScope)
-
-        viewModel.errors.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { error ->
-                // TODO: Not yet implemented
-            }
-            .launchIn(lifecycleScope)
     }
 
     private fun navigateToPickWorkout() {

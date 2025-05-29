@@ -103,6 +103,7 @@ class WorkoutsFragment : Fragment() {
                 binding.groupEmptyList.isVisible = workoutList.isEmpty()
             }
             .launchIn(lifecycleScope)
+
     }
 
     private fun setFragmentResultAndNavigateUp(workoutId: Long) {

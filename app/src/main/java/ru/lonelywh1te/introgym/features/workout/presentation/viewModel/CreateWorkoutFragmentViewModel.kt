@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
@@ -22,6 +24,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWor
 class CreateWorkoutFragmentViewModel(
     private val createWorkoutUseCase: CreateWorkoutUseCase,
     private val getExerciseUseCase: GetExerciseUseCase,
+    private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val _workout: MutableStateFlow<Workout> = MutableStateFlow(Workout(name = "", isTemplate = true, order = -1))
     val workout: StateFlow<Workout> get() = _workout
@@ -34,9 +37,6 @@ class CreateWorkoutFragmentViewModel(
 
     private val dispatcher = Dispatchers.IO
 
-    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
-    val errors: SharedFlow<BaseError> get() = _errors
-
     private val _createWorkoutResult: MutableSharedFlow<Result<Unit>> = MutableSharedFlow()
     val createWorkoutResult: SharedFlow<Result<Unit>> get() = _createWorkoutResult
 
@@ -46,7 +46,7 @@ class CreateWorkoutFragmentViewModel(
                 workout = _workout.value,
                 exercises = workoutExercises.value,
                 exercisePlans = workoutExercisePlans.value
-            )
+            ).onFailure { errorDispatcher.dispatch(it) }
 
             _createWorkoutResult.emit(createWorkoutResult)
         }
