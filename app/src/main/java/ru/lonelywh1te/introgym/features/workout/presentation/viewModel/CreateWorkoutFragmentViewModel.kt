@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.Result
@@ -46,7 +47,9 @@ class CreateWorkoutFragmentViewModel(
                 workout = _workout.value,
                 exercises = workoutExercises.value,
                 exercisePlans = workoutExercisePlans.value
-            ).onFailure { errorDispatcher.dispatch(it) }
+            ).onFailure {
+                if (it is AppError) errorDispatcher.dispatch(it)
+            }
 
             _createWorkoutResult.emit(createWorkoutResult)
         }
