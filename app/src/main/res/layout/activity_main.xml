@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.MainActivity">
+    tools:context=".app.activity.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,6 +14,18 @@
         android:layout_height="wrap_content"
         style="@style/Widget.IntroGym.Toolbar"
         tools:title="Заголовок"/>
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.IntroGym.Body.Regular"
+        android:padding="10dp"
+        android:background="?attr/igErrorColor"
+        android:textColor="?attr/igTextPrimaryColor"
+        android:visibility="gone"
+        tools:text="Текст ошибки"
+        tools:visibility="visible"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

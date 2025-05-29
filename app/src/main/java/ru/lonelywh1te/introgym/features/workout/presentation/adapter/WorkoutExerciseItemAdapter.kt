@@ -2,15 +2,14 @@ package ru.lonelywh1te.introgym.features.workout.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.AssetPath
 import ru.lonelywh1te.introgym.core.ui.AssetType
-import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
-import ru.lonelywh1te.introgym.core.ui.ImageLoader
+import ru.lonelywh1te.introgym.core.ui.utils.DiffUtilCallback
+import ru.lonelywh1te.introgym.core.ui.utils.ImageLoader
 import ru.lonelywh1te.introgym.databinding.ItemExerciseBinding
 import ru.lonelywh1te.introgym.databinding.ItemWorkoutExerciseWithProgressBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem

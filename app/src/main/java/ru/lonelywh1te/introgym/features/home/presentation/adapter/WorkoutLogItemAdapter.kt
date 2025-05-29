@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
 import ru.lonelywh1te.introgym.R
-import ru.lonelywh1te.introgym.core.ui.DiffUtilCallback
+import ru.lonelywh1te.introgym.core.ui.utils.DiffUtilCallback
 import ru.lonelywh1te.introgym.databinding.ItemWorkoutLogBinding
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState

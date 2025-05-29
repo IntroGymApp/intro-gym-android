@@ -8,16 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
@@ -35,6 +33,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
     private val getExerciseUseCase: GetExerciseUseCase,
     private val updateWorkoutExerciseUseCase: UpdateWorkoutExerciseUseCase,
     private val updateWorkoutExercisePlanUseCase: UpdateWorkoutExercisePlanUseCase,
+    private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
@@ -53,9 +52,6 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         }
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
-
-    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors: SharedFlow<Error> get() = _errors
 
     fun setWorkoutExerciseId(id: Long) {
         _workoutExerciseId.value = id
@@ -93,14 +89,14 @@ class WorkoutExercisePlanEditorFragmentViewModel(
     suspend fun updateWorkoutExerciseComment(comment: String) {
         withContext(dispatcher) {
             updateWorkoutExerciseUseCase(workoutExercise.value!!.copy(comment = comment))
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
     suspend fun updateWorkoutExercisePlan() {
         withContext(dispatcher) {
             updateWorkoutExercisePlanUseCase(workoutExercisePlan.value!!)
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
@@ -109,7 +105,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
             getWorkoutExerciseUseCase(workoutExerciseId).collect { result ->
                 result
                     .onSuccess { _workoutExercise.value = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }
@@ -119,7 +115,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
             getWorkoutExercisePlanUseCase(workoutExerciseId).collect { result ->
                 result
                     .onSuccess { _workoutExercisePlan.value = it }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
             }
         }
     }

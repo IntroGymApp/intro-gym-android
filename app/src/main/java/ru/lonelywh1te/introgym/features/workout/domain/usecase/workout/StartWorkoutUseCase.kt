@@ -14,7 +14,7 @@ class StartWorkoutUseCase (
     suspend operator fun invoke(workoutId: Long): Result<Unit> {
         repository.getWorkoutLogWithStartDateTime()
             .onSuccess {
-                if (it != null) return Result.Failure(WorkoutError.WORKOUT_ALREADY_STARTED)
+                if (it != null) return Result.Failure(WorkoutError.WorkoutAlreadyStarted())
             }
             .onFailure {
                 return Result.Failure(it)

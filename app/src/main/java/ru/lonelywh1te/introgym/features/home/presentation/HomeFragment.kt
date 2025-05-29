@@ -8,13 +8,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
@@ -23,7 +21,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentHomeBinding
 import ru.lonelywh1te.introgym.features.home.presentation.adapter.WorkoutLogItemAdapter
 import ru.lonelywh1te.introgym.features.home.presentation.viewModel.HomeFragmentViewModel
@@ -112,12 +109,6 @@ class HomeFragment : Fragment(), MenuProvider {
         viewModel.markedDays.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { markedDaysOnWeek ->
                 binding.weeklyCalendarView.setMarkedDays(markedDaysOnWeek)
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.errors.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { error ->
-                // TODO: Not yet implemented
             }
             .launchIn(lifecycleScope)
     }

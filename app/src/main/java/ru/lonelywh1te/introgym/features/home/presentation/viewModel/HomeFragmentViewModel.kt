@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
@@ -31,6 +32,7 @@ class HomeFragmentViewModel(
     private val getWorkoutLogItemListUseCase: GetWorkoutLogItemListUseCase,
     private val getWorkoutLogDatesUseCase: GetWorkoutLogDatesUseCase,
     private val deleteWorkoutUseCase: DeleteWorkoutUseCase,
+    private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
@@ -46,7 +48,7 @@ class HomeFragmentViewModel(
                         list = it
                         updateMarkedDays(date)
                     }
-                    .onFailure { _errors.emit(it) }
+                    .onFailure { errorDispatcher.dispatch(it) }
 
                 list
             }
@@ -57,9 +59,6 @@ class HomeFragmentViewModel(
     private val _markedDays: MutableStateFlow<List<LocalDate>> = MutableStateFlow(emptyList())
     val markedDays get() = _markedDays.asStateFlow()
 
-    private val _errors: MutableSharedFlow<Error> = MutableSharedFlow()
-    val errors get() = _errors.asSharedFlow()
-
     fun addWorkoutLog(date: LocalDate, workoutId: Long) {
         viewModelScope.launch (dispatcher) {
             val workoutLog = WorkoutLog(
@@ -68,7 +67,7 @@ class HomeFragmentViewModel(
             )
 
             addWorkoutLogUseCase(workoutLog)
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
@@ -82,14 +81,14 @@ class HomeFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             getWorkoutLogDatesUseCase(week)
                 .onSuccess { _markedDays.value = it }
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
     fun deleteWorkoutLog(workoutId: Long) {
         viewModelScope.launch (dispatcher) {
             deleteWorkoutUseCase(workoutId)
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 
@@ -99,7 +98,7 @@ class HomeFragmentViewModel(
 
             getWorkoutLogDatesUseCase(week)
                 .onSuccess { _markedDays.value = it }
-                .onFailure { _errors.emit(it) }
+                .onFailure { errorDispatcher.dispatch(it) }
         }
     }
 }

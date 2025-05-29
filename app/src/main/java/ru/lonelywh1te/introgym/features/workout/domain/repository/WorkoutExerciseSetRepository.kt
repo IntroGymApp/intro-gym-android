@@ -1,8 +1,8 @@
 package ru.lonelywh1te.introgym.features.workout.domain.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 
 interface WorkoutExerciseSetRepository {
 

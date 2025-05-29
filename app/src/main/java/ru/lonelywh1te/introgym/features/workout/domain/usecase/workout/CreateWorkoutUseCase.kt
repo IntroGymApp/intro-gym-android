@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
@@ -23,7 +22,7 @@ class CreateWorkoutUseCase(
         }
 
         val exercisesWithPlans = exercises.associateWith { workoutExercise ->
-            exercisePlans.find { workoutExercise.id == it.workoutExerciseId } ?: return Result.Failure(AppError.UNKNOWN)
+            exercisePlans.find { workoutExercise.id == it.workoutExerciseId } ?: throw NoSuchElementException("No plan found for exercise with ID ${workoutExercise.id}")
         }
 
         return workoutRepository.createFullWorkout(workout, exercisesWithPlans)

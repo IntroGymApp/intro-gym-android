@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.Error
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
-import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
+import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentCreateWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -146,7 +146,7 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
             .launchIn(lifecycleScope)
     }
 
-    private fun showErrorMessage(error: Error) {
+    private fun showErrorMessage(error: BaseError) {
         binding.llTextInputContainer.setErrorMessage(getString(WorkoutErrorStringMessageProvider.get(error)))
     }
 

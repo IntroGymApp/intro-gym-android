@@ -18,7 +18,6 @@ class GetMusclesStatsUseCase(
         return repository.getMusclesStats(period).map {
             when(it) {
                 is Result.Success -> {
-                    Log.d("GetMusclesStatsUseCase", "invoke: ${groupAndSumMuscleData(it.data)}")
                     Result.Success(groupAndSumMuscleData(it.data))
                 }
                 else -> it

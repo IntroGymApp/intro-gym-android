@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.core.ui
+package ru.lonelywh1te.introgym.core.ui.utils
 
 import android.view.View
 import androidx.core.graphics.Insets

@@ -15,13 +15,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.ItemTouchHelperCallback
+import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutsBinding
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
@@ -104,6 +103,7 @@ class WorkoutsFragment : Fragment() {
                 binding.groupEmptyList.isVisible = workoutList.isEmpty()
             }
             .launchIn(lifecycleScope)
+
     }
 
     private fun setFragmentResultAndNavigateUp(workoutId: Long) {

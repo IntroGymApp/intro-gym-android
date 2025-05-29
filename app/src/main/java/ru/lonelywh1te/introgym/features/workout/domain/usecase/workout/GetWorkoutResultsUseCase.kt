@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -8,7 +7,6 @@ import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.getOrNull
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutResult
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
@@ -33,14 +31,14 @@ class GetWorkoutResultsUseCase(
                     if (workoutLog != null && completedSets != null && plans != null) {
                         val workoutResult = getWorkoutResult(workoutLog, completedSets, plans)
 
-                        if (workoutResult != null) {
+                        try {
                             Result.Success(workoutResult)
-                        } else {
-                            Result.Failure(AppError.UNKNOWN)
+                        } catch (e: Exception) {
+                            Result.Failure(AppError.Unknown(cause = e))
                         }
 
                     } else {
-                        Result.Failure(AppError.UNKNOWN)
+                        Result.Failure(AppError.Unknown(cause = NullPointerException("Workout log, completed sets, or workout plans is null")))
                     }
                 }
                 is Result.Failure -> result
@@ -53,8 +51,8 @@ class GetWorkoutResultsUseCase(
         workoutLog: WorkoutLog,
         completedSets: List<WorkoutExerciseSet>,
         plans: List<WorkoutExercisePlan>
-    ): WorkoutResult? {
-        if (workoutLog.startDateTime == null || workoutLog.endDateTime == null) return null
+    ): WorkoutResult {
+        if (workoutLog.startDateTime == null || workoutLog.endDateTime == null) throw IllegalStateException("Start or end time is missing for the workout log")
 
         val duration = java.time.Duration.between(workoutLog.startDateTime, workoutLog.endDateTime).abs()
         val hours = duration.toHours().toInt()

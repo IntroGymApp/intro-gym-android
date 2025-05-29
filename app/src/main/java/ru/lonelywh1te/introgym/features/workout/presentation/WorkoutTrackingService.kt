@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
-import ru.lonelywh1te.introgym.notifications.NotificationChannelManager
+import ru.lonelywh1te.introgym.features.notifications.NotificationChannelManager
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime

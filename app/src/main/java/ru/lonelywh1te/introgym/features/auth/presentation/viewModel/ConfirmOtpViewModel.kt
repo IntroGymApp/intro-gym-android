@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
@@ -28,10 +27,7 @@ class ConfirmOtpViewModel(
 
     fun sendOtp(email: String) {
         viewModelScope.launch(dispatcher) {
-            if (otpType == null) {
-                _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
-                return@launch
-            }
+            if (otpType == null) throw IllegalStateException("OtpType is null")
 
             sendOtpUseCase(email, otpType!!).collect { result ->
                 _sendOtpResult.emit(result.toUIState())
@@ -41,10 +37,7 @@ class ConfirmOtpViewModel(
 
     fun confirmOtp(otp: String) {
         viewModelScope.launch(dispatcher) {
-            if (otpType == null) {
-                _confirmOtpResult.emit(UIState.Failure(AppError.UNKNOWN))
-                return@launch
-            }
+            if (otpType == null) throw IllegalStateException("OtpType is null")
 
             confirmOtpUseCase(otp, otpType!!).collect { result ->
                 _confirmOtpResult.emit(result.toUIState())
