@@ -11,7 +11,7 @@ class AuthSharedPreferencesImpl(private val context: Context): AuthStorage {
     }
 
     override fun getSessionId(): String? {
-        return prefs.getString(SESSION_ID_KEY, "")
+        return prefs.getString(SESSION_ID_KEY, null)
     }
 
     override fun clearSessionId() {
@@ -19,11 +19,11 @@ class AuthSharedPreferencesImpl(private val context: Context): AuthStorage {
     }
 
     override fun getAccessToken(): String? {
-        return prefs.getString(ACCESS_TOKEN_KEY, "")
+        return prefs.getString(ACCESS_TOKEN_KEY, null)
     }
 
     override fun getRefreshToken(): String? {
-        return prefs.getString(REFRESH_TOKEN_KEY, "")
+        return prefs.getString(REFRESH_TOKEN_KEY, null)
     }
 
     override fun saveTokens(accessToken: String, refreshToken: String) {

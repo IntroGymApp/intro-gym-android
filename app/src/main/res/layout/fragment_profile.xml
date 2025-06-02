@@ -1,18 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".features.profile.ProfileFragment">
+    android:padding="20dp"
+    tools:context=".features.profile.presentation.ProfileFragment">
 
     <TextView
+        android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PROFILE FRAGMENT"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Пользователь"
+        android:paddingVertical="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_user_register_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:drawableStartCompat="@drawable/ic_profile"
+        app:drawableTint="?attr/igPrimaryColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+        tools:text="Присоединился: 01.01.2021" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_user_stats_panel"
+        style="@style/Widget.IntroGym.ListCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_register_date">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+                android:text="Выполнено тренировок" />
+
+            <TextView
+                android:id="@+id/tv_count_of_workouts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+                android:text="0" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_user_achievements_panel"
+        style="@style/Widget.IntroGym.ListCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_user_stats_panel">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|bottom"
+            android:scaleType="center"
+            android:src="@drawable/background_achievements" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Достижения"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Semibold"
+                android:textColor="?attr/igPrimaryColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:text="Каждый шаг вперед — новая награда. Следи за своими успехами!"
+                android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular" />
+
+            <Button
+                android:id="@+id/btn_achievements"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.IntroGym.Button.Rounded"
+                android:text="Открыть"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/btn_logout"
+        style="@style/Widget.IntroGym.Button"
+        android:text="@string/label_logout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_features"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/onboarding_features_cards"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/tv_hello_introgym"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_hello_introgym"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_welcome_to_app"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_sign_up_description"
+        app:layout_constraintStart_toStartOf="@+id/tv_sign_up_description" />
+
+    <TextView
+        android:id="@+id/tv_sign_up_description"
+        style="@style/Widget.IntroGym.TextView.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Войдите в аккаунт, чтобы сохранить прогресс и получить доступ ко всем возможностям"
+        android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_sign_up"
+        style="@style/Widget.IntroGym.Button"
+        android:text="@string/label_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupSignedIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="tv_user_name,tv_user_register_date, btn_logout, cv_user_achievements_panel, cv_user_stats_panel" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupSignedOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="btn_sign_up,tv_sign_up_description,tv_hello_introgym,iv_features" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

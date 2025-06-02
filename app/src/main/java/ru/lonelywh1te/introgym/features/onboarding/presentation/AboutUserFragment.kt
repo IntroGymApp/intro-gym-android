@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
-import ru.lonelywh1te.introgym.app.UIController
+import ru.lonelywh1te.introgym.app.activity.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets

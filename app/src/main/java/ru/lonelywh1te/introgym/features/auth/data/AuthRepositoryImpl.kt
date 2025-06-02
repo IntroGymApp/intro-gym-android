@@ -22,7 +22,7 @@ class AuthRepositoryImpl(
     private val authStorage: AuthStorage,
     private val userPreferences: UserPreferences,
 ): AuthRepository {
-    override suspend fun sendOtp(email: String, otpType: String): Flow<Result<Unit>> = flow {
+    override fun sendOtp(email: String, otpType: String): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
         val response = authService.sendOtp(SendOtpRequestDto(email), otpType)
@@ -40,7 +40,7 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override suspend fun confirmOtp(otp: String, otpType: String): Flow<Result<Unit>> = flow {
+    override fun confirmOtp(otp: String, otpType: String): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
         val sessionId = authStorage.getSessionId() ?: ""
@@ -61,7 +61,7 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override suspend fun signUp(email: String, password: String): Flow<Result<Unit>> = flow {
+    override fun signUp(email: String, password: String): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
         val username = userPreferences.username ?: ""
@@ -86,7 +86,7 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override suspend fun signIn(email: String, password: String): Flow<Result<Unit>> = flow {
+    override fun signIn(email: String, password: String): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
         val response = authService.signIn(SignInRequestDto(email, password))
@@ -106,7 +106,7 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override suspend fun changePassword(email: String, password: String): Flow<Result<Unit>> = flow {
+    override fun changePassword(email: String, password: String): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
         val sessionId = authStorage.getSessionId() ?: ""
@@ -126,7 +126,7 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override suspend fun refreshToken(): Flow<Result<Unit>> = flow {
+    override fun refreshToken(): Flow<Result<Unit>> = flow {
         val refreshToken = authStorage.getRefreshToken() ?: ""
 
         val response = authService.refreshTokens(RefreshTokensRequestDto(refreshToken))
@@ -145,6 +145,11 @@ class AuthRepositoryImpl(
 
         emit(result)
     }.asSafeNetworkFlow()
+
+    override fun isSignedIn(): Boolean {
+
+        return authStorage.getAccessToken() != null
+    }
 
     companion object {
         private const val LOG_TAG = "AuthRepositoryImpl"

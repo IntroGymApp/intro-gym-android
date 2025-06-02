@@ -21,14 +21,10 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
-import ru.lonelywh1te.introgym.app.UIController
-import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
-import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
-import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.presentation.WorkoutTrackingService
 import java.time.LocalDateTime

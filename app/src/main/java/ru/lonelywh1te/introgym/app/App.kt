@@ -16,6 +16,7 @@ import ru.lonelywh1te.introgym.features.stats.statsModule
 import ru.lonelywh1te.introgym.features.workout.workoutModule
 import ru.lonelywh1te.introgym.features.notifications.NotificationChannelManager
 import ru.lonelywh1te.introgym.features.notifications.notificationModule
+import ru.lonelywh1te.introgym.features.profile.profileModule
 
 class App: Application() {
     private val notificationChannelManager by inject<NotificationChannelManager>()
@@ -37,6 +38,7 @@ class App: Application() {
                 homeModule,
                 notificationModule,
                 statsModule,
+                profileModule,
             )
         }
 

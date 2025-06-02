@@ -246,7 +246,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ru.lonelywh1te.introgym.features.profile.ProfileFragment"
+        android:name="ru.lonelywh1te.introgym.features.profile.presentation.ProfileFragment"
         android:label="@string/label_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
@@ -329,5 +329,11 @@
                 app:nullable="true" />
         </action>
     </fragment>
+
+    <action
+        android:id="@+id/action_auth"
+        app:destination="@id/auth"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true" />
 
 </navigation>
