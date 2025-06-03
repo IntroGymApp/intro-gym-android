@@ -10,9 +10,11 @@ import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.profile.domain.UserInfo
 import ru.lonelywh1te.introgym.features.profile.domain.usecase.GetUserInfoUseCase
+import ru.lonelywh1te.introgym.features.profile.domain.usecase.SignOutUseCase
 
 class ProfileFragmentViewModel(
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val signOutUseCase: SignOutUseCase,
     private val authRepository: AuthRepository,
 ): ViewModel() {
     private val isSignedIn get() = authRepository.isSignedIn()
@@ -30,5 +32,9 @@ class ProfileFragmentViewModel(
 
     fun getIsSignedIn(): Boolean {
         return isSignedIn
+    }
+
+    fun signOut() {
+        signOutUseCase()
     }
 }

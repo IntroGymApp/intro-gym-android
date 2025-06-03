@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.profile.data.UserInfoRepositoryImpl
 import ru.lonelywh1te.introgym.features.profile.domain.repository.UserInfoRepository
 import ru.lonelywh1te.introgym.features.profile.domain.usecase.GetUserInfoUseCase
+import ru.lonelywh1te.introgym.features.profile.domain.usecase.SignOutUseCase
 import ru.lonelywh1te.introgym.features.profile.presentation.ProfileFragmentViewModel
 
 private val profileDataModule = module {
@@ -17,9 +18,17 @@ private val profileDataModule = module {
 }
 
 private val profileDomainModule = module {
+
     factory<GetUserInfoUseCase> {
         GetUserInfoUseCase(
             repository = get(),
+        )
+    }
+
+    factory<SignOutUseCase> {
+        SignOutUseCase(
+            authStorage = get(),
+            userPreferences = get(),
         )
     }
 }
@@ -29,6 +38,7 @@ private val profilePresentationModule = module {
     viewModel<ProfileFragmentViewModel> {
         ProfileFragmentViewModel(
             getUserInfoUseCase = get(),
+            signOutUseCase = get(),
             authRepository = get(),
         )
     }

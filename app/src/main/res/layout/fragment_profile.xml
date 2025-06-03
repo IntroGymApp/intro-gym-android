@@ -124,7 +124,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <Button
-        android:id="@+id/btn_logout"
+        android:id="@+id/btn_sign_out"
         style="@style/Widget.IntroGym.Button"
         android:text="@string/label_logout"
         app:layout_constraintBottom_toBottomOf="parent"

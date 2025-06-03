@@ -146,5 +146,8 @@
     <string name="label_sqlite_error">Произошла ошибка базы данных приложения.</string>
     <string name="label_logout">Выйти из аккаунта</string>
     <string name="label_joined_at">Присоединился: %1$s</string>
+    <string name="label_sign_out_title">Выход из аккаунта</string>
+    <string name="label_sign_out_description">Вы уверены, что хотите выйти из аккаунта? После выхода некоторые функции приложения станут недоступны.</string>
+    <string name="label_exit">Выйти</string>
 
 </resources>
