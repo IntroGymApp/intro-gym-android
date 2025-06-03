@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignInUseCase
 
 class SignInViewModel(
@@ -20,7 +21,8 @@ class SignInViewModel(
 
     fun signIn(email: String, password: String) {
         viewModelScope.launch(dispatcher) {
-            signInUseCase(email, password).collect { result ->
+            val credentials = UserCredentials(email, password)
+            signInUseCase(credentials).collect { result ->
                 _signInResult.emit(result.toUIState())
             }
         }

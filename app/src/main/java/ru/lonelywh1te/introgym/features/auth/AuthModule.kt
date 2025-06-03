@@ -8,7 +8,7 @@ import ru.lonelywh1te.introgym.features.auth.data.AuthService
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthSharedPreferencesImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
 import ru.lonelywh1te.introgym.features.auth.domain.OtpValidator
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ChangePasswordUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ConfirmOtpUseCase
@@ -63,7 +63,7 @@ val authDomainModule = module {
     factory<ConfirmOtpUseCase> {
         ConfirmOtpUseCase(
             repository = get(),
-            validator = get(),
+            otpValidator = get(),
         )
     }
 
@@ -74,8 +74,8 @@ val authDomainModule = module {
         )
     }
 
-    single<EmailPasswordValidator> {
-        EmailPasswordValidator
+    single<CredentialsValidator> {
+        CredentialsValidator
     }
 
     single<OtpValidator> {

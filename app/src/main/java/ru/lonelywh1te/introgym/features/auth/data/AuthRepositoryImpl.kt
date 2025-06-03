@@ -16,6 +16,8 @@ import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
+import ru.lonelywh1te.introgym.features.auth.domain.model.SignUpCredentials
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 
 class AuthRepositoryImpl(
     private val authService: AuthService,
@@ -61,11 +63,13 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override fun signUp(email: String, password: String): Flow<Result<Unit>> = flow {
+    override fun signUp(signUpData: SignUpCredentials): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
-        val username = userPreferences.username ?: ""
         val sessionId = authStorage.getSessionId() ?: ""
+        val username = signUpData.username
+        val email = signUpData.userCredentials.email
+        val password = signUpData.userCredentials.password
 
         val response = authService.signUp(SignUpRequestDto(sessionId, username, email, password))
         val body = response.body()
@@ -86,8 +90,11 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override fun signIn(email: String, password: String): Flow<Result<Unit>> = flow {
+    override fun signIn(signInData: UserCredentials): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
+
+        val email = signInData.email
+        val password = signInData.password
 
         val response = authService.signIn(SignInRequestDto(email, password))
         val body = response.body()
@@ -106,10 +113,12 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override fun changePassword(email: String, password: String): Flow<Result<Unit>> = flow {
+    override fun changePassword(data: UserCredentials): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
         val sessionId = authStorage.getSessionId() ?: ""
+        val email = data.email
+        val password = data.password
 
         val response = authService.changePassword(sessionId, ChangePasswordRequestDto(email, password))
         val body = response.body()

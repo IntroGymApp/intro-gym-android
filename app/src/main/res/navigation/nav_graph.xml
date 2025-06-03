@@ -132,8 +132,8 @@
             android:label="fragment_features"
             tools:layout="@layout/fragment_features">
             <action
-                android:id="@+id/to_aboutUserFragment"
-                app:destination="@id/aboutUserFragment" />
+                android:id="@+id/to_setNotificationFragment"
+                app:destination="@id/setNotificationFragment" />
         </fragment>
         <fragment
             android:id="@+id/startFragment"
@@ -143,15 +143,6 @@
             <action
                 android:id="@+id/to_signUpFragment"
                 app:destination="@id/auth" />
-        </fragment>
-        <fragment
-            android:id="@+id/aboutUserFragment"
-            android:name="ru.lonelywh1te.introgym.features.onboarding.presentation.AboutUserFragment"
-            android:label="fragment_about_user"
-            tools:layout="@layout/fragment_about_user">
-            <action
-                android:id="@+id/to_setNotificationFragment"
-                app:destination="@id/setNotificationFragment" />
         </fragment>
         <fragment
             android:id="@+id/helloFragment"

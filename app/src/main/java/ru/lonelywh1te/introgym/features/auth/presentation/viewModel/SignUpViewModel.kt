@@ -9,29 +9,31 @@ import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.model.SignUpCredentials
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignUpUseCase
 
 class SignUpViewModel(
     private val signUpUseCase: SignUpUseCase,
-    private val validator: EmailPasswordValidator,
+    private val validator: CredentialsValidator,
 ): ViewModel() {
     private val _signUpResult = MutableSharedFlow<UIState<*>>()
     val signUpResult get() = _signUpResult.asSharedFlow()
 
     private val dispatcher = Dispatchers.IO
 
-    fun signUp(email: String, password: String, confirmPassword: String) {
+    fun signUp(signUpCredentials: SignUpCredentials, confirmPassword: String) {
         viewModelScope.launch(dispatcher) {
-            signUpUseCase(email, password, confirmPassword).collect { result ->
+            signUpUseCase(signUpCredentials, confirmPassword).collect { result ->
                 _signUpResult.emit(result.toUIState())
             }
         }
     }
 
-    fun validate(email: String, password: String, confirmPassword: String): Result<Unit> {
-        return validator.validateEmailAndPasswordWithConfirm(email, password, confirmPassword)
+    fun validate(signUpCredentials: SignUpCredentials, confirmPassword: String): Result<Unit> {
+        return validator.validateSignUpCredentialsWithConfirmPassword(signUpCredentials, confirmPassword)
     }
 
     fun validatePassword(password: String): List<AuthValidationError> {

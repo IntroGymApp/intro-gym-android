@@ -31,6 +31,8 @@ import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
+import ru.lonelywh1te.introgym.features.auth.domain.model.SignUpCredentials
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewModel
 
@@ -60,7 +62,7 @@ class SignUpFragment : Fragment() {
         binding.btnSignUp.setOnClickListener {
             hideErrorMessage()
 
-            validateEmailAndPassword()
+            validateSignUpCredentials()
                 .onSuccess { email -> navigateToConfirmOtpFragment(email) }
                 .onFailure { error -> showErrorMessage(error) }
         }
@@ -121,12 +123,13 @@ class SignUpFragment : Fragment() {
         binding.tvUserHasAccount.highlightColor = Color.TRANSPARENT
     }
 
-    private fun validateEmailAndPassword(): Result<String> {
+    private fun validateSignUpCredentials(): Result<String> {
+        val username = binding.etUsername.text.toString()
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfirmPassword.text.toString()
 
-        viewModel.validate(email, password, confirmPassword)
+        viewModel.validate(SignUpCredentials(username, UserCredentials(email, password)), confirmPassword)
             .onFailure { return Result.Failure(it) }
 
         return Result.Success(email)
@@ -136,26 +139,19 @@ class SignUpFragment : Fragment() {
         setFragmentResultListener(ConfirmOtpFragment.REQUEST_KEY) { _, bundle ->
             val isConfirmed = bundle.getBoolean(ConfirmOtpFragment.RESULT_BUNDLE_KEY)
 
-            val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, BaseError::class.java)
-            } else {
-                bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as BaseError
-            }
-
             if (isConfirmed) {
                 signUp()
-            } else {
-                error?.let { showErrorMessage(it) }
             }
         }
     }
 
     private fun signUp() {
+        val username = binding.etUsername.text.toString()
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfirmPassword.text.toString()
 
-        viewModel.signUp(email, password, confirmPassword)
+        viewModel.signUp(SignUpCredentials(username, UserCredentials(email, password)), confirmPassword)
     }
 
     private fun navigateToHomeFragment() {

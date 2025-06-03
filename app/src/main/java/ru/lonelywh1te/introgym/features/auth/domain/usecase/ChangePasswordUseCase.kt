@@ -5,16 +5,17 @@ import kotlinx.coroutines.flow.flowOf
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 
 class ChangePasswordUseCase(
     private val repository: AuthRepository,
-    private val validator: EmailPasswordValidator,
+    private val validator: CredentialsValidator,
 ) {
-    suspend operator fun invoke(email: String, password: String, confirmPassword: String): Flow<Result<Unit>> {
-        validator.validateEmailAndPasswordWithConfirm(email, password, confirmPassword)
+    operator fun invoke(userCredentials: UserCredentials, confirmPassword: String): Flow<Result<Unit>> {
+        validator.validateUserCredentialsWithConfirmPassword(userCredentials, confirmPassword)
             .onFailure { flowOf(it) }
 
-        return repository.changePassword(email, password)
+        return repository.changePassword(userCredentials)
     }
 }

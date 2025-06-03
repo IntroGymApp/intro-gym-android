@@ -79,7 +79,7 @@
     <string name="label_articles">Статьи</string>
     <string name="label_sections">Разделы</string>
     <string name="label_filter">Фильтр</string>
-    <string name="label_submit">Применить</string>
+    <string name="label_apply">Применить</string>
     <string name="label_no_result_title">Ничего не найдено</string>
     <string name="label_no_result_description">По вашему запросу ничего не найдено</string>
     <string name="label_create_workout">Создать тренировку</string>
@@ -149,5 +149,8 @@
     <string name="label_sign_out_title">Выход из аккаунта</string>
     <string name="label_sign_out_description">Вы уверены, что хотите выйти из аккаунта? После выхода некоторые функции приложения станут недоступны.</string>
     <string name="label_exit">Выйти</string>
+    <string name="label_invalid_username">Некорректный формат имени пользователя</string>
+    <string name="label_network_error_unknown">Неизвестная ошибка сети. Попробуйте позже</string>
+    <string name="label_submit">Подтвердить</string>
 
 </resources>

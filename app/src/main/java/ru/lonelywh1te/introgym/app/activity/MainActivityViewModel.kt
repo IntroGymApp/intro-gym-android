@@ -13,16 +13,16 @@ class MainActivityViewModel(
     private val settingsPreferences: SettingsPreferences,
     private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
-    private val _errors: MutableSharedFlow<BaseError> = MutableSharedFlow()
-    val errors get() = _errors.asSharedFlow()
+    private val _errorMessages: MutableSharedFlow<String> = MutableSharedFlow()
+    val errors get() = _errorMessages.asSharedFlow()
 
     val isFirstLaunch get() = settingsPreferences.isFirstLaunch
     val onboardingCompleted get() = settingsPreferences.onboardingCompleted
 
     init {
         viewModelScope.launch {
-            errorDispatcher.errors.collect {
-                _errors.emit(it)
+            errorDispatcher.errorMessages.collect {
+                _errorMessages.emit(it)
             }
         }
     }

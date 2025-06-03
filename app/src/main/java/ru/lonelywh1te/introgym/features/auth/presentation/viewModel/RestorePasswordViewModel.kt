@@ -7,13 +7,14 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ChangePasswordUseCase
 
 class RestorePasswordViewModel(
     private val changePasswordUseCase: ChangePasswordUseCase,
-    private val validator: EmailPasswordValidator,
+    private val validator: CredentialsValidator,
 ): ViewModel() {
     private val _changePasswordResult: MutableSharedFlow<UIState<*>> = MutableSharedFlow(replay = 1)
     val changePasswordResult get() = _changePasswordResult
@@ -22,7 +23,8 @@ class RestorePasswordViewModel(
 
     fun changePassword(email: String, password: String, confirmPassword: String) {
         viewModelScope.launch(dispatcher) {
-            changePasswordUseCase(email, password, confirmPassword).collect { result ->
+            val credentials = UserCredentials(email, password)
+            changePasswordUseCase(credentials, confirmPassword).collect { result ->
                 _changePasswordResult.emit(result.toUIState())
             }
         }

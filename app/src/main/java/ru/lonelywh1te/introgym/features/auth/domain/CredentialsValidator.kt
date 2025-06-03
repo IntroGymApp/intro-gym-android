@@ -2,8 +2,37 @@ package ru.lonelywh1te.introgym.features.auth.domain
 
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
+import ru.lonelywh1te.introgym.features.auth.domain.model.SignUpCredentials
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 
-object EmailPasswordValidator {
+object CredentialsValidator {
+
+    fun validateSignUpCredentialsWithConfirmPassword(credentials: SignUpCredentials, confirmPassword: String): Result<Unit> {
+        return when {
+            !isValidUserName(credentials.username) -> Result.Failure(AuthValidationError.InvalidUsernameFormat())
+            !isValidEmail(credentials.userCredentials.email) -> Result.Failure(AuthValidationError.InvalidEmailFormat())
+            !isValidPassword(credentials.userCredentials.password) -> Result.Failure(AuthValidationError.InvalidPasswordFormat())
+            !comparePasswords(credentials.userCredentials.password, confirmPassword) -> Result.Failure(AuthValidationError.PasswordMismatch())
+            else -> Result.Success(Unit)
+        }
+    }
+
+    fun validateUserCredentialsWithConfirmPassword(credentials: UserCredentials, confirmPassword: String): Result<Unit> {
+        return when {
+            !isValidEmail(credentials.email) -> Result.Failure(AuthValidationError.InvalidEmailFormat())
+            !isValidPassword(credentials.password) -> Result.Failure(AuthValidationError.InvalidPasswordFormat())
+            !comparePasswords(credentials.password, confirmPassword) -> Result.Failure(AuthValidationError.PasswordMismatch())
+            else -> Result.Success(Unit)
+        }
+    }
+
+    fun validateUserCredentials(credentials: UserCredentials): Result<Unit> {
+        return when {
+            !isValidEmail(credentials.email) -> Result.Failure(AuthValidationError.InvalidEmailFormat())
+            !isValidPassword(credentials.password) -> Result.Failure(AuthValidationError.InvalidPasswordFormat())
+            else -> Result.Success(Unit)
+        }
+    }
 
     fun validateEmail(email: String): Result<Unit> {
         return if (isValidEmail(email)) Result.Success(Unit) else Result.Failure(AuthValidationError.InvalidEmailFormat())
@@ -46,5 +75,9 @@ object EmailPasswordValidator {
 
     private fun comparePasswords(password: String, confirmPassword: String): Boolean {
         return password == confirmPassword
+    }
+
+    private fun isValidUserName(name: String): Boolean {
+        return name.isNotBlank() && name.matches(Regex("^[\\p{L} \\-']+\$"))
     }
 }

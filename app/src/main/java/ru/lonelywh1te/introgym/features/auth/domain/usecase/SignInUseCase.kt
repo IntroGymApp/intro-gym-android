@@ -5,16 +5,17 @@ import kotlinx.coroutines.flow.flowOf
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
-import ru.lonelywh1te.introgym.features.auth.domain.EmailPasswordValidator
+import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
+import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 
 class SignInUseCase(
     private val repository: AuthRepository,
-    private val validator: EmailPasswordValidator,
+    private val validator: CredentialsValidator,
 ) {
-    suspend operator fun invoke(email: String, password: String): Flow<Result<Unit>> {
-        validator.validateEmailAndPassword(email, password)
+    operator fun invoke(userCredentials: UserCredentials): Flow<Result<Unit>> {
+        validator.validateUserCredentials(userCredentials)
             .onFailure { return flowOf(Result.Failure(it)) }
 
-        return repository.signIn(email, password)
+        return repository.signIn(userCredentials)
     }
 }

@@ -74,7 +74,7 @@
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         style="@style/Widget.IntroGym.Button"
-        android:text="@string/label_submit"
+        android:text="@string/label_apply"
         android:layout_gravity="bottom"
         android:layout_marginBottom="20dp"/>
 

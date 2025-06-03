@@ -15,14 +15,12 @@ import kotlin.coroutines.cancellation.CancellationException
 // TODO: Уточнить список ошибок базы данных
 
 sealed class DatabaseError(
-    override val message: String?,
-    override val cause: Throwable?,
+    override val throwable: Throwable?,
 ): BaseError {
 
     data class SQLiteError(
-        override val message: String? = null,
-        override val cause: Throwable?,
-    ): DatabaseError(message, cause)
+        override val throwable: Throwable?,
+    ): DatabaseError(throwable)
 
 }
 
@@ -39,9 +37,9 @@ fun <T> Flow<Result<T>>.asSafeSQLiteFlow(): Flow<Result<T>> {
             Log.e(logTag, e.stackTraceToString())
 
             when (e) {
-                is SQLiteException -> emit(Result.Failure(DatabaseError.SQLiteError(e.message, e)))
+                is SQLiteException -> emit(Result.Failure(DatabaseError.SQLiteError(e)))
                 is CancellationException -> throw e
-                else -> emit(Result.Failure(AppError.Unknown(e.message, e)))
+                else -> emit(Result.Failure(AppError.Unknown(e)))
             }
         }
 }
@@ -55,8 +53,8 @@ inline fun <T> sqliteTryCatching(action: () -> T): Result<T> {
         Log.e(logTag, "An error occurred while executing the database action", e)
 
         when (e) {
-            is SQLiteException -> Result.Failure(DatabaseError.SQLiteError(e.message, e))
-            else -> Result.Failure(AppError.Unknown(e.message, e))
+            is SQLiteException -> Result.Failure(DatabaseError.SQLiteError(e))
+            else -> Result.Failure(AppError.Unknown(e))
         }
     }
 }

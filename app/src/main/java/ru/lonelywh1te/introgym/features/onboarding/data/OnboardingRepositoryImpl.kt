@@ -23,6 +23,4 @@ class OnboardingRepositoryImpl(
     override fun setOnboardingCompleted(isCompleted: Boolean) {
         settingsPreferences.onboardingCompleted = isCompleted
     }
-
-
 }

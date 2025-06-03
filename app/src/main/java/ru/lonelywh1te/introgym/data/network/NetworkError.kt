@@ -13,37 +13,34 @@ import java.net.UnknownHostException
 import kotlin.coroutines.cancellation.CancellationException
 
 sealed class NetworkError(
-    override val message: String?,
-    override val cause: Throwable?,
+    override val throwable: Throwable?,
 ): BaseError {
 
     data class NoInternetConnection(
-        override val message: String? = null,
-        override val cause: Throwable? = null,
-    ): NetworkError(message, cause)
+        override val throwable: Throwable? = null,
+    ): NetworkError(throwable)
 
     data class RequestTimeout(
-        override val message: String? = null,
-        override val cause: Throwable? = null
-    ): NetworkError(message, cause)
+        override val throwable: Throwable? = null,
+    ): NetworkError(throwable)
 
     data class ServerError(
         val code: Int,
-        override val message: String? = null,
-        override val cause: Throwable? = null,
-    ): NetworkError(message, cause)
+        val message: String? = null,
+        override val throwable: Throwable? = null,
+    ): NetworkError(throwable)
 
     data class Unknown(
-        override val message: String? = null,
-        override val cause: Throwable? = null,
-    ): NetworkError(message, cause)
+        val message: String? = null,
+        override val throwable: Throwable? = null,
+    ): NetworkError(throwable)
 }
 
 fun NetworkError.asStringRes() = when (this) {
     is NetworkError.NoInternetConnection -> R.string.network_error_no_internet
     is NetworkError.RequestTimeout -> R.string.network_error_request_timeout
     is NetworkError.ServerError -> R.string.network_error_server
-    is NetworkError.Unknown -> TODO("No network error stringRes")
+    is NetworkError.Unknown -> R.string.label_network_error_unknown
 }
 
 fun <T> Flow<Result<T>>.asSafeNetworkFlow(): Flow<Result<T>> {
@@ -58,7 +55,7 @@ fun <T> Flow<Result<T>>.asSafeNetworkFlow(): Flow<Result<T>> {
                 is UnknownHostException -> emit(Result.Failure(NetworkError.NoInternetConnection()))
                 is SocketTimeoutException -> emit(Result.Failure(NetworkError.RequestTimeout()))
                 is CancellationException -> throw e
-                else -> emit(Result.Failure(AppError.Unknown(e.message, e)))
+                else -> emit(Result.Failure(AppError.Unknown(e)))
             }
         }
 }

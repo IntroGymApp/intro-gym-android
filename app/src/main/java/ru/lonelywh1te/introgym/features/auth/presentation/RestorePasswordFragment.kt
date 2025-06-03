@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -119,14 +120,6 @@ class RestorePasswordFragment : Fragment() {
             if (isConfirmed) {
                 otpConfirmed = true
                 setChangePasswordFormState(otpConfirmed)
-            } else {
-                val error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY, BaseError::class.java)
-                } else {
-                    bundle.getSerializable(ConfirmOtpFragment.ERROR_BUNDLE_KEY) as BaseError
-                }
-
-                error?.let { showErrorMessage(it) }
             }
         }
     }
@@ -166,7 +159,7 @@ class RestorePasswordFragment : Fragment() {
             setEditTextVisibility(binding.etPassword, show)
         }
 
-        binding.passwordValidationView.visibility = if (show) View.VISIBLE else View.GONE
+        binding.passwordValidationView.isVisible = show
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {

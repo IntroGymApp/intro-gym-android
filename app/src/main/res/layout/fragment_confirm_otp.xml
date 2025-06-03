@@ -78,7 +78,7 @@
             android:id="@+id/btn_confirm_otp"
             style="@style/Widget.IntroGym.Button"
             android:layout_gravity="center"
-            android:text="@string/label_sign_up" />
+            android:text="@string/label_submit" />
 
     </FrameLayout>
 

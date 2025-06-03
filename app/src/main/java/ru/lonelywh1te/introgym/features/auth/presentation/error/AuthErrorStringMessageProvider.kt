@@ -36,5 +36,6 @@ fun AuthValidationError.asStringRes() = when (this) {
     is AuthValidationError.InvalidEmailFormat -> R.string.validation_error_invalid_email_format
     is AuthValidationError.InvalidPasswordFormat -> R.string.validation_error_invalid_password_format
     is AuthValidationError.PasswordMismatch -> R.string.validation_error_password_mismatch
+    is AuthValidationError.InvalidUsernameFormat -> R.string.label_invalid_username
     else ->  R.string.validation_error_invalid_password_format
 }

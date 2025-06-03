@@ -4,14 +4,12 @@ import ru.lonelywh1te.introgym.R
 import java.io.Serializable
 
 interface BaseError: Serializable {
-    val message: String?
-    val cause: Throwable?
+    val throwable: Throwable?
 }
 
 sealed class AppError: BaseError {
     data class Unknown(
-        override val message: String? = null,
-        override val cause: Throwable?,
+        override val throwable: Throwable?,
     ): AppError()
 }
 

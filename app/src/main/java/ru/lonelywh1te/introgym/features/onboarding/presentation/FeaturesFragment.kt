@@ -31,7 +31,7 @@ class FeaturesFragment: Fragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            navigateToAboutUserFragment()
+            navigateToSetNotificationsFragment()
         }
 
         hideToolbarAndBottomNavigationView()
@@ -44,8 +44,8 @@ class FeaturesFragment: Fragment() {
         }
     }
 
-    private fun navigateToAboutUserFragment() {
-        val action = FeaturesFragmentDirections.toAboutUserFragment()
+    private fun navigateToSetNotificationsFragment() {
+        val action = FeaturesFragmentDirections.toSetNotificationFragment()
         findNavController().safeNavigate(action)
     }
 }

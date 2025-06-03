@@ -34,11 +34,11 @@ class GetWorkoutResultsUseCase(
                         try {
                             Result.Success(workoutResult)
                         } catch (e: Exception) {
-                            Result.Failure(AppError.Unknown(cause = e))
+                            Result.Failure(AppError.Unknown(e))
                         }
 
                     } else {
-                        Result.Failure(AppError.Unknown(cause = NullPointerException("Workout log, completed sets, or workout plans is null")))
+                        Result.Failure(AppError.Unknown(NullPointerException("Workout log, completed sets, or workout plans is null")))
                     }
                 }
                 is Result.Failure -> result

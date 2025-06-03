@@ -10,10 +10,10 @@ import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 
 class ConfirmOtpUseCase(
     private val repository: AuthRepository,
-    private val validator: OtpValidator,
+    private val otpValidator: OtpValidator,
 ) {
-    suspend operator fun invoke(otp: String, otpType: OtpType): Flow<Result<Unit>> {
-        validator.validate(otp)
+    operator fun invoke(otp: String, otpType: OtpType): Flow<Result<Unit>> {
+        otpValidator.validate(otp)
             .onFailure { flowOf(it) }
 
         return repository.confirmOtp(otp, otpType.name)

@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.app.activity.UIController
 import ru.lonelywh1te.introgym.core.result.BaseError
+import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentConfirmOtpBinding
@@ -28,6 +30,7 @@ class ConfirmOtpFragment : Fragment() {
 
     private val viewModel by viewModel<ConfirmOtpViewModel>()
     private val args by navArgs<ConfirmOtpFragmentArgs>()
+    private val errorDispatcher by inject<ErrorDispatcher>()
 
     private val email by lazy { args.email }
 
@@ -123,9 +126,7 @@ class ConfirmOtpFragment : Fragment() {
     }
 
     private fun navigateUpWithError(error: BaseError) {
-        val bundle = Bundle().apply { putSerializable(ERROR_BUNDLE_KEY, error) }
-
-        setFragmentResult(REQUEST_KEY, bundle)
+        errorDispatcher.dispatch(error, error.throwable?.message)
         findNavController().navigateUp()
     }
 
@@ -152,6 +153,5 @@ class ConfirmOtpFragment : Fragment() {
     companion object {
         const val REQUEST_KEY = "CONFIRM_OTP_REQUEST"
         const val RESULT_BUNDLE_KEY = "CONFIRM_OTP_RESULT"
-        const val ERROR_BUNDLE_KEY = "CONFIRM_OTP_RESULT"
     }
 }

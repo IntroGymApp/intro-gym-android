@@ -132,17 +132,17 @@ class MainActivity : AppCompatActivity(), UIController {
 
     private fun startCollectFlows() {
         viewModel.errors.flowWithLifecycle(lifecycle)
-            .onEach { error ->
-                showError(error)
+            .onEach { message ->
+                showError(message)
             }
             .launchIn(lifecycleScope)
     }
 
-    private fun showError(error: BaseError) {
+    private fun showError(message: String) {
         showingError?.cancel()
 
         showingError = lifecycleScope.launch {
-            binding.tvError.text = "Ошибка: ${error.message}"
+            binding.tvError.text = message
             binding.tvError.isVisible = true
             binding.tvError.scaleY = 0f
 
@@ -166,10 +166,12 @@ class MainActivity : AppCompatActivity(), UIController {
     override fun setToolbarVisibility(visible: Boolean) {
         if (binding.toolbar.isVisible == visible) return
         binding.toolbar.isVisible = visible
+        binding.dividerTop.isVisible = visible
     }
 
     override fun setBottomNavigationViewVisibility(visible: Boolean) {
         if (binding.bottomNavigation.isVisible == visible) return
         binding.bottomNavigation.isVisible = visible
+        binding.dividerBottom.isVisible = visible
     }
 }
