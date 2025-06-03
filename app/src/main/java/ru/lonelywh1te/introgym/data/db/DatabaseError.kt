@@ -3,7 +3,9 @@ package ru.lonelywh1te.introgym.data.db
 import android.database.sqlite.SQLiteException
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.BaseError
@@ -28,22 +30,20 @@ fun DatabaseError.toStringRes() = when(this) {
     is DatabaseError.SQLiteError -> R.string.label_sqlite_error
 }
 
-fun <T> Flow<Result<T>>.asSafeSQLiteFlow(): Flow<Result<T>> = flow {
+fun <T> Flow<Result<T>>.asSafeSQLiteFlow(): Flow<Result<T>> {
     val logTag = "SafeSQLiteFlow"
 
-    try {
-        collect { emit(it) }
-    } catch (e: Exception) {
-        Log.e(logTag, "An error occurred while executing the database action", e)
+    return this
+        .catch {e ->
+            Log.e(logTag, "An error occurred while executing the database action", e)
+            Log.e(logTag, e.stackTraceToString())
 
-        emit(
             when (e) {
-                is SQLiteException -> Result.Failure(DatabaseError.SQLiteError(e.message, e))
+                is SQLiteException -> emit(Result.Failure(DatabaseError.SQLiteError(e.message, e)))
                 is CancellationException -> throw e
-                else -> Result.Failure(AppError.Unknown(e.message, e))
+                else -> emit(Result.Failure(AppError.Unknown(e.message, e)))
             }
-        )
-    }
+        }
 }
 
 inline fun <T> sqliteTryCatching(action: () -> T): Result<T> {

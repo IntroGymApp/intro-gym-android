@@ -102,7 +102,7 @@ class WorkoutRepositoryImpl (
     override suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit> {
         return sqliteTryCatching {
             db.withTransaction {
-                val workoutToDelete = workoutDao.getWorkoutById(id).first()
+                val workoutToDelete = workoutDao.getWorkoutById(id).first()!!
                 val workoutsToReorder = workoutDao.getWorkoutsWithOrderGreaterThan(workoutToDelete.order)
 
                 workoutDao.deleteWorkout(workoutToDelete.id)

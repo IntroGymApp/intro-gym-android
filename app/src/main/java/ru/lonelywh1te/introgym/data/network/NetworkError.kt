@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.data.network
 
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.AppError
@@ -45,21 +46,19 @@ fun NetworkError.asStringRes() = when (this) {
     is NetworkError.Unknown -> TODO("No network error stringRes")
 }
 
-fun <T> Flow<Result<T>>.asSafeNetworkFlow(): Flow<Result<T>> = flow {
-    val logTag = "NETWORK_FLOW"
+fun <T> Flow<Result<T>>.asSafeNetworkFlow(): Flow<Result<T>> {
+    val logTag = "safeNetworkFlow"
 
-    try {
-        collect { emit(it) }
-    } catch (e: UnknownHostException) {
-        emit(Result.Failure(NetworkError.NoInternetConnection()))
-        Log.e(logTag, "UNKNOWN HOST EXCEPTION: $e")
-    } catch (e: SocketTimeoutException) {
-        emit(Result.Failure(NetworkError.RequestTimeout()))
-        Log.e(logTag, "REQUEST_TIMEOUT: $e")
-    } catch (e: CancellationException) {
-        throw e
-    } catch (e: Exception) {
-        Log.e(logTag, "UNKNOWN_EXCEPTION: $e")
-        emit(Result.Failure(AppError.Unknown(e.message, e)))
-    }
+    return this
+        .catch { e ->
+            Log.e(logTag, e.toString())
+            Log.e(logTag, e.stackTraceToString())
+
+            when (e) {
+                is UnknownHostException -> emit(Result.Failure(NetworkError.NoInternetConnection()))
+                is SocketTimeoutException -> emit(Result.Failure(NetworkError.RequestTimeout()))
+                is CancellationException -> throw e
+                else -> emit(Result.Failure(AppError.Unknown(e.message, e)))
+            }
+        }
 }

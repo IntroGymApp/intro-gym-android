@@ -70,7 +70,7 @@ class WorkoutLogRepositoryImpl(
     override suspend fun addWorkoutLog(workoutLog: WorkoutLog): Result<Unit> {
         return sqliteTryCatching {
             db.withTransaction {
-                val workoutEntity = workoutDao.getWorkoutById(workoutLog.workoutId).first()
+                val workoutEntity = workoutDao.getWorkoutById(workoutLog.workoutId).first()!!
                 val workoutExercises = workoutExerciseDao.getWorkoutExercisesById(workoutLog.workoutId).first()
                 val workoutExercisePlans = workoutExercises.map { workoutExercisePlanDao.getWorkoutExercisePlanById(it.id).first() }
 

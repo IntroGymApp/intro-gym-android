@@ -75,8 +75,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.loadWorkout(args.workoutId)
-        viewModel.loadWorkoutLog(args.workoutId)
+        viewModel.setWorkoutId(args.workoutId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

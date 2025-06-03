@@ -49,6 +49,7 @@ class SignUpFragment : Fragment() {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
 
         WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
+        hideToolbarAndBottomNavigationView()
 
         return binding.root
     }
@@ -82,7 +83,6 @@ class SignUpFragment : Fragment() {
             binding.passwordValidationView.setCurrentErrors(validationResult)
         }
 
-        hideToolbarAndBottomNavigationView()
         startCollectFlows()
         setConfirmOtpFragmentResultListener()
         setSpannableStrings()

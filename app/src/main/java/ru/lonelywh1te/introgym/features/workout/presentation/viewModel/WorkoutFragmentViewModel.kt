@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.features.workout.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -60,20 +62,48 @@ class WorkoutFragmentViewModel(
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
-    private val _workout: MutableStateFlow<Workout?> = MutableStateFlow(null)
-    val workout get() = _workout.asStateFlow()
+    private val _workoutId: MutableStateFlow<Long?> = MutableStateFlow(null)
 
-    private val _workoutLog: MutableStateFlow<WorkoutLog?> = MutableStateFlow(null)
-    val workoutLog get() = _workoutLog.asStateFlow()
+    val workout: StateFlow<Workout?> = _workoutId
+        .filterNotNull()
+        .flatMapLatest { workoutId ->
+            var workout: Workout? = null
 
-    val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> = _workoutLog
+            getWorkoutUseCase(workoutId).map { result ->
+                result
+                    .onSuccess { workout = it }
+                    .onFailure { errorDispatcher.dispatch(it) }
+
+                workout
+            }
+        }
+        .flowOn(dispatcher)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val workoutLog: StateFlow<WorkoutLog?> = _workoutId
+        .filterNotNull()
+        .flatMapLatest { workoutId ->
+            var workoutLog: WorkoutLog? = null
+
+            getWorkoutLogUseCase(workoutId).map { result ->
+                result
+                    .onSuccess { workoutLog = it }
+                    .onFailure { errorDispatcher.dispatch(it) }
+
+                workoutLog
+            }
+        }
+        .flowOn(dispatcher)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val workoutExerciseItems: StateFlow<List<WorkoutExerciseItem>> = workoutLog
         .flatMapLatest { workoutLog ->
             var list: List<WorkoutExerciseItem> = emptyList()
 
             val state = workoutLog?.let { WorkoutLogState.get(workoutLog) }
 
             if (state == null || state is WorkoutLogState.NotStarted) {
-                getWorkoutExerciseItemsUseCase(_workout.value!!.id).map { result ->
+                getWorkoutExerciseItemsUseCase(_workoutId.value!!).map { result ->
                     result
                         .onSuccess { list = it }
                         .onFailure { errorDispatcher.dispatch(it) }
@@ -81,7 +111,7 @@ class WorkoutFragmentViewModel(
                     list
                 }
             } else {
-                getWorkoutExerciseItemsWithProgressUseCase(_workout.value!!.id).map { result ->
+                getWorkoutExerciseItemsWithProgressUseCase(_workoutId.value!!).map { result ->
                     result
                         .onSuccess { list = it }
                         .onFailure { errorDispatcher.dispatch(it) }
@@ -94,7 +124,7 @@ class WorkoutFragmentViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
    // private val _workoutResults: MutableStateFlow<WorkoutResult?> = MutableStateFlow(null)
-    val workoutResults: StateFlow<WorkoutResult?> = _workoutLog
+    val workoutResults: StateFlow<WorkoutResult?> = workoutLog
         .flatMapLatest { workoutLog ->
             var results: WorkoutResult? = null
             val state = workoutLog?.let { WorkoutLogState.get(workoutLog) }
@@ -115,24 +145,8 @@ class WorkoutFragmentViewModel(
     private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()
     val workoutDeleted get() = _workoutDeleted.asSharedFlow()
 
-    fun loadWorkout(workoutId: Long) {
-        viewModelScope.launch (dispatcher) {
-            getWorkoutUseCase(workoutId).collectLatest { result ->
-                result
-                    .onSuccess { _workout.value = it }
-                    .onFailure { errorDispatcher.dispatch(it) }
-            }
-        }
-    }
-
-    fun loadWorkoutLog(workoutId: Long) {
-        viewModelScope.launch (dispatcher) {
-            getWorkoutLogUseCase(workoutId).collectLatest { result ->
-                result
-                    .onSuccess { _workoutLog.value = it }
-                    .onFailure { errorDispatcher.dispatch(it) }
-            }
-        }
+    fun setWorkoutId(workoutId: Long) {
+        _workoutId.value = workoutId
     }
 
     fun startWorkout() {
@@ -168,8 +182,13 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             workout.value?.let { workout ->
                 deleteWorkoutUseCase(workout.id)
-                    .onSuccess { _workoutDeleted.emit(it) }
-                    .onFailure { errorDispatcher.dispatch(it) }
+                    .onSuccess {
+                        _workoutId.value = null
+                        _workoutDeleted.emit(it)
+                    }
+                    .onFailure {
+                        errorDispatcher.dispatch(it)
+                    }
             }
         }
     }

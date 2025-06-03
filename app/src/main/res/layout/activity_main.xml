@@ -28,6 +28,7 @@
         tools:visibility="visible"/>
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerColor="?attr/igTextPrimaryColor"
@@ -42,6 +43,7 @@
         app:defaultNavHost="true"/>
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerColor="?attr/igTextPrimaryColor"

@@ -12,7 +12,7 @@ import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
 interface WorkoutDao {
 
     @Query("select * from workout where id = :id")
-    fun getWorkoutById(id: Long): Flow<WorkoutEntity>
+    fun getWorkoutById(id: Long): Flow<WorkoutEntity?>
 
     @Query("""
         select *
