@@ -20,6 +20,10 @@ class UserPreferencesImpl(context: Context): UserPreferences {
         get() = prefs.getString(BIRTHDAY_KEY, null)?.let { LocalDate.parse(it) }
         set(value) = prefs.edit().putString(BIRTHDAY_KEY, value?.toString()).apply()
 
+    override var registerDate: LocalDate?
+        get() = prefs.getString(REGISTER_DATE_KEY, null)?.let { LocalDate.parse(it) }
+        set(value) = prefs.edit().putString(REGISTER_DATE_KEY, value?.toString()).apply()
+
     override fun clearAll() {
         prefs.edit().clear().apply()
     }
@@ -29,5 +33,6 @@ class UserPreferencesImpl(context: Context): UserPreferences {
         private const val USERNAME_KEY = "username"
         private const val GENDER_KEY = "gender"
         private const val BIRTHDAY_KEY = "birthday"
+        private const val REGISTER_DATE_KEY = "register_date"
     }
 }

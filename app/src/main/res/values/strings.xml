@@ -145,5 +145,6 @@
     <string name="label_total_weight">Суммарно поднятый вес</string>
     <string name="label_sqlite_error">Произошла ошибка базы данных приложения.</string>
     <string name="label_logout">Выйти из аккаунта</string>
+    <string name="label_joined_at">Присоединился: %1$s</string>
 
 </resources>

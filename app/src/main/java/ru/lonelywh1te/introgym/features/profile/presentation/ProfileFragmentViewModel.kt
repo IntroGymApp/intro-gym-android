@@ -1,33 +1,34 @@
 package ru.lonelywh1te.introgym.features.profile.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import ru.lonelywh1te.introgym.data.prefs.UserPreferences
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
-import java.time.LocalDate
+import ru.lonelywh1te.introgym.features.profile.domain.UserInfo
+import ru.lonelywh1te.introgym.features.profile.domain.usecase.GetUserInfoUseCase
 
 class ProfileFragmentViewModel(
+    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val authRepository: AuthRepository,
-    private val userPreferences: UserPreferences,
 ): ViewModel() {
-    private val username: String? get() = userPreferences.username
-    private val isSignedIn: Boolean get() = authRepository.isSignedIn()
-    private val registerDate: LocalDate = LocalDate.now()
-    private val countOfWorkouts: Int = 0
+    private val isSignedIn get() = authRepository.isSignedIn()
 
-    fun getUserName(): String {
-        return username?: "Пользователь"
-    }
+    private val _userInfo: MutableStateFlow<UserInfo?> = MutableStateFlow(null)
+    val userInfo get() = _userInfo.asStateFlow()
 
-    fun getRegisterDate(): LocalDate {
-        return registerDate
-    }
+    private val dispatcher = Dispatchers.IO
 
-    fun getCountOfWorkouts(): Int {
-        return countOfWorkouts
+    fun loadUserInfo() {
+        viewModelScope.launch (dispatcher) {
+            _userInfo.value = getUserInfoUseCase()
+        }
     }
 
     fun getIsSignedIn(): Boolean {
         return isSignedIn
     }
-
 }

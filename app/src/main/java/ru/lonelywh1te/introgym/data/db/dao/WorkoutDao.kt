@@ -49,6 +49,14 @@ interface WorkoutDao {
     @Query("select count(*) from workout where is_template = 1")
     suspend fun getCountOfWorkouts(): Int
 
+    @Query("""
+        select count(*)
+        from workout w
+        inner join workout_log wl on w.id = wl.workout_id
+        where wl.end_datetime is not null
+    """)
+    suspend fun getCountOfFinishedWorkouts(): Int
+
     @Insert
     suspend fun createWorkout(workout: WorkoutEntity): Long
 
