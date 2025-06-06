@@ -9,7 +9,7 @@ class OnboardingRepositoryImpl(
     private val settingsPreferences: SettingsPreferences,
 ): OnboardingRepository {
     override fun setUserPreferences(name: String?) {
-        userPreferences.username = name
+        TODO("Not yet implemented")
     }
 
     override fun setNotificationEnabled(isEnabled: Boolean) {

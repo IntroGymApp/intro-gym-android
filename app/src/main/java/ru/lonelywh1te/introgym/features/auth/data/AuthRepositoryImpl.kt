@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.asSafeNetworkFlow
-import ru.lonelywh1te.introgym.data.prefs.UserPreferences
+import ru.lonelywh1te.introgym.data.network.safeNetworkCall
 import ru.lonelywh1te.introgym.features.auth.data.dto.ChangePasswordRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.RefreshTokensRequestDto
@@ -17,17 +17,17 @@ import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthError
 import ru.lonelywh1te.introgym.features.auth.domain.model.SignUpCredentials
+import ru.lonelywh1te.introgym.features.auth.domain.model.TokenPair
 import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 
 class AuthRepositoryImpl(
-    private val authService: AuthService,
+    private val authApi: AuthApi,
     private val authStorage: AuthStorage,
-    private val userPreferences: UserPreferences,
 ): AuthRepository {
     override fun sendOtp(email: String, otpType: String): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 
-        val response = authService.sendOtp(SendOtpRequestDto(email), otpType)
+        val response = authApi.sendOtp(SendOtpRequestDto(email), otpType)
         val body = response.body()
 
         val result = when {
@@ -47,7 +47,7 @@ class AuthRepositoryImpl(
 
         val sessionId = authStorage.getSessionId() ?: ""
 
-        val response = authService.confirmOtp(ConfirmOtpRequestDto(sessionId, otp), otpType)
+        val response = authApi.confirmOtp(ConfirmOtpRequestDto(sessionId, otp), otpType)
         val body = response.body()
 
         val result = when {
@@ -71,7 +71,7 @@ class AuthRepositoryImpl(
         val email = signUpData.userCredentials.email
         val password = signUpData.userCredentials.password
 
-        val response = authService.signUp(SignUpRequestDto(sessionId, username, email, password))
+        val response = authApi.signUp(SignUpRequestDto(sessionId, username, email, password))
         val body = response.body()
 
         val result = when {
@@ -96,7 +96,7 @@ class AuthRepositoryImpl(
         val email = signInData.email
         val password = signInData.password
 
-        val response = authService.signIn(SignInRequestDto(email, password))
+        val response = authApi.signIn(SignInRequestDto(email, password))
         val body = response.body()
 
         val result = when {
@@ -120,7 +120,7 @@ class AuthRepositoryImpl(
         val email = data.email
         val password = data.password
 
-        val response = authService.changePassword(sessionId, ChangePasswordRequestDto(email, password))
+        val response = authApi.changePassword(sessionId, ChangePasswordRequestDto(email, password))
         val body = response.body()
 
         val result = when {
@@ -135,28 +135,25 @@ class AuthRepositoryImpl(
         emit(result)
     }.asSafeNetworkFlow()
 
-    override fun refreshToken(): Flow<Result<Unit>> = flow {
-        val refreshToken = authStorage.getRefreshToken() ?: ""
+    override suspend fun refreshToken(): Result<TokenPair>  {
+        val refreshToken = authStorage.getRefreshToken() ?: return Result.Failure(AuthError.Unauthorized())
 
-        val response = authService.refreshTokens(RefreshTokensRequestDto(refreshToken))
-        val body = response.body()
+        val result = safeNetworkCall {
+            val response = authApi.refreshTokens(RefreshTokensRequestDto(refreshToken))
+            val body = response.body()
 
-        val result = when {
-            response.isSuccessful && body != null -> Result.Success(Unit)
-            response.code() == 401 -> Result.Failure(AuthError.Unauthorized())
-            response.code() in 500..599 -> Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
-            else -> Result.Failure(NetworkError.Unknown(message = response.errorBody()?.string()))
-        }.also {
-            if (it is Result.Success && body != null) authStorage.saveTokens(body.accessToken, body.refreshToken)
+            when {
+                response.isSuccessful && body != null -> TokenPair(body.accessToken, body.refreshToken)
+                response.code() == 401 -> return Result.Failure(AuthError.Unauthorized())
+                response.code() in 500..599 -> return Result.Failure(NetworkError.ServerError(response.code(), response.errorBody()?.string()))
+                else -> return Result.Failure(NetworkError.Unknown(response.errorBody()?.string()))
+            }
         }
 
-        if (!response.isSuccessful) Log.w(LOG_TAG, "FAIL: $response")
-
-        emit(result)
-    }.asSafeNetworkFlow()
+        return result
+    }
 
     override fun isSignedIn(): Boolean {
-
         return authStorage.getAccessToken() != null
     }
 

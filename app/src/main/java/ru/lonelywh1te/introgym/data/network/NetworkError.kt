@@ -3,7 +3,6 @@ package ru.lonelywh1te.introgym.data.network
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.BaseError
@@ -58,4 +57,20 @@ fun <T> Flow<Result<T>>.asSafeNetworkFlow(): Flow<Result<T>> {
                 else -> emit(Result.Failure(AppError.Unknown(e)))
             }
         }
+}
+
+inline fun <T> safeNetworkCall(action: () -> T): Result<T> {
+    val logTag = "safeNetworkCall"
+
+    return try {
+        Result.Success(action())
+    } catch (e: Exception) {
+        Log.e(logTag, "An error occurred while executing the network call", e)
+
+        when (e) {
+            is UnknownHostException -> Result.Failure(NetworkError.NoInternetConnection())
+            is SocketTimeoutException -> Result.Failure(NetworkError.RequestTimeout())
+            else -> (Result.Failure(AppError.Unknown(e)))
+        }
+    }
 }

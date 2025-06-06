@@ -1,22 +1,37 @@
 package ru.lonelywh1te.introgym.data.prefs.user
 
 import android.content.Context
+import android.util.Log
 import ru.lonelywh1te.introgym.data.prefs.UserPreferences
 import java.time.LocalDate
 
 class UserPreferencesImpl(context: Context): UserPreferences {
     private val prefs = context.getSharedPreferences(USER_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-    override var username: String?
-        get() = prefs.getString(USERNAME_KEY, null)
-        set(value) = prefs.edit().putString(USERNAME_KEY, value).apply()
+    override fun getUserInfo(): UserInfo? {
+        val username = prefs.getString(USERNAME_KEY, null) ?: return null
+        val registerDate = prefs.getString(REGISTER_DATE_KEY, null) ?: return null
 
-    override var registerDate: LocalDate?
-        get() = prefs.getString(REGISTER_DATE_KEY, null)?.let { LocalDate.parse(it) }
-        set(value) = prefs.edit().putString(REGISTER_DATE_KEY, value?.toString()).apply()
+        return UserInfo(
+            name = username,
+            registerDate = LocalDate.parse(registerDate)
+        ).also {
+            Log.d("UserPreferencesImpl", "Get UserInfo: $it")
+        }
+    }
 
-    override fun clearAll() {
+    override fun saveUserInfo(userInfo: UserInfo) {
+        prefs.edit()
+            .putString(USERNAME_KEY, userInfo.name)
+            .putString(REGISTER_DATE_KEY, userInfo.registerDate.toString())
+            .apply()
+
+        Log.d("UserPreferencesImpl", "UserInfo saved!: $userInfo")
+    }
+
+    override fun clear() {
         prefs.edit().clear().apply()
+        Log.d("UserPreferencesImpl", "UserPreferences cleared")
     }
 
     companion object {

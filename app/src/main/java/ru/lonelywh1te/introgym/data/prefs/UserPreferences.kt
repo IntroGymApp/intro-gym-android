@@ -1,10 +1,11 @@
 package ru.lonelywh1te.introgym.data.prefs
 
-import java.time.LocalDate
+import ru.lonelywh1te.introgym.data.prefs.user.UserInfo
+
 
 interface UserPreferences {
-    var username: String?
-    var registerDate: LocalDate?
+    fun getUserInfo(): UserInfo?
+    fun saveUserInfo(userInfo: UserInfo)
 
-    fun clearAll()
+    fun clear()
 }

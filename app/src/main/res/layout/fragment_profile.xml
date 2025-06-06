@@ -177,7 +177,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         tools:visibility="visible"
-        app:constraint_referenced_ids="tv_user_name,tv_user_register_date, btn_logout, cv_user_achievements_panel, cv_user_stats_panel" />
+        app:constraint_referenced_ids="tv_user_name, tv_user_register_date, btn_sign_out, cv_user_achievements_panel, cv_user_stats_panel" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupSignedOut"
@@ -185,5 +185,16 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="btn_sign_up,tv_sign_up_description,tv_hello_introgym,iv_features" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@ fun <T> Result<T>.getOrNull(): T? {
     return if (this is Result.Success) this.data else null
 }
 
-fun Result<*>.toUIState(): UIState<*>  {
+fun <T> Result<T>.toUIState(): UIState<T>  {
     return when (this) {
         is Result.Loading -> UIState.Loading
         is Result.Failure -> UIState.Failure(this.error)

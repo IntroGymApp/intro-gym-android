@@ -1,18 +1,14 @@
 package ru.lonelywh1te.introgym.features.profile.domain.usecase
 
-import ru.lonelywh1te.introgym.features.profile.domain.UserInfo
+import kotlinx.coroutines.flow.Flow
+import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.data.prefs.user.UserInfo
 import ru.lonelywh1te.introgym.features.profile.domain.repository.UserInfoRepository
-import java.time.LocalDate
 
 class GetUserInfoUseCase(
     private val repository: UserInfoRepository,
 ) {
-    // TODO: исправить имя
-    suspend operator fun invoke(): UserInfo {
-        val userInfo = repository.getUserInfo()
-
-        return userInfo.copy(
-            name = userInfo.name ?: "Пользователь",
-        )
+    operator fun invoke(): Flow<Result<UserInfo>> {
+        return repository.getUserInfo()
     }
 }

@@ -8,7 +8,7 @@ class SignOutUseCase(
     private val userPreferences: UserPreferences,
 ) {
     operator fun invoke() {
-        authStorage.clearTokens()
-        userPreferences.clearAll()
+        authStorage.clearAll()
+        userPreferences.clear()
     }
 }

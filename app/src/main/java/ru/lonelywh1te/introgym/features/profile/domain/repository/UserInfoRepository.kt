@@ -1,7 +1,9 @@
 package ru.lonelywh1te.introgym.features.profile.domain.repository
 
-import ru.lonelywh1te.introgym.features.profile.domain.UserInfo
+import kotlinx.coroutines.flow.Flow
+import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.data.prefs.user.UserInfo
 
 interface UserInfoRepository {
-    suspend fun getUserInfo(): UserInfo
+    fun getUserInfo(): Flow<Result<UserInfo>>
 }

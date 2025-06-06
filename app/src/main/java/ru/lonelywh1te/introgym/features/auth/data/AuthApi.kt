@@ -18,7 +18,7 @@ import ru.lonelywh1te.introgym.features.auth.data.dto.SignInResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.SignUpResponseDto
 
-interface AuthService {
+interface AuthApi {
 
     @POST("auth/otp/{otpType}/send")
     suspend fun sendOtp(@Body request: SendOtpRequestDto, @Path("otpType") otpType: String): Response<SendOtpResponseDto>

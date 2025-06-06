@@ -2,6 +2,8 @@ package ru.lonelywh1te.introgym.features.profile
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import ru.lonelywh1te.introgym.data.network.RetrofitProvider
+import ru.lonelywh1te.introgym.features.profile.data.ProfileApi
 import ru.lonelywh1te.introgym.features.profile.data.UserInfoRepositoryImpl
 import ru.lonelywh1te.introgym.features.profile.domain.repository.UserInfoRepository
 import ru.lonelywh1te.introgym.features.profile.domain.usecase.GetUserInfoUseCase
@@ -12,8 +14,15 @@ private val profileDataModule = module {
     single<UserInfoRepository> {
         UserInfoRepositoryImpl(
             userPreferences = get(),
-            workoutDao = get(),
+            profileApi = get(),
         )
+    }
+
+    single<ProfileApi> {
+        RetrofitProvider.getAuthorizedRetrofit(
+            authenticator = get(),
+            authInterceptor = get(),
+        ).create(ProfileApi::class.java)
     }
 }
 

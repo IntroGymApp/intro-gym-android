@@ -152,5 +152,6 @@
     <string name="label_invalid_username">Некорректный формат имени пользователя</string>
     <string name="label_network_error_unknown">Неизвестная ошибка сети. Попробуйте позже</string>
     <string name="label_submit">Подтвердить</string>
+    <string name="label_load_profile_failure_message">Не удалось загрузить профиль. Попробуйте позже</string>
 
 </resources>

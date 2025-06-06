@@ -1,12 +1,15 @@
 package ru.lonelywh1te.introgym.features.auth
 
+import okhttp3.Authenticator
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.data.network.RetrofitProvider
 import ru.lonelywh1te.introgym.features.auth.data.AuthRepositoryImpl
-import ru.lonelywh1te.introgym.features.auth.data.AuthService
+import ru.lonelywh1te.introgym.features.auth.data.AuthApi
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthSharedPreferencesImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
+import ru.lonelywh1te.introgym.features.auth.data.token.AuthInterceptor
+import ru.lonelywh1te.introgym.features.auth.data.token.TokenAuthenticator
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
 import ru.lonelywh1te.introgym.features.auth.domain.OtpValidator
@@ -23,18 +26,30 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewMo
 val authDataModule = module {
     single<AuthRepository> {
         AuthRepositoryImpl(
-            authService = get(),
+            authApi = get(),
             authStorage = get(),
-            userPreferences = get(),
         )
     }
 
-    single<AuthService> {
-        RetrofitProvider.getUnauthorizedRetrofit().create(AuthService::class.java)
+    single<AuthApi> {
+        RetrofitProvider.getUnauthorizedRetrofit().create(AuthApi::class.java)
     }
 
     single<AuthStorage> {
         AuthSharedPreferencesImpl(context = get())
+    }
+
+    single<Authenticator> {
+        TokenAuthenticator(
+            authStorage = get(),
+            authRepository = get(),
+        )
+    }
+
+    single<AuthInterceptor> {
+        AuthInterceptor(
+            authStorage = get(),
+        )
     }
 }
 
