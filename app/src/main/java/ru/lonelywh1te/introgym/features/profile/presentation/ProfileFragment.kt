@@ -56,7 +56,7 @@ class ProfileFragment : Fragment() {
             .filterNotNull()
             .onEach { userInfo ->
                 binding.tvUserName.text = userInfo.name
-                binding.tvUserRegisterDate.text = getString(R.string.label_joined_at, userInfo.birthDate)
+                binding.tvUserRegisterDate.text = getString(R.string.label_joined_at, userInfo.registerDate)
                 binding.tvCountOfWorkouts.text = userInfo.countOfWorkouts.toString()
             }
             .launchIn(lifecycleScope)

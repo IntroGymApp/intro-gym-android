@@ -14,8 +14,6 @@ class UserInfoRepositoryImpl(
     override suspend fun getUserInfo(): UserInfo {
         return UserInfo(
             name = userPreferences.username,
-            gender = userPreferences.gender,
-            birthDate = userPreferences.birthday,
             registerDate = null,
             countOfWorkouts = workoutDao.getCountOfWorkouts(),
         )

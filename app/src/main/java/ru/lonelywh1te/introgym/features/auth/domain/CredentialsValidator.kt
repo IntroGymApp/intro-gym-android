@@ -48,23 +48,6 @@ object CredentialsValidator {
         return errors
     }
 
-    fun validateEmailAndPassword(email: String, password: String): Result<Unit> {
-        return when {
-            !isValidEmail(email) -> Result.Failure(AuthValidationError.InvalidEmailFormat())
-            !isValidPassword(password) -> Result.Failure(AuthValidationError.InvalidPasswordFormat())
-            else -> Result.Success(Unit)
-        }
-    }
-
-    fun validateEmailAndPasswordWithConfirm(email: String, password: String, confirmPassword: String): Result<Unit> {
-        return when {
-            !isValidEmail(email) -> Result.Failure(AuthValidationError.InvalidEmailFormat())
-            !isValidPassword(password) -> Result.Failure(AuthValidationError.InvalidPasswordFormat())
-            !comparePasswords(password, confirmPassword) -> Result.Failure(AuthValidationError.PasswordMismatch())
-            else -> Result.Success(Unit)
-        }
-    }
-
     private fun isValidEmail(email: String): Boolean {
         return email.matches(Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"))
     }

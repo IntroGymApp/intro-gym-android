@@ -11,15 +11,6 @@ class UserPreferencesImpl(context: Context): UserPreferences {
         get() = prefs.getString(USERNAME_KEY, null)
         set(value) = prefs.edit().putString(USERNAME_KEY, value).apply()
 
-    override var gender: Gender?
-        get() = prefs.getString(GENDER_KEY, null)?.let { Gender.valueOf(it) }
-        set(value) = prefs.edit().putString(GENDER_KEY, value?.name).apply()
-
-
-    override var birthday: LocalDate?
-        get() = prefs.getString(BIRTHDAY_KEY, null)?.let { LocalDate.parse(it) }
-        set(value) = prefs.edit().putString(BIRTHDAY_KEY, value?.toString()).apply()
-
     override var registerDate: LocalDate?
         get() = prefs.getString(REGISTER_DATE_KEY, null)?.let { LocalDate.parse(it) }
         set(value) = prefs.edit().putString(REGISTER_DATE_KEY, value?.toString()).apply()
@@ -31,8 +22,6 @@ class UserPreferencesImpl(context: Context): UserPreferences {
     companion object {
         private const val USER_PREFERENCES_KEY = "user_preferences"
         private const val USERNAME_KEY = "username"
-        private const val GENDER_KEY = "gender"
-        private const val BIRTHDAY_KEY = "birthday"
         private const val REGISTER_DATE_KEY = "register_date"
     }
 }
