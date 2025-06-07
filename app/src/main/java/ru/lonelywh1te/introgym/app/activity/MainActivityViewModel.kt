@@ -5,19 +5,18 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
-import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
+import ru.lonelywh1te.introgym.data.prefs.LaunchPreferences
 
 class MainActivityViewModel(
-    private val settingsPreferences: SettingsPreferences,
+    private val launchPreferences: LaunchPreferences,
     private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val _errorMessages: MutableSharedFlow<String> = MutableSharedFlow()
     val errors get() = _errorMessages.asSharedFlow()
 
-    val isFirstLaunch get() = settingsPreferences.isFirstLaunch
-    val onboardingCompleted get() = settingsPreferences.onboardingCompleted
+    val isFirstLaunch get() = launchPreferences.getIsFirstLaunch()
+    val onboardingCompleted get() = launchPreferences.getIsOnboardingCompleted()
 
     init {
         viewModelScope.launch {

@@ -6,24 +6,20 @@ import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 class SettingsPreferencesImpl(context: Context): SettingsPreferences {
     private val prefs = context.getSharedPreferences(SETTINGS_PREFS_KEY, Context.MODE_PRIVATE)
 
-    override var isFirstLaunch: Boolean
-        get() = prefs.getBoolean(FIRST_LAUNCH_KEY, true)
-        set(value) = putBoolean(FIRST_LAUNCH_KEY, value)
+    override fun setIsDarkTheme(state: Boolean) {
+        prefs.edit().putBoolean(DARK_THEME_KEY, state).apply()
+    }
 
-    override var isDarkTheme: Boolean
-        get() = prefs.getBoolean(DARK_THEME_KEY, false)
-        set(value) = putBoolean(DARK_THEME_KEY, value)
+    override fun getIsDarkTheme(): Boolean {
+        return prefs.getBoolean(DARK_THEME_KEY, false)
+    }
 
-    override var isNotificationEnabled: Boolean
-        get() = prefs.getBoolean(NOTIFICATION_ENABLED_KEY, false)
-        set(value) = putBoolean(NOTIFICATION_ENABLED_KEY, value)
+    override fun setIsNotificationEnabled(state: Boolean) {
+        prefs.edit().putBoolean(NOTIFICATION_ENABLED_KEY, state).apply()
+    }
 
-    override var onboardingCompleted: Boolean
-        get() = prefs.getBoolean(ONBOARDING_COMPLETED_KEY, false)
-        set(value) = putBoolean(ONBOARDING_COMPLETED_KEY, value)
-
-    private fun putBoolean(key: String, value: Boolean) {
-        prefs.edit().putBoolean(key, value).apply()
+    override fun getIsNotificationEnabled(): Boolean {
+        return prefs.getBoolean(NOTIFICATION_ENABLED_KEY, false)
     }
 
     override fun clearAll() {
@@ -32,8 +28,7 @@ class SettingsPreferencesImpl(context: Context): SettingsPreferences {
 
     companion object {
         private const val SETTINGS_PREFS_KEY = "settings_preferences"
-        private const val FIRST_LAUNCH_KEY = "first_launch"
-        private const val ONBOARDING_COMPLETED_KEY = "onboarding_completed"
+
         private const val DARK_THEME_KEY = "dark_theme"
         private const val NOTIFICATION_ENABLED_KEY = "notification_enabled"
     }

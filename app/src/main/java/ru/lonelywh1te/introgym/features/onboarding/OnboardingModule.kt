@@ -13,7 +13,7 @@ val onboardingDataModule = module {
 
     single<OnboardingRepository> {
         OnboardingRepositoryImpl(
-            userPreferences = get(),
+            launchPreferences = get(),
             settingsPreferences = get(),
         )
     }

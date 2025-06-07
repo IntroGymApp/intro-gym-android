@@ -7,7 +7,7 @@ import ru.lonelywh1te.introgym.app.activity.MainActivityViewModel
 val appModule = module {
     viewModel<MainActivityViewModel> {
         MainActivityViewModel(
-            settingsPreferences = get(),
+            launchPreferences = get(),
             errorDispatcher = get(),
         )
     }

@@ -27,6 +27,7 @@ import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.data.prefs.LaunchPreferences
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
@@ -41,7 +42,7 @@ class SignUpFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SignUpViewModel by viewModel<SignUpViewModel>()
-    private val settingsPreferences: SettingsPreferences by inject()
+    private val launchPreferences: LaunchPreferences by inject()
 
     private val navController by lazy { findNavController() }
 
@@ -76,7 +77,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.btnSkipSignUp.setOnClickListener {
-            settingsPreferences.isFirstLaunch = false
+            launchPreferences.setIsFirstLaunch(false)
             navigateToHomeFragment()
         }
 
@@ -95,7 +96,7 @@ class SignUpFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        settingsPreferences.isFirstLaunch = false
+                        launchPreferences.setIsFirstLaunch(false)
 
                         navigateToHomeFragment()
                         showLoadingIndicator(false)

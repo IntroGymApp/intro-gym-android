@@ -20,6 +20,7 @@ import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.data.prefs.LaunchPreferences
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignInBinding
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
@@ -30,7 +31,7 @@ class SignInFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SignInViewModel by viewModel<SignInViewModel>()
-    private val settingsPreferences: SettingsPreferences by inject()
+    private val launchPreferences: LaunchPreferences by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
@@ -58,7 +59,7 @@ class SignInFragment : Fragment() {
             .onEach { state ->
                 when (state) {
                     is UIState.Success -> {
-                        settingsPreferences.isFirstLaunch = false
+                        launchPreferences.setIsFirstLaunch(false)
 
                         navigateToHomeFragment()
                         showLoadingIndicator(false)
