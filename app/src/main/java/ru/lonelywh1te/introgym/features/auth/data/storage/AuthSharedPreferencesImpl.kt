@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.features.auth.data.storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 
 class AuthSharedPreferencesImpl(private val context: Context): AuthStorage {
     private val prefs: SharedPreferences = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE)
@@ -27,6 +28,8 @@ class AuthSharedPreferencesImpl(private val context: Context): AuthStorage {
     }
 
     override fun saveTokens(accessToken: String, refreshToken: String) {
+        Log.d("AuthStorage", "Saving tokens: $accessToken")
+
         prefs.edit()
             .putString(ACCESS_TOKEN_KEY, accessToken)
             .putString(REFRESH_TOKEN_KEY, refreshToken)

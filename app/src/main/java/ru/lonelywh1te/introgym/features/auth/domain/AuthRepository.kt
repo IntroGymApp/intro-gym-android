@@ -7,9 +7,6 @@ import ru.lonelywh1te.introgym.features.auth.domain.model.TokenPair
 import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 
 interface AuthRepository {
-    fun sendOtp(email: String, otpType: String): Flow<Result<Unit>>
-    fun confirmOtp(otp: String, otpType: String): Flow<Result<Unit>>
-
     fun signUp(signUpData: SignUpCredentials): Flow<Result<Unit>>
     fun signIn(signInData: UserCredentials): Flow<Result<Unit>>
 

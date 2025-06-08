@@ -6,12 +6,14 @@ import org.koin.dsl.module
 import ru.lonelywh1te.introgym.data.network.RetrofitProvider
 import ru.lonelywh1te.introgym.features.auth.data.AuthRepositoryImpl
 import ru.lonelywh1te.introgym.features.auth.data.AuthApi
+import ru.lonelywh1te.introgym.features.auth.data.OtpRepositoryImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthSharedPreferencesImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage
 import ru.lonelywh1te.introgym.features.auth.data.token.AuthInterceptor
 import ru.lonelywh1te.introgym.features.auth.data.token.TokenAuthenticator
 import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
+import ru.lonelywh1te.introgym.features.auth.domain.OtpRepository
 import ru.lonelywh1te.introgym.features.auth.domain.OtpValidator
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ChangePasswordUseCase
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.ConfirmOtpUseCase
@@ -26,6 +28,13 @@ import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignUpViewMo
 val authDataModule = module {
     single<AuthRepository> {
         AuthRepositoryImpl(
+            authApi = get(),
+            authStorage = get(),
+        )
+    }
+
+    single<OtpRepository> {
+        OtpRepositoryImpl(
             authApi = get(),
             authStorage = get(),
         )
