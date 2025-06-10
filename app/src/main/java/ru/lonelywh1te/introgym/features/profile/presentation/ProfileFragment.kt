@@ -11,9 +11,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.color.MaterialColors
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
@@ -24,6 +26,7 @@ import ru.lonelywh1te.introgym.core.ui.dialogs.SubmitDialogFragment
 import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.databinding.FragmentProfileBinding
+import ru.lonelywh1te.introgym.features.sync.domain.SyncRepository
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -31,6 +34,7 @@ class ProfileFragment : Fragment() {
 
     private val viewModel by viewModel<ProfileFragmentViewModel>()
     private val errorDispatcher by inject<ErrorDispatcher>()
+    private val syncRepository by inject<SyncRepository>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +56,12 @@ class ProfileFragment : Fragment() {
 
         binding.btnSignOut.setOnClickListener {
             showSubmitSignOutDialog()
+        }
+
+        binding.tvUserName.setOnClickListener {
+            lifecycleScope.launch (Dispatchers.IO) {
+                syncRepository.sync()
+            }
         }
 
         startCollectFlows()

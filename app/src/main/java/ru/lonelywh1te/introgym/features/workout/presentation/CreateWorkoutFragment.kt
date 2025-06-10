@@ -33,6 +33,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.CreateWorkoutFragmentViewModel
+import java.util.UUID
 
 class CreateWorkoutFragment : Fragment(), MenuProvider {
     private var _binding: FragmentCreateWorkoutBinding? = null
@@ -90,7 +91,7 @@ class CreateWorkoutFragment : Fragment(), MenuProvider {
         startCollectFlows()
     }
 
-    private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: Long) {
+    private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: UUID) {
         val workoutExercise = viewModel.getWorkoutExerciseById(workoutExerciseId)
         val workoutExercisePlan = viewModel.getWorkoutExercisePlanById(workoutExerciseId)
 

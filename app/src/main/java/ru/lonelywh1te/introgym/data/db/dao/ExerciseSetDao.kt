@@ -10,15 +10,16 @@ import ru.lonelywh1te.introgym.data.db.entity.ExerciseSetEntity
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithExerciseCategoryId
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithWorkoutLogDate
 import java.time.LocalDate
+import java.util.UUID
 
 @Dao
 interface ExerciseSetDao {
 
     @Query("select * from exercise_set where workout_exercise_id = :workoutExerciseId")
-    fun getExerciseSets(workoutExerciseId: Long): Flow<List<ExerciseSetEntity>>
+    fun getExerciseSets(workoutExerciseId: UUID): Flow<List<ExerciseSetEntity>>
 
     @Query("select * from exercise_set where workout_exercise_id in (:workoutExerciseIds)")
-    fun getExerciseSetsByIds(workoutExerciseIds: List<Long>): Flow<List<ExerciseSetEntity>>
+    fun getExerciseSetsByIds(workoutExerciseIds: List<UUID>): Flow<List<ExerciseSetEntity>>
 
     @Transaction
     @Query("""
@@ -43,13 +44,16 @@ interface ExerciseSetDao {
     """)
     fun getExerciseSetsWithExerciseCategoryIdAtPeriod(startDate: LocalDate, endDate: LocalDate): Flow<List<ExerciseSetWithExerciseCategoryId>>
 
+    @Query("select * from exercise_set where is_synchronized = 0")
+    suspend fun getUnsychronizedExerciseSets(): List<ExerciseSetEntity>
+
     @Insert
-    suspend fun addExerciseSet(exerciseSet: ExerciseSetEntity): Long
+    suspend fun addExerciseSet(exerciseSet: ExerciseSetEntity)
 
     @Update
     suspend fun updateExerciseSet(exerciseSet: ExerciseSetEntity)
 
     @Query("delete from exercise_set where id = :id")
-    suspend fun deleteExerciseSet(id: Long)
+    suspend fun deleteExerciseSet(id: UUID)
 
 }

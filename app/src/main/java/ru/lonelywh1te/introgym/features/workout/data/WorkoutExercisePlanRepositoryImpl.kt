@@ -12,12 +12,13 @@ import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import java.time.LocalDateTime
+import java.util.UUID
 
 class WorkoutExercisePlanRepositoryImpl(
     private val workoutExerciseDao: WorkoutExerciseDao,
     private val workoutExercisePlanDao: WorkoutExercisePlanDao,
 ): WorkoutExercisePlanRepository {
-    override fun getWorkoutExercisePlans(workoutId: Long): Flow<Result<List<WorkoutExercisePlan>>> {
+    override fun getWorkoutExercisePlans(workoutId: UUID): Flow<Result<List<WorkoutExercisePlan>>> {
         return workoutExerciseDao.getWorkoutExercisesById(workoutId)
             .flatMapLatest { workoutExercises ->
                 val ids = workoutExercises.map { it.id }
@@ -30,7 +31,7 @@ class WorkoutExercisePlanRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override fun getWorkoutExercisePlanById(workoutExerciseId: Long): Flow<Result<WorkoutExercisePlan>> {
+    override fun getWorkoutExercisePlanById(workoutExerciseId: UUID): Flow<Result<WorkoutExercisePlan>> {
         return workoutExercisePlanDao.getWorkoutExercisePlanById(workoutExerciseId)
             .map<WorkoutExercisePlanEntity, Result<WorkoutExercisePlan>> {
                 Result.Success(it.toWorkoutExercisePlan())
@@ -38,7 +39,7 @@ class WorkoutExercisePlanRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override suspend fun addWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan): Result<Long> {
+    override suspend fun addWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan): Result<Unit> {
         val workoutExercisePlanEntity = workoutExercisePlan.copy(
             createdAt = LocalDateTime.now(),
             lastUpdated = LocalDateTime.now(),
@@ -59,7 +60,7 @@ class WorkoutExercisePlanRepositoryImpl(
         }
     }
 
-    override suspend fun deleteWorkoutExercisePlan(id: Long): Result<Unit> {
+    override suspend fun deleteWorkoutExercisePlan(id: UUID): Result<Unit> {
         return sqliteTryCatching {
             workoutExercisePlanDao.deleteWorkoutExercisePlan(id)
         }

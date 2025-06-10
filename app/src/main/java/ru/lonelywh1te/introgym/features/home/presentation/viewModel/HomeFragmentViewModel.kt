@@ -26,6 +26,7 @@ import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogItemLis
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.util.UUID
 
 class HomeFragmentViewModel(
     private val addWorkoutLogUseCase: AddWorkoutLogUseCase,
@@ -59,7 +60,7 @@ class HomeFragmentViewModel(
     private val _markedDays: MutableStateFlow<List<LocalDate>> = MutableStateFlow(emptyList())
     val markedDays get() = _markedDays.asStateFlow()
 
-    fun addWorkoutLog(date: LocalDate, workoutId: Long) {
+    fun addWorkoutLog(date: LocalDate, workoutId: UUID) {
         viewModelScope.launch (dispatcher) {
             val workoutLog = WorkoutLog(
                 workoutId = workoutId,
@@ -85,7 +86,7 @@ class HomeFragmentViewModel(
         }
     }
 
-    fun deleteWorkoutLog(workoutId: Long) {
+    fun deleteWorkoutLog(workoutId: UUID) {
         viewModelScope.launch (dispatcher) {
             deleteWorkoutUseCase(workoutId)
                 .onFailure { errorDispatcher.dispatch(it) }

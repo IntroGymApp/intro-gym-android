@@ -6,6 +6,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
+import java.util.UUID
 
 interface WorkoutRepository {
 
@@ -13,7 +14,7 @@ interface WorkoutRepository {
 
     fun getWorkouts(): Result<List<Workout>>
 
-    fun getWorkoutById(workoutId: Long): Flow<Result<Workout>>
+    fun getWorkoutById(workoutId: UUID): Flow<Result<Workout>>
 
     suspend fun createFullWorkout(
         workout: Workout,
@@ -23,6 +24,7 @@ interface WorkoutRepository {
     suspend fun updateWorkout(workout: Workout): Result<Unit>
 
     suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit>
+    suspend fun deleteWorkoutWithReorder(id: UUID): Result<Unit>
 
     suspend fun getCountOfWorkouts(): Result<Int>
 

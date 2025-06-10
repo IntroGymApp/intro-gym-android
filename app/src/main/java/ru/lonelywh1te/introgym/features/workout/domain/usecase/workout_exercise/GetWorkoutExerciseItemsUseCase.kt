@@ -5,11 +5,12 @@ import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
+import java.util.UUID
 
 class GetWorkoutExerciseItemsUseCase(
     private val repository: WorkoutExerciseRepository,
 ) {
-    operator fun invoke(workoutId: Long): Flow<Result<List<WorkoutExerciseItem>>> {
+    operator fun invoke(workoutId: UUID): Flow<Result<List<WorkoutExerciseItem>>> {
         return repository.getWorkoutExerciseItems(workoutId).map { result ->
             when (result) {
                 is Result.Success -> Result.Success(result.data.sortedBy { it.order })

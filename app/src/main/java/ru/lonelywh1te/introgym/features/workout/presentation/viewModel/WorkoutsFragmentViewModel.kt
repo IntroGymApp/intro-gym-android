@@ -15,6 +15,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.MoveWorkoutUseCase
+import java.util.UUID
 
 class WorkoutsFragmentViewModel(
     private val getWorkoutListUseCase: GetWorkoutListUseCase,
@@ -33,7 +34,7 @@ class WorkoutsFragmentViewModel(
         }
     }
 
-    fun deleteWorkout(workoutId: Long) {
+    fun deleteWorkout(workoutId: UUID) {
         viewModelScope.launch (dispatcher) {
             deleteWorkoutUseCase(workoutId).onFailure { errorDispatcher.dispatch(it) }
         }

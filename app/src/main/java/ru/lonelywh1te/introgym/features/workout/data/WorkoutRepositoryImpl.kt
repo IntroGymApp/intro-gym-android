@@ -21,6 +21,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.UUID
 
 class WorkoutRepositoryImpl (
     private val db: MainDatabase,
@@ -44,7 +45,7 @@ class WorkoutRepositoryImpl (
         }
     }
 
-    override fun getWorkoutById(workoutId: Long): Flow<Result<Workout>> {
+    override fun getWorkoutById(workoutId: UUID): Flow<Result<Workout>> {
         return workoutDao.getWorkoutById(workoutId)
             .filterNotNull()
             .map<WorkoutEntity, Result<Workout>> { Result.Success(it.toWorkout()) }
@@ -59,8 +60,9 @@ class WorkoutRepositoryImpl (
             db.withTransaction {
                 val countOfWorkouts = workoutDao.getCountOfWorkouts()
 
+                val newWorkoutId = UUID.randomUUID()
                 val workoutEntity = workout.copy(
-                    id = 0L,
+                    id = newWorkoutId,
                     order = countOfWorkouts,
                     createdAt = LocalDateTime.now(zoneOffset),
                     lastUpdated = LocalDateTime.now(zoneOffset),
@@ -69,20 +71,20 @@ class WorkoutRepositoryImpl (
                 val workoutId = workoutDao.createWorkout(workoutEntity)
 
                 exercisesWithPlans.forEach { (exercise, plan) ->
+                    val newWorkoutExerciseId = UUID.randomUUID()
                     val exerciseEntity = exercise.copy(
-                        id = 0L,
-                        workoutId = workoutId,
+                        id = newWorkoutExerciseId,
+                        workoutId = newWorkoutId,
                         createdAt = LocalDateTime.now(zoneOffset),
                         lastUpdated = LocalDateTime.now(zoneOffset),
                     ).toWorkoutExerciseEntity()
 
-                    val workoutExerciseId = workoutExerciseDao.addWorkoutExercise(exerciseEntity)
+                    workoutExerciseDao.addWorkoutExercise(exerciseEntity)
 
                     val planEntity = plan.copy(
-                        id = 0L,
                         createdAt = LocalDateTime.now(zoneOffset),
                         lastUpdated = LocalDateTime.now(zoneOffset),
-                        workoutExerciseId = workoutExerciseId
+                        workoutExerciseId = newWorkoutExerciseId,
                     ).toWorkoutExercisePlanEntity()
 
                     workoutExercisePlanDao.createWorkoutExercisePlan(planEntity)
@@ -99,7 +101,7 @@ class WorkoutRepositoryImpl (
         return sqliteTryCatching { workoutDao.updateWorkout(workoutEntity) }
     }
 
-    override suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit> {
+    override suspend fun deleteWorkoutWithReorder(id: UUID): Result<Unit> {
         return sqliteTryCatching {
             db.withTransaction {
                 val workoutToDelete = workoutDao.getWorkoutById(id).first()!!

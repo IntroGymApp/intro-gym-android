@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.data.network
 
 import android.util.Log
+import com.google.gson.GsonBuilder
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,6 +18,9 @@ object RetrofitProvider {
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(15, TimeUnit.SECONDS)
         .writeTimeout(15, TimeUnit.SECONDS)
+
+    private val gson = GsonBuilder()
+        .create()
 
     fun getUnauthorizedRetrofit(): Retrofit = createRetrofit(UNAUTHORIZED_BASE_URL)
     fun getAuthorizedRetrofit(
@@ -38,7 +42,7 @@ object RetrofitProvider {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okhttpClient.build())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 }

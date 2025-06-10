@@ -40,6 +40,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsWithProgressUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.MoveWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
+import java.util.UUID
 
 class WorkoutFragmentViewModel(
     private val getWorkoutUseCase: GetWorkoutByIdUseCase,
@@ -62,7 +63,7 @@ class WorkoutFragmentViewModel(
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
-    private val _workoutId: MutableStateFlow<Long?> = MutableStateFlow(null)
+    private val _workoutId: MutableStateFlow<UUID?> = MutableStateFlow(null)
 
     val workout: StateFlow<Workout?> = _workoutId
         .filterNotNull()
@@ -123,7 +124,6 @@ class WorkoutFragmentViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-   // private val _workoutResults: MutableStateFlow<WorkoutResult?> = MutableStateFlow(null)
     val workoutResults: StateFlow<WorkoutResult?> = workoutLog
         .flatMapLatest { workoutLog ->
             var results: WorkoutResult? = null
@@ -145,7 +145,7 @@ class WorkoutFragmentViewModel(
     private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()
     val workoutDeleted get() = _workoutDeleted.asSharedFlow()
 
-    fun setWorkoutId(workoutId: Long) {
+    fun setWorkoutId(workoutId: UUID) {
         _workoutId.value = workoutId
     }
 
@@ -217,7 +217,7 @@ class WorkoutFragmentViewModel(
         }
     }
 
-    fun deleteWorkoutExercise(id: Long) {
+    fun deleteWorkoutExercise(id: UUID) {
         viewModelScope.launch (dispatcher) {
             deleteWorkoutExerciseUseCase(id)
                 .onFailure { errorDispatcher.dispatch(it) }

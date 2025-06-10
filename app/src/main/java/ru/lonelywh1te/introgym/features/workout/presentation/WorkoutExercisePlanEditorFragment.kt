@@ -52,7 +52,7 @@ class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
         val workoutExercisePlan = args.workoutExercisePlan
 
         when {
-            workoutExerciseId != -1L -> {
+            workoutExerciseId != null && workoutExercisePlan == null -> {
                 viewModel.setWorkoutExerciseId(workoutExerciseId)
             }
             workoutExercise != null && workoutExercisePlan != null -> {

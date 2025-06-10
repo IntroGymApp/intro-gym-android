@@ -6,10 +6,10 @@ import java.time.LocalDateTime
 data class SyncWorkoutExercisePlanDto(
 
     @SerializedName("id")
-    val id: Long,
+    val id: String,
 
     @SerializedName("exerciseId")
-    val workoutExerciseId: Long,
+    val workoutExerciseId: String,
 
     @SerializedName("sets")
     val sets: Int?,
@@ -27,10 +27,10 @@ data class SyncWorkoutExercisePlanDto(
     val distanceInMeters: Int?,
 
     @SerializedName("createdAt")
-    val createdAt: LocalDateTime,
+    val createdAt: String,
 
     @SerializedName("lastUpdated")
-    val lastUpdated: LocalDateTime,
+    val lastUpdated: String,
 
 )
 

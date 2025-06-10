@@ -18,6 +18,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import java.time.LocalDateTime
+import java.util.UUID
 
 class WorkoutExerciseRepositoryImpl(
     private val db: MainDatabase,
@@ -26,7 +27,7 @@ class WorkoutExerciseRepositoryImpl(
     private val exerciseSetDao: ExerciseSetDao,
 ): WorkoutExerciseRepository {
 
-    override fun getWorkoutExerciseItems(workoutId: Long): Flow<Result<List<WorkoutExerciseItem.Default>>> {
+    override fun getWorkoutExerciseItems(workoutId: UUID): Flow<Result<List<WorkoutExerciseItem.Default>>> {
         return workoutExerciseDao.getWorkoutExercisesWithExerciseInfo(workoutId)
             .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem.Default>>> {
                 list -> Result.Success(list.map { it.toWorkoutExerciseItemDefault() })
@@ -34,7 +35,7 @@ class WorkoutExerciseRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override fun getWorkoutExerciseItemsWithProgress(workoutId: Long): Flow<Result<List<WorkoutExerciseItem.WithProgress>>> {
+    override fun getWorkoutExerciseItemsWithProgress(workoutId: UUID): Flow<Result<List<WorkoutExerciseItem.WithProgress>>> {
         return workoutExerciseDao.getWorkoutExercisesWithExerciseInfo(workoutId)
             .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem.WithProgress>>> { list ->
                 Result.Success(list.map {
@@ -47,7 +48,7 @@ class WorkoutExerciseRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override fun getWorkoutExercisesByWorkoutId(workoutId: Long): Flow<Result<List<WorkoutExercise>>> {
+    override fun getWorkoutExercisesByWorkoutId(workoutId: UUID): Flow<Result<List<WorkoutExercise>>> {
         return workoutExerciseDao.getWorkoutExercisesById(workoutId)
             .map<List<WorkoutExerciseEntity>, Result<List<WorkoutExercise>>> {
                 list -> Result.Success(list.map { it.toWorkoutExercise() })
@@ -55,7 +56,7 @@ class WorkoutExerciseRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override fun getWorkoutExerciseById(id: Long): Flow<Result<WorkoutExercise>> {
+    override fun getWorkoutExerciseById(id: UUID): Flow<Result<WorkoutExercise>> {
         return workoutExerciseDao.getWorkoutExerciseById(id)
             .map<WorkoutExerciseEntity, Result<WorkoutExercise>> {
                 Result.Success(it.toWorkoutExercise())
@@ -63,7 +64,7 @@ class WorkoutExerciseRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise): Result<Long> {
+    override suspend fun addWorkoutExercise(workoutExercise: WorkoutExercise): Result<Unit> {
         val workoutExerciseEntity = workoutExercise.copy(
             createdAt = LocalDateTime.now(),
             lastUpdated = LocalDateTime.now(),
@@ -73,16 +74,18 @@ class WorkoutExerciseRepositoryImpl(
     }
 
     override suspend fun addWorkoutExerciseWithEmptyPlan(workoutExercise: WorkoutExercise): Result<Unit> {
+        val newWorkoutExerciseId = UUID.randomUUID()
         val workoutExerciseEntity = workoutExercise.copy(
+            id = newWorkoutExerciseId,
             createdAt = LocalDateTime.now(),
             lastUpdated = LocalDateTime.now(),
         ).toWorkoutExerciseEntity()
 
         return sqliteTryCatching {
             db.withTransaction {
-                val workoutExerciseId = workoutExerciseDao.addWorkoutExercise(workoutExerciseEntity)
+                workoutExerciseDao.addWorkoutExercise(workoutExerciseEntity)
                 val emptyWorkoutExercisePlanEntity = WorkoutExercisePlan(
-                    workoutExerciseId = workoutExerciseId
+                    workoutExerciseId = newWorkoutExerciseId
                 ).toWorkoutExercisePlanEntity()
 
                 workoutExercisePlanDao.createWorkoutExercisePlan(emptyWorkoutExercisePlanEntity)
@@ -100,18 +103,17 @@ class WorkoutExerciseRepositoryImpl(
         }
     }
 
-    override suspend fun deleteWorkoutExercise(id: Long): Result<Unit> {
+    override suspend fun deleteWorkoutExercise(id: UUID): Result<Unit> {
         return sqliteTryCatching {
             workoutExerciseDao.deleteWorkoutExercise(id)
         }
     }
 
-    override suspend fun deleteWorkoutExerciseWithReorder(id: Long): Result<Unit> {
+    override suspend fun deleteWorkoutExerciseWithReorder(id: UUID): Result<Unit> {
         return sqliteTryCatching {
             db.withTransaction {
                 val workoutToDelete = workoutExerciseDao.getWorkoutExerciseById(id).first()
-                val workoutsToReorder =
-                    workoutExerciseDao.getWorkoutExercisesWithOrderGreaterThan(workoutToDelete.order)
+                val workoutsToReorder = workoutExerciseDao.getWorkoutExercisesWithOrderGreaterThan(workoutToDelete.order)
 
                 workoutExerciseDao.deleteWorkoutExercise(workoutToDelete.id)
 

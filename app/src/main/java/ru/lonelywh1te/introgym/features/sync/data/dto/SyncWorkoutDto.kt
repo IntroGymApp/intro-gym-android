@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SyncWorkoutDto(
 
     @SerializedName("id")
-    val id: Long,
+    val id: String,
 
     @SerializedName("name")
     val name: String,
@@ -14,7 +14,7 @@ data class SyncWorkoutDto(
     val description: String,
 
     @SerializedName("isTemplate")
-    val isTemplate: String,
+    val isTemplate: Boolean,
 
     @SerializedName("workoutIndex")
     val order: Int,

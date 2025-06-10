@@ -13,12 +13,13 @@ import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseSetRepository
 import java.time.LocalDateTime
+import java.util.UUID
 
 class WorkoutExerciseSetRepositoryImpl(
     private val exerciseSetDao: ExerciseSetDao,
     private val workoutExerciseDao: WorkoutExerciseDao,
 ): WorkoutExerciseSetRepository {
-    override fun getWorkoutSets(workoutId: Long): Flow<Result<List<WorkoutExerciseSet>>> {
+    override fun getWorkoutSets(workoutId: UUID): Flow<Result<List<WorkoutExerciseSet>>> {
         return workoutExerciseDao.getWorkoutExercisesById(workoutId)
             .flatMapLatest { workoutExercises ->
                 val ids = workoutExercises.map { it.id }
@@ -31,7 +32,7 @@ class WorkoutExerciseSetRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override fun getWorkoutExerciseSets(workoutExerciseId: Long): Flow<Result<List<WorkoutExerciseSet>>> {
+    override fun getWorkoutExerciseSets(workoutExerciseId: UUID): Flow<Result<List<WorkoutExerciseSet>>> {
         return exerciseSetDao.getExerciseSets(workoutExerciseId)
             .map<List<ExerciseSetEntity>, Result<List<WorkoutExerciseSet>>> {
                     list -> Result.Success(list.map { it.toWorkoutExerciseSet() })
@@ -50,7 +51,7 @@ class WorkoutExerciseSetRepositoryImpl(
         }
     }
 
-    override suspend fun deleteWorkoutExerciseSetById(id: Long): Result<Unit> {
+    override suspend fun deleteWorkoutExerciseSetById(id: UUID): Result<Unit> {
         TODO("Not yet implemented")
     }
 

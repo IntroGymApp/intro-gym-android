@@ -14,13 +14,14 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseSetRepository
 import java.time.LocalTime
+import java.util.UUID
 
 class GetWorkoutResultsUseCase(
     private val workoutLogRepository: WorkoutLogRepository,
     private val workoutExerciseSetRepository: WorkoutExerciseSetRepository,
     private val workoutExercisePlanRepository: WorkoutExercisePlanRepository,
 ) {
-    operator fun invoke(workoutId: Long): Flow<Result<WorkoutResult>> {
+    operator fun invoke(workoutId: UUID): Flow<Result<WorkoutResult>> {
         return workoutLogRepository.getWorkoutLogByWorkoutId(workoutId).map { result ->
             when (result) {
                 is Result.Success -> {

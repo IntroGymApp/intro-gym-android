@@ -23,8 +23,9 @@
             app:nullable="true"/>
         <argument
             android:name="workoutExerciseId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            app:argType="java.util.UUID"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/createWorkoutFragment"
@@ -36,8 +37,9 @@
             app:destination="@id/workoutExercisePlanEditorFragment" >
             <argument
                 android:name="workoutExerciseId"
-                android:defaultValue="-1L"
-                app:argType="long" />
+                android:defaultValue="@null"
+                app:argType="java.util.UUID"
+                app:nullable="true" />
         </action>
     </fragment>
     <fragment
@@ -268,7 +270,7 @@
         tools:layout="@layout/fragment_workout" >
         <argument
             android:name="workoutId"
-            app:argType="long" />
+            app:argType="java.util.UUID" />
         <action
             android:id="@+id/to_workoutExercisePlanEditorFragment"
             app:destination="@id/workoutExercisePlanEditorFragment" >
@@ -304,7 +306,7 @@
         tools:layout="@layout/fragment_workout_exercise_execution" >
         <argument
             android:name="workoutExerciseId"
-            app:argType="long" />
+            app:argType="java.util.UUID" />
         <action
             android:id="@+id/to_workoutExercisePlanEditorFragment"
             app:destination="@id/workoutExercisePlanEditorFragment" >

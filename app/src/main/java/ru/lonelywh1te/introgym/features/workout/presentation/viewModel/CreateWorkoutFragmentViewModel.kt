@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.workout.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.AppError
-import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
@@ -21,6 +19,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWorkoutUseCase
+import java.util.UUID
 
 class CreateWorkoutFragmentViewModel(
     private val createWorkoutUseCase: CreateWorkoutUseCase,
@@ -70,9 +69,7 @@ class CreateWorkoutFragmentViewModel(
     }
 
     private fun createWorkoutExercise(exerciseId: Long): WorkoutExercise {
-        val temporaryId = workoutExercises.value.maxOfOrNull { it.id }?.plus(1) ?: 0L
         val newWorkoutExercise = WorkoutExercise(
-            id = temporaryId,
             workoutId = _workout.value.id,
             exerciseId = exerciseId,
             order = workoutExercises.value.size,
@@ -82,7 +79,7 @@ class CreateWorkoutFragmentViewModel(
         return newWorkoutExercise
     }
 
-    private fun createWorkoutExercisePlan(workoutExerciseId: Long): WorkoutExercisePlan {
+    private fun createWorkoutExercisePlan(workoutExerciseId: UUID): WorkoutExercisePlan {
         val newWorkoutExercisePlan = WorkoutExercisePlan(workoutExerciseId = workoutExerciseId)
         return newWorkoutExercisePlan
     }
@@ -131,11 +128,11 @@ class CreateWorkoutFragmentViewModel(
         _workoutExerciseItems.value = workoutExerciseItemsCopy.mapIndexed { index, workoutExerciseItem -> workoutExerciseItem.copy(order = index) }
     }
 
-    fun getWorkoutExerciseById(id: Long): WorkoutExercise {
+    fun getWorkoutExerciseById(id: UUID): WorkoutExercise {
         return workoutExercises.value.first { it.id == id }
     }
 
-    fun getWorkoutExercisePlanById(workoutExerciseId: Long): WorkoutExercisePlan {
+    fun getWorkoutExercisePlanById(workoutExerciseId: UUID): WorkoutExercisePlan {
         return workoutExercisePlans.value.first { it.workoutExerciseId == workoutExerciseId }
     }
 
@@ -145,7 +142,7 @@ class CreateWorkoutFragmentViewModel(
         }
     }
 
-    fun updateWorkoutExerciseComment(workoutExerciseId: Long, comment: String) {
+    fun updateWorkoutExerciseComment(workoutExerciseId: UUID, comment: String) {
         workoutExercises.value = workoutExercises.value.map { currentExercise ->
             if (currentExercise.id == workoutExerciseId) currentExercise.copy(comment = comment) else currentExercise
         }

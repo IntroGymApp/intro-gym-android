@@ -31,7 +31,6 @@ fun WorkoutLogEntity.toWorkoutLogItem(workoutEntity: WorkoutEntity, countOfExerc
 
 fun WorkoutLog.toWorkoutLogEntity(): WorkoutLogEntity {
     return WorkoutLogEntity(
-        id = this.id,
         workoutId = this.workoutId,
         date = this.date,
         startDateTime = this.startDateTime,

@@ -1,11 +1,12 @@
 package ru.lonelywh1te.introgym.features.sync.data.dto
 
 import com.google.gson.annotations.SerializedName
+import java.util.UUID
 
 data class SyncWorkoutLogDto(
 
     @SerializedName("id")
-    val id: Long,
+    val id: String,
 
     @SerializedName("workoutId")
     val workoutId: String,
@@ -13,10 +14,10 @@ data class SyncWorkoutLogDto(
     @SerializedName("date")
     val date: String,
 
-    @SerializedName("startDateTime")
+    @SerializedName("startDatetime")
     val startDateTime: String,
 
-    @SerializedName("endDateTime")
+    @SerializedName("endDatetime")
     val endDateTime: String,
 
     @SerializedName("workoutLogIndex")

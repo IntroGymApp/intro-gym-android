@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity(
     "exercise_set",
@@ -16,15 +17,17 @@ import java.time.LocalDateTime
             onUpdate = ForeignKey.CASCADE,
             onDelete = ForeignKey.CASCADE,
         ),
-    ]
+    ],
 )
 
 data class ExerciseSetEntity(
-    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true)
-    val id: Long,
+
+    @ColumnInfo(name = "id")
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
 
     @ColumnInfo(name = "workout_exercise_id")
-    val workoutExerciseId: Long,
+    val workoutExerciseId: UUID,
 
     @ColumnInfo(name = "reps")
     val reps: Int?,
@@ -44,8 +47,11 @@ data class ExerciseSetEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: LocalDateTime,
 
-    @ColumnInfo(name = "last_updated")
+    @ColumnInfo(name = "updated_at")
     val lastUpdated: LocalDateTime,
+
+    @ColumnInfo(name = "is_deleted")
+    val isDeleted: Boolean = false,
 
     @ColumnInfo(name = "is_synchronized")
     val isSynchronized: Boolean = false,

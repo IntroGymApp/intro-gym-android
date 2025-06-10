@@ -4,11 +4,12 @@ import kotlinx.coroutines.flow.first
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
+import java.util.UUID
 
 class GetWorkoutExercisePlansUseCase(
     private val repository: WorkoutExercisePlanRepository,
 ) {
-    suspend operator fun invoke(workoutExerciseIds: List<Long>): Result<List<WorkoutExercisePlan>> {
+    suspend operator fun invoke(workoutExerciseIds: List<UUID>): Result<List<WorkoutExercisePlan>> {
         val plans = mutableListOf<WorkoutExercisePlan>()
 
         for (id in workoutExerciseIds) {

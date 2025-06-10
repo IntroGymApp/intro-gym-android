@@ -44,6 +44,7 @@ import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExer
 import ru.lonelywh1te.introgym.features.workout.presentation.helper.WorkoutExerciseSetHelper
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import java.time.LocalDateTime
+import java.util.UUID
 
 class WorkoutFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutBinding? = null
@@ -280,7 +281,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
         findNavController().safeNavigate(action)
     }
 
-    private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: Long) {
+    private fun navigateToEditWorkoutExercisePlan(workoutExerciseId: UUID) {
         val action = WorkoutFragmentDirections.toWorkoutExercisePlanEditorFragment(
             workoutExerciseId = workoutExerciseId
         )
@@ -288,7 +289,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
         findNavController().safeNavigate(action)
     }
 
-    private fun navigateToWorkoutExerciseExecution(workoutExerciseId: Long) {
+    private fun navigateToWorkoutExerciseExecution(workoutExerciseId: UUID) {
         val action = WorkoutFragmentDirections.toWorkoutExecutionFragment(workoutExerciseId)
         findNavController().safeNavigate(action)
     }

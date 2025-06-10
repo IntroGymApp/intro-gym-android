@@ -1,15 +1,16 @@
 package ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise
 
 import ru.lonelywh1te.introgym.features.guide.domain.model.Exercise
+import java.util.UUID
 
 sealed class WorkoutExerciseItem {
-    abstract val workoutExerciseId: Long
+    abstract val workoutExerciseId: UUID
     abstract val name: String
     abstract val imgFilename: String
     abstract val order: Int
 
     data class Default(
-        override val workoutExerciseId: Long,
+        override val workoutExerciseId: UUID,
         override val name: String,
         override val imgFilename: String,
         override val order: Int,
@@ -27,7 +28,7 @@ sealed class WorkoutExerciseItem {
     }
 
     data class WithProgress(
-        override val workoutExerciseId: Long,
+        override val workoutExerciseId: UUID,
         override val name: String,
         override val imgFilename: String,
         override val order: Int,

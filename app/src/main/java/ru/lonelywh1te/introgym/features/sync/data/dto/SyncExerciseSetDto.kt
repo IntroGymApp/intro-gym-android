@@ -1,15 +1,14 @@
 package ru.lonelywh1te.introgym.features.sync.data.dto
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
 
 data class SyncExerciseSetDto(
 
     @SerializedName("id")
-    val id: Long,
+    val id: String,
 
-    @SerializedName("exerciseId")
-    val workoutExerciseId: Long,
+    @SerializedName("workoutExerciseId")
+    val workoutExerciseId: String,
 
     @SerializedName("reps")
     val reps: Int?,
@@ -27,8 +26,8 @@ data class SyncExerciseSetDto(
     val effort: Int?,
 
     @SerializedName("createdAt")
-    val createdAt: LocalDateTime,
+    val createdAt: String,
 
     @SerializedName("lastUpdated")
-    val lastUpdated: LocalDateTime,
+    val lastUpdated: String,
 )

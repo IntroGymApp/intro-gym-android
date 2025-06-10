@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -28,6 +29,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseSetsUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
+import java.util.UUID
 
 class WorkoutExerciseExecutionViewModel(
     private val getWorkoutExerciseUseCase: GetWorkoutExerciseUseCase,
@@ -40,9 +42,10 @@ class WorkoutExerciseExecutionViewModel(
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
-    private val workoutExerciseId: MutableStateFlow<Long> = MutableStateFlow(-1)
+    private val workoutExerciseId: MutableStateFlow<UUID?> = MutableStateFlow(null)
 
     val workoutExercise: StateFlow<WorkoutExercise?> = workoutExerciseId
+        .filterNotNull()
         .flatMapLatest { id ->
             getWorkoutExerciseUseCase(id).map { result ->
                 var workoutExercise: WorkoutExercise? = null
@@ -58,6 +61,7 @@ class WorkoutExerciseExecutionViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val workoutExercisePlan: StateFlow<WorkoutExercisePlan?> = workoutExerciseId
+        .filterNotNull()
         .flatMapLatest { id ->
             getWorkoutExercisePlanUseCase(id).map { result ->
                 var workoutExercisePlan: WorkoutExercisePlan? = null
@@ -73,6 +77,7 @@ class WorkoutExerciseExecutionViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val workoutExerciseSets: StateFlow<List<WorkoutExerciseSet>> = workoutExerciseId
+        .filterNotNull()
         .flatMapLatest { id ->
             var list: List<WorkoutExerciseSet> = emptyList()
 
@@ -89,20 +94,16 @@ class WorkoutExerciseExecutionViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val exercise: StateFlow<Exercise?> = workoutExercise
+        .filterNotNull()
         .flatMapLatest { workoutExercise ->
-            if (workoutExercise != null) {
-                getExerciseUseCase(workoutExercise.exerciseId)
-            }
-            else {
-                flowOf(null)
-            }
+            getExerciseUseCase(workoutExercise.exerciseId)
         }
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private var effort: Effort = Effort.WARMUP
 
-    fun setWorkoutExerciseId(id: Long) {
+    fun setWorkoutExerciseId(id: UUID) {
         workoutExerciseId.value = id
     }
 
@@ -118,7 +119,7 @@ class WorkoutExerciseExecutionViewModel(
     ) {
         viewModelScope.launch(dispatcher) {
             val set = WorkoutExerciseSet(
-                workoutExerciseId = workoutExerciseId.value,
+                workoutExerciseId = workoutExerciseId.value!!,
                 reps = if (reps.isBlank()) null else reps.toInt(),
                 weightKg = if (weight.isBlank()) null else weight.toFloat(),
                 timeInSeconds = if (timeInSeconds.isBlank()) null else timeInSeconds.toInt(),

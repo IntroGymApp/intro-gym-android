@@ -26,6 +26,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.UpdateWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
+import java.util.UUID
 
 class WorkoutExercisePlanEditorFragmentViewModel(
     private val getWorkoutExerciseUseCase: GetWorkoutExerciseUseCase,
@@ -37,8 +38,8 @@ class WorkoutExercisePlanEditorFragmentViewModel(
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
 
-    private val _workoutExerciseId: MutableStateFlow<Long?> = MutableStateFlow(null)
-    val workoutExerciseId: StateFlow<Long?> = _workoutExerciseId
+    private val _workoutExerciseId: MutableStateFlow<UUID?> = MutableStateFlow(null)
+    val workoutExerciseId: StateFlow<UUID?> = _workoutExerciseId
 
     private val _workoutExercise: MutableStateFlow<WorkoutExercise?> = MutableStateFlow(null)
     val workoutExercise: StateFlow<WorkoutExercise?> = _workoutExercise
@@ -53,7 +54,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    fun setWorkoutExerciseId(id: Long) {
+    fun setWorkoutExerciseId(id: UUID) {
         _workoutExerciseId.value = id
 
         loadWorkoutExercise(id)
@@ -100,7 +101,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         }
     }
 
-    private fun loadWorkoutExercise(workoutExerciseId: Long) {
+    private fun loadWorkoutExercise(workoutExerciseId: UUID) {
         viewModelScope.launch (dispatcher) {
             getWorkoutExerciseUseCase(workoutExerciseId).collect { result ->
                 result
@@ -110,7 +111,7 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         }
     }
 
-    private fun loadWorkoutExercisePlan(workoutExerciseId: Long) {
+    private fun loadWorkoutExercisePlan(workoutExerciseId: UUID) {
         viewModelScope.launch (dispatcher) {
             getWorkoutExercisePlanUseCase(workoutExerciseId).collect { result ->
                 result

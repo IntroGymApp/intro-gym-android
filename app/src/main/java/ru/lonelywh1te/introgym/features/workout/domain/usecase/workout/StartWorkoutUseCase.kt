@@ -7,11 +7,12 @@ import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.domain.error.WorkoutError
 import java.time.LocalDateTime
+import java.util.UUID
 
 class StartWorkoutUseCase (
     private val repository: WorkoutLogRepository,
 ) {
-    suspend operator fun invoke(workoutId: Long): Result<Unit> {
+    suspend operator fun invoke(workoutId: UUID): Result<Unit> {
         repository.getWorkoutLogWithStartDateTime()
             .onSuccess {
                 if (it != null) return Result.Failure(WorkoutError.WorkoutAlreadyStarted())

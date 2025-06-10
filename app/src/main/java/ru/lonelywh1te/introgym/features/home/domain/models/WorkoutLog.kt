@@ -2,10 +2,11 @@ package ru.lonelywh1te.introgym.features.home.domain.models
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.UUID
 
 data class WorkoutLog (
-    val id: Long = 0L,
-    val workoutId: Long,
+    val id: UUID? = null,
+    val workoutId: UUID,
     val date: LocalDate,
     val startDateTime: LocalDateTime? = null,
     val endDateTime: LocalDateTime? = null,

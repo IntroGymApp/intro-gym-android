@@ -25,6 +25,7 @@ import ru.lonelywh1te.introgym.databinding.FragmentHomeBinding
 import ru.lonelywh1te.introgym.features.home.presentation.adapter.WorkoutLogItemAdapter
 import ru.lonelywh1te.introgym.features.home.presentation.viewModel.HomeFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.WorkoutsFragment
+import java.util.UUID
 
 class HomeFragment : Fragment(), MenuProvider {
     private var _binding: FragmentHomeBinding? = null
@@ -118,14 +119,14 @@ class HomeFragment : Fragment(), MenuProvider {
         findNavController().safeNavigate(action)
     }
 
-    private fun navigateToWorkoutFragment(workoutId: Long) {
+    private fun navigateToWorkoutFragment(workoutId: UUID) {
         val action = HomeFragmentDirections.toWorkoutFragment(workoutId)
         findNavController().safeNavigate(action)
     }
 
     private fun setWorkoutIdResultListener() {
         setFragmentResultListener(WorkoutsFragment.REQUEST_KEY) { _, bundle ->
-            val workoutId = bundle.getLong(WorkoutsFragment.WORKOUT_ID_BUNDLE_KEY)
+            val workoutId = bundle.getSerializable(WorkoutsFragment.WORKOUT_ID_BUNDLE_KEY) as UUID
             val selectedDate = binding.weeklyCalendarView.selectedDate
 
             viewModel.addWorkoutLog(selectedDate, workoutId)

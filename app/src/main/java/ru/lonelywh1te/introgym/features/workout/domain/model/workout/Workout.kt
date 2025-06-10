@@ -1,9 +1,10 @@
 package ru.lonelywh1te.introgym.features.workout.domain.model.workout
 
 import java.time.LocalDateTime
+import java.util.UUID
 
 data class Workout (
-    val id: Long = 0L,
+    val id: UUID = UUID.randomUUID(),
     val name: String,
     val description: String = "",
     val isTemplate: Boolean,

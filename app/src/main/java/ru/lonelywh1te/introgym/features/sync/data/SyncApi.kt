@@ -11,12 +11,12 @@ import ru.lonelywh1te.introgym.features.sync.data.dto.SyncDataDto
 interface SyncApi {
 
     @GET("sync")
-    suspend fun fetchServerChanges(
-        @Query("lastSynchronization") lastSyncDateTime: String
+    suspend fun getRemoteSyncData(
+        @Query("lastSynchronization") lastSynchronized: String?
     ): Response<SyncDataDto>
 
     @POST("sync")
-    suspend fun syncClientData(
+    suspend fun pushSyncData(
         @Body clientData: SyncDataDto,
     ): Response<Unit>
 

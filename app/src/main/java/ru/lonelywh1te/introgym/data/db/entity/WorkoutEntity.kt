@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity(
     tableName = "workout"
@@ -11,8 +12,8 @@ import java.time.LocalDateTime
 data class WorkoutEntity(
 
     @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
 
     @ColumnInfo(name = "name")
     val name: String,
@@ -29,8 +30,11 @@ data class WorkoutEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: LocalDateTime,
 
-    @ColumnInfo(name = "last_updated")
+    @ColumnInfo(name = "updated_at")
     val lastUpdated: LocalDateTime,
+
+    @ColumnInfo(name = "is_deleted")
+    val isDeleted: Boolean = false,
 
     @ColumnInfo(name = "is_synchronized")
     val isSynchronized: Boolean = false,

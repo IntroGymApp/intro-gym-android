@@ -7,12 +7,13 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
+import java.util.UUID
 
 @Dao
 interface WorkoutDao {
 
     @Query("select * from workout where id = :id")
-    fun getWorkoutById(id: Long): Flow<WorkoutEntity?>
+    fun getWorkoutById(id: UUID): Flow<WorkoutEntity?>
 
     @Query("""
         select *
@@ -30,7 +31,7 @@ interface WorkoutDao {
         where w.id = :id
         group by w.id
     """)
-    fun getWorkoutWithCountOfExercises(id: Long): WorkoutEntityWithCountOfExercises
+    fun getWorkoutWithCountOfExercises(id: UUID): WorkoutEntityWithCountOfExercises
 
     @Query("""
         select w.*,
@@ -42,6 +43,8 @@ interface WorkoutDao {
     """)
     fun getWorkoutListWithCountOfExercises(): Flow<List<WorkoutEntityWithCountOfExercises>>
 
+    @Query("select * from workout where is_synchronized = 0")
+    suspend fun getUnsynchronizedWorkouts(): List<WorkoutEntity>
 
     @Query("select * from workout where `order` > :order")
     suspend fun getWorkoutsWithOrderGreaterThan(order: Int): List<WorkoutEntity>
@@ -58,12 +61,12 @@ interface WorkoutDao {
     suspend fun getCountOfFinishedWorkouts(): Int
 
     @Insert
-    suspend fun createWorkout(workout: WorkoutEntity): Long
+    suspend fun createWorkout(workout: WorkoutEntity)
 
     @Update
     suspend fun updateWorkout(workout: WorkoutEntity)
 
     @Query("delete from workout where id = :id")
-    suspend fun deleteWorkout(id: Long)
+    suspend fun deleteWorkout(id: UUID)
 
 }

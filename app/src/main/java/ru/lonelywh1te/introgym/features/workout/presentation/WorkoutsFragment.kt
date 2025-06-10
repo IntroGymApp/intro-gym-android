@@ -24,6 +24,7 @@ import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutsBinding
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
+import java.util.UUID
 
 class WorkoutsFragment : Fragment() {
     private var _binding: FragmentWorkoutsBinding? = null
@@ -106,16 +107,16 @@ class WorkoutsFragment : Fragment() {
 
     }
 
-    private fun setFragmentResultAndNavigateUp(workoutId: Long) {
+    private fun setFragmentResultAndNavigateUp(workoutId: UUID) {
         val bundle = Bundle().apply {
-            putLong(WORKOUT_ID_BUNDLE_KEY, workoutId)
+            putSerializable(WORKOUT_ID_BUNDLE_KEY, workoutId)
         }
 
         setFragmentResult(REQUEST_KEY, bundle)
         findNavController().navigateUp()
     }
 
-    private fun navigateToWorkoutFragment(workoutId: Long) {
+    private fun navigateToWorkoutFragment(workoutId: UUID) {
         val action = WorkoutsFragmentDirections.toWorkoutFragment(workoutId)
         findNavController().safeNavigate(action)
     }

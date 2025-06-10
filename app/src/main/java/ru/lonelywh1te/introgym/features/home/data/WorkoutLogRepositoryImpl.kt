@@ -18,6 +18,7 @@ import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.UUID
 
 class WorkoutLogRepositoryImpl(
     private val db: MainDatabase,
@@ -34,7 +35,7 @@ class WorkoutLogRepositoryImpl(
             .asSafeSQLiteFlow()
     }
 
-    override fun getWorkoutLogByWorkoutId(workoutId: Long): Flow<Result<WorkoutLog?>> {
+    override fun getWorkoutLogByWorkoutId(workoutId: UUID): Flow<Result<WorkoutLog?>> {
         return workoutLogDao.getWorkoutLogByWorkoutId(workoutId)
             .map<WorkoutLogEntity?, Result<WorkoutLog?>> { workoutLogEntity ->
                 Result.Success(workoutLogEntity?.toWorkoutLog())
@@ -78,30 +79,33 @@ class WorkoutLogRepositoryImpl(
                     workoutExercisePlans.find { workoutExercise.id == it.workoutExerciseId } ?: throw Exception("Cannot associate exercises with plans")
                 }
 
+                val newWorkoutId = UUID.randomUUID()
                 val workoutEntityToDate = workoutEntity.copy(
-                    id = 0L,
+                    id = newWorkoutId,
                     isTemplate = false,
                     createdAt = LocalDateTime.now(),
                     lastUpdated = LocalDateTime.now(),
                     isSynchronized = false,
                 )
 
-                val createdWorkoutId = workoutDao.createWorkout(workoutEntityToDate)
+                workoutDao.createWorkout(workoutEntityToDate)
 
                 exercisesWithPlans.forEach {
                     val exercise = it.key
                     val plan = it.value
 
-                    val newExerciseId = workoutExerciseDao.addWorkoutExercise(exercise.copy(
-                        id = 0L,
-                        workoutId = createdWorkoutId,
+                    val newExerciseId = UUID.randomUUID()
+                    workoutExerciseDao.addWorkoutExercise(exercise.copy(
+                        id = newExerciseId,
+                        workoutId = newWorkoutId,
                         createdAt = LocalDateTime.now(),
                         lastUpdated = LocalDateTime.now(),
                         isSynchronized = false,
                     ))
 
+                    val newWorkoutExercisePlanId = UUID.randomUUID()
                     workoutExercisePlanDao.createWorkoutExercisePlan(plan.copy(
-                        id = 0L,
+                        id = newWorkoutExercisePlanId,
                         workoutExerciseId = newExerciseId,
                         createdAt = LocalDateTime.now(),
                         lastUpdated = LocalDateTime.now(),
@@ -111,7 +115,7 @@ class WorkoutLogRepositoryImpl(
 
                 val countOfWorkoutLogAtDate = workoutLogDao.getCountOfWorkoutLogAtDate(workoutLog.date)
                 val newWorkoutLog = workoutLog.copy(
-                    workoutId = createdWorkoutId,
+                    workoutId = newWorkoutId,
                     order = countOfWorkoutLogAtDate,
                     createdAt = LocalDateTime.now(),
                     lastUpdatedAt = LocalDateTime.now(),
