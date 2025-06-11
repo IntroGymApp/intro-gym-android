@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.introgym.data.db.TagType
+import ru.lonelywh1te.introgym.data.db.model.TagType
 import ru.lonelywh1te.introgym.features.guide.domain.model.Tag
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseTagsUseCase
 

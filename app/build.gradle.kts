@@ -14,8 +14,13 @@ android {
         applicationId = "ru.lonelywh1te.introgym"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+
+        val major = 1
+        val minor = 0
+        val patch = 0
+
+        versionCode = major * 10000 + minor * 100 + patch
+        versionName = "$major.$minor.$patch"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -26,11 +31,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+
+        debug {
+            isDebuggable = true
         }
     }
     compileOptions {

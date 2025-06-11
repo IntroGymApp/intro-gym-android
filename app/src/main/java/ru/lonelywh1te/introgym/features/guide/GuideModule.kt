@@ -2,9 +2,9 @@ package ru.lonelywh1te.introgym.features.guide
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import ru.lonelywh1te.introgym.features.guide.data.ExerciseCategoryRepositoryImpl
-import ru.lonelywh1te.introgym.features.guide.data.ExerciseRepositoryImpl
-import ru.lonelywh1te.introgym.features.guide.data.TagRepositoryImpl
+import ru.lonelywh1te.introgym.features.guide.data.repository.ExerciseCategoryRepositoryImpl
+import ru.lonelywh1te.introgym.features.guide.data.repository.ExerciseRepositoryImpl
+import ru.lonelywh1te.introgym.features.guide.data.repository.TagRepositoryImpl
 import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseCategoryRepository
 import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseRepository
 import ru.lonelywh1te.introgym.features.guide.domain.repository.TagRepository

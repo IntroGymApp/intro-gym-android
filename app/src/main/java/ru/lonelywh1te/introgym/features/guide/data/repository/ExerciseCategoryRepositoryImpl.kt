@@ -1,8 +1,9 @@
-package ru.lonelywh1te.introgym.features.guide.data
+package ru.lonelywh1te.introgym.features.guide.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseCategoryDao
+import ru.lonelywh1te.introgym.features.guide.data.toExerciseCategoryItem
 import ru.lonelywh1te.introgym.features.guide.domain.model.ExerciseCategoryItem
 import ru.lonelywh1te.introgym.features.guide.domain.repository.ExerciseCategoryRepository
 

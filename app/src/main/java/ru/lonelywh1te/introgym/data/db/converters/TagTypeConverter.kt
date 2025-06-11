@@ -1,7 +1,7 @@
 package ru.lonelywh1te.introgym.data.db.converters
 
 import androidx.room.TypeConverter
-import ru.lonelywh1te.introgym.data.db.TagType
+import ru.lonelywh1te.introgym.data.db.model.TagType
 
 class TagTypeConverter {
     @TypeConverter

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import ru.lonelywh1te.introgym.data.db.TagType
+import ru.lonelywh1te.introgym.data.db.model.TagType
 import ru.lonelywh1te.introgym.data.db.converters.TagTypeConverter
 
 @Entity("tag")
