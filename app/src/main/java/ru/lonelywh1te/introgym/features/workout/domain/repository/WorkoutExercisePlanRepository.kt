@@ -15,7 +15,6 @@ interface WorkoutExercisePlanRepository {
 
     suspend fun updateWorkoutExercisePlan(workoutExercisePlan: WorkoutExercisePlan): Result<Unit>
 
-    suspend fun deleteWorkoutExercisePlan(id: Long): Result<Unit>
     suspend fun deleteWorkoutExercisePlan(id: UUID): Result<Unit>
 
 }

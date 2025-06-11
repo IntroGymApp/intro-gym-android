@@ -10,7 +10,10 @@ import kotlinx.coroutines.launch
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
+import ru.lonelywh1te.introgym.core.result.onLoading
 import ru.lonelywh1te.introgym.core.result.onSuccess
+import ru.lonelywh1te.introgym.core.result.toUIState
+import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.GetWorkoutListUseCase
@@ -23,7 +26,7 @@ class WorkoutsFragmentViewModel(
     private val deleteWorkoutUseCase: DeleteWorkoutUseCase,
     private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
-    private val _workoutsList: MutableStateFlow<List<WorkoutItem>> = MutableStateFlow(listOf())
+    private val _workoutsList: MutableStateFlow<UIState<List<WorkoutItem>>?> = MutableStateFlow(null)
     val workoutList get() = _workoutsList
 
     private val dispatcher = Dispatchers.IO
@@ -43,9 +46,9 @@ class WorkoutsFragmentViewModel(
     init {
         viewModelScope.launch (dispatcher){
             getWorkoutListUseCase().collect { result ->
-                result
-                    .onSuccess { _workoutsList.value = it }
+                _workoutsList.value = result
                     .onFailure { errorDispatcher.dispatch(it) }
+                    .toUIState()
             }
         }
     }

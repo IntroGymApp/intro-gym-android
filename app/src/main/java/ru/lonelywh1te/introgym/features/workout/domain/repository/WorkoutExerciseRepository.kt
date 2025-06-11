@@ -24,6 +24,6 @@ interface WorkoutExerciseRepository {
 
     suspend fun deleteWorkoutExercise(id: UUID): Result<Unit>
 
-    suspend fun deleteWorkoutExerciseWithReorder(id: Long): Result<Unit>
+    suspend fun deleteWorkoutExerciseWithReorder(id: UUID): Result<Unit>
 
 }

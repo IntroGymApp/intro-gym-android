@@ -4,7 +4,9 @@ import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.MainDatabase
 import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
@@ -34,8 +36,9 @@ class WorkoutRepositoryImpl (
     override fun getWorkoutItems(): Flow<Result<List<WorkoutItem>>> {
         return workoutDao.getWorkoutListWithCountOfExercises()
             .map<List<WorkoutEntityWithCountOfExercises>, Result<List<WorkoutItem>>> { list ->
-                Result.Success(list.map { entity -> entity.toWorkoutItem() })
+                Result.Success(list.map { it.toWorkoutItem() })
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 
@@ -49,6 +52,7 @@ class WorkoutRepositoryImpl (
         return workoutDao.getWorkoutById(workoutId)
             .filterNotNull()
             .map<WorkoutEntity, Result<Workout>> { Result.Success(it.toWorkout()) }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 

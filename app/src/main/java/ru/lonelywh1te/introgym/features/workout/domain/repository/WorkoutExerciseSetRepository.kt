@@ -13,7 +13,6 @@ interface WorkoutExerciseSetRepository {
 
     suspend fun addWorkoutExerciseSet(workoutExerciseSet: WorkoutExerciseSet): Result<Unit>
 
-    suspend fun deleteWorkoutExerciseSetById(id: Long): Result<Unit>
     suspend fun deleteWorkoutExerciseSetById(id: UUID): Result<Unit>
 
     suspend fun updateWorkoutExerciseSet(workoutExerciseSet: WorkoutExerciseSet): Result<Unit>

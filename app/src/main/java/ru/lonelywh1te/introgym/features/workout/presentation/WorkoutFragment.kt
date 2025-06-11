@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -34,6 +35,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.dialogs.SubmitDialogFragment
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
@@ -42,6 +44,8 @@ import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseLis
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.helper.WorkoutExerciseSetHelper
+import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentState
+import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentUiData
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import java.time.LocalDateTime
 import java.util.UUID
@@ -90,13 +94,13 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
         workoutExerciseItemAdapter = WorkoutExerciseItemAdapter().apply {
             setOnItemClickListener { item ->
-                val workoutState = viewModel.workoutLog.value?.let { WorkoutLogState.get(it) }
+                val workoutState = viewModel.workoutFragmentState.value as UIState.Success
 
-                when (workoutState) {
-                    WorkoutLogState.InProgress -> {
+                when (workoutState.data.state) {
+                    WorkoutFragmentState.WORKOUT_IN_PROGRESS -> {
                         navigateToWorkoutExerciseExecution(item.workoutExerciseId)
                     }
-                    WorkoutLogState.Finished -> {
+                    WorkoutFragmentState.WORKOUT_FINISHED -> {
                         navigateToWorkoutExerciseExecution(item.workoutExerciseId)
                     }
                     else -> {
@@ -197,76 +201,83 @@ class WorkoutFragment : Fragment(), MenuProvider {
     }
 
     private fun startCollectFlows() {
-        viewModel.workout.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+        viewModel.workoutFragmentState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .filterNotNull()
-            .onEach { workout ->
-                binding.etWorkoutName.setText(workout.name)
-                binding.etWorkoutDescription.setText(workout.description)
-                binding.cvWorkoutControlPanel.isVisible = !workout.isTemplate
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.workoutExerciseItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { items ->
-                workoutExerciseItemAdapter.update(items)
+            .onEach { state ->
+                when (state) {
+                    is UIState.Success -> {
+                        setWorkoutFragmentData(state.data)
+                    }
+                    else -> {
+                    // TODO: Not yet implemented
+                    }
+                }
             }
             .launchIn(lifecycleScope)
 
         viewModel.workoutDeleted.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { _ ->
-                // TODO: заменить на snackbar с отменой
-
                 Toast.makeText(requireContext(), "Тренировка удалена!", Toast.LENGTH_LONG).show()
-
                 findNavController().navigateUp()
             }
             .launchIn(lifecycleScope)
+    }
 
-        viewModel.workoutLog.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .filterNotNull()
-            .onEach { workoutLog ->
-                when (WorkoutLogState.get(workoutLog)) {
-                    WorkoutLogState.NotStarted -> {
-                        binding.cvWorkoutControlPanel.isVisible = true
-                        binding.btnStartWorkout.isVisible = true
-                        binding.btnStopWorkout.isVisible = false
-                    }
-                    WorkoutLogState.InProgress -> {
-                        binding.cvWorkoutControlPanel.isVisible = true
-                        binding.btnStartWorkout.isVisible = false
-                        binding.btnStopWorkout.isVisible = true
-                        binding.btnAddExercise.isVisible = false
+    private fun setWorkoutFragmentData(data: WorkoutFragmentUiData) {
+        data.workout?.let {
+            binding.etWorkoutName.setText(it.name)
+            binding.etWorkoutDescription.setText(it.description)
+        }
 
-                        startWorkoutTrackingService(workoutLog.startDateTime)
-                        bindWorkoutTrackerService()
-                    }
-                    WorkoutLogState.Finished -> {
-                        binding.btnAddExercise.isVisible = false
-                        binding.cvWorkoutControlPanel.isVisible = false
-                    }
-                }
+        data.workoutExerciseItems?.let {
+            workoutExerciseItemAdapter.update(it)
+        }
+
+        when(data.state) {
+            WorkoutFragmentState.WORKOUT_TEMPLATE -> {
+                binding.cvWorkoutControlPanel.isVisible = false
+                binding.cvWorkoutResults.isVisible = false
             }
-            .launchIn(lifecycleScope)
+            WorkoutFragmentState.WORKOUT_NOT_STARTED -> {
+                binding.btnStartWorkout.isVisible = true
+                binding.btnStopWorkout.isVisible = false
 
-        viewModel.workoutResults.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { workoutResult ->
-                binding.cvWorkoutResults.isVisible = workoutResult != null
+                binding.cvWorkoutControlPanel.isVisible = true
+                binding.cvWorkoutResults.isVisible = false
+            }
+            WorkoutFragmentState.WORKOUT_IN_PROGRESS -> {
+                binding.btnStartWorkout.isVisible = false
+                binding.btnStopWorkout.isVisible = true
 
-                workoutResult?.let {
-                    binding.tvTotalTime.text = workoutResult.totalTime.format(DateAndTimeStringFormatUtils.fullTimeFormatter)
-                    binding.tvTotalWeight.text = workoutResult.totalWeight.toString()
-                    binding.tvTotalEffortPercent.text = "${workoutResult.totalEffort}%"
-                    binding.tvProgress.text = "${workoutResult.progress}%"
+                data.workoutLog?.let {
+                    startWorkoutTrackingService(it.startDateTime)
+                    bindWorkoutTrackerService()
+                }
+
+                binding.cvWorkoutControlPanel.isVisible = true
+                binding.cvWorkoutResults.isVisible = false
+            }
+            WorkoutFragmentState.WORKOUT_FINISHED -> {
+                data.workoutResult?.let {
+                    binding.tvTotalTime.text = it.totalTime.format(DateAndTimeStringFormatUtils.fullTimeFormatter)
+                    binding.tvTotalWeight.text = "${it.totalWeight} кг"
+                    binding.tvTotalEffortPercent.text = "${it.totalEffort}%"
+                    binding.tvProgress.text = "${it.progress}%"
                     binding.ivEffortIndicator.background.setTint(
                         MaterialColors.getColor(
                             requireContext(),
-                            WorkoutExerciseSetHelper.getEffortColor(workoutResult.totalEffort),
+                            WorkoutExerciseSetHelper.getEffortColor(it.totalEffort),
                             R.attr.igWarmUpEffortColor
                         )
                     )
+
+                    binding.cvWorkoutResults.isVisible = true
                 }
+
+                binding.cvWorkoutControlPanel.isVisible = false
+
             }
-            .launchIn(lifecycleScope)
+        }
     }
 
     private fun setFragmentResultListeners() {
@@ -355,5 +366,4 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
         return true
     }
-
 }

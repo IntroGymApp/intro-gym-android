@@ -21,6 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.activity.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.databinding.FragmentHomeBinding
 import ru.lonelywh1te.introgym.features.home.presentation.adapter.WorkoutLogItemAdapter
 import ru.lonelywh1te.introgym.features.home.presentation.viewModel.HomeFragmentViewModel
@@ -52,7 +53,7 @@ class HomeFragment : Fragment(), MenuProvider {
 
             setOnChangeWeekListener { position ->
                 val week = getWeek(position)
-                viewModel.updateMarkedDays(week)
+                viewModel.setCurrentWeek(week)
             }
         }
 
@@ -67,27 +68,6 @@ class HomeFragment : Fragment(), MenuProvider {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-//        ItemTouchHelperCallback(
-//            dragDirs = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-//            swipeDirs = ItemTouchHelper.LEFT,
-//        ).apply {
-//
-//            setOnMoveListener { from, to ->
-//                // TODO: Not yet implemented
-//            }
-//
-//            setOnMoveFinishedListener { from, to ->
-//                // TODO: Not yet implemented
-//            }
-//
-//            setOnLeftSwipeListener { position ->
-//                val item = workoutLogItemAdapter.getItem(position)
-//                viewModel.deleteWorkoutLog(item.workoutId)
-//            }
-//
-//            attachToRecyclerView(recycler)
-//        }
-
         showToolbarAndBottomNavigationView()
         setWorkoutIdResultListener()
         startCollectFlows()
@@ -101,15 +81,30 @@ class HomeFragment : Fragment(), MenuProvider {
     }
 
     private fun startCollectFlows() {
-        viewModel.workoutLogItems.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { list ->
-                workoutLogItemAdapter.update(list)
+        viewModel.workoutLogItemsState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { state ->
+                when(state) {
+                    is UIState.Success -> {
+                        workoutLogItemAdapter.update(state.data)
+                    }
+                    else -> {
+                        // TODO: Not yet implemented
+                    }
+                }
             }
             .launchIn(lifecycleScope)
 
-        viewModel.markedDays.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { markedDaysOnWeek ->
-                binding.weeklyCalendarView.setMarkedDays(markedDaysOnWeek)
+        viewModel.markedDaysState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { state ->
+                when(state) {
+                    is UIState.Success -> {
+                        binding.weeklyCalendarView.setMarkedDays(state.data)
+                    }
+                    else -> {
+                        // TODO: Not yet implemented
+                    }
+                }
+
             }
             .launchIn(lifecycleScope)
     }

@@ -5,6 +5,7 @@ import ru.lonelywh1te.introgym.data.db.entity.WorkoutLogEntity
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
+import java.util.UUID
 
 fun WorkoutLogEntity.toWorkoutLog(): WorkoutLog {
     return WorkoutLog(
@@ -31,6 +32,7 @@ fun WorkoutLogEntity.toWorkoutLogItem(workoutEntity: WorkoutEntity, countOfExerc
 
 fun WorkoutLog.toWorkoutLogEntity(): WorkoutLogEntity {
     return WorkoutLogEntity(
+        id = this.id ?: UUID.randomUUID(),
         workoutId = this.workoutId,
         date = this.date,
         startDateTime = this.startDateTime,

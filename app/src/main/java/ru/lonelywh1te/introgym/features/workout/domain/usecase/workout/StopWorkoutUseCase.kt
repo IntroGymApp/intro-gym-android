@@ -10,7 +10,7 @@ class StopWorkoutUseCase (
     private val repository: WorkoutLogRepository,
 ) {
     suspend operator fun invoke(workoutId: UUID): Result<Unit> {
-        return when (val result = repository.getWorkoutLogByWorkoutId(workoutId).first()) {
+        return when (val result = repository.getWorkoutLogByWorkoutId(workoutId).first { it !is Result.Loading }) {
             is Result.Success -> {
                 result.data.let {
                     if (it == null) throw Exception("Workout has no WorkoutLog so cannot be finished")

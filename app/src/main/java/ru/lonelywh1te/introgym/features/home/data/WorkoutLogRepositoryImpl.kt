@@ -1,9 +1,11 @@
 package ru.lonelywh1te.introgym.features.home.data
 
+import android.util.Log
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.MainDatabase
 import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
@@ -32,6 +34,7 @@ class WorkoutLogRepositoryImpl(
             .map<List<WorkoutLogEntity>, Result<List<WorkoutLogItem>>> { workoutLogEntities ->
                 Result.Success(mapWorkoutLogEntities(workoutLogEntities))
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 
@@ -40,6 +43,7 @@ class WorkoutLogRepositoryImpl(
             .map<WorkoutLogEntity?, Result<WorkoutLog?>> { workoutLogEntity ->
                 Result.Success(workoutLogEntity?.toWorkoutLog())
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 
@@ -63,6 +67,8 @@ class WorkoutLogRepositoryImpl(
             val workoutLogEntity = workoutLog.copy(
                 lastUpdatedAt = LocalDateTime.now(),
             ).toWorkoutLogEntity()
+
+            Log.d("updateWorkoutLog", "updateWorkoutLog: $workoutLogEntity")
 
             workoutLogDao.updateWorkoutLog(workoutLogEntity)
         }

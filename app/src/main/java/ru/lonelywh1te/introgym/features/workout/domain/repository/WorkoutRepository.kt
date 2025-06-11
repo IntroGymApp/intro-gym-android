@@ -23,7 +23,6 @@ interface WorkoutRepository {
 
     suspend fun updateWorkout(workout: Workout): Result<Unit>
 
-    suspend fun deleteWorkoutWithReorder(id: Long): Result<Unit>
     suspend fun deleteWorkoutWithReorder(id: UUID): Result<Unit>
 
     suspend fun getCountOfWorkouts(): Result<Int>

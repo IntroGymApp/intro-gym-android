@@ -5,11 +5,13 @@ import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import java.util.UUID
 
+// TODO: переписать класс
+
 class MoveWorkoutExerciseUseCase(private val repository: WorkoutExerciseRepository) {
     suspend operator fun invoke(workoutId: UUID, from: Int, to: Int): Result<Unit> {
         if (from == to) return Result.Success(Unit)
 
-        val workoutExercisesResult = repository.getWorkoutExercisesByWorkoutId(workoutId).first()
+        val workoutExercisesResult = repository.getWorkoutExercisesByWorkoutId(workoutId).first { it != Result.Loading }
 
         when (workoutExercisesResult) {
             is Result.Success -> {

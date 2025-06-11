@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.workout.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutsBinding
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutItemAdapter
@@ -99,9 +102,21 @@ class WorkoutsFragment : Fragment() {
 
     private fun startCollectFlows() {
         viewModel.workoutList.flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { workoutList ->
-                workoutItemAdapter.update(workoutList)
-                binding.groupEmptyList.isVisible = workoutList.isEmpty()
+            .filterNotNull()
+            .onEach { state ->
+                when (state) {
+                    is UIState.Success -> {
+                        workoutItemAdapter.update(state.data)
+                        binding.groupEmptyList.isVisible = state.data.isEmpty()
+                        binding.pbLoadingIndicator.isVisible = false
+                    }
+                    is UIState.Loading -> {
+                        binding.pbLoadingIndicator.isVisible = true
+                    }
+                    is UIState.Failure -> {
+                        binding.pbLoadingIndicator.isVisible = false
+                    }
+                }
             }
             .launchIn(lifecycleScope)
 

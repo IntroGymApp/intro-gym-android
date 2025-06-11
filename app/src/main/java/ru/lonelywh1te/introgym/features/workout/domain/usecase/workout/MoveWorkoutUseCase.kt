@@ -3,6 +3,8 @@ package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 
+// TODO: навести порядок
+
 class MoveWorkoutUseCase(
     private val repository: WorkoutRepository,
 ) {

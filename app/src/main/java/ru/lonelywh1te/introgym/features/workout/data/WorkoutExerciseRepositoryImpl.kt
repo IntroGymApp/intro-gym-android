@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.MainDatabase
 import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
@@ -29,9 +30,10 @@ class WorkoutExerciseRepositoryImpl(
 
     override fun getWorkoutExerciseItems(workoutId: UUID): Flow<Result<List<WorkoutExerciseItem.Default>>> {
         return workoutExerciseDao.getWorkoutExercisesWithExerciseInfo(workoutId)
-            .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem.Default>>> {
-                list -> Result.Success(list.map { it.toWorkoutExerciseItemDefault() })
+            .map<List<WorkoutExerciseWithExerciseInfo>, Result<List<WorkoutExerciseItem.Default>>> { list ->
+                Result.Success(list.map { it.toWorkoutExerciseItemDefault() })
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 
@@ -45,6 +47,7 @@ class WorkoutExerciseRepositoryImpl(
                     it.toWorkoutExerciseItemWithProgress(sets, plan)
                 })
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 
@@ -53,6 +56,7 @@ class WorkoutExerciseRepositoryImpl(
             .map<List<WorkoutExerciseEntity>, Result<List<WorkoutExercise>>> {
                 list -> Result.Success(list.map { it.toWorkoutExercise() })
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 
@@ -61,6 +65,7 @@ class WorkoutExerciseRepositoryImpl(
             .map<WorkoutExerciseEntity, Result<WorkoutExercise>> {
                 Result.Success(it.toWorkoutExercise())
             }
+            .onStart { emit(Result.Loading) }
             .asSafeSQLiteFlow()
     }
 

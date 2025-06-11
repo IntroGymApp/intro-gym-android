@@ -21,7 +21,7 @@ class StartWorkoutUseCase (
                 return Result.Failure(it)
             }
 
-        return when (val result = repository.getWorkoutLogByWorkoutId(workoutId).first()) {
+        return when (val result = repository.getWorkoutLogByWorkoutId(workoutId).first { it !is Result.Loading }) {
             is Result.Success -> {
                 result.data.let {
                     if (it == null) throw Exception("Workout has no WorkoutLog so cannot be started")
@@ -36,6 +36,5 @@ class StartWorkoutUseCase (
             is Result.Failure -> result
             is Result.Loading -> result
         }
-
     }
 }
