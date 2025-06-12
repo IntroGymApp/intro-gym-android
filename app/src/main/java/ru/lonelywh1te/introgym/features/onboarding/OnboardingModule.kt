@@ -4,9 +4,9 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.onboarding.data.OnboardingRepositoryImpl
 import ru.lonelywh1te.introgym.features.onboarding.domain.repository.OnboardingRepository
+import ru.lonelywh1te.introgym.features.onboarding.domain.usecase.CompleteOnboardingUseCase
 import ru.lonelywh1te.introgym.features.onboarding.domain.usecase.SetNotificationStateUseCase
-import ru.lonelywh1te.introgym.features.onboarding.domain.usecase.SetOnboardingStateUseCase
-import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.FinishViewModel
+import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.FinishFragmentViewModel
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.SetNotificationViewModel
 
 val onboardingDataModule = module {
@@ -26,8 +26,8 @@ val onboardingDomainModule = module {
         SetNotificationStateUseCase(repository = get())
     }
 
-    factory<SetOnboardingStateUseCase> {
-        SetOnboardingStateUseCase(repository = get())
+    factory<CompleteOnboardingUseCase> {
+        CompleteOnboardingUseCase(repository = get())
     }
 
 }
@@ -38,9 +38,9 @@ val onboardingPresentationModule = module {
         SetNotificationViewModel(setNotificationStateUseCase = get())
     }
 
-    viewModel<FinishViewModel> {
-        FinishViewModel(
-            setOnboardingStateUseCase = get()
+    viewModel<FinishFragmentViewModel> {
+        FinishFragmentViewModel(
+            completeOnboardingUseCase = get()
         )
     }
 }

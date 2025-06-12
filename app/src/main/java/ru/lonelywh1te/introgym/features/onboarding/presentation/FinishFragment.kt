@@ -11,13 +11,13 @@ import ru.lonelywh1te.introgym.app.activity.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.FragmentFinishBinding
-import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.FinishViewModel
+import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.FinishFragmentViewModel
 
 class FinishFragment : Fragment() {
     private var _binding: FragmentFinishBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModel<FinishViewModel>()
+    private val viewModel by viewModel<FinishFragmentViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentFinishBinding.inflate(inflater, container, false)

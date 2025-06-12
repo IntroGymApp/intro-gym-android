@@ -19,7 +19,7 @@ class LaunchPreferencesImpl(context: Context): LaunchPreferences {
     }
 
     override fun getIsOnboardingCompleted(): Boolean {
-        return prefs.getBoolean(FIRST_LAUNCH_KEY, false)
+        return prefs.getBoolean(ONBOARDING_COMPLETED_KEY, false)
     }
 
     override fun clearAll() {

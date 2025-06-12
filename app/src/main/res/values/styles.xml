@@ -16,7 +16,7 @@
 
     <style name="Widget.IntroGym.ListCard" parent="Widget.Material3.CardView.Filled">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">90dp</item>
+        <item name="android:layout_height">80dp</item>
         <item name="android:padding">20dp</item>
         <item name="cardCornerRadius">10dp</item>
         <item name="android:backgroundTint">?attr/igCardBackgroundColor</item>
