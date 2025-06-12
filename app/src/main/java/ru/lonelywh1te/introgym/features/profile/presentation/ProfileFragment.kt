@@ -2,9 +2,13 @@ package ru.lonelywh1te.introgym.features.profile.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
@@ -28,7 +32,7 @@ import ru.lonelywh1te.introgym.data.network.asStringRes
 import ru.lonelywh1te.introgym.databinding.FragmentProfileBinding
 import ru.lonelywh1te.introgym.features.sync.domain.SyncRepository
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), MenuProvider {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -48,6 +52,8 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().addMenuProvider(this, viewLifecycleOwner)
+
         updateProfileUi(viewModel.getIsSignedIn())
 
         binding.btnSignUp.setOnClickListener {
@@ -133,5 +139,23 @@ class ProfileFragment : Fragment() {
     private fun navigateToSignUp() {
         val action = ProfileFragmentDirections.actionAuth()
         findNavController().safeNavigate(action)
+    }
+
+    private fun navigateToSettings() {
+        val action = ProfileFragmentDirections.toSettingsFragment()
+        findNavController().safeNavigate(action)
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menu.clear()
+        menuInflater.inflate(R.menu.profile_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when(menuItem.itemId) {
+            R.id.settings -> navigateToSettings()
+        }
+
+        return true
     }
 }

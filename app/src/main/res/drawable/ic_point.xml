@@ -5,5 +5,5 @@
     android:viewportHeight="7">
   <path
       android:pathData="M3,3.0698m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
-      android:fillColor="?attr/igTextPrimaryColor"/>
+      android:fillColor="?attr/igIconStaticColor"/>
 </vector>

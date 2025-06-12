@@ -8,6 +8,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import ru.lonelywh1te.introgym.core.coreModule
 import ru.lonelywh1te.introgym.data.dataModule
+import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
 import ru.lonelywh1te.introgym.features.home.homeModule
@@ -17,6 +18,7 @@ import ru.lonelywh1te.introgym.features.workout.workoutModule
 import ru.lonelywh1te.introgym.features.notifications.NotificationChannelManager
 import ru.lonelywh1te.introgym.features.notifications.notificationModule
 import ru.lonelywh1te.introgym.features.profile.profileModule
+import ru.lonelywh1te.introgym.features.settings.settingsModule
 import ru.lonelywh1te.introgym.features.sync.syncModule
 
 class App: Application() {
@@ -41,6 +43,7 @@ class App: Application() {
                 statsModule,
                 profileModule,
                 syncModule,
+                settingsModule,
             )
         }
 

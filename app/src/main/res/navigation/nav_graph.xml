@@ -241,7 +241,11 @@
         android:id="@+id/profileFragment"
         android:name="ru.lonelywh1te.introgym.features.profile.presentation.ProfileFragment"
         android:label="@string/label_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/statsFragment"
         android:name="ru.lonelywh1te.introgym.features.stats.presentation.StatsFragment"
@@ -328,5 +332,10 @@
         app:destination="@id/auth"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ru.lonelywh1te.introgym.features.settings.presentation.SettingsFragment"
+        android:label="@string/label_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>
