@@ -1,22 +1,8 @@
 <resources>
     <string name="app_name">IntroGym</string>
 
-    <string name="auth_error_invalid_email_or_password">Неверный email или пароль. Попробуйте снова.</string>
-    <string name="auth_error_email_already_registered">Этот email уже зарегистрирован. Войдите в аккаунт.</string>
-    <string name="auth_error_session_timeout">Сессия истекла. Пожалуйста, войдите заново.</string>
-    <string name="auth_error_unauthorized">У вас нет доступа к этому действию.</string>
-    <string name="auth_error_session_still_exist">Активная сессия уже существует.</string>
-    <string name="auth_error_invalid_otp">Неверный код подтверждения. Проверьте и попробуйте снова.</string>
-
-    <string name="validation_error_invalid_email_format">Некорректный формат email. Введите правильный адрес.</string>
-    <string name="validation_error_invalid_password_format">Некорректный пароль. Убедитесь, что он соответствует требованиям.</string>
-
-    <string name="network_error_no_internet">Нет подключения к интернету. Проверьте сеть.</string>
     <string name="app_error_unknown">Произошла неизвестная ошибка. Попробуйте снова.</string>
-    <string name="network_error_request_timeout">Превышено время ожидания. Проверьте соединение и попробуйте снова.</string>
-    <string name="network_error_server">Ошибка сервера. Попробуйте позже.</string>
-    <string name="validation_error_password_mismatch">Пароли не совпадают. Попробуйте снова.</string>
-
+    
     <string name="label_exercise_categories">Группы мышц</string>
     <string name="label_exercise_count">Упражнения: %1$s</string>
     <string name="label_exercises">Упражнения</string>
@@ -29,47 +15,18 @@
     <string name="label_difficulty">Сложность</string>
     <string name="label_equipment">Оборудование</string>
     <string name="label_muscles">Мышцы</string>
-    <string name="label_first_step">Ты уже сделал первый шаг</string>
-    <string name="label_create_account_text">Создай аккаунт, чтобы сохранять свой прогресс, открывать достижения и тренироваться без ограничений</string>
-    <string name="label_your_name">Ваше имя</string>
-    <string name="email_example_com">email@example.com</string>
-    <string name="label_password">Пароль</string>
-    <string name="label_confirm_password">Подтвердите пароль</string>
-    <string name="label_min_8_symbols">Минимум 8 символов</string>
-    <string name="label_has_upper_letter">Есть заглавная буква</string>
-    <string name="label_has_special_symbol">Есть специальный символ</string>
-    <string name="label_has_account">Уже есть аккаунт? Войти</string>
-    <string name="label_agree_terms">Продолжая, вы соглашаетесь с условиями Политики конфиденциальности</string>
-    <string name="label_sign_up">Зарегистрироваться</string>
-    <string name="label_sign_in">Войти</string>
-    <string name="label_almost_there">Осталось чуть-чуть</string>
-    <string name="label_send_otp_description">Мы отправили код проверки на указанную почту. Введите код в поле ниже</string>
-    <string name="label_code">Код</string>
-    <string name="label_send_code_again">Отправить код повторно</string>
-    <string name="label_glad_to_see_again">Рады видеть вас снова!</string>
-    <string name="label_sign_in_description">Введите данные, чтобы продолжить тренировки и следить за прогрессом</string>
-    <string name="label_has_not_account">Еще нет аккаунта? Зарегистрироваться</string>
-    <string name="label_restore_password">Восстановление пароля</string>
-    <string name="label_restore_password_description">Введите адрес электронной почты, и мы отправим вам код для восстановления пароля.</string>
-    <string name="label_send_otp">Отправить код</string>
-    <string name="label_forgot_password_question">Забыли пароль?</string>
-    <string name="label_new_password">Новый пароль</string>
-    <string name="label_create_new_password_description">Введите новый пароль для вашей учетной записи. Убедитесь, что пароль надежный и соответствует всем требованиям.</string>
     <string name="label_skip">Пропустить</string>
     <string name="label_welcome_to_app">Приветствуем в IntroGym!</string>
     <string name="label_welcome_fragment_description">Мы поможем тебе достичь лучших результатов в тренировках</string>
     <string name="label_next">Далее</string>
     <string name="label_features_fragment_title">Создавай тренировки, планируй их в календаре и выполняй</string>
     <string name="label_features_fragment_description">Достигай. Делись. Вдохновляй</string>
-    <string name="label_birthday">Дата рождения</string>
-    <string name="label_about_user_fragment_title">Осталось ввести всего пару деталей – и IntroGym готов к старту!</string>
     <string name="label_start">Начать</string>
     <string name="label_here">ЗДЕСЬ</string>
     <string name="label_start_fragment_description">Твой путь к лучшей версии себя начинается</string>
     <string name="label_set_notification_fragment_title">Настоящие чемпионы не пропускают тренировки!</string>
     <string name="label_set_notification_fragment_description">Мы напомним о тренировках и подкинем мотивацию, когда это нужно.</string>
     <string name="label_enable_notifications">Включить уведомления</string>
-    <string name="auth_error_failed_to_change_password">Не удалось сменить пароль. Попробуйте позже.</string>
     <string name="label_home">Главная</string>
     <string name="label_workouts">Тренировки</string>
     <string name="label_guide">Справочник</string>
@@ -119,8 +76,6 @@
     <string name="label_workout_log_state_finished">завершена</string>
     <string name="label_finish">Завершить</string>
     <string name="label_workout_error_already_started">Завершите другую тренировку, чтобы начать новую.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_add_set">Добавить подход</string>
     <string name="label_history_of_sets">История подходов</string>
     <string name="label_effort">Усилие</string>

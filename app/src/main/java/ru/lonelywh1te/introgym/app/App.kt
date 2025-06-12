@@ -9,6 +9,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import ru.lonelywh1te.introgym.core.coreModule
 import ru.lonelywh1te.introgym.data.dataModule
+import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.features.guide.guideModule
 import ru.lonelywh1te.introgym.features.home.homeModule
 import ru.lonelywh1te.introgym.features.notifications.NotificationChannelManager

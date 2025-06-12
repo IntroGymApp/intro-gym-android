@@ -26,14 +26,6 @@ class GuideFragment : Fragment() {
         binding.cardExerciseSection.setOnClickListener {
             navigateToExerciseSection()
         }
-
-        binding.cardEquipmentSection.setOnClickListener {
-            Toast.makeText(requireContext(), "В разработке", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.cardArticlesSection.setOnClickListener {
-            Toast.makeText(requireContext(), "В разработке", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun navigateToExerciseSection() {

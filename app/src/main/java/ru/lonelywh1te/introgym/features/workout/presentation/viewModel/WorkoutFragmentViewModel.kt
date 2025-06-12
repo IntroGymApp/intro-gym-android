@@ -28,6 +28,7 @@ import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
+import ru.lonelywh1te.introgym.features.workout.domain.error.WorkoutError
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutResult
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
@@ -44,6 +45,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.GetWorkoutExerciseItemsWithProgressUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.MoveWorkoutExerciseUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
+import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
 import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentUiData
 import java.util.UUID
 
@@ -168,7 +170,7 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             _workoutId.value?.let { workoutId ->
                 startWorkoutUseCase(workoutId)
-                    .onFailure { error -> errorDispatcher.dispatch(error) }
+                    .onFailure { error -> errorDispatcher.dispatch(error, WorkoutErrorStringMessageProvider.get(error)) }
             }
         }
     }

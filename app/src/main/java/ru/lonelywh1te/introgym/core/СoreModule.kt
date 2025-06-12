@@ -7,7 +7,9 @@ import ru.lonelywh1te.introgym.core.result.MainErrorDispatcher
 val coreModule = module {
 
     single<ErrorDispatcher> {
-        MainErrorDispatcher()
+        MainErrorDispatcher(
+            context = get()
+        )
     }
 
 }
