@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.app
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

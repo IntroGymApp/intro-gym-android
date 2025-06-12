@@ -23,7 +23,6 @@ import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.usecase.AddWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogDatesUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogItemListUseCase
-import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
 import java.time.LocalDate
 import java.util.UUID
 

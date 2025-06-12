@@ -4,8 +4,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.features.onboarding.data.OnboardingRepositoryImpl
 import ru.lonelywh1te.introgym.features.onboarding.domain.repository.OnboardingRepository
-import ru.lonelywh1te.introgym.features.onboarding.domain.usecase.SetNotificationStateUseCase
 import ru.lonelywh1te.introgym.features.onboarding.domain.usecase.CompleteOnboardingUseCase
+import ru.lonelywh1te.introgym.features.onboarding.domain.usecase.SetNotificationStateUseCase
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.FinishFragmentViewModel
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.HelloFragmentViewModel
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.SetNotificationViewModel

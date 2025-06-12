@@ -111,5 +111,7 @@
     <string name="label_settings">Настройки</string>
     <string name="label_notifications">Уведомления</string>
     <string name="label_dark_theme">Тёмная тема</string>
+    <string name="label_profile_develop_description">Мы ещё работаем над страницей профиля, чтобы сделать её удобной и полезной для вас.\n\nСпасибо за терпение — скоро будет готово!</string>
+    <string name="label_profile_develop_title">Спасибо, что вы с нами!</string>
 
 </resources>
