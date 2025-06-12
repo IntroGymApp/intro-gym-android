@@ -8,6 +8,7 @@ val appModule = module {
     viewModel<MainActivityViewModel> {
         MainActivityViewModel(
             launchPreferences = get(),
+            settingsPreferences = get(),
             errorDispatcher = get(),
         )
     }

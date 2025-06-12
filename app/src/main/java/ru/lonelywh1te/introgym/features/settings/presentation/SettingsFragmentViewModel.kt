@@ -7,8 +7,13 @@ class SettingsFragmentViewModel(
     private val settingsPreferences: SettingsPreferences,
 ):ViewModel() {
     val isNotificationsEnabled get() = settingsPreferences.getIsNotificationEnabled()
+    val isDarkThemeEnabled get() = settingsPreferences.getIsDarkTheme()
 
     fun setIsNotificationsEnabled(state: Boolean) {
         settingsPreferences.setIsNotificationEnabled(state)
+    }
+
+    fun setIsDarkTheme(state: Boolean) {
+        settingsPreferences.setIsDarkTheme(state)
     }
 }
