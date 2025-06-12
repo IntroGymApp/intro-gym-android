@@ -11,8 +11,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:background="@drawable/onboarding_features_cards"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:src="@drawable/onboarding_features_cards"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -41,7 +40,6 @@ import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.core.ui.utils.ItemTouchHelperCallback
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutBinding
 import ru.lonelywh1te.introgym.features.guide.presentation.exercises.ExerciseListFragment
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseItemAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.helper.WorkoutExerciseSetHelper
 import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentState
@@ -208,6 +206,10 @@ class WorkoutFragment : Fragment(), MenuProvider {
                     is UIState.Success -> {
                         setWorkoutFragmentData(state.data)
                     }
+                    is UIState.Loading -> {
+                        binding.etWorkoutName.setHint(null)
+                        binding.etWorkoutDescription.setHint(null)
+                    }
                     else -> {
                     // TODO: Not yet implemented
                     }
@@ -227,6 +229,9 @@ class WorkoutFragment : Fragment(), MenuProvider {
         data.workout?.let {
             binding.etWorkoutName.setText(it.name)
             binding.etWorkoutDescription.setText(it.description)
+
+            binding.etWorkoutName.setHint(getString(R.string.label_workout_name))
+            binding.etWorkoutDescription.setHint(getString(R.string.label_workout_comment))
         }
 
         data.workoutExerciseItems?.let {

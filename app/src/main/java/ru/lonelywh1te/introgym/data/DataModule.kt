@@ -13,10 +13,8 @@ import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutLogDao
 import ru.lonelywh1te.introgym.data.prefs.LaunchPreferences
 import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
-import ru.lonelywh1te.introgym.data.prefs.UserPreferences
 import ru.lonelywh1te.introgym.data.prefs.launch.LaunchPreferencesImpl
 import ru.lonelywh1te.introgym.data.prefs.settings.SettingsPreferencesImpl
-import ru.lonelywh1te.introgym.data.prefs.user.UserPreferencesImpl
 
 val dataModule = module {
     single<RoomDatabase> {
@@ -61,11 +59,6 @@ val dataModule = module {
         get<MainDatabase>().workoutLogDao()
     }
 
-
-
-    single<UserPreferences> {
-        UserPreferencesImpl(context = get())
-    }
 
     single<SettingsPreferences> {
         SettingsPreferencesImpl(context = get())

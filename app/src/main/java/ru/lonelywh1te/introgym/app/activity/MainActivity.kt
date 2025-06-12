@@ -2,6 +2,7 @@ package ru.lonelywh1te.introgym.app.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -86,19 +87,18 @@ class MainActivity : AppCompatActivity(), UIController {
     private fun updateInsets(destination: NavDestination) {
         val shouldUpdate = destination.parent?.id !in listOf(
             R.id.onboarding,
-            R.id.auth,
         )
 
         if (shouldUpdate) WindowInsets.setInsets(binding.root)
     }
 
     private fun setStartDestination() {
-        val isFirstLaunch = viewModel.isFirstLaunch
         val onboardingCompleted = viewModel.onboardingCompleted
 
+        Log.d("MainActivity", onboardingCompleted.toString())
+
         val startDestination = when {
-            !onboardingCompleted && isFirstLaunch -> R.id.onboarding
-            onboardingCompleted && isFirstLaunch -> R.id.auth
+            !onboardingCompleted -> R.id.onboarding
             else -> R.id.homeFragment
         }
 

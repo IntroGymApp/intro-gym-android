@@ -25,6 +25,8 @@
         android:textColor="?attr/igTextPrimaryColor"
         android:visibility="gone"
         tools:text="Текст ошибки"
+        android:maxLines="2"
+        android:ellipsize="end"
         tools:visibility="visible"/>
 
     <com.google.android.material.divider.MaterialDivider

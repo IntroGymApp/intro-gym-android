@@ -143,8 +143,10 @@
             android:label="fragment_start"
             tools:layout="@layout/fragment_finish">
             <action
-                android:id="@+id/to_signUpFragment"
-                app:destination="@id/auth" />
+                android:id="@+id/to_homeFragment"
+                app:destination="@id/homeFragment"
+                app:popUpTo="@id/nav_graph"
+                app:popUpToInclusive="true" />
         </fragment>
         <fragment
             android:id="@+id/helloFragment"
@@ -155,8 +157,10 @@
                 android:id="@+id/to_featuresFragment"
                 app:destination="@id/featuresFragment" />
             <action
-                android:id="@+id/to_signInFragment"
-                app:destination="@id/auth" />
+                android:id="@+id/to_homeFragment"
+                app:destination="@id/homeFragment"
+                app:popUpTo="@id/nav_graph"
+                app:popUpToInclusive="true" />
         </fragment>
         <fragment
             android:id="@+id/setNotificationFragment"
@@ -166,62 +170,6 @@
             <action
                 android:id="@+id/to_startFragment"
                 app:destination="@id/startFragment" />
-        </fragment>
-    </navigation>
-    <navigation
-        android:id="@+id/auth"
-        app:startDestination="@id/signUpFragment">
-        <fragment
-            android:id="@+id/signUpFragment"
-            android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignUpFragment"
-            android:label="fragment_sign_up"
-            tools:layout="@layout/fragment_sign_up">
-            <action
-                android:id="@+id/to_confirmOtpFragment"
-                app:destination="@id/confirmOtpFragment" />
-            <action
-                android:id="@+id/to_signInFragment"
-                app:destination="@id/signInFragment" />
-            <action
-                android:id="@+id/to_homeFragment"
-                app:destination="@id/homeFragment"
-                app:popUpTo="@+id/nav_graph"
-                app:popUpToInclusive="true"/>
-        </fragment>
-        <fragment
-            android:id="@+id/forgotPasswordFragment"
-            android:name="ru.lonelywh1te.introgym.features.auth.presentation.RestorePasswordFragment"
-            android:label="fragment_forgot_password"
-            tools:layout="@layout/fragment_forgot_password">
-            <action
-                android:id="@+id/to_confirmOtpFragment"
-                app:destination="@id/confirmOtpFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/signInFragment"
-            android:name="ru.lonelywh1te.introgym.features.auth.presentation.SignInFragment"
-            android:label="fragment_sign_in"
-            tools:layout="@layout/fragment_sign_in">
-            <action
-                android:id="@+id/to_forgotPasswordFragment"
-                app:destination="@id/forgotPasswordFragment" />
-            <action
-                android:id="@+id/to_homeFragment"
-                app:destination="@id/homeFragment"
-                app:popUpTo="@+id/nav_graph"
-                app:popUpToInclusive="true"/>
-        </fragment>
-        <fragment
-            android:id="@+id/confirmOtpFragment"
-            android:name="ru.lonelywh1te.introgym.features.auth.presentation.ConfirmOtpFragment"
-            android:label="fragment_confirm_otp"
-            tools:layout="@layout/fragment_confirm_otp">
-            <argument
-                android:name="email"
-                app:argType="string" />
-            <argument
-                android:name="otpType"
-                app:argType="ru.lonelywh1te.introgym.features.auth.domain.model.OtpType" />
         </fragment>
     </navigation>
     <fragment
@@ -322,11 +270,5 @@
                 app:nullable="true" />
         </action>
     </fragment>
-
-    <action
-        android:id="@+id/action_auth"
-        app:destination="@id/auth"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true" />
 
 </navigation>

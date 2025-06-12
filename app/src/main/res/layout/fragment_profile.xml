@@ -135,19 +135,21 @@
         android:id="@+id/iv_features"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/onboarding_features_cards"
+        android:src="@drawable/onboarding_features_cards"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/tv_hello_introgym"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_hello_introgym"
         style="@style/Widget.IntroGym.TextView.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_welcome_to_app"
+        android:text="Спасибо, что вы с нами!"
         android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
         app:layout_constraintBottom_toTopOf="@+id/tv_sign_up_description"
         app:layout_constraintStart_toStartOf="@+id/tv_sign_up_description" />
@@ -157,33 +159,25 @@
         style="@style/Widget.IntroGym.TextView.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Войдите в аккаунт, чтобы сохранить прогресс и получить доступ ко всем возможностям"
+        android:text="Мы ещё работаем над страницей профиля, чтобы сделать её удобной и полезной для вас.\n\nСпасибо за терпение — скоро будет готово!"
         android:textAppearance="@style/TextAppearance.IntroGym.Body.Regular"
-        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_sign_up"
-        style="@style/Widget.IntroGym.Button"
-        android:text="@string/label_next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupSignedIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="gone"
         app:constraint_referenced_ids="tv_user_name, tv_user_register_date, btn_sign_out, cv_user_achievements_panel, cv_user_stats_panel" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupSignedOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="btn_sign_up,tv_sign_up_description,tv_hello_introgym,iv_features" />
 
     <ProgressBar

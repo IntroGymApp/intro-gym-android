@@ -18,7 +18,6 @@ import retrofit2.Response
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.network.NetworkError
-import ru.lonelywh1te.introgym.data.prefs.UserPreferences
 import ru.lonelywh1te.introgym.features.auth.data.dto.ChangePasswordRequestDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ChangePasswordResponseDto
 import ru.lonelywh1te.introgym.features.auth.data.dto.ConfirmOtpRequestDto
