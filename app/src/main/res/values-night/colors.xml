@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent_color">#D7FC6E</color>
+    <color name="accent_color_light">#D9EBC8</color>
+    <color name="foreground_color">#FCFCFC</color>
+    <color name="background_color">#070707</color>
+    <color name="plate_color">#141414</color>
+    <color name="hint_color">#787878</color>
+    <color name="dark_hint_color">#393939</color>
+    <color name="red_color">#FF453A</color>
+    <color name="orange_color">#FF9F0A</color>
+    <color name="orange_color_light">#FFE2B6</color>
+    <color name="purple_color">#8C33C7</color>
+</resources>

@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.app
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -22,6 +23,7 @@ import ru.lonelywh1te.introgym.features.settings.settingsModule
 import ru.lonelywh1te.introgym.features.sync.syncModule
 
 class App: Application() {
+    private val settingsPreferences by inject<SettingsPreferences>()
     private val notificationChannelManager by inject<NotificationChannelManager>()
 
     override fun onCreate() {

@@ -46,6 +46,7 @@
         <item name="android:paddingHorizontal">20dp</item>
         <item name="android:background">@null</item>
         <item name="drawableTint">?attr/igHintColor</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
         <item name="android:textAppearance">@style/TextAppearance.IntroGym.Body.Regular</item>
     </style>
 
@@ -164,11 +165,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingVertical">20dp</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
     </style>
 
     <style name="Widget.IntroGym.TextView.Body" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/igTextPrimaryColor</item>
     </style>
 
     <style name="Widget.IntroGym.TextView.Error" parent="Widget.AppCompat.TextView">
@@ -200,6 +203,11 @@
     <style name="ThemeOverlay.IntroGym.CheckedButton" parent="ThemeOverlay.Material3.Button">
         <item name="colorOnContainer">@color/selector_button_foreground</item>
         <item name="colorContainer">@color/selector_button_background_primary</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>

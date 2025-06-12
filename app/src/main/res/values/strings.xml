@@ -155,5 +155,6 @@
     <string name="label_load_profile_failure_message">Не удалось загрузить профиль. Попробуйте позже</string>
     <string name="label_settings">Настройки</string>
     <string name="label_notifications">Уведомления</string>
+    <string name="label_dark_theme">Тёмная тема</string>
 
 </resources>
