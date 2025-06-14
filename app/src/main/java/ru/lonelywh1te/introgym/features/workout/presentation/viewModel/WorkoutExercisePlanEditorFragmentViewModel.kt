@@ -74,11 +74,11 @@ class WorkoutExercisePlanEditorFragmentViewModel(
         distanceInMeters: String
     ) {
         val updatedWorkoutExercisePlan = workoutExercisePlan.value?.copy(
-            sets = if (sets.isBlank()) null else sets.toInt(),
-            reps = if (reps.isBlank()) null else reps.toInt(),
-            weightKg = if (weight.isBlank()) null else weight.toFloat(),
-            timeInSec = if (timeInSec.isBlank()) null else timeInSec.toInt(),
-            distanceInMeters = if (distanceInMeters.isBlank()) null else distanceInMeters.toInt()
+            sets = if (sets.isBlank()) null else sets.toIntOrNull(),
+            reps = if (reps.isBlank()) null else reps.toIntOrNull(),
+            weightKg = if (weight.isBlank()) null else weight.toFloatOrNull(),
+            timeInSec = if (timeInSec.isBlank()) null else timeInSec.toIntOrNull(),
+            distanceInMeters = if (distanceInMeters.isBlank()) null else distanceInMeters.toIntOrNull()
         )
 
         _workoutExercisePlan.value = updatedWorkoutExercisePlan
