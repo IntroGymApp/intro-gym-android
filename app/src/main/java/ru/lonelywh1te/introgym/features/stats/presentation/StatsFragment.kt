@@ -95,6 +95,7 @@ class StatsFragment : Fragment() {
     private fun setTotalWeightData(entries: List<BarEntry>) {
         val dataSet = BarDataSet(entries, null).apply {
             setColor(MaterialColors.getColor(binding.root, R.attr.igPrimaryColor))
+            valueTextColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return if (value != 0f) {
@@ -116,6 +117,7 @@ class StatsFragment : Fragment() {
                 position = XAxis.XAxisPosition.BOTTOM
                 granularity = 1f
                 typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
+                textColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
             }
 
             axisLeft.apply {
@@ -126,6 +128,7 @@ class StatsFragment : Fragment() {
             axisRight.apply {
                 typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
                 axisMinimum = 0f
+                textColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
             }
 
             animateY(200)
@@ -146,6 +149,7 @@ class StatsFragment : Fragment() {
             setDrawFilled(true)
             setDrawValues(false)
             fillColor = MaterialColors.getColor(binding.root, R.attr.igPrimaryColor)
+            valueTextColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
         }
 
         binding.chartMuscles.apply {
@@ -156,16 +160,14 @@ class StatsFragment : Fragment() {
 
             xAxis.apply {
                 typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
+                textColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
+
+                if (labels.isNotEmpty()) valueFormatter = IndexAxisValueFormatter(labels)
             }
 
             yAxis.apply {
                 axisMinimum = 0f
                 isEnabled = false
-            }
-
-            if (labels.isNotEmpty()) {
-                xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-                notifyDataSetChanged()
             }
 
             animateY(200)
