@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.coroutines.Job
@@ -87,7 +88,16 @@ class MainActivity : AppCompatActivity(), UIController {
     }
 
     private fun setupBottomNavigationView() {
-        binding.bottomNavigation.setupWithNavController(navController)
+        binding.bottomNavigation.apply {
+            setOnItemSelectedListener { item ->
+                NavigationUI.onNavDestinationSelected(item, navController)
+                true
+            }
+
+            setOnItemReselectedListener {
+                navController.popBackStack(it.itemId, false)
+            }
+        }
     }
 
     // TODO: передать полностью контроль над инсетами

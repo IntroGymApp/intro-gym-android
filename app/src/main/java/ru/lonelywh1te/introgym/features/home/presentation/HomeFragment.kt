@@ -110,7 +110,7 @@ class HomeFragment : Fragment(), MenuProvider {
     }
 
     private fun navigateToPickWorkout() {
-        val action = HomeFragmentDirections.actionPickWorkout()
+        val action = HomeFragmentDirections.toPickWorkoutFragment()
         findNavController().safeNavigate(action)
     }
 
