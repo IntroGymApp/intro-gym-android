@@ -120,10 +120,10 @@ class WorkoutExerciseExecutionViewModel(
         viewModelScope.launch(dispatcher) {
             val set = WorkoutExerciseSet(
                 workoutExerciseId = workoutExerciseId.value!!,
-                reps = if (reps.isBlank()) null else reps.toInt(),
-                weightKg = if (weight.isBlank()) null else weight.toFloat(),
-                timeInSeconds = if (timeInSeconds.isBlank()) null else timeInSeconds.toInt(),
-                distanceInMeters = if (distance.isBlank()) null else distance.toInt(),
+                reps = if (reps.isBlank()) null else reps.toIntOrNull(),
+                weightKg = if (weight.isBlank()) null else weight.toFloatOrNull(),
+                timeInSeconds = if (timeInSeconds.isBlank()) null else timeInSeconds.toIntOrNull(),
+                distanceInMeters = if (distance.isBlank()) null else distance.toIntOrNull(),
                 effort = effort,
             )
 
