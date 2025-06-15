@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.NavGraphDirections
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
@@ -114,15 +116,13 @@ class MainActivity : AppCompatActivity(), UIController {
         val isFirstLaunch = viewModel.isFirstLaunch
         val onboardingCompleted = viewModel.onboardingCompleted
 
-        val startDestination = when {
-            !onboardingCompleted && isFirstLaunch -> R.id.onboarding
-            onboardingCompleted && isFirstLaunch -> R.id.auth
-            else -> R.id.homeFragment
-        }
-
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.setStartDestination(startDestination)
-        navController.setGraph(navGraph, null)
+        navController.safeNavigate(
+            when {
+                !onboardingCompleted && isFirstLaunch -> NavGraphDirections.actionStartOnboarding()
+                onboardingCompleted && isFirstLaunch -> NavGraphDirections.actionAuth()
+                else -> return
+            }
+        )
     }
 
     private fun restoreWorkoutTrackerService() {

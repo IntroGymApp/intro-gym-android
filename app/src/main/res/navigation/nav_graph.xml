@@ -144,7 +144,9 @@
             tools:layout="@layout/fragment_finish">
             <action
                 android:id="@+id/to_signUpFragment"
-                app:destination="@id/auth" />
+                app:destination="@id/auth"
+                app:popUpTo="@id/nav_graph"
+                app:popUpToInclusive="true" />
         </fragment>
         <fragment
             android:id="@+id/helloFragment"
@@ -156,7 +158,9 @@
                 app:destination="@id/featuresFragment" />
             <action
                 android:id="@+id/to_signInFragment"
-                app:destination="@id/auth" />
+                app:destination="@id/auth"
+                app:popUpTo="@id/nav_graph"
+                app:popUpToInclusive="true" />
         </fragment>
         <fragment
             android:id="@+id/setNotificationFragment"
@@ -342,6 +346,7 @@
     <action
         android:id="@+id/action_auth"
         app:destination="@id/auth"
+        app:launchSingleTop="true"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true" />
     <fragment
@@ -349,5 +354,11 @@
         android:name="ru.lonelywh1te.introgym.features.settings.presentation.SettingsFragment"
         android:label="@string/label_settings"
         tools:layout="@layout/fragment_settings" />
+    <action
+        android:id="@+id/action_start_onboarding"
+        app:destination="@id/onboarding"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
 
 </navigation>
