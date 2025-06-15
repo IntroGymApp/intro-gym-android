@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -44,7 +45,6 @@ class HomeFragment : Fragment(), MenuProvider {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
         binding.weeklyCalendarView.apply {
             setOnDateSelectedListener { date ->
@@ -68,6 +68,7 @@ class HomeFragment : Fragment(), MenuProvider {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+        requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         showToolbarAndBottomNavigationView()
         setWorkoutIdResultListener()
         startCollectFlows()

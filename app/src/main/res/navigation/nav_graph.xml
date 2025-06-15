@@ -292,5 +292,11 @@
         android:name="ru.lonelywh1te.introgym.features.settings.presentation.SettingsFragment"
         android:label="@string/label_settings"
         tools:layout="@layout/fragment_settings" />
+    <action
+        android:id="@+id/action_start_onboarding"
+        app:destination="@id/onboarding"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
 
 </navigation>

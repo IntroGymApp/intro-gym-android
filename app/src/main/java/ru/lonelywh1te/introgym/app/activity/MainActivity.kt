@@ -23,7 +23,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.lonelywh1te.introgym.NavGraphDirections
 import ru.lonelywh1te.introgym.R
+import ru.lonelywh1te.introgym.core.navigation.safeNavigate
+import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
@@ -112,16 +115,12 @@ class MainActivity : AppCompatActivity(), UIController {
     private fun setStartDestination() {
         val onboardingCompleted = viewModel.onboardingCompleted
 
-        Log.d("MainActivity", onboardingCompleted.toString())
-
-        val startDestination = when {
-            !onboardingCompleted -> R.id.onboarding
-            else -> R.id.homeFragment
-        }
-
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.setStartDestination(startDestination)
-        navController.setGraph(navGraph, null)
+        navController.safeNavigate(
+            when {
+                !onboardingCompleted -> NavGraphDirections.actionStartOnboarding()
+                else -> return
+            }
+        )
     }
 
     private fun restoreWorkoutTrackerService() {
