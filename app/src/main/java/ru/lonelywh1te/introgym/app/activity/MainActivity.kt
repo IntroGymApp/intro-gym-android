@@ -41,27 +41,36 @@ class MainActivity : AppCompatActivity(), UIController {
 
     private var showingError: Job? = null
 
+    private val bottomNavigationDestinations: Set<Int> = setOf(
+        R.id.homeFragment,
+        R.id.workoutsFragment,
+        R.id.guideFragment,
+        R.id.statsFragment,
+        R.id.profileFragment
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme()
         super.onCreate(savedInstanceState)
+        setTheme()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
+        setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(binding.navHostFragment.id) as NavHostFragment
-        navController = navHostFragment.navController
+        navController = navHostFragment.navController.apply {
+            addOnDestinationChangedListener { _, destination, _ ->
+                updateInsets(destination)
+                if (destination.id in bottomNavigationDestinations) {
+                    binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+                }
+            }
+        }
 
         setStartDestination()
         setupBottomNavigationView()
         setupToolbar()
         startCollectFlows()
-        setContentView(binding.root)
-
-        enableEdgeToEdge()
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            updateInsets(destination)
-        }
-
         restoreWorkoutTrackerService()
     }
 
@@ -75,18 +84,8 @@ class MainActivity : AppCompatActivity(), UIController {
     }
 
     private fun setupToolbar() {
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.workoutsFragment,
-                R.id.guideFragment,
-                R.id.statsFragment,
-                R.id.profileFragment
-            )
-        )
-
         setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController, AppBarConfiguration(bottomNavigationDestinations))
     }
 
     private fun setupBottomNavigationView() {
