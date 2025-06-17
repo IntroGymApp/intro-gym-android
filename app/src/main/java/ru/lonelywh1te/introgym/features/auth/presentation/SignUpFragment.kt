@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -26,9 +25,8 @@ import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
-import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsetsHelper
 import ru.lonelywh1te.introgym.data.prefs.LaunchPreferences
-import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignUpBinding
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
@@ -51,7 +49,7 @@ class SignUpFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
 
-        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
+        WindowInsetsHelper.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
         hideToolbarAndBottomNavigationView()
 
         return binding.root

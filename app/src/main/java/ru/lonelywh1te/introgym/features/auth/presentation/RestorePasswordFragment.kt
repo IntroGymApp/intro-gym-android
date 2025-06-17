@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.auth.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsetsHelper
 import ru.lonelywh1te.introgym.databinding.FragmentForgotPasswordBinding
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
@@ -48,7 +47,7 @@ class RestorePasswordFragment : Fragment() {
 
         setChangePasswordFormState(otpConfirmed)
 
-        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
+        WindowInsetsHelper.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
         return binding.root
     }

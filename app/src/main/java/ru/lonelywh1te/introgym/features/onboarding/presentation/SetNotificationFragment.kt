@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.app.activity.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsetsHelper
 import ru.lonelywh1te.introgym.databinding.FragmentSetNotificationBinding
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.SetNotificationViewModel
 
@@ -22,7 +22,7 @@ class SetNotificationFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSetNotificationBinding.inflate(inflater, container, false)
 
-        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
+        WindowInsetsHelper.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
         return binding.root
     }

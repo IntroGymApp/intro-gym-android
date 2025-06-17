@@ -19,9 +19,8 @@ import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.core.ui.extensions.setClickableSpan
-import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsetsHelper
 import ru.lonelywh1te.introgym.data.prefs.LaunchPreferences
-import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.databinding.FragmentSignInBinding
 import ru.lonelywh1te.introgym.features.auth.presentation.error.AuthErrorStringResProvider
 import ru.lonelywh1te.introgym.features.auth.presentation.viewModel.SignInViewModel
@@ -36,7 +35,7 @@ class SignInFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
 
-        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
+        WindowInsetsHelper.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
 
         return binding.root
     }
