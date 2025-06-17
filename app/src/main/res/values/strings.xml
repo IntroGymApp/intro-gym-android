@@ -156,5 +156,7 @@
     <string name="label_settings">Настройки</string>
     <string name="label_notifications">Уведомления</string>
     <string name="label_dark_theme">Тёмная тема</string>
+    <string name="label_muscle_group_stats">Проработка групп мышц</string>
+    <string name="label_distance_stats">Пройденное расстояние</string>
 
 </resources>

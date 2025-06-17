@@ -3,11 +3,10 @@ package ru.lonelywh1te.introgym.features.stats.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.RadarEntry
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,17 +14,18 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import ru.lonelywh1te.introgym.core.result.BaseError
 import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
-import ru.lonelywh1te.introgym.features.stats.domain.StatsPeriod
+import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
+import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetDistanceStatsUseCase
 import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetMusclesStatsUseCase
 import ru.lonelywh1te.introgym.features.stats.domain.usecase.GetTotalWeightStatsUseCase
 
 class StatsFragmentViewModel(
     private val getTotalWeightStatsUseCase: GetTotalWeightStatsUseCase,
     private val getMusclesStatsUseCase: GetMusclesStatsUseCase,
+    private val getDistanceStatsUseCase: GetDistanceStatsUseCase,
     private val errorDispatcher: ErrorDispatcher,
 ): ViewModel() {
     private val dispatcher = Dispatchers.IO
@@ -86,6 +86,34 @@ class StatsFragmentViewModel(
         .flowOn(dispatcher)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
+    private val _distancePeriod: MutableStateFlow<StatsPeriod> = MutableStateFlow(StatsPeriod.Week())
+    val distancePeriod get() = _distancePeriod.asStateFlow()
+
+    val distanceData: StateFlow<List<Entry>> = _distancePeriod
+        .flatMapLatest { period ->
+            var data: List<Entry> = emptyList()
+
+            getDistanceStatsUseCase(period).map { result ->
+                result
+                    .onSuccess {
+                        data = it.map { data ->
+                            if (period is StatsPeriod.Year) {
+                                Entry(data.date.monthValue.toFloat(), data.distance.toFloat())
+                            } else {
+                                Entry(data.date.dayOfMonth.toFloat(), data.distance.toFloat())
+                            }
+                        }
+                    }
+                    .onFailure {
+                        errorDispatcher.dispatch(it)
+                    }
+
+                data
+            }
+        }
+        .flowOn(dispatcher)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
 
     fun setTotalWeightPeriod(statsPeriod: StatsPeriod) {
         _totalWeightPeriod.value = statsPeriod
@@ -95,12 +123,21 @@ class StatsFragmentViewModel(
         _musclesPeriod.value = statsPeriod
     }
 
+    fun setDistancePeriod(statsPeriod: StatsPeriod) {
+        _distancePeriod.value = statsPeriod
+    }
+
     fun getMuscleLabels(): List<String> {
         return muscleLabels
     }
 
     fun getAverageWeight(): Float {
         val average = totalWeightData.value.sumOf { it.y.toDouble() } / totalWeightData.value.size
+        return average.toFloat()
+    }
+
+    fun getAverageDistance(): Float {
+        val average = distanceData.value.sumOf { it.y.toDouble() } / distancePeriod.value.size
         return average.toFloat()
     }
 }

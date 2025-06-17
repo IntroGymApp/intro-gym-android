@@ -1,6 +1,7 @@
 package ru.lonelywh1te.introgym.features.stats.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
@@ -25,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.utils.DateAndTimeStringFormatUtils
 import ru.lonelywh1te.introgym.databinding.FragmentStatsBinding
-import ru.lonelywh1te.introgym.features.stats.domain.StatsPeriod
+import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import java.util.Locale
 
 class StatsFragment : Fragment() {
@@ -62,6 +66,17 @@ class StatsFragment : Fragment() {
             }
         }
 
+        binding.groupDistancePeriodButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    binding.btnWeekDistancePeriod.id -> viewModel.setDistancePeriod(StatsPeriod.Week())
+                    binding.btnMonthDistancePeriod.id -> viewModel.setDistancePeriod(StatsPeriod.Month())
+                    binding.btnYearDistancePeriod.id -> viewModel.setDistancePeriod(StatsPeriod.Year())
+                }
+            }
+        }
+
+
         startCollectFlows()
     }
 
@@ -79,6 +94,14 @@ class StatsFragment : Fragment() {
             }
             .launchIn(lifecycleScope)
 
+        viewModel.distanceData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { entries ->
+                setDistanceData(entries)
+                Log.d("StatsFragment", "distanceData: $entries")
+            }
+            .launchIn(lifecycleScope)
+
+
         viewModel.totalWeightPeriod.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { period ->
                 binding.tvTotalWeightPeriodDates.text = getPeriodString(period)
@@ -88,6 +111,13 @@ class StatsFragment : Fragment() {
         viewModel.musclesPeriod.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { period ->
                 binding.tvMusclesPeriodDates.text = getPeriodString(period)
+            }
+            .launchIn(lifecycleScope)
+
+        viewModel.distancePeriod.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { period ->
+                binding.tvDistancePeriodDates.text = getPeriodString(period)
+                Log.d("StatsFragment", period.size.toString())
             }
             .launchIn(lifecycleScope)
     }
@@ -171,7 +201,58 @@ class StatsFragment : Fragment() {
             }
 
             animateY(200)
+            invalidate()
         }
+    }
+
+    private fun setDistanceData(entries: List<Entry>) {
+        val dataSet = LineDataSet(entries, null).apply {
+            color = MaterialColors.getColor(binding.root, R.attr.igPrimaryColor)
+            setCircleColor(MaterialColors.getColor(binding.root, R.attr.igPrimaryColor))
+            valueTextColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value != 0f) {
+                        value.toString()
+                    } else {
+                        ""
+                    }
+                }
+            }
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+            cubicIntensity = 0.2f
+            valueTypeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
+        }
+
+        binding.chartDistance.apply {
+            data = LineData(dataSet)
+
+            description = null
+            legend.isEnabled = false
+
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f
+                typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
+                textColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
+            }
+
+            axisLeft.apply {
+                axisMinimum = 0f
+                isEnabled = false
+            }
+
+            axisRight.apply {
+                typeface = ResourcesCompat.getFont(requireContext(), R.font.geist_regular)
+                textColor = MaterialColors.getColor(binding.root, R.attr.igTextPrimaryColor)
+            }
+
+
+            animateY(200)
+            invalidate()
+        }
+
+        binding.tvAverageDistance.text = "${String.format(Locale.US, "%.2f", viewModel.getAverageDistance())} м"
     }
 
     private fun getPeriodString(period: StatsPeriod): String {

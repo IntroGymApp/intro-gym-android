@@ -7,7 +7,8 @@ import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithExerciseCategoryId
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithWorkoutLogDate
-import ru.lonelywh1te.introgym.features.stats.domain.StatsPeriod
+import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
+import ru.lonelywh1te.introgym.features.stats.domain.model.DistanceEntry
 import ru.lonelywh1te.introgym.features.stats.domain.model.MuscleEntry
 import ru.lonelywh1te.introgym.features.stats.domain.model.WeightEntry
 import ru.lonelywh1te.introgym.features.stats.domain.repository.StatsRepository
@@ -30,6 +31,16 @@ class StatsRepositoryImpl(
             .map<List<ExerciseSetWithExerciseCategoryId>, Result<List<MuscleEntry>>> { list ->
                 Result.Success(list.map {
                     MuscleEntry(it.exerciseCategoryName, it.exerciseSet.effort ?: 0)
+                })
+            }
+            .asSafeSQLiteFlow()
+    }
+
+    override fun getDistanceStats(period: StatsPeriod): Flow<Result<List<DistanceEntry>>> {
+        return exerciseSetDao.getExerciseSetsWithWorkoutLogDateAtPeriod(period.startLocalDate, period.endLocalDate)
+            .map { list ->
+                Result.Success(list.map {
+                    DistanceEntry(it.workoutLogDate, it.exerciseSet.distanceInMeters ?: 0)
                 })
             }
             .asSafeSQLiteFlow()

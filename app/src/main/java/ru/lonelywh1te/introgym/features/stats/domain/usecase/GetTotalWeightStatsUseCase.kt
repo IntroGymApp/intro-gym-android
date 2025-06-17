@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
-import ru.lonelywh1te.introgym.features.stats.domain.StatsPeriod
+import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.model.WeightEntry
 import ru.lonelywh1te.introgym.features.stats.domain.repository.StatsRepository
 import java.time.LocalDate
@@ -34,7 +34,7 @@ class GetTotalWeightStatsUseCase(
             .groupBy { it.date }
             .mapValues { entry -> entry.value.sumOf { it.weight.toDouble() }.toFloat() }
 
-        val allDates = generateDatesForPeriod(period)
+        val allDates = StatsPeriod.generateDates(period)
 
         val resultMap = if (period is StatsPeriod.Year) {
             allDates
@@ -49,28 +49,5 @@ class GetTotalWeightStatsUseCase(
         return resultMap
             .map { (date, weight) -> WeightEntry(date, weight) }
             .sortedBy { it.date }
-    }
-
-    private fun generateDatesForPeriod(period: StatsPeriod): List<LocalDate> {
-        return when (period) {
-            is StatsPeriod.Week -> {
-                val startDate = period.startLocalDate
-                (0 until 7).map { startDate.plusDays(it.toLong()) }
-            }
-            is StatsPeriod.Month -> {
-                val startDate = period.startLocalDate
-                val endDate = period.endLocalDate
-                generateSequence(startDate) { it.plusDays(1) }
-                    .takeWhile { !it.isAfter(endDate) }
-                    .toList()
-            }
-            is StatsPeriod.Year -> {
-                val startDate = period.startLocalDate
-                val endDate = period.endLocalDate
-                generateSequence(startDate) { it.plusDays(1) }
-                    .takeWhile { !it.isAfter(endDate) }
-                    .toList()
-            }
-        }
     }
 }

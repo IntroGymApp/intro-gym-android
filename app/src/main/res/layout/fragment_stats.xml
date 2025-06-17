@@ -9,9 +9,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/tv_total_weight_title"
@@ -76,19 +77,19 @@
                 android:id="@+id/tv_average_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="0 кг"
                 android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
                 app:layout_constraintStart_toStartOf="@+id/textView11"
-                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                tools:text="0 кг" />
 
             <TextView
                 android:id="@+id/tv_total_weight_period_dates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="dd.MM.yyyy - dd.MM.yyyy"
                 android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
                 app:layout_constraintStart_toStartOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintTop_toBottomOf="@+id/textView13"
+                tools:text="dd.MM.yyyy - dd.MM.yyyy" />
 
         </LinearLayout>
 
@@ -102,14 +103,12 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
 
-
-
         <TextView
             android:id="@+id/tv_muscles_title"
             style="@style/Widget.IntroGym.TextView.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Проработка групп мышц"
+            android:text="@string/label_muscle_group_stats"
             android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -163,10 +162,93 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_muscles_period_dates" />
 
+        <TextView
+            android:id="@+id/tv_distance_title"
+            style="@style/Widget.IntroGym.TextView.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_distance_stats"
+            android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chart_muscles" />
 
 
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/group_distance_period_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:checkedButton="@+id/btn_week_distance_period"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance_title"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/btn_week_distance_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="@string/label_week" />
 
 
+            <Button
+                android:id="@+id/btn_month_distance_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="@string/label_month" />
+
+
+            <Button
+                android:id="@+id/btn_year_distance_period"
+                style="@style/Widget.IntroGym.Button.Segmented"
+                android:text="@string/label_year" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_distance_period_buttons">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_average"
+                android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                app:layout_constraintStart_toStartOf="@+id/group_effort_buttons"
+                app:layout_constraintTop_toBottomOf="@+id/group_effort_buttons" />
+
+            <TextView
+                android:id="@+id/tv_average_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.IntroGym.Title1.Semibold"
+                app:layout_constraintStart_toStartOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                tools:text="0 м" />
+
+            <TextView
+                android:id="@+id/tv_distance_period_dates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.IntroGym.Footnote.Regular"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13"
+                tools:text="dd.MM.yyyy - dd.MM.yyyy" />
+
+        </LinearLayout>
+
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_distance"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
