@@ -20,12 +20,11 @@ data class WorkoutFragmentUiData(
     val workoutResult: WorkoutResult? = null,
 ) {
     val state: WorkoutFragmentState get() {
-        return when {
-            workoutLog == null -> WorkoutFragmentState.WORKOUT_TEMPLATE
-            WorkoutLogState.get(workoutLog) == WorkoutLogState.NotStarted -> WorkoutFragmentState.WORKOUT_NOT_STARTED
-            WorkoutLogState.get(workoutLog) == WorkoutLogState.InProgress -> WorkoutFragmentState.WORKOUT_IN_PROGRESS
-            WorkoutLogState.get(workoutLog) == WorkoutLogState.Finished -> WorkoutFragmentState.WORKOUT_FINISHED
-            else -> throw IllegalStateException("Unknown WorkoutFragmentState!")
+        return when(workoutLog?.state) {
+            null -> WorkoutFragmentState.WORKOUT_TEMPLATE
+            is WorkoutLogState.NotStarted -> WorkoutFragmentState.WORKOUT_NOT_STARTED
+            is WorkoutLogState.InProgress -> WorkoutFragmentState.WORKOUT_IN_PROGRESS
+            is WorkoutLogState.Finished -> WorkoutFragmentState.WORKOUT_FINISHED
         }
     }
 }

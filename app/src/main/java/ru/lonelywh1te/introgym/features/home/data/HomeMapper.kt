@@ -16,6 +16,6 @@ fun WorkoutLogEntity.toWorkoutLogItem(workoutEntity: WorkoutEntity, countOfExerc
         workoutDescription = workoutEntity.description,
         countOfExercises = countOfExercises,
         order = this.order,
-        state = WorkoutLogState.get(this.toWorkoutLog()),
+        state = this.toWorkoutLog().state,
     )
 }

@@ -96,7 +96,7 @@ class WorkoutFragmentViewModel(
         .flatMapLatest { workoutLogResult ->
             val workoutLog = workoutLogResult.getOrNull()
 
-            if (workoutLog == null || WorkoutLogState.get(workoutLog) == WorkoutLogState.NotStarted) return@flatMapLatest flowOf(Result.Success(null))
+            if (workoutLog == null || workoutLog.state is WorkoutLogState.NotStarted) return@flatMapLatest flowOf(Result.Success(null))
             getWorkoutExerciseItemsWithProgressUseCase(workoutLog.workoutId)
         }
         .flowOn(dispatcher)
@@ -106,7 +106,7 @@ class WorkoutFragmentViewModel(
         .flatMapLatest { workoutLogResult ->
             val workoutLog = workoutLogResult.getOrNull()
 
-            if (workoutLog == null || WorkoutLogState.get(workoutLog) != WorkoutLogState.Finished) return@flatMapLatest flowOf(Result.Success(null))
+            if (workoutLog == null || workoutLog.state !is WorkoutLogState.Finished) return@flatMapLatest flowOf(Result.Success(null))
 
             getWorkoutResultsUseCase(workoutLog.workoutId)
         }
@@ -135,7 +135,7 @@ class WorkoutFragmentViewModel(
                 val workoutFragmentUiData = WorkoutFragmentUiData(
                     workout = (workout as Result.Success).data,
                     workoutLog = (workoutLog as Result.Success).data,
-                    workoutExerciseItems = if (workoutLog.data == null || WorkoutLogState.get(workoutLog.data) == WorkoutLogState.NotStarted) {
+                    workoutExerciseItems = if (workoutLog.data == null || workoutLog.data.state is WorkoutLogState.NotStarted) {
                         (workoutExerciseItems as Result.Success).data
                     } else {
                         (workoutExerciseItemsWithProgress as Result.Success).data
