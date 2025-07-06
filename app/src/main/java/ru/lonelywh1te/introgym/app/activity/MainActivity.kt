@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.app.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,17 +18,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.NavGraphDirections
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
-import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutLogRepository
-import ru.lonelywh1te.introgym.features.workout.presentation.WorkoutTrackingService
-import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity(), UIController {
     private lateinit var binding: ActivityMainBinding
@@ -69,7 +63,6 @@ class MainActivity : AppCompatActivity(), UIController {
         setupBottomNavigationView()
         setupToolbar()
         startCollectFlows()
-        restoreWorkoutTrackerService()
     }
 
     private fun setTheme() {
@@ -115,29 +108,6 @@ class MainActivity : AppCompatActivity(), UIController {
             when {
                 !onboardingCompleted -> NavGraphDirections.actionStartOnboarding()
                 else -> return
-            }
-        )
-    }
-
-    private fun restoreWorkoutTrackerService() {
-        lifecycleScope.launch {
-            val workoutLogRepository: WorkoutLogRepository by inject()
-
-            workoutLogRepository.getWorkoutLogWithStartDateTime()
-                .onSuccess {
-                    if (it != null) startWorkoutTrackingService(it.startDateTime)
-                }
-        }
-    }
-
-
-    private fun startWorkoutTrackingService(startDateTime: LocalDateTime? = null) {
-        startService(
-            Intent(this, WorkoutTrackingService::class.java).apply {
-                action = WorkoutTrackingService.ACTION_START
-                startDateTime?.let { startDateTime ->
-                    putExtra(WorkoutTrackingService.START_LOCAL_DATE_TIME_EXTRA, startDateTime.toString())
-                }
             }
         )
     }

@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
@@ -45,6 +46,8 @@ import ru.lonelywh1te.introgym.features.workout.presentation.helper.WorkoutExerc
 import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentState
 import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentUiData
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.WorkoutServiceController
+import ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.impl.WorkoutService
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -58,23 +61,7 @@ class WorkoutFragment : Fragment(), MenuProvider {
     private lateinit var recycler: RecyclerView
     private lateinit var workoutExerciseItemAdapter: WorkoutExerciseItemAdapter
 
-    private var workoutTrackingService: WorkoutTrackingService? = null
-    private val workoutTrackingServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as WorkoutTrackingService.LocalBinder
-            workoutTrackingService = binder.getService()
-
-            lifecycleScope.launch {
-                workoutTrackingService?.timeStateFlow?.collectLatest { time ->
-                    binding.tvExecutionTime.text = time.format(DateAndTimeStringFormatUtils.fullTimeFormatter)
-                }
-            }
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            workoutTrackingService = null
-        }
-    }
+    private val workoutServiceController by inject<WorkoutServiceController>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,38 +151,18 @@ class WorkoutFragment : Fragment(), MenuProvider {
     }
 
     private fun startWorkoutTrackingService(startDateTime: LocalDateTime? = null) {
-        requireContext().startService(
-            Intent(requireContext(), WorkoutTrackingService::class.java).apply {
-                action = WorkoutTrackingService.ACTION_START
-                startDateTime?.let { putExtra(WorkoutTrackingService.START_LOCAL_DATE_TIME_EXTRA, startDateTime.toString()) }
-            }
-        )
-
-        bindWorkoutTrackerService()
+        workoutServiceController.start(startDateTime)
+        workoutServiceController.apply {
+            start(startDateTime)
+            bind(onServiceConnectedListener = { _, iBinder ->
+                    val binder = iBinder as WorkoutService.LocalBinder
+                    viewModel.setExecutionTimeFlow(binder.getTimeFlow())
+            })
+        }
     }
 
     private fun stopWorkoutTrackingService() {
-        requireContext().startService(
-            Intent(requireContext(), WorkoutTrackingService::class.java).apply {
-                action = WorkoutTrackingService.ACTION_STOP
-            }
-        )
-
-        unbindWorkoutTrackerService()
-    }
-
-    private fun bindWorkoutTrackerService() {
-        requireContext().bindService(
-            Intent(requireContext(), WorkoutTrackingService::class.java),
-            workoutTrackingServiceConnection,
-            Context.BIND_AUTO_CREATE
-        )
-    }
-
-    private fun unbindWorkoutTrackerService() {
-        workoutTrackingService?.let {
-            requireContext().unbindService(workoutTrackingServiceConnection)
-        }
+        workoutServiceController.stop()
     }
 
     private fun startCollectFlows() {
@@ -214,6 +181,13 @@ class WorkoutFragment : Fragment(), MenuProvider {
                     // TODO: Not yet implemented
                     }
                 }
+            }
+            .launchIn(lifecycleScope)
+
+        viewModel.workoutExecutionTime.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .filterNotNull()
+            .onEach { time ->
+                binding.tvExecutionTime.text = time.format(DateAndTimeStringFormatUtils.fullTimeFormatter)
             }
             .launchIn(lifecycleScope)
 
@@ -256,7 +230,6 @@ class WorkoutFragment : Fragment(), MenuProvider {
 
                 data.workoutLog?.let {
                     startWorkoutTrackingService(it.startDateTime)
-                    bindWorkoutTrackerService()
                 }
 
                 binding.cvWorkoutControlPanel.isVisible = true

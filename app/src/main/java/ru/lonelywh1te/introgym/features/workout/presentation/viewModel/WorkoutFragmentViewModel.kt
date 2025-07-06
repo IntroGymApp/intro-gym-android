@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -43,6 +45,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.error.WorkoutErrorStringMessageProvider
 import ru.lonelywh1te.introgym.features.workout.presentation.state.WorkoutFragmentUiData
+import java.time.LocalTime
 import java.util.UUID
 
 class WorkoutFragmentViewModel(
@@ -155,6 +158,9 @@ class WorkoutFragmentViewModel(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
+    private val _workoutExecutionTime: MutableStateFlow<LocalTime?> = MutableStateFlow(null)
+    val workoutExecutionTime get() = _workoutExecutionTime.asStateFlow()
+
     private val _workoutDeleted: MutableSharedFlow<Unit> = MutableSharedFlow()
     val workoutDeleted get() = _workoutDeleted.asSharedFlow()
 
@@ -230,6 +236,14 @@ class WorkoutFragmentViewModel(
         viewModelScope.launch (dispatcher) {
             deleteWorkoutExerciseUseCase(id)
                 .onFailure { errorDispatcher.dispatch(it) }
+        }
+    }
+
+    fun setExecutionTimeFlow(flow: Flow<LocalTime>) {
+        viewModelScope.launch {
+            flow.collect {
+                _workoutExecutionTime.value = it
+            }
         }
     }
 }

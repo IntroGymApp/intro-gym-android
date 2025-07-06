@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.workout.presentation
+package ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.impl
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -14,6 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,18 +25,15 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-class WorkoutTrackingService: Service() {
+class WorkoutService: Service() {
     private val job = SupervisorJob()
     private val serviceScope = CoroutineScope(job + Dispatchers.IO)
     private val binder = LocalBinder()
 
-    private var onTimeChangedListener: ((LocalTime) -> Unit)? = null
     private var time: LocalTime = LocalTime.of(0, 0, 0)
         set(value) {
             field = value
             _timeStateFlow.value = value
-
-            onTimeChangedListener?.invoke(value)
         }
 
     private val _timeStateFlow = MutableStateFlow(time)
@@ -57,10 +55,6 @@ class WorkoutTrackingService: Service() {
         }
 
         return START_REDELIVER_INTENT
-    }
-
-    fun setOnTimeChangedListener(listener: ((LocalTime) -> Unit)?) {
-        onTimeChangedListener = listener
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -127,7 +121,7 @@ class WorkoutTrackingService: Service() {
     }
 
     inner class LocalBinder: Binder() {
-        fun getService(): WorkoutTrackingService = this@WorkoutTrackingService
+        fun getTimeFlow(): Flow<LocalTime> = timeStateFlow
     }
 
     companion object {
@@ -136,5 +130,7 @@ class WorkoutTrackingService: Service() {
         const val ACTION_START = "start"
         const val ACTION_STOP = "stop"
         const val START_LOCAL_DATE_TIME_EXTRA = "start_time"
+
+
     }
 }

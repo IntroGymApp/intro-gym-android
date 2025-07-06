@@ -10,6 +10,7 @@ val appModule = module {
             launchPreferences = get(),
             settingsPreferences = get(),
             errorDispatcher = get(),
+            workoutServiceController = get(),
         )
     }
 }

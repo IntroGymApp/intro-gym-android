@@ -41,6 +41,8 @@ import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutEx
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.WorkoutServiceController
+import ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.impl.WorkoutServiceControllerImpl
 
 val workoutDataModule = module {
     single<WorkoutRepository> {
@@ -230,6 +232,13 @@ val workoutDomainModule = module {
 }
 
 val workoutPresentationModule = module {
+    single<WorkoutServiceController> {
+        WorkoutServiceControllerImpl(
+            context = get(),
+            workoutLogRepository = get(),
+        )
+    }
+
     viewModel<WorkoutsFragmentViewModel> {
         WorkoutsFragmentViewModel(
             getWorkoutListUseCase = get(),
