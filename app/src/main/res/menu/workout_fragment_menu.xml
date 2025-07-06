@@ -6,6 +6,7 @@
         android:id="@+id/deleteWorkout"
         android:icon="@drawable/ic_delete"
         android:title="@string/label_delete"
+        app:iconTint="?attr/igIconStaticColor"
         app:showAsAction="ifRoom"/>
 
 </menu>

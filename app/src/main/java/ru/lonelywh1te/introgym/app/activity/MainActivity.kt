@@ -48,8 +48,8 @@ class MainActivity : AppCompatActivity(), UIController {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setTheme()
+        super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()

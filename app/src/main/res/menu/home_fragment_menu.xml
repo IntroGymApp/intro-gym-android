@@ -6,6 +6,7 @@
         android:id="@+id/add_workout_log"
         android:title="@string/label_add_workout"
         android:icon="@drawable/ic_add"
+        app:iconTint="?attr/igIconStaticColor"
         app:showAsAction="ifRoom" />
 
 </menu>

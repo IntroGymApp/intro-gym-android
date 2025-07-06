@@ -6,12 +6,14 @@
         android:id="@+id/exerciseInfo"
         android:icon="@drawable/ic_info"
         android:title="@string/label_about_exercise"
+        app:iconTint="?attr/igIconStaticColor"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/saveWorkoutExercisePlan"
         android:icon="@drawable/ic_ok"
         android:title="@string/label_save"
+        app:iconTint="?attr/igIconStaticColor"
         app:showAsAction="ifRoom"/>
 
 </menu>

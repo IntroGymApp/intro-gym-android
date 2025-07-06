@@ -6,5 +6,6 @@
         android:id="@+id/createWorkout"
         android:icon="@drawable/ic_ok"
         android:title="@string/label_save"
+        app:iconTint="?attr/igIconStaticColor"
         app:showAsAction="ifRoom"/>
 </menu>

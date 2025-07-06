@@ -5,5 +5,6 @@
         android:id="@+id/filter"
         android:title="@string/label_filter"
         android:icon="@drawable/ic_filter"
+        app:iconTint="?attr/igIconStaticColor"
         app:showAsAction="ifRoom" />
 </menu>
