@@ -4,8 +4,8 @@ import okhttp3.Authenticator
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.data.network.RetrofitProvider
-import ru.lonelywh1te.introgym.features.auth.data.AuthRepositoryImpl
 import ru.lonelywh1te.introgym.features.auth.data.AuthApi
+import ru.lonelywh1te.introgym.features.auth.data.AuthRepositoryImpl
 import ru.lonelywh1te.introgym.features.auth.data.OtpRepositoryImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthSharedPreferencesImpl
 import ru.lonelywh1te.introgym.features.auth.data.storage.AuthStorage

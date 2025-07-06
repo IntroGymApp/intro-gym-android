@@ -12,7 +12,6 @@ import ru.lonelywh1te.introgym.core.ui.UIState
 import ru.lonelywh1te.introgym.features.auth.domain.CredentialsValidator
 import ru.lonelywh1te.introgym.features.auth.domain.error.AuthValidationError
 import ru.lonelywh1te.introgym.features.auth.domain.model.SignUpCredentials
-import ru.lonelywh1te.introgym.features.auth.domain.model.UserCredentials
 import ru.lonelywh1te.introgym.features.auth.domain.usecase.SignUpUseCase
 
 class SignUpViewModel(

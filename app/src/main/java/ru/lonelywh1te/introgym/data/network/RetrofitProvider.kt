@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.data.network
 
-import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient

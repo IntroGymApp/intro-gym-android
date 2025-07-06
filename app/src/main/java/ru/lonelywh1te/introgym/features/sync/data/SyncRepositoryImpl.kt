@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.sync.data
 
 import android.util.Log
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
@@ -16,7 +15,6 @@ import ru.lonelywh1te.introgym.data.network.NetworkError
 import ru.lonelywh1te.introgym.data.network.safeNetworkCall
 import ru.lonelywh1te.introgym.features.sync.data.dto.SyncDataDto
 import ru.lonelywh1te.introgym.features.sync.domain.SyncRepository
-import java.time.LocalDate
 
 class SyncRepositoryImpl(
     private val syncApi: SyncApi,

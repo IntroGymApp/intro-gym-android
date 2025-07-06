@@ -1,10 +1,8 @@
 package ru.lonelywh1te.introgym.features.workout.data
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao

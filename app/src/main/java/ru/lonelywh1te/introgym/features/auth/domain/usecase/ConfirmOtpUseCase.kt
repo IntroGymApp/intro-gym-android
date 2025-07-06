@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.onFailure
-import ru.lonelywh1te.introgym.features.auth.domain.AuthRepository
 import ru.lonelywh1te.introgym.features.auth.domain.OtpRepository
 import ru.lonelywh1te.introgym.features.auth.domain.OtpValidator
 import ru.lonelywh1te.introgym.features.auth.domain.model.OtpType

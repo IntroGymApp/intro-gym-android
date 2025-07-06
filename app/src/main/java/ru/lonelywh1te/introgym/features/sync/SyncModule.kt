@@ -1,6 +1,5 @@
 package ru.lonelywh1te.introgym.features.sync
 
-import org.koin.core.scope.get
 import org.koin.dsl.module
 import ru.lonelywh1te.introgym.data.network.RetrofitProvider
 import ru.lonelywh1te.introgym.features.sync.data.SyncApi

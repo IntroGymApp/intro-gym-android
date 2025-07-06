@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.sync.data.dto
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
 
 data class SyncWorkoutExercisePlanDto(
 

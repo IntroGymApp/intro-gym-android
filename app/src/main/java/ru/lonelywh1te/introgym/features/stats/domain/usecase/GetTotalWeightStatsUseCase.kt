@@ -8,7 +8,6 @@ import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.model.WeightEntry
 import ru.lonelywh1te.introgym.features.stats.domain.repository.StatsRepository
-import java.time.LocalDate
 
 class GetTotalWeightStatsUseCase(
     private val repository: StatsRepository,

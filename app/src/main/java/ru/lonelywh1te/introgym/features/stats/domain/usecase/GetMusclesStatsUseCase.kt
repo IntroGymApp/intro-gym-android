@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.guide.domain.usecase.GetExerciseCategoriesUseCase
-import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.model.MuscleEntry
+import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.repository.StatsRepository
 
 class GetMusclesStatsUseCase(

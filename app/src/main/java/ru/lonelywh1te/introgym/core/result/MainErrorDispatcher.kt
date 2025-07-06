@@ -4,7 +4,6 @@ import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flatMapLatest
 
 class MainErrorDispatcher: ErrorDispatcher {
     private val _errorMessages: MutableSharedFlow<String> = MutableSharedFlow(extraBufferCapacity = 1)

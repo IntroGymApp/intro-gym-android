@@ -7,9 +7,9 @@ import ru.lonelywh1te.introgym.data.db.asSafeSQLiteFlow
 import ru.lonelywh1te.introgym.data.db.dao.ExerciseSetDao
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithExerciseCategoryId
 import ru.lonelywh1te.introgym.data.db.model.ExerciseSetWithWorkoutLogDate
-import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.model.DistanceEntry
 import ru.lonelywh1te.introgym.features.stats.domain.model.MuscleEntry
+import ru.lonelywh1te.introgym.features.stats.domain.model.StatsPeriod
 import ru.lonelywh1te.introgym.features.stats.domain.model.WeightEntry
 import ru.lonelywh1te.introgym.features.stats.domain.repository.StatsRepository
 

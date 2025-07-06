@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.features.auth.data.token
 
 import android.util.Log
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request

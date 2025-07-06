@@ -1,11 +1,9 @@
 package ru.lonelywh1te.introgym.core.ui.utils
 
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 
 object WindowInsetsHelper {

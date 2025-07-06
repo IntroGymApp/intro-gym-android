@@ -1,7 +1,6 @@
 package ru.lonelywh1te.introgym.app
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -9,21 +8,19 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import ru.lonelywh1te.introgym.core.coreModule
 import ru.lonelywh1te.introgym.data.dataModule
-import ru.lonelywh1te.introgym.data.prefs.SettingsPreferences
 import ru.lonelywh1te.introgym.features.auth.authModule
 import ru.lonelywh1te.introgym.features.guide.guideModule
 import ru.lonelywh1te.introgym.features.home.homeModule
-import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
-import ru.lonelywh1te.introgym.features.stats.statsModule
-import ru.lonelywh1te.introgym.features.workout.workoutModule
 import ru.lonelywh1te.introgym.features.notifications.NotificationChannelManager
 import ru.lonelywh1te.introgym.features.notifications.notificationModule
+import ru.lonelywh1te.introgym.features.onboarding.onboardingModule
 import ru.lonelywh1te.introgym.features.profile.profileModule
 import ru.lonelywh1te.introgym.features.settings.settingsModule
+import ru.lonelywh1te.introgym.features.stats.statsModule
 import ru.lonelywh1te.introgym.features.sync.syncModule
+import ru.lonelywh1te.introgym.features.workout.workoutModule
 
 class App: Application() {
-    private val settingsPreferences by inject<SettingsPreferences>()
     private val notificationChannelManager by inject<NotificationChannelManager>()
 
     override fun onCreate() {
