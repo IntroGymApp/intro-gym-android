@@ -4,15 +4,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
-import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
+import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogItemRepository
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLogState
+import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutLogRepository
 import java.time.LocalDate
 
 class GetWorkoutLogItemListUseCase(
-    private val repository: WorkoutLogRepository,
+    private val repository: WorkoutLogItemRepository,
 ) {
     operator fun invoke(date: LocalDate): Flow<Result<List<WorkoutLogItem>>> {
-        return repository.getWorkoutLogItemList(date).map { result ->
+        return repository.getWorkoutLogItems(date).map { result ->
             when(result) {
                 is Result.Success -> Result.Success(sortWorkoutLogItems(result.data))
                 is Result.Failure -> result

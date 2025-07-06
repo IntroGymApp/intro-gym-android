@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.home.data
+package ru.lonelywh1te.introgym.features.workout.data.repository
 
 import android.util.Log
 import androidx.room.withTransaction
@@ -15,9 +15,10 @@ import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutLogDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutLogEntity
 import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
-import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutLog
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutLogEntity
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLog
+import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutLogRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
@@ -29,14 +30,6 @@ class WorkoutLogRepositoryImpl(
     private val workoutExerciseDao: WorkoutExerciseDao,
     private val workoutExercisePlanDao: WorkoutExercisePlanDao,
 ): WorkoutLogRepository {
-    override fun getWorkoutLogItemList(date: LocalDate): Flow<Result<List<WorkoutLogItem>>> {
-        return workoutLogDao.getWorkoutLogListByDate(date)
-            .map<List<WorkoutLogEntity>, Result<List<WorkoutLogItem>>> { workoutLogEntities ->
-                Result.Success(mapWorkoutLogEntities(workoutLogEntities))
-            }
-            .onStart { emit(Result.Loading) }
-            .asSafeSQLiteFlow()
-    }
 
     override fun getWorkoutLogByWorkoutId(workoutId: UUID): Flow<Result<WorkoutLog?>> {
         return workoutLogDao.getWorkoutLogByWorkoutId(workoutId)
@@ -49,17 +42,6 @@ class WorkoutLogRepositoryImpl(
 
     override suspend fun getWorkoutLogWithStartDateTime(): Result<WorkoutLog?> {
         return sqliteTryCatching { workoutLogDao.getWorkoutLogWithStartDateNotNull()?.toWorkoutLog() }
-    }
-
-    private fun mapWorkoutLogEntities(list: List<WorkoutLogEntity>): List<WorkoutLogItem> {
-        return list.map { workoutLogEntity ->
-            val workoutEntityWithCountOfExercises = workoutDao.getWorkoutWithCountOfExercises(workoutLogEntity.workoutId)
-
-            val workoutEntity = workoutEntityWithCountOfExercises.workoutEntity
-            val countOfExercises = workoutEntityWithCountOfExercises.countOfExercises
-
-            workoutLogEntity.toWorkoutLogItem(workoutEntity, countOfExercises)
-        }
     }
 
     override suspend fun updateWorkoutLog(workoutLog: WorkoutLog): Result<Unit> {

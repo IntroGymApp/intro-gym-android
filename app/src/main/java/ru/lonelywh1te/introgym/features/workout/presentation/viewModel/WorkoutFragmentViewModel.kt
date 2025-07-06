@@ -23,8 +23,8 @@ import ru.lonelywh1te.introgym.core.result.getOrNull
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.onSuccess
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLog
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLogState
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutResult
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise

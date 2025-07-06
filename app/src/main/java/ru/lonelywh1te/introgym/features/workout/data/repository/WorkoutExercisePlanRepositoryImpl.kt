@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.workout.data
+package ru.lonelywh1te.introgym.features.workout.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -9,6 +9,8 @@ import ru.lonelywh1te.introgym.data.db.dao.WorkoutExerciseDao
 import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
 import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutExercisePlan
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutExercisePlanEntity
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import java.time.LocalDateTime

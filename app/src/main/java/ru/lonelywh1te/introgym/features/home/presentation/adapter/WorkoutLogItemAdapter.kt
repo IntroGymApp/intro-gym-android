@@ -10,7 +10,7 @@ import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.ui.utils.DiffUtilCallback
 import ru.lonelywh1te.introgym.databinding.ItemWorkoutLogBinding
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogState
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLogState
 
 class WorkoutLogItemAdapter: RecyclerView.Adapter<WorkoutLogItemViewHolder>() {
     private var onItemClickListener: ((workoutLogItem: WorkoutLogItem) -> Unit)? = null

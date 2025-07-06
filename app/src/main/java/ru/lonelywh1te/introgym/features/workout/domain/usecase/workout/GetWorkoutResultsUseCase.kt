@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.introgym.core.result.AppError
 import ru.lonelywh1te.introgym.core.result.Result
 import ru.lonelywh1te.introgym.core.result.getOrNull
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
-import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLog
+import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutResult
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet

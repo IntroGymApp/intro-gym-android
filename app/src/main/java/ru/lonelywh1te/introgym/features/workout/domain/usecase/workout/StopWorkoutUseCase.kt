@@ -2,7 +2,7 @@ package ru.lonelywh1te.introgym.features.workout.domain.usecase.workout
 
 import kotlinx.coroutines.flow.first
 import ru.lonelywh1te.introgym.core.result.Result
-import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
+import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutLogRepository
 import java.time.LocalDateTime
 import java.util.UUID
 

@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.home.domain.models
+package ru.lonelywh1te.introgym.features.workout.domain.model.workout_log
 
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package ru.lonelywh1te.introgym.features.workout.data
+package ru.lonelywh1te.introgym.features.workout.data.repository
 
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +15,11 @@ import ru.lonelywh1te.introgym.data.db.dao.WorkoutExercisePlanDao
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
 import ru.lonelywh1te.introgym.data.db.sqliteTryCatching
+import ru.lonelywh1te.introgym.features.workout.data.toWorkout
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutEntity
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutExerciseEntity
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutExercisePlanEntity
+import ru.lonelywh1te.introgym.features.workout.data.toWorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.Workout
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout.WorkoutItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise

@@ -2,26 +2,23 @@ package ru.lonelywh1te.introgym.features.home
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import ru.lonelywh1te.introgym.features.home.data.WorkoutLogRepositoryImpl
-import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogRepository
+import ru.lonelywh1te.introgym.features.home.data.WorkoutLogItemRepositoryImpl
+import ru.lonelywh1te.introgym.features.home.domain.repository.WorkoutLogItemRepository
 import ru.lonelywh1te.introgym.features.home.domain.usecase.AddWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogDatesUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogItemListUseCase
 import ru.lonelywh1te.introgym.features.home.presentation.viewModel.HomeFragmentViewModel
 
-val homeDataModule = module {
-    single<WorkoutLogRepository> {
-        WorkoutLogRepositoryImpl(
-            db = get(),
-            workoutLogDao = get(),
+private val homeDataModule = module {
+    single<WorkoutLogItemRepository> {
+        WorkoutLogItemRepositoryImpl(
             workoutDao = get(),
-            workoutExerciseDao = get(),
-            workoutExercisePlanDao = get(),
+            workoutLogDao = get(),
         )
     }
 }
 
-val homeDomainModule = module {
+private val homeDomainModule = module {
     factory<GetWorkoutLogItemListUseCase> {
         GetWorkoutLogItemListUseCase(
             repository = get(),
@@ -41,7 +38,7 @@ val homeDomainModule = module {
     }
 }
 
-val homePresentationModule = module {
+private val homePresentationModule = module {
     viewModel<HomeFragmentViewModel> {
         HomeFragmentViewModel(
             addWorkoutLogUseCase = get(),

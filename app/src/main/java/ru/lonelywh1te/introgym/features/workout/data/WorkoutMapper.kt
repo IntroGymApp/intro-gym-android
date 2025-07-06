@@ -4,6 +4,7 @@ import ru.lonelywh1te.introgym.data.db.entity.ExerciseSetEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExerciseEntity
 import ru.lonelywh1te.introgym.data.db.entity.WorkoutExercisePlanEntity
+import ru.lonelywh1te.introgym.data.db.entity.WorkoutLogEntity
 import ru.lonelywh1te.introgym.data.db.model.WorkoutEntityWithCountOfExercises
 import ru.lonelywh1te.introgym.data.db.model.WorkoutExerciseWithExerciseInfo
 import ru.lonelywh1te.introgym.features.workout.domain.model.Effort
@@ -13,6 +14,8 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseItem
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLog
+import java.util.UUID
 
 fun WorkoutEntityWithCountOfExercises.toWorkoutItem(): WorkoutItem {
     return WorkoutItem(
@@ -147,5 +150,30 @@ fun WorkoutExerciseSet.toExerciseSetEntity(): ExerciseSetEntity {
         effort = this.effort?.toPercent(),
         createdAt = this.createdAt,
         lastUpdated = this.lastUpdated,
+    )
+}
+
+fun WorkoutLog.toWorkoutLogEntity(): WorkoutLogEntity {
+    return WorkoutLogEntity(
+        id = this.id ?: UUID.randomUUID(),
+        workoutId = this.workoutId,
+        date = this.date,
+        startDateTime = this.startDateTime,
+        endDateTime = this.endDateTime,
+        order = this.order,
+        createdAt = this.createdAt,
+        lastUpdated = this.lastUpdatedAt,
+        isSynchronized = this.isSynchronized,
+    )
+}
+
+fun WorkoutLogEntity.toWorkoutLog(): WorkoutLog {
+    return WorkoutLog(
+        id = this.id,
+        workoutId = this.workoutId,
+        date = this.date,
+        startDateTime = this.startDateTime,
+        endDateTime = this.endDateTime,
+        order = this.order,
     )
 }

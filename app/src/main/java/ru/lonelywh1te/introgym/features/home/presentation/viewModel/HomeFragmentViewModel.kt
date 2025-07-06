@@ -18,7 +18,7 @@ import ru.lonelywh1te.introgym.core.result.ErrorDispatcher
 import ru.lonelywh1te.introgym.core.result.onFailure
 import ru.lonelywh1te.introgym.core.result.toUIState
 import ru.lonelywh1te.introgym.core.ui.UIState
-import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLog
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_log.WorkoutLog
 import ru.lonelywh1te.introgym.features.home.domain.models.WorkoutLogItem
 import ru.lonelywh1te.introgym.features.home.domain.usecase.AddWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.home.domain.usecase.GetWorkoutLogDatesUseCase

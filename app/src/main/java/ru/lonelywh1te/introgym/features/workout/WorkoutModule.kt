@@ -2,14 +2,16 @@ package ru.lonelywh1te.introgym.features.workout
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import ru.lonelywh1te.introgym.features.workout.data.WorkoutExercisePlanRepositoryImpl
-import ru.lonelywh1te.introgym.features.workout.data.WorkoutExerciseRepositoryImpl
-import ru.lonelywh1te.introgym.features.workout.data.WorkoutExerciseSetRepositoryImpl
-import ru.lonelywh1te.introgym.features.workout.data.WorkoutRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.data.repository.WorkoutExercisePlanRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.data.repository.WorkoutExerciseRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.data.repository.WorkoutExerciseSetRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.data.repository.WorkoutLogRepositoryImpl
+import ru.lonelywh1te.introgym.features.workout.data.repository.WorkoutRepositoryImpl
 import ru.lonelywh1te.introgym.features.workout.domain.WorkoutValidator
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExercisePlanRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutExerciseSetRepository
+import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutLogRepository
 import ru.lonelywh1te.introgym.features.workout.domain.repository.WorkoutRepository
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.CreateWorkoutUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout.DeleteWorkoutUseCase
@@ -70,6 +72,16 @@ val workoutDataModule = module {
         WorkoutExerciseSetRepositoryImpl(
             exerciseSetDao = get(),
             workoutExerciseDao = get(),
+        )
+    }
+
+    single<WorkoutLogRepository> {
+        WorkoutLogRepositoryImpl(
+            db = get(),
+            workoutLogDao = get(),
+            workoutDao = get(),
+            workoutExerciseDao = get(),
+            workoutExercisePlanDao = get(),
         )
     }
 }
