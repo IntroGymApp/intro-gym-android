@@ -31,14 +31,14 @@ import ru.lonelywh1te.introgym.core.ui.utils.ImageLoader
 import ru.lonelywh1te.introgym.core.ui.utils.InputFilters
 import ru.lonelywh1te.introgym.databinding.FragmentWorkoutExercisePlanEditorBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercisePlan
-import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorViewModel
 import java.time.LocalTime
 
 class WorkoutExercisePlanEditorFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExercisePlanEditorBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModel<WorkoutExercisePlanEditorFragmentViewModel>()
+    private val viewModel by viewModel<WorkoutExercisePlanEditorViewModel>()
 
     private val args by navArgs<WorkoutExercisePlanEditorFragmentArgs>()
 

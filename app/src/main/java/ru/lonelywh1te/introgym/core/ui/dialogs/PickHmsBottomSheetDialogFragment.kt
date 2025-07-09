@@ -98,7 +98,7 @@ class PickHmsBottomSheetDialogFragment: BottomSheetDialogFragment() {
                 localtime?.let { putString("localtime", localtime.format(DateAndTimeStringFormatUtils.fullTimeFormatter))  }
             }
 
-            return PickHmsBottomSheetDialogFragment().apply { arguments =  bundle}
+            return PickHmsBottomSheetDialogFragment().apply { arguments =  bundle }
         }
     }
 }

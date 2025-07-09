@@ -2,10 +2,13 @@ package ru.lonelywh1te.introgym.features.workout.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import ru.lonelywh1te.introgym.core.result.Result
+import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExercise
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 import java.util.UUID
 
 interface WorkoutExerciseSetRepository {
+
+    suspend fun getWorkoutExerciseSetById(id: UUID): Result<WorkoutExerciseSet>
 
     fun getWorkoutSets(workoutId: UUID): Flow<Result<List<WorkoutExerciseSet>>>
 

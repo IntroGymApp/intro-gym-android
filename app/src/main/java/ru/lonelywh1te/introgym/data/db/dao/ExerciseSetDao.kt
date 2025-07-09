@@ -47,6 +47,9 @@ interface ExerciseSetDao {
     @Query("select * from exercise_set where is_synchronized = 0")
     suspend fun getUnsychronizedExerciseSets(): List<ExerciseSetEntity>
 
+    @Query("select * from exercise_set where id = :id")
+    suspend fun getExerciseSet(id: UUID): ExerciseSetEntity
+
     @Insert
     suspend fun addExerciseSet(exerciseSet: ExerciseSetEntity)
 

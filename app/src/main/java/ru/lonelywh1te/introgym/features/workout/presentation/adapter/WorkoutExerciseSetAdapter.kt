@@ -9,9 +9,11 @@ import ru.lonelywh1te.introgym.core.ui.utils.DiffUtilCallback
 import ru.lonelywh1te.introgym.databinding.ItemSetBinding
 import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.WorkoutExerciseSet
 import ru.lonelywh1te.introgym.features.workout.presentation.helper.WorkoutExerciseSetHelper
+import java.util.UUID
 
 class WorkoutExerciseSetAdapter: RecyclerView.Adapter<WorkoutExerciseSetViewHolder>() {
     private var workoutExerciseSets = emptyList<WorkoutExerciseSet>()
+    private var onItemClickListener: ((exerciseSetId: UUID) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutExerciseSetViewHolder {
         val binding = ItemSetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,18 +25,19 @@ class WorkoutExerciseSetAdapter: RecyclerView.Adapter<WorkoutExerciseSetViewHold
     override fun onBindViewHolder(holder: WorkoutExerciseSetViewHolder, position: Int) {
         val set = workoutExerciseSets[position]
         holder.bind(set, workoutExerciseSets.size - workoutExerciseSets.indexOf(set))
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(set.id)
+        }
     }
 
     fun update(list: List<WorkoutExerciseSet>) {
-        val diffUtilCallback = DiffUtilCallback(workoutExerciseSets, list,
-            areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id },
-            areContentsTheSame = { oldItem, newItem -> oldItem == newItem }
-        )
-        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
-
         workoutExerciseSets = list
+        notifyDataSetChanged()
+    }
 
-        diffResult.dispatchUpdatesTo(this)
+    fun setOnItemClickListener(listener: (exerciseSetId: UUID) -> Unit) {
+        onItemClickListener = listener
     }
 }
 

@@ -20,6 +20,12 @@ class WorkoutExerciseSetRepositoryImpl(
     private val exerciseSetDao: ExerciseSetDao,
     private val workoutExerciseDao: WorkoutExerciseDao,
 ): WorkoutExerciseSetRepository {
+    override suspend fun getWorkoutExerciseSetById(id: UUID): Result<WorkoutExerciseSet> {
+        return sqliteTryCatching {
+            exerciseSetDao.getExerciseSet(id).toWorkoutExerciseSet()
+        }
+    }
+
     override fun getWorkoutSets(workoutId: UUID): Flow<Result<List<WorkoutExerciseSet>>> {
         return workoutExerciseDao.getWorkoutExercisesById(workoutId)
             .flatMapLatest { workoutExercises ->
@@ -53,11 +59,15 @@ class WorkoutExerciseSetRepositoryImpl(
     }
 
     override suspend fun deleteWorkoutExerciseSetById(id: UUID): Result<Unit> {
-        TODO("Not yet implemented")
+        return sqliteTryCatching {
+            exerciseSetDao.deleteExerciseSet(id)
+        }
     }
 
     override suspend fun updateWorkoutExerciseSet(workoutExerciseSet: WorkoutExerciseSet): Result<Unit> {
-        TODO("Not yet implemented")
+        return sqliteTryCatching {
+            exerciseSetDao.updateExerciseSet(workoutExerciseSet.toExerciseSetEntity())
+        }
     }
 
 }

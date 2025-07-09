@@ -25,7 +25,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
 import java.util.UUID
 
-class WorkoutExercisePlanEditorFragmentViewModel(
+class WorkoutExercisePlanEditorViewModel(
     private val getWorkoutExerciseUseCase: GetWorkoutExerciseUseCase,
     private val getWorkoutExercisePlanUseCase: GetWorkoutExercisePlanUseCase,
     private val getExerciseUseCase: GetExerciseUseCase,

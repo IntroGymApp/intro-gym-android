@@ -35,16 +35,20 @@ import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise.
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlanUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.GetWorkoutExercisePlansUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_plan.UpdateWorkoutExercisePlanUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_set.DeleteWorkoutExerciseSetUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_set.GetWorkoutExerciseSetUseCase
+import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_exercise_set.UpdateWorkoutExerciseSetUseCase
 import ru.lonelywh1te.introgym.features.workout.domain.usecase.workout_log.GetWorkoutLogUseCase
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.CreateWorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
-import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorFragmentViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExercisePlanEditorViewModel
+import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseSetEditorViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutsFragmentViewModel
 import ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.WorkoutServiceController
 import ru.lonelywh1te.introgym.features.workout.presentation.workoutTrackingService.impl.WorkoutServiceControllerImpl
 
-val workoutDataModule = module {
+private val workoutDataModule = module {
     single<WorkoutRepository> {
         WorkoutRepositoryImpl(
             workoutDao = get(),
@@ -88,7 +92,7 @@ val workoutDataModule = module {
     }
 }
 
-val workoutDomainModule = module {
+private val workoutDomainModule = module {
     single<WorkoutValidator> { WorkoutValidator }
 
     factory<GetWorkoutListUseCase> {
@@ -229,9 +233,27 @@ val workoutDomainModule = module {
             workoutExercisePlanRepository = get(),
         )
     }
+
+    factory<GetWorkoutExerciseSetUseCase> {
+        GetWorkoutExerciseSetUseCase(
+            repository = get()
+        )
+    }
+
+    factory<DeleteWorkoutExerciseSetUseCase> {
+        DeleteWorkoutExerciseSetUseCase(
+            repository = get()
+        )
+    }
+
+    factory<UpdateWorkoutExerciseSetUseCase> {
+        UpdateWorkoutExerciseSetUseCase(
+            repository = get()
+        )
+    }
 }
 
-val workoutPresentationModule = module {
+private val workoutPresentationModule = module {
     single<WorkoutServiceController> {
         WorkoutServiceControllerImpl(
             context = get(),
@@ -256,8 +278,8 @@ val workoutPresentationModule = module {
         )
     }
 
-    viewModel<WorkoutExercisePlanEditorFragmentViewModel> {
-        WorkoutExercisePlanEditorFragmentViewModel(
+    viewModel<WorkoutExercisePlanEditorViewModel> {
+        WorkoutExercisePlanEditorViewModel(
             getExerciseUseCase = get(),
             getWorkoutExercisePlanUseCase = get(),
             getWorkoutExerciseUseCase = get(),
@@ -292,6 +314,15 @@ val workoutPresentationModule = module {
             getWorkoutExercisePlanUseCase = get(),
             getWorkoutExerciseSetsUseCase = get(),
             addWorkoutExerciseSetUseCase = get(),
+            errorDispatcher = get(),
+        )
+    }
+
+    viewModel<WorkoutExerciseSetEditorViewModel> {
+        WorkoutExerciseSetEditorViewModel(
+            getWorkoutExerciseSetUseCase = get(),
+            updateWorkoutExerciseSetUseCase = get(),
+            deleteWorkoutExerciseSetUseCase = get(),
             errorDispatcher = get(),
         )
     }

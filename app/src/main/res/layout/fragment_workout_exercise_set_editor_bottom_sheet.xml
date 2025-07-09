@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="20dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Редактирование подхода"
+        style="@style/Widget.IntroGym.TextView.Title"
+        android:textAppearance="@style/TextAppearance.IntroGym.Title2.Bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/group_effort_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:checkedButton="@+id/btn_warm_up_effort"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/btn_warm_up_effort"
+            style="@style/Widget.IntroGym.Button.Segmented"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/selector_button_background_warm_up_effort"
+            android:text="Размин." />
+
+
+        <Button
+            android:id="@+id/btn_low_effort"
+            style="@style/Widget.IntroGym.Button.Segmented"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Низк." />
+
+
+        <Button
+            android:id="@+id/btn_mid_effort"
+            style="@style/Widget.IntroGym.Button.Segmented"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/selector_button_background_mid_effort"
+            android:text="Средн." />
+
+
+        <Button
+            android:id="@+id/btn_hard_effort"
+            style="@style/Widget.IntroGym.Button.Segmented"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/selector_button_background_hard_effort"
+            android:text="Высок." />
+
+
+        <Button
+            android:id="@+id/btn_max_effort"
+            style="@style/Widget.IntroGym.Button.Segmented"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/selector_button_background_max_effort"
+            android:text="Макс." />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <LinearLayout
+        android:id="@+id/materialButtonToggleGroup"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/group_effort_buttons">
+
+        <Button
+            android:id="@+id/btn_select_weight"
+            style="@style/Widget.IntroGym.CheckedButton"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_weight"
+            app:iconSize="30dp" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btn_select_reps"
+            style="@style/Widget.IntroGym.CheckedButton"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_repeat"
+            app:iconSize="30dp" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btn_select_time"
+            style="@style/Widget.IntroGym.CheckedButton"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_time"
+            app:iconSize="30dp" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btn_select_distance"
+            style="@style/Widget.IntroGym.CheckedButton"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_distance"
+            app:iconSize="30dp" />
+
+    </LinearLayout>
+
+    <ru.lonelywh1te.introgym.core.ui.views.EditTextLayout
+        android:id="@+id/et_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        app:helperMessage="@string/label_exercise_plan_fields_description"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/materialButtonToggleGroup">
+
+
+        <EditText
+            android:id="@+id/et_weight"
+            style="@style/Widget.IntroGym.TextInput"
+            android:drawableEnd="@drawable/ic_weight"
+            android:hint="@string/label_weight"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/et_reps"
+            style="@style/Widget.IntroGym.TextInput"
+            android:drawableEnd="@drawable/ic_repeat"
+            android:hint="@string/label_reps"
+            android:inputType="number"
+            android:maxLength="3" />
+
+        <EditText
+            android:id="@+id/et_time"
+            style="@style/Widget.IntroGym.TextInput"
+            android:drawableEnd="@drawable/ic_time"
+            android:focusable="false"
+            android:hint="@string/label_time" />
+
+        <EditText
+            android:id="@+id/et_distance"
+            style="@style/Widget.IntroGym.TextInput"
+            android:drawableEnd="@drawable/ic_distance"
+            android:hint="@string/label_distance"
+            android:inputType="number"
+            android:maxLength="5" />
+
+    </ru.lonelywh1te.introgym.core.ui.views.EditTextLayout>
+
+    <Button
+        android:id="@+id/btn_save"
+        style="@style/Widget.IntroGym.Button"
+        android:layout_width="0dp"
+        android:text="Сохранить"
+        app:layout_constraintBottom_toTopOf="@+id/btn_delete"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        style="@style/Widget.IntroGym.TextButton.Red"
+        android:layout_width="0dp"
+        android:text="Удалить"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,7 @@ import ru.lonelywh1te.introgym.features.workout.domain.model.workout_exercise.Wo
 import ru.lonelywh1te.introgym.features.workout.presentation.adapter.WorkoutExerciseSetAdapter
 import ru.lonelywh1te.introgym.features.workout.presentation.viewModel.WorkoutExerciseExecutionViewModel
 import java.time.LocalTime
+import java.util.UUID
 
 class WorkoutExerciseExecutionFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWorkoutExerciseExecutionBinding? = null
@@ -60,7 +61,11 @@ class WorkoutExerciseExecutionFragment : Fragment(), MenuProvider {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
-        workoutExerciseSetAdapter = WorkoutExerciseSetAdapter()
+        workoutExerciseSetAdapter = WorkoutExerciseSetAdapter().apply {
+            setOnItemClickListener { exerciseSetId ->
+                showWorkoutExerciseSetEditorDialog(exerciseSetId)
+            }
+        }
         setsRecycler = binding.rvSets.apply {
             adapter = workoutExerciseSetAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -192,6 +197,11 @@ class WorkoutExerciseExecutionFragment : Fragment(), MenuProvider {
             PickHmsBottomSheetDialogFragment.instance(localtime).show(childFragmentManager, PickHmsBottomSheetDialogFragment.TAG)
             setPickHmsDialogResultListener()
         }
+    }
+
+    private fun showWorkoutExerciseSetEditorDialog(exerciseSetId: UUID) {
+        WorkoutExerciseSetEditorFragment.instance(exerciseSetId)
+            .show(childFragmentManager, WorkoutExerciseSetEditorFragment.TAG)
     }
 
     private fun setPickHmsDialogResultListener() {
