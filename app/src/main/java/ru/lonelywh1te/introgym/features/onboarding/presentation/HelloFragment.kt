@@ -11,7 +11,7 @@ import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.app.activity.UIController
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
 import ru.lonelywh1te.introgym.core.ui.extensions.setColorSpan
-import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsetsHelper
 import ru.lonelywh1te.introgym.databinding.FragmentHelloBinding
 import ru.lonelywh1te.introgym.features.onboarding.presentation.viewModel.HelloFragmentViewModel
 
@@ -23,9 +23,7 @@ class HelloFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHelloBinding.inflate(inflater, container, false)
-
-        WindowInsets.setInsets(binding.root, left = binding.root.paddingStart, end = binding.root.paddingEnd)
-
+        WindowInsetsHelper.setInsets(binding.root)
         return binding.root
     }
 

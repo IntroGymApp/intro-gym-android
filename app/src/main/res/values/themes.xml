@@ -6,7 +6,6 @@
         <item name="colorOnPrimary">?attr/igOnPrimaryColor</item>
         <item name="android:textColorHint">?attr/igHintColor</item>
         <item name="android:windowBackground">?attr/igBackgroundColor</item>
-        <item name="android:statusBarColor">?attr/igBackgroundColor</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.IntroGym.BottomSheet</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>

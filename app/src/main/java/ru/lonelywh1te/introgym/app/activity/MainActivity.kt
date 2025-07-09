@@ -1,5 +1,6 @@
 package ru.lonelywh1te.introgym.app.activity
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.introgym.NavGraphDirections
 import ru.lonelywh1te.introgym.R
 import ru.lonelywh1te.introgym.core.navigation.safeNavigate
-import ru.lonelywh1te.introgym.core.ui.utils.WindowInsets
+import ru.lonelywh1te.introgym.core.ui.utils.WindowInsetsHelper
 import ru.lonelywh1te.introgym.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), UIController {
@@ -47,19 +47,23 @@ class MainActivity : AppCompatActivity(), UIController {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+
         setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(binding.navHostFragment.id) as NavHostFragment
-        navController = navHostFragment.navController.apply {
-            addOnDestinationChangedListener { _, destination, _ ->
-                updateInsets(destination)
-                if (destination.id in bottomNavigationDestinations) {
-                    binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
-                }
+        navController = navHostFragment.navController
+        setStartDestination()
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in bottomNavigationDestinations) {
+                binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
             }
         }
 
-        setStartDestination()
         setupBottomNavigationView()
         setupToolbar()
         startCollectFlows()
@@ -77,6 +81,8 @@ class MainActivity : AppCompatActivity(), UIController {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, AppBarConfiguration(bottomNavigationDestinations))
+
+        WindowInsetsHelper.setInsets(binding.toolbar, bottom = 0)
     }
 
     private fun setupBottomNavigationView() {
@@ -90,15 +96,6 @@ class MainActivity : AppCompatActivity(), UIController {
                 navController.popBackStack(it.itemId, false)
             }
         }
-    }
-
-    // TODO: передать полностью контроль над инсетами
-    private fun updateInsets(destination: NavDestination) {
-        val shouldUpdate = destination.parent?.id !in listOf(
-            R.id.onboarding,
-        )
-
-        if (shouldUpdate) WindowInsets.setInsets(binding.root)
     }
 
     private fun setStartDestination() {
