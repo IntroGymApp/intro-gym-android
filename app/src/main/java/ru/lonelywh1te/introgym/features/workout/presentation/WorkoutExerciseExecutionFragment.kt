@@ -200,8 +200,10 @@ class WorkoutExerciseExecutionFragment : Fragment(), MenuProvider {
     }
 
     private fun showWorkoutExerciseSetEditorDialog(exerciseSetId: UUID) {
-        WorkoutExerciseSetEditorFragment.instance(exerciseSetId)
-            .show(childFragmentManager, WorkoutExerciseSetEditorFragment.TAG)
+        if (childFragmentManager.findFragmentByTag(WorkoutExerciseSetEditorFragment.TAG) == null) {
+            WorkoutExerciseSetEditorFragment.instance(exerciseSetId)
+                .show(childFragmentManager, WorkoutExerciseSetEditorFragment.TAG)
+        }
     }
 
     private fun setPickHmsDialogResultListener() {
